@@ -1,0 +1,19 @@
+FROM ubuntu:22.04
+
+RUN apt-get update --fix-missing \
+    && apt-get install -y curl software-properties-common apt-transport-https\
+    && rm -rf /var/lib/apt/lists/*
+
+# Add the official Git-core PPA
+RUN add-apt-repository -y ppa:git-core/ppa && apt-get update
+
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash
+
+RUN apt-get install -y git
+
+RUN apt-get install nodejs
+
+RUN npm install -g yarn
+
+# Error: error:0308010C:digital envelope routines::unsupported
+RUN export NODE_OPTIONS=--openssl-legacy-provider

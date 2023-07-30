@@ -18,6 +18,21 @@ cp .env.example .env
 vi .env
 ```
 
+### 도커
+```sh
+# start dev container
+$ docker-compose -f docker-compose.dev.yml up
+
+# start dev container with image rebuild
+$ docker-compose -f docker-compose.dev.yml up -d --no-deps --build
+
+# stop dev container
+$ docker-compose  -f docker-compose.dev.yml down
+
+# stop dev containers for sure
+$ docker-compose down --remove-orphans
+```
+
 ### 실행
 ```
 yarn start
