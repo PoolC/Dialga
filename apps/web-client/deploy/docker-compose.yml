@@ -2,14 +2,15 @@ version: '1'
 services:
   app:
     build:
-      dockerfile: Dockerfile
+      context: ../../.. # root
+      dockerfile: ./apps/web-client/deploy/Dockerfile
     env_file: ../.env # @see https://stackoverflow.com/questions/48495663/docker-compose-env-file-not-working
     environment:
       - VITE_API_BASE_URL=${VITE_API_BASE_URL}
       - VITE_FILE_URL=${VITE_FILE_URL}
       - VITE_MAX_FILE_SIZE=${VITE_MAX_FILE_SIZE}
     volumes:
-      - app-assets:/app/build
+      - app-assets:/app/apps/web-client/build
 
   web:
     build:
