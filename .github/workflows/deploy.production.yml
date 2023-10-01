@@ -21,17 +21,23 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             DIRECTORY=dialga
+            
             if [ -d "$DIRECTORY" ]
             then
               cd "$DIRECTORY/Dialga"
-              git pull
             else
               mkdir $DIRECTORY
               cd $DIRECTORY
               git clone https://github.com/PoolC/Dialga.git
               cd Dialga
             fi
-           
+            
+            BRANCH=release/web-client
+            
+            git branch -c $BRANCH
+            git checkout $BRANCH
+            git pull origin $BRANCH || exit 1
+            
             VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }} 
             VITE_FILE_URL=${{ secrets.VITE_FILE_URL }} 
             VITE_MAX_FILE_SIZE=${{ secrets.VITE_MAX_FILE_SIZE }} 
