@@ -2,7 +2,7 @@ name: deploy
 
 on:
   push:
-    branches: [master]
+    branches: [release/web-client]
 
 jobs:
   deploy:
@@ -40,5 +40,5 @@ jobs:
             VITE_MAX_FILE_SIZE=$VITE_MAX_FILE_SIZE"
             echo "$ENV_CONTENT" > .env
             
-            docker compose down
-            docker compose up -d --build
+            docker compose -f=./apps/web-client/deploy/docker-compose.yml down
+            docker compose -f=./apps/web-client/deploy/docker-compose.yml up -d --build 
