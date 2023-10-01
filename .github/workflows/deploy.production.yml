@@ -44,7 +44,7 @@ jobs:
             ENV_CONTENT="VITE_API_BASE_URL=$VITE_API_BASE_URL
             VITE_FILE_URL=$VITE_FILE_URL
             VITE_MAX_FILE_SIZE=$VITE_MAX_FILE_SIZE"
-            echo "$ENV_CONTENT" > .env
+            echo "$ENV_CONTENT" > ./apps/web-client/.env
             
             docker compose -f=./apps/web-client/deploy/docker-compose.yml down
             docker compose -f=./apps/web-client/deploy/docker-compose.yml up -d --build 
