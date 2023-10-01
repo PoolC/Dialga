@@ -3,7 +3,7 @@ services:
   app:
     build:
       dockerfile: Dockerfile
-    env_file: .env # @see https://stackoverflow.com/questions/48495663/docker-compose-env-file-not-working
+    env_file: ../.env # @see https://stackoverflow.com/questions/48495663/docker-compose-env-file-not-working
     environment:
       - VITE_API_BASE_URL=${VITE_API_BASE_URL}
       - VITE_FILE_URL=${VITE_FILE_URL}
