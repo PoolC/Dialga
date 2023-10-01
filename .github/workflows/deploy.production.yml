@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-22.04
     environment: production
     steps:
-      - uses: actions/checkout@v3
-
       - name: clone and execute
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -44,7 +42,7 @@ jobs:
             ENV_CONTENT="VITE_API_BASE_URL=$VITE_API_BASE_URL
             VITE_FILE_URL=$VITE_FILE_URL
             VITE_MAX_FILE_SIZE=$VITE_MAX_FILE_SIZE"
-            echo "$ENV_CONTENT" > ./apps/web-client/.env
+            echo "$ENV_CONTENT" > ./apps/web-client/deploy/.env
             
             docker compose -f=./apps/web-client/deploy/docker-compose.yml down
             docker compose -f=./apps/web-client/deploy/docker-compose.yml up -d --build 
