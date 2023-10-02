@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "PoolC Baekjoon Hub",
+  "version": "1.0.2",
+  "description": "Yonsei Univ Programming Club PoolC integration with Baekjoon",
+  "action": {
+    "default_icon": "assets/images/logo-poolc.png",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "assets/images/logo-poolc.png",
+    "48": "assets/images/logo-poolc.png",
+    "128": "assets/images/logo-poolc.png"
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://www.acmicpc.net/",
+    "https://solved.ac/"
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "library/jquery-3.3.1.min.js",
+        "popup.html",
+        "popup.js",
+        "login.html",
+        "login.js"
+      ]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.acmicpc.net/*"
+      ],
+      "js": [
+        "scripts/background.js",
+        "scripts/util.js",
+        "scripts/baekjoon/variables.js",
+        "scripts/baekjoon/parsing.js",
+        "scripts/baekjoon/util.js",
+        "scripts/baekjoon/baekjoon.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -11,8 +11,8 @@
 .idea
 
 # env
-.env
 .env*
+!.env.example
 
 # logs
 npm-debug.log*

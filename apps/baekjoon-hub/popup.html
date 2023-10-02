@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>Poolc X Baekjoon</title>
+    <meta charset="utf-8" />
+    <script src="/library/jquery-3.3.1.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .wrapper {
+        width: 300px;
+        padding: 10px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .poolc {
+        color: #47be9b;
+        font-weight: 700;
+        width: 50%;
+        text-align: right;
+      }
+
+      .baekjoon {
+        color: #0076c0;
+        font-weight: 700;
+        width: 50%;
+      }
+
+      .heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .description {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+      }
+
+      .login-link {
+        width: 100%;
+        padding: 10px;
+        border-radius: 16px;
+        background-color: #47be9b;
+        font-weight: 700;
+        text-decoration: none;
+        color: #fff;
+        text-align: center;
+        display: block;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <h1 class="heading">
+          <span class="poolc">PoolC</span>
+          <span>❤️</span>
+          <span class="baekjoon">Baekjoon</span>
+        </h1>
+        <p class="description">코딩테스트 공부를 풀씨와 함께</p>
+        <a href="#" target="_blank" class="login-link js-poolc-login-link">풀씨로 로그인</a>
+      </div>
+    </div>
+    <script type="text/javascript" src="popup.js"></script>
+  </body>
+</html>

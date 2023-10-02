@@ -1,7 +1,4 @@
-# Dialga
-<img src="./public/images/dialga.webp" width="300px" title="Dialga" alt="Dialga"/>
-
-PoolC Renewal 2023 Web Frontend(forked from [Haribo](https://github.com/PoolC/Haribo))
+# @poolc-dialga/web-client
 
 ## Prerequisites 
 - yarn(version >= 3)
@@ -9,5 +6,5 @@ PoolC Renewal 2023 Web Frontend(forked from [Haribo](https://github.com/PoolC/Ha
 ## Commands
 ```shell
 yarn # install
-yarn dev # run locally
+yarn web-client:dev # run locally
 ```

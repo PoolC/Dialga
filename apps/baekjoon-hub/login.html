@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>Poolc X Baekjoon</title>
+    <meta charset="utf-8" />
+    <script src="/library/jquery-3.3.1.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .card {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 16px;
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+        background-color: #fff;
+      }
+
+      .card h1 {
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #777;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .login-btn {
+        background-color: #47be9b;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-weight: 700;
+        width: 100%;
+        display: block;
+      }
+
+      .login-btn:hover {
+        background-color: #398c77;
+      }
+
+      .error {
+        color: red;
+        font-weight: 400;
+        margin-bottom: 10px;
+        display: none;
+      }
+
+      .success {
+        display: none;
+      }
+
+      .success-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .img-wrap {
+        width: 200px;
+        aspect-ratio: 473 / 518;
+        overflow: hidden;
+        border-radius: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="card">
+        <h1>풀씨 로그인</h1>
+        <form class="js-form">
+          <div class="input-group">
+            <label for="id">아이디</label>
+            <input type="text" id="id" name="id" required />
+          </div>
+          <div class="input-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <p class="error js-error js-error-400">* 아이디/패스워드 정보가 맞지 않습니다. 다시 시도해주세요.</p>
+          <p class="error js-error js-error-500">* 서버에러가 발생했습니다. 잠시 후 다시 시도해주세요.</p>
+          <button class="login-btn" type="submit">로그인</button>
+        </form>
+        <div class="success js-success">
+          <div class="success-inner">
+            <div class="img-wrap">
+              <img src="/assets/images/main-img-poolc.png" alt="poolc" />
+            </div>
+            <p>로그인에 성공했습니다!<br />백준사이트와 풀씨 서비스가 자동으로 연동됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="login.js"></script>
+  </body>
+</html>

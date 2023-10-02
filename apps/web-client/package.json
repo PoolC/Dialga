@@ -57,13 +57,11 @@
   },
   "scripts": {
     "start": "vite",
-    "dev": "vite",
+    "dev": "yarn start",
     "build": "vite build",
     "sync:type": "npx typesync",
     "check:type": "tsc --noEmit",
-    "codegen": "openapi -i http://server.poolc.kr:8080/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
-    "postinstall": "yarn codegen",
-    "go": "concurrently \"yarn dev\" \"yarn check:type --watch\""
+    "codegen": "openapi -i http://server.poolc.kr:8080/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions"
   },
   "browserslist": {
     "production": [

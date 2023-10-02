@@ -1,4 +1,4 @@
-name: deploy
+name: web client deploy production
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-22.04
-    environment: production
+    environment: production # @TODO.. rename to 'web-client-deploy-production'
     steps:
       - name: clone and execute
         uses: appleboy/ssh-action@v1.0.0

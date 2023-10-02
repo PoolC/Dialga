@@ -8,7 +8,7 @@
   "scripts": {
     "web-client:dev": "yarn workspace @poolc-dialga/web-client dev",
     "web-client:build": "yarn workspace @poolc-dialga/web-client build",
-    "web-client:check:type": "yarn workspace @poolc-dialga/web-client check:type"
+    "web-client:codegen": "yarn workspace @poolc-dialga/web-client codegen"
   },
   "resolutions": {
     "@types/react-redux@npm:7.1.25/@types/react": "17.0.2",
