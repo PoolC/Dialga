@@ -22,9 +22,7 @@ const RecentNotice = ({ notices }) => {
           {notices?.map((notice) => (
             <RecentNoticeItem key={notice.postId}>
               <RecentNoticeCardTitle>
-                <StyledLink
-                  to={`/${MENU.BOARDS}/notice/${MENU.POST}/${notice.postId}`}
-                >
+                <StyledLink to={`/${MENU.BOARD}/${notice.postId}`}>
                   {notice.title}
                 </StyledLink>
               </RecentNoticeCardTitle>

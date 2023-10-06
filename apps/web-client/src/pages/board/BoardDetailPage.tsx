@@ -120,6 +120,12 @@ const useStyles = createStyles(({ css }) => ({
     border-bottom: 1px solid #eee;
     width: 100%;
   `,
+  divider: css`
+    margin: 0;
+  `,
+  content: css`
+    padding-bottom: 40px;
+  `,
 }));
 
 export default function BoardDetailPage() {
@@ -231,9 +237,9 @@ export default function BoardDetailPage() {
     return (
       <Space
         direction={'vertical'}
-        size={0}
+        size={'middle'}
         className={styles.wrapper}
-        split={<Divider />}
+        split={<Divider className={styles.divider} />}
       >
         <Breadcrumb
           items={[
@@ -288,7 +294,10 @@ export default function BoardDetailPage() {
             ) : (
               <Typography.Title level={2}>{post.title}</Typography.Title>
             )}
-            <div dangerouslySetInnerHTML={{ __html: post.body ?? '' }}></div>
+            <div
+              dangerouslySetInnerHTML={{ __html: post.body ?? '' }}
+              className={styles.content}
+            ></div>
             {post.fileList && post.fileList.length > 0 && (
               <div className={styles.fileListBox}>
                 <Typography.Text className={styles.fileListTitle}>
@@ -420,7 +429,7 @@ function CommentBox({
   };
 
   return (
-    <Space direction={'vertical'} size={'large'} className={styles.fullWidth}>
+    <Space direction={'vertical'} size={'middle'} className={styles.fullWidth}>
       {commentList?.map((comment) => (
         <Space
           align={'start'}
