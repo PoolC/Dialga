@@ -6,15 +6,15 @@
     "apps/*"
   ],
   "scripts": {
-    "web-client:dev": "yarn workspace @poolc-dialga/web-client dev",
-    "web-client:build": "yarn workspace @poolc-dialga/web-client build",
-    "web-client:codegen": "yarn workspace @poolc-dialga/web-client codegen"
+    "web-client": "yarn workspace @poolc-dialga/web-client"
   },
   "resolutions": {
     "@types/react-redux@npm:7.1.25/@types/react": "17.0.2",
     "@types/hoist-non-react-statics@npm:3.3.2/@types/react": "17.0.2",
     "@types/react-dom@npm:17.0.2/@types/react": "17.0.2",
     "@types/react-router-dom@npm:5.3.3/@types/react": "17.0.2",
-    "@types/react-router@npm:5.1.20/@types/react": "17.0.2"
+    "@types/react-router@npm:5.1.20/@types/react": "17.0.2",
+    "@toast-ui/react-editor@npm:2.5.1/react": "*",
+    "antd-style@npm:3.4.3/react": "*"
   }
 }

@@ -31,6 +31,8 @@ import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import classNames from 'classnames';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
+import getFileUrl from '~/lib/utils/getFileUrl';
+import { useMessage } from '~/hooks/useMessage';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -52,6 +54,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     width: 100%;
     text-decoration: inherit;
+    cursor: pointer;
   `,
   linkInner: css`
     display: flex;
@@ -105,7 +108,14 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function MyPage() {
   const { styles } = useStyles();
-  const listData: { title: string; icon: JSX.Element; link: string }[] = [
+  const message = useMessage();
+
+  const listData: {
+    title: string;
+    icon: JSX.Element;
+    link?: string;
+    onClick?: () => void;
+  }[] = [
     {
       title: '회원 정보 수정',
       icon: <BiSolidUser size={24} />,
@@ -114,17 +124,17 @@ export default function MyPage() {
     {
       title: '내가 쓴 글',
       icon: <BsFillPencilFill size={24} color={'#ffd43b'} />,
-      link: '#',
+      onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '내가 스크랩한 글',
       icon: <BsFillStarFill size={24} color={'#ffa94d'} />,
-      link: '#',
+      onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '쪽지',
       icon: <AiFillMessage size={24} color={'#4dabf7'} />,
-      link: `/${MENU.MESSAGE_ALL_LIST}`,
+      onClick: () => message.info('기능 준비중입니다!'),
     },
   ];
 
@@ -182,7 +192,9 @@ export default function MyPage() {
                 <Typography.Text className={styles.userName}>
                   {me?.name}님
                 </Typography.Text>
-                <Avatar src={me?.badge?.imageUrl} alt={me?.name} />
+                {me?.badge && (
+                  <Avatar src={getFileUrl(me?.badge.imageUrl)} alt={me?.name} />
+                )}
               </Space>
               <Typography.Text>{me?.introduction}</Typography.Text>
             </Space>
@@ -259,17 +271,27 @@ export default function MyPage() {
               className={styles.fullWidth}
               bordered
               dataSource={listData}
-              renderItem={(item) => (
-                <List.Item>
-                  <Link to={item.link} className={styles.link}>
+              renderItem={(item) =>
+                item.link ? (
+                  <List.Item onClick={item.onClick}>
+                    <Link to={item.link} className={styles.link}>
+                      <div className={styles.linkInner}>
+                        {item.icon}
+                        <Typography.Text>{item.title}</Typography.Text>
+                      </div>
+                      <IoIosArrowForward size={18} color={'#ced4da'} />
+                    </Link>
+                  </List.Item>
+                ) : (
+                  <List.Item onClick={item.onClick} className={styles.link}>
                     <div className={styles.linkInner}>
                       {item.icon}
                       <Typography.Text>{item.title}</Typography.Text>
                     </div>
                     <IoIosArrowForward size={18} color={'#ced4da'} />
-                  </Link>
-                </List.Item>
-              )}
+                  </List.Item>
+                )
+              }
             />
           </Space>
         </Space>

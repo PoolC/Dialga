@@ -9,11 +9,8 @@ export const RecentProjectBlock = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  margin: 0px 0 300px 0;
+
   max-width: 1366px;
-  @media (max-width: 576px) {
-    margin-bottom: 500px;
-  }
 
   & > .project_container_title {
     padding-left: 20px;

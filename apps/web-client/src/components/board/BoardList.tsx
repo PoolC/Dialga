@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Empty,
   Pagination,
@@ -12,7 +13,6 @@ import { ColumnsType } from 'antd/es/table';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { GoPencil } from 'react-icons/go';
-import { FcLike } from 'react-icons/fc';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { createStyles } from 'antd-style';
 import {
@@ -23,7 +23,11 @@ import {
 } from '~/lib/api-v2';
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
-import { BoardType } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import dayjs from 'dayjs';
+import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
+import getFileUrl from '~/lib/utils/getFileUrl';
+import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
@@ -56,6 +60,19 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: center;
     margin-top: 10px;
   `,
+  commentWrap: css`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `,
+  avatar: css`
+    width: 40px;
+    height: 40px;
+  `,
+  badge: css`
+    width: 25px;
+    height: 25px;
+  `,
 }));
 
 export default function BoardList({
@@ -67,13 +84,14 @@ export default function BoardList({
 }) {
   // data
   const { styles } = useStyles();
+  const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
 
   const boardListQuery = useAppQuery({
-    queryKey: queryKey.post.all(boardType, page),
+    queryKey: queryKey.post.all(boardType, page - 1),
     queryFn: () =>
       PostControllerService.viewPostsByBoardUsingGet({
-        boardTitle: boardType,
-        page,
+        boardTitle: getBoardTitleByBoardType(boardType),
+        page: page - 1,
       }),
   });
 
@@ -100,20 +118,26 @@ export default function BoardList({
           >
             <Space className={styles.metaInfoArea} size={'middle'}>
               <Space>
+                <Avatar
+                  src={getProfileImageUrl(post.postProfileImageUrl)}
+                  className={styles.avatar}
+                />
                 <Typography.Text>{post.writerName}</Typography.Text>
-                <Typography.Text type={'secondary'}>
-                  {post.createdAt}
-                </Typography.Text>
+                {post.badge && (
+                  <Avatar
+                    src={getFileUrl(post.badge?.imageUrl)}
+                    className={styles.badge}
+                  />
+                )}
               </Space>
               <Space size={'middle'}>
-                <Space>
-                  <FcLike />
-                  {post.likeCount}
-                </Space>
-                <Space>
+                <Typography.Text type={'secondary'}>
+                  {dayjs(post.createdAt).format('YYYY. MM. DD')}
+                </Typography.Text>
+                <div className={styles.commentWrap}>
                   <FaRegCommentAlt />
                   {post.commentCount ?? 0}
-                </Space>
+                </div>
               </Space>
             </Space>
             <Space direction={'vertical'} size={0}>
@@ -126,15 +150,25 @@ export default function BoardList({
     },
   ];
 
+  const renderWriteButton = () => {
+    const button = (
+      <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
+        <Button type={'primary'} icon={<GoPencil />}>
+          글쓰기
+        </Button>
+      </Link>
+    );
+
+    if (boardType !== 'NOTICE') {
+      return button;
+    }
+
+    return isAdmin ? button : null;
+  };
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.topArea}>
-        <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-          <Button type={'primary'} icon={<GoPencil />}>
-            글쓰기
-          </Button>
-        </Link>
-      </div>
+      <div className={styles.topArea}>{renderWriteButton()}</div>
       {match(boardListQuery)
         .with({ status: 'loading' }, () => <Skeleton />)
         .with({ status: 'error' }, () => (
@@ -152,10 +186,11 @@ export default function BoardList({
                 columns={columns}
                 showHeader={false}
                 pagination={false}
+                rowKey={'postId'}
               />
               <div className={styles.paginationWrap}>
                 <Pagination
-                  total={100}
+                  total={postList[0].boardPostCount}
                   showSizeChanger={false}
                   onChange={onPageChange}
                 />

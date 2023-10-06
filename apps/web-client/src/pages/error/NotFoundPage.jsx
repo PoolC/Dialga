@@ -11,10 +11,6 @@ export const PageBlock = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-  margin: 0px 0 300px 0;
-  @media (max-width: 576px) {
-    margin-bottom: 500px;
-  }
 `;
 
 export const PageContainer = styled.div`

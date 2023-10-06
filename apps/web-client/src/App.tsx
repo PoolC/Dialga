@@ -9,9 +9,36 @@ import { lazy, Suspense } from 'react';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
+// dayjs @see https://github.com/react-component/picker/issues/123
+import dayjs from 'dayjs';
+import objectSupport from 'dayjs/plugin/objectSupport';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import weekYear from 'dayjs/plugin/weekYear';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
+dayjs.extend(objectSupport);
+
 const useStyles = createStyles(({ css }) => ({
-  container: css`
+  appContainer: css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    min-height: 100vh;
+    width: 100%;
+  `,
+  content: css`
     padding-top: 90px;
+    flex: 1;
 
     @media (max-width: 768px) {
       padding-top: 0;
@@ -80,9 +107,9 @@ function App() {
   const { styles } = useStyles();
 
   return (
-    <>
+    <div className={styles.appContainer}>
       <HeaderContainer />
-      <div className={styles.container}>
+      <div className={styles.content}>
         <Suspense fallback={null}>
           <Switch>
             <Route component={HomePage} path="/" exact />
@@ -150,7 +177,7 @@ function App() {
         </Suspense>
       </div>
       <FooterContainer />
-    </>
+    </div>
   );
 }
 

@@ -1,11 +1,19 @@
-import { PoolcControllerService, ProjectControllerService, queryKey, useAppQueries } from '~/lib/api-v2';
+import {
+  PoolcControllerService,
+  PostControllerService,
+  ProjectControllerService,
+  queryKey,
+  useAppQueries,
+} from '~/lib/api-v2';
 import { Skeleton } from 'antd';
 import Carousel from '~/components/home/Carousel/Carousel';
-import { useSelector } from 'react-redux';
 import ApplyBanner from '~/components/home/ApplyBanner/ApplyBanner';
 import RecentProject from '~/components/home/RecentProject/RecentProject';
 import { getEmptyArray } from '~/lib/utils/getEmptyArray';
 import { createStyles } from 'antd-style';
+import { useAppSelector } from '~/hooks/useAppSelector';
+import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import RecentNotice from '~/components/home/RecentNotice/RecentNotice';
 
 const useStyles = createStyles(({ css }) => ({
   block: css`
@@ -29,24 +37,32 @@ const useStyles = createStyles(({ css }) => ({
 const HomePage = () => {
   const { styles } = useStyles();
 
-  const [{ data: poolcInfo }, { data: projectInfo }] = useAppQueries({
-    queries: [
-      {
-        queryKey: queryKey.poolc.poolc,
-        queryFn: PoolcControllerService.findPoolcUsingGet,
-      },
-      {
-        queryKey: queryKey.project.all,
-        queryFn: ProjectControllerService.findProjectsUsingGet,
-      },
-    ],
-  });
-  // @ts-ignore
-  const member = useSelector((state) => state.auth);
-  const isLogin = member.status.isLogin;
-  const role = member.user.role;
+  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] =
+    useAppQueries({
+      queries: [
+        {
+          queryKey: queryKey.poolc.poolc,
+          queryFn: PoolcControllerService.findPoolcUsingGet,
+        },
+        {
+          queryKey: queryKey.project.all,
+          queryFn: ProjectControllerService.findProjectsUsingGet,
+        },
+        {
+          queryKey: queryKey.post.all('NOTICE', 0),
+          queryFn: () =>
+            PostControllerService.viewPostsByBoardUsingGet({
+              boardTitle: getBoardTitleByBoardType('NOTICE'),
+              page: 0,
+            }),
+        },
+      ],
+    });
 
-  const isLoading = !poolcInfo || !projectInfo;
+  const isLogin = useAppSelector((state) => state.auth.status.isLogin);
+  const role = useAppSelector((state) => state.auth.user.role);
+
+  const isLoading = !poolcInfo || !projectInfo || !noticeInfo;
 
   if (isLoading) {
     return (
@@ -70,7 +86,7 @@ const HomePage = () => {
     <div className={styles.block}>
       <Carousel />
       {isHideApplyBanner ? null : <ApplyBanner />}
-      {/* <RecentNoticeContainer /> */}
+      <RecentNotice notices={noticeInfo.slice(0, 5)} />
       <RecentProject projects={projectInfo.data.slice(0, 7)} />
     </div>
   );

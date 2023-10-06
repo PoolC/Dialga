@@ -8,11 +8,7 @@ export const FooterBlock = styled.div`
   padding: 50px 5%;
   color: ${colors.brown[1]};
   background-color: ${colors.gray[1]};
-  margin-top: 30px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  margin-top: 48px;
   @media (max-width: 576px) {
     flex-direction: column;
   }
