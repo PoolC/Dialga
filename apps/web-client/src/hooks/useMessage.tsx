@@ -6,6 +6,7 @@ const MessageContext = createContext<{
   success: (text: string) => void;
   error: (text: string) => void;
   warn: (text: string) => void;
+  info: (text: string) => void;
 }>({
   success: (text: string) => {
     throw new Error('not override yet. message context - success method');
@@ -14,6 +15,9 @@ const MessageContext = createContext<{
     throw new Error('not override yet. message context - error method');
   },
   warn: (text: string) => {
+    throw new Error('not override yet. message context - warn method');
+  },
+  info: (text: string) => {
     throw new Error('not override yet. message context - warn method');
   },
 });
@@ -34,6 +38,9 @@ export function MessageProvider({ children }: PropsWithChildren<object>) {
         messageApi.error(text).then(noop);
       },
       warn: (text: string) => {
+        messageApi.warning(text).then(noop);
+      },
+      info: (text: string) => {
         messageApi.warning(text).then(noop);
       },
     }),

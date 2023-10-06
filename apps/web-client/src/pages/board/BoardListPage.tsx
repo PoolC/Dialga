@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import classNames from 'classnames';
+import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -25,6 +26,8 @@ const useStyles = createStyles(({ css }) => ({
 export default function BoardListPage() {
   const { styles } = useStyles();
   const searchParams = useSearchParams();
+  const isLogin = useAppSelector((state) => state.auth.status.isLogin);
+
   const boardType = (searchParams.get('boardType') ?? 'NOTICE') as BoardType;
   const page = Number(searchParams.get('page') ?? 1);
 
@@ -40,26 +43,30 @@ export default function BoardListPage() {
       label: getBoardTitleByBoardType('NOTICE'),
       children: <BoardList boardType={'NOTICE'} page={page} />,
     },
-    {
-      key: 'FREE',
-      label: getBoardTitleByBoardType('FREE'),
-      children: <BoardList boardType={'FREE'} page={page} />,
-    },
-    {
-      key: 'JOB',
-      label: getBoardTitleByBoardType('JOB'),
-      children: <BoardList boardType={'JOB'} page={page} />,
-    },
-    {
-      key: 'PROJECT',
-      label: getBoardTitleByBoardType('PROJECT'),
-      children: <BoardList boardType={'PROJECT'} page={page} />,
-    },
-    {
-      key: 'CS',
-      label: getBoardTitleByBoardType('CS'),
-      children: <BoardList boardType={'CS'} page={page} />,
-    },
+    ...(isLogin
+      ? [
+          {
+            key: 'FREE' as BoardType,
+            label: getBoardTitleByBoardType('FREE'),
+            children: <BoardList boardType={'FREE'} page={page} />,
+          },
+          {
+            key: 'JOB' as BoardType,
+            label: getBoardTitleByBoardType('JOB'),
+            children: <BoardList boardType={'JOB'} page={page} />,
+          },
+          {
+            key: 'PROJECT' as BoardType,
+            label: getBoardTitleByBoardType('PROJECT'),
+            children: <BoardList boardType={'PROJECT'} page={page} />,
+          },
+          {
+            key: 'CS' as BoardType,
+            label: getBoardTitleByBoardType('CS'),
+            children: <BoardList boardType={'CS'} page={page} />,
+          },
+        ]
+      : []),
   ];
 
   const onTabChange = (key: string) =>

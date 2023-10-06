@@ -169,10 +169,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           request: {
             body: val.body,
             title: val.title,
-            deadline: val.deadline,
+            deadline: dayjs(val.deadline).toISOString(),
             field: val.field,
             region: val.region,
             fileList: val.fileList,
+            position: val.position as PostCreateRequest['position'],
             /* always false */
             anonymous: false,
           },
@@ -190,12 +191,13 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           request: {
             body: val.body,
             title: val.title,
-            deadline: val.deadline,
+            deadline: dayjs(val.deadline).toISOString(),
             field: val.field,
             postType: 'JOB_POST',
             region: val.region,
             fileList: val.fileList,
             boardType: 'JOB',
+            position: val.position as PostCreateRequest['position'],
             /* always false */
             anonymous: false,
             isQuestion: false,

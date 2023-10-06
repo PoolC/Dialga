@@ -2,12 +2,14 @@ import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
 
 export const HeaderBlock = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   padding: 10px 5%;
   top: 0;
   left: 0;
   right: 0;
+  width: 100%;
   max-width: 1366px;
   margin: auto;
 

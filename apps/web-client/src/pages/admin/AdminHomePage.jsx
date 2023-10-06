@@ -25,7 +25,7 @@ const AdminContainerBlock = styled.div`
   left: 5%;
   right: 5%;
   display: flex;
-  margin: 0px 0 300px 0;
+
   @media (max-width: 768px) {
     margin-bottom: 600px;
     flex-direction: column;

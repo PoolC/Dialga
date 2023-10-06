@@ -30,6 +30,7 @@ import { createStyles } from 'antd-style';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { match } from 'ts-pattern';
 import { useMessage } from '~/hooks/useMessage';
+import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -62,11 +63,6 @@ const schema = z.object({
   fileList: z.array(z.string()),
 });
 
-/**
- * TODO
- * - 편집시 데이터 바인딩
- * - 권한 확인
- * */
 export default function BoardNormalWriteSection({
   boardType,
   postId,
@@ -77,6 +73,7 @@ export default function BoardNormalWriteSection({
   const { styles } = useStyles();
   const history = useHistory();
   const message = useMessage();
+  const loginId = useAppSelector((state) => state.auth.user.memberId);
 
   const editorRef = useRef<Editor | null>(null);
 
@@ -205,6 +202,15 @@ export default function BoardNormalWriteSection({
       editorRef.current?.getInstance().setHtml(savedPost.body ?? '');
     }
   }, [savedPost]);
+
+  useEffect(() => {
+    if (savedPost) {
+      if (savedPost.writerLoginId !== loginId) {
+        alert('잘못된 접근입니다.');
+        location.href = '/';
+      }
+    }
+  }, [savedPost, loginId]);
 
   // render
   return (
