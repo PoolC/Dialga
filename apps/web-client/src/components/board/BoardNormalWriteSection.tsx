@@ -31,6 +31,7 @@ import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { match } from 'ts-pattern';
 import { useMessage } from '~/hooks/useMessage';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -102,8 +103,7 @@ export default function BoardNormalWriteSection({
       const e = _e as ApiError;
       if (e.status === 400) {
         message.error('이미 존재하는 파일명입니다. 파일명을 수정해주세요.');
-      }
-      {
+      } else {
         message.error('에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
     },
@@ -176,6 +176,14 @@ export default function BoardNormalWriteSection({
       .exhaustive();
 
   const onUploadChange = (info: UploadChangeParam) => {
+    if (info.file.status === 'removed') {
+      form.setFieldValue(
+        'fileList',
+        form.values.fileList.filter((file) => file !== info.file.name),
+      );
+      return;
+    }
+
     uploadFile(info.file as unknown as File, {
       onSuccess(fileUrl) {
         form.setFieldValue('fileList', [...form.values.fileList, fileUrl]);
@@ -186,7 +194,7 @@ export default function BoardNormalWriteSection({
   const getUploadFileList = () => {
     return form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
-      url: file,
+      url: getFileUrl(file),
       name: file,
     }));
   };
