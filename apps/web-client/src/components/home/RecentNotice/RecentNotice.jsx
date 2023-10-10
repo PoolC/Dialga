@@ -1,5 +1,4 @@
 import { MENU } from '../../../constants/menus';
-import { getFullCurrentDateString } from '../../../lib/utils/getDateString';
 import {
   MainNoticeContents,
   NoticeContainerTitle,
@@ -10,6 +9,7 @@ import {
   RecentNoticeList,
   StyledLink,
 } from './RecentNotice.styles';
+import dayjs from 'dayjs';
 
 const RecentNotice = ({ notices }) => {
   return (
@@ -27,7 +27,7 @@ const RecentNotice = ({ notices }) => {
                 </StyledLink>
               </RecentNoticeCardTitle>
               <RecentNoticeCardDate>
-                {getFullCurrentDateString(notice.createdAt)}
+                {dayjs(notice.createdAt).format('YYYY. MM. DD')}
               </RecentNoticeCardDate>
             </RecentNoticeItem>
           ))}
