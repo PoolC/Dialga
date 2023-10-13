@@ -25,6 +25,7 @@ import { match } from 'ts-pattern';
 import { stringify } from 'qs';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import dayjs from 'dayjs';
+import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
