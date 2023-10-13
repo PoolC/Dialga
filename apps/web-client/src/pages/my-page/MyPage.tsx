@@ -256,7 +256,7 @@ export default function MyPage() {
                       active: me?.badge?.id === el.id,
                     })}
                   >
-                    <Avatar src={el.imageUrl} alt={el.name} />
+                    <Avatar src={getFileUrl(el.imageUrl)} alt={el.name} />
                   </Button>
                 ))}
               </Space>
