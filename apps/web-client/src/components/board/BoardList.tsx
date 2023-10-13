@@ -25,7 +25,6 @@ import { match } from 'ts-pattern';
 import { stringify } from 'qs';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import dayjs from 'dayjs';
-import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
@@ -119,10 +118,6 @@ export default function BoardList({
           >
             <Space className={styles.metaInfoArea} size={'middle'}>
               <Space>
-                <Avatar
-                  src={getProfileImageUrl(post.postProfileImageUrl)}
-                  className={styles.avatar}
-                />
                 <Typography.Text>{post.writerName}</Typography.Text>
                 {post.badge && (
                   <Avatar
