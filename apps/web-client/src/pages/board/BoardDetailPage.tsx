@@ -436,10 +436,6 @@ function CommentBox({
           key={comment.commentId}
           className={styles.comment}
         >
-          <Avatar
-            src={getProfileImageUrl(comment.profileImageUrl)}
-            className={styles.commentAvatar}
-          />
           <Space direction={'vertical'}>
             <Space>
               <Space direction={'vertical'} size={0}>
