@@ -165,7 +165,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
     return form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
-      name: file,
+      name: decodeURI(file),
     }));
   };
 
@@ -177,7 +177,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           request: {
             body: val.body,
             title: val.title,
-            deadline: dayjs(val.deadline).toISOString(),
+            deadline: val.deadline,
             field: val.field,
             region: val.region,
             fileList: val.fileList,
@@ -199,11 +199,13 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           request: {
             body: val.body,
             title: val.title,
-            deadline: dayjs(val.deadline).format('YYYY-MM-DD'),
+            deadline: val.deadline,
             field: val.field,
             region: val.region,
             fileList: val.fileList ?? [],
             position: val.position as PostCreateRequest['position'],
+            postType: 'JOB_POST',
+            boardType: 'JOB',
             /* always false */
             anonymous: false,
             isQuestion: false,
