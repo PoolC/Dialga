@@ -1,6 +1,5 @@
+import getFileUrl from '~/lib/utils/getFileUrl';
+
 export function getProfileImageUrl(url: string | undefined) {
-  if (!url) {
-    return '/images/user-placeholder.jpeg';
-  }
-  return `/images/profile-${+url}.png`;
+  return url ? getFileUrl(url) : '/images/user-placeholder.jpeg';
 }
