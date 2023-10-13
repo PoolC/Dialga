@@ -28,6 +28,7 @@ import dayjs from 'dayjs';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
 
 const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
@@ -142,7 +143,11 @@ export default function BoardList({
             </Space>
             <Space direction={'vertical'} size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
-              <Typography.Text>{post.body}</Typography.Text>
+              {post?.body && (
+                <Typography.Text>
+                  {getInnerTextFromHtml(post.body)}
+                </Typography.Text>
+              )}
             </Space>
           </Space>
         </Link>

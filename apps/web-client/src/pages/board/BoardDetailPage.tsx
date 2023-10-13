@@ -311,7 +311,7 @@ export default function BoardDetailPage() {
                       download={file}
                       className={styles.fileItem}
                     >
-                      {file}
+                      {decodeURI(file)}
                     </a>
                   ))}
                 </div>

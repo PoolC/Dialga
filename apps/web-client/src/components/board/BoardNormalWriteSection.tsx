@@ -195,7 +195,7 @@ export default function BoardNormalWriteSection({
     return form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
-      name: file,
+      name: decodeURI(file),
     }));
   };
 
