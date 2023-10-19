@@ -11,6 +11,7 @@ services:
       - VITE_MAX_FILE_SIZE=${VITE_MAX_FILE_SIZE}
     volumes:
       - app-assets:/app/apps/web-client/build
+    restart: always
 
   web:
     build:
@@ -20,6 +21,7 @@ services:
     volumes:
       - web-logs:/var/log/nginx
       - app-assets:/var/www
+    restart: always
 
 volumes:
   web-logs:
