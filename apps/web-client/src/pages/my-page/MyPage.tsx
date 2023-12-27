@@ -138,6 +138,8 @@ export default function MyPage() {
     },
   ];
 
+  const activityMinimumHour = 6;
+
   const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] =
     useAppQueries({
       queries: [
@@ -201,8 +203,15 @@ export default function MyPage() {
           </Space>
           <Space direction="vertical" size={0} className={styles.wrapper}>
             <Typography.Title level={5}>나의 활동시간</Typography.Title>
-            <Typography.Text>{myHour?.hour ?? 0}시간 / 6시간</Typography.Text>
-            <Progress percent={myHour?.hour ?? 0} strokeColor={'#47be9b'} />
+            <Typography.Text>
+              {myHour?.hour ?? 0}시간 / {activityMinimumHour}시간
+            </Typography.Text>
+            <Progress
+              percent={Math.floor(
+                ((myHour?.hour ?? 0) / activityMinimumHour) * 100,
+              )}
+              strokeColor={'#47be9b'}
+            />
           </Space>
           <Space direction="vertical" className={styles.wrapper}>
             <Typography.Title level={5} className={styles.grassTitle}>
