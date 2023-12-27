@@ -57,6 +57,11 @@ const Menus = ({
       content: 'Books',
     },
     {
+      to: `/${MENU.SPACE_RESERVATION}`,
+      visible: true,
+      content: 'Space',
+    },
+    {
       to: `/${MENU.APPLY}`,
       visible: !isLogin || (isLogin && !isAuthorizedRole(role)),
       content: 'Apply',
