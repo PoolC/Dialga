@@ -102,6 +102,9 @@ const MessageAllListPage = lazy(
 );
 const MessageListPage = lazy(() => import('./pages/message/MessageListPage'));
 const MessageFormPage = lazy(() => import('./pages/message/MessageFormPage'));
+const SpaceReservationPage = lazy(
+  () => import('~/pages/room-reservation/RoomReservationPage'),
+);
 
 function App() {
   const { styles } = useStyles();
@@ -171,6 +174,10 @@ function App() {
             <Route
               component={MyPageBadgeListPage}
               path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`}
+            />
+            <Route
+              component={SpaceReservationPage}
+              path={`/${MENU.ROOM_RESERVATION}`}
             />
             <Route component={NotFoundPage} path="/" />
           </Switch>

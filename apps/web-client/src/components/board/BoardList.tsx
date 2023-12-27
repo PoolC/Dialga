@@ -25,7 +25,6 @@ import { match } from 'ts-pattern';
 import { stringify } from 'qs';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import dayjs from 'dayjs';
-import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
@@ -71,8 +70,9 @@ const useStyles = createStyles(({ css }) => ({
     height: 40px;
   `,
   badge: css`
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #47be9b;
   `,
 }));
 

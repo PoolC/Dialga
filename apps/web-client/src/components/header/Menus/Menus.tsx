@@ -57,6 +57,11 @@ const Menus = ({
       content: 'Books',
     },
     {
+      to: `/${MENU.ROOM_RESERVATION}`,
+      visible: true,
+      content: 'Room',
+    },
+    {
       to: `/${MENU.APPLY}`,
       visible: !isLogin || (isLogin && !isAuthorizedRole(role)),
       content: 'Apply',
