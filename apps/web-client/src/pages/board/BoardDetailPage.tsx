@@ -125,6 +125,15 @@ const useStyles = createStyles(({ css }) => ({
   `,
   content: css`
     padding-bottom: 40px;
+    line-height: 1.5;
+  `,
+  badge: css`
+    width: 35px;
+    height: 35px;
+    border: 1px solid #47be9b;
+  `,
+  commentBody: css`
+    white-space: pre-line;
   `,
 }));
 
@@ -267,13 +276,20 @@ export default function BoardDetailPage() {
               className={styles.writerAvatar}
               src={getProfileImageUrl(post.postProfileImageUrl)}
             />
-            <Space direction={'vertical'} size={0}>
-              <Typography.Text>{post.writerName}</Typography.Text>
+            <Space direction={'vertical'} size={3}>
+              <Space>
+                <Typography.Text>{post.writerName}</Typography.Text>
+                {post.badge && (
+                  <Avatar
+                    src={getFileUrl(post.badge.imageUrl)}
+                    className={styles.badge}
+                  />
+                )}
+              </Space>
               <Typography.Text type={'secondary'}>
                 {dayjs(post.createdAt).format('YYYY. MM. DD')}
               </Typography.Text>
             </Space>
-            {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} />}
           </Space>
           <Space direction={'vertical'} size={0}>
             {post.boardType === 'JOB' ? (
@@ -414,6 +430,7 @@ function CommentBox({
       {
         request: {
           anonymous: false,
+          isChild: false,
           postId,
           body: val.body,
         },
@@ -437,18 +454,23 @@ function CommentBox({
           className={styles.comment}
         >
           <Space direction={'vertical'}>
-            <Space>
-              <Space direction={'vertical'} size={0}>
+            <Space direction={'vertical'} size={3}>
+              <Space>
                 <Typography.Text>{comment.writerName}</Typography.Text>
-                <Typography.Text type={'secondary'}>
-                  {dayjs(comment.createdAt).format('YYYY. MM. DD')}
-                </Typography.Text>
+                {comment.badge && (
+                  <Avatar
+                    src={getFileUrl(comment.badge.imageUrl)}
+                    className={styles.badge}
+                  />
+                )}
               </Space>
-              {comment.badge && (
-                <Avatar src={getFileUrl(comment.badge.imageUrl)} />
-              )}
+              <Typography.Text type={'secondary'}>
+                {dayjs(comment.createdAt).format('YYYY. MM. DD')}
+              </Typography.Text>
             </Space>
-            <Typography.Paragraph>{comment.body}</Typography.Paragraph>
+            <Typography.Paragraph className={styles.commentBody}>
+              {comment.body}
+            </Typography.Paragraph>
           </Space>
         </Space>
       ))}

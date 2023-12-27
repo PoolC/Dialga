@@ -57,9 +57,9 @@ const Menus = ({
       content: 'Books',
     },
     {
-      to: `/${MENU.SPACE_RESERVATION}`,
+      to: `/${MENU.ROOM_RESERVATION}`,
       visible: true,
-      content: 'Space',
+      content: 'Room',
     },
     {
       to: `/${MENU.APPLY}`,

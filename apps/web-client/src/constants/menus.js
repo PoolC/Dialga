@@ -25,7 +25,7 @@ const MENU = {
   MESSAGE_LIST: 'message-list',
   MESSAGE_FORM: 'message-form',
   MESSAGE_ALL_LIST: 'message-all-list',
-  SPACE_RESERVATION: 'space-reservation',
+  ROOM_RESERVATION: 'room-reservation',
 };
 
 export { MENU };

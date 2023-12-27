@@ -20,7 +20,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export default function SpaceReservationPage() {
+export default function RoomReservationPage() {
   const { styles } = useStyles();
 
   return (
