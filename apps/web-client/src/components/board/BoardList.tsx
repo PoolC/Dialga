@@ -175,30 +175,34 @@ export default function BoardList({
         .with({ status: 'error' }, () => (
           <Result status="500" subTitle="에러가 발생했습니다." />
         ))
-        .with({ status: 'success' }, ({ data: postList }) => {
-          if (postList.length === 0) {
-            return <Empty />;
-          }
+        .with(
+          { status: 'success' },
+          ({ data: { posts: postList, maxPage } }) => {
+            if (!postList || postList.length === 0) {
+              return <Empty />;
+            }
 
-          return (
-            <>
-              <Table
-                dataSource={postList}
-                columns={columns}
-                showHeader={false}
-                pagination={false}
-                rowKey={'postId'}
-              />
-              <div className={styles.paginationWrap}>
-                <Pagination
-                  total={postList[0].boardPostCount}
-                  showSizeChanger={false}
-                  onChange={onPageChange}
+            return (
+              <>
+                <Table
+                  dataSource={postList}
+                  columns={columns}
+                  showHeader={false}
+                  pagination={false}
+                  rowKey={'postId'}
                 />
-              </div>
-            </>
-          );
-        })
+                <div className={styles.paginationWrap}>
+                  <Pagination
+                    current={page}
+                    total={maxPage ? maxPage * 10 : 0}
+                    showSizeChanger={false}
+                    onChange={onPageChange}
+                  />
+                </div>
+              </>
+            );
+          },
+        )
         .exhaustive()}
     </div>
   );
