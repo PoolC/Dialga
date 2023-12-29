@@ -2245,6 +2245,7 @@ __metadata:
     classnames: 2.3.2
     codemirror: 5.65.15
     concurrently: 8.2.1
+    date-fns: ^3.0.6
     dayjs: 1.11.9
     dotenv: 8.2.0
     form-data: 4.0.0
@@ -3927,6 +3928,13 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.21.0
   checksum: f7be01523282e9bb06c0cd2693d34f245247a29098527d4420628966a2d9aad154bd0e90a6b1cf66d37adcb769cd108cf8a7bd49d76db0fb119af5cdd13644f4
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "date-fns@npm:3.0.6"
+  checksum: ee62b8e764e4c11c418d342f401d3e85adb4a631b196746e49ac89099c8d34cb141f10ae953c4a72bd3c76fe4d8740ec89564c8599a31256c82adbbed56c0014
   languageName: node
   linkType: hard
 
@@ -7175,6 +7183,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "poolc-dialga@workspace:."
   dependencies:
+    date-fns: ^3.0.6
     prettier: ^3.1.1
     typescript: 4.9.3
   languageName: unknown
