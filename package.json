@@ -16,5 +16,9 @@
     "@types/react-router@npm:5.1.20/@types/react": "17.0.2",
     "@toast-ui/react-editor@npm:2.5.1/react": "*",
     "antd-style@npm:3.4.3/react": "*"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "typescript": "4.9.3"
   }
 }
