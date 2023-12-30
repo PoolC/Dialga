@@ -129,9 +129,7 @@ export default function RoomReservationPage() {
       }
     }
 
-    const purpose = window.prompt(
-      "'행사명 - 이름'을 입력해주세요(ex. 웹세미나 - 홍길동).",
-    );
+    const purpose = window.prompt('행사명(예. 웹세미나) 입력해주세요.');
 
     if (!purpose) {
       return;
@@ -235,7 +233,7 @@ export default function RoomReservationPage() {
                   style={{
                     width: '100%',
                     height: 1000,
-                    minWidth: '800px',
+                    minWidth: '600px',
                   }}
                   culture="ko"
                   defaultView={Views.WEEK}
@@ -274,7 +272,7 @@ export default function RoomReservationPage() {
         <p className={styles.eventTime}>
           시작: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
           <br />
-          끝: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
+          종료: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
         </p>
       </Modal>
     </>
