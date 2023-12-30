@@ -9,7 +9,7 @@ import {
   RecentNoticeList,
   StyledLink,
 } from './RecentNotice.styles';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 
 const RecentNotice = ({ notices }) => {
   return (

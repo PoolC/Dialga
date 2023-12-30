@@ -1,6 +1,5 @@
 import colors from '../../lib/styles/colors';
 import { createStyles } from 'antd-style';
-import classNames from 'classnames';
 
 type DivProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -63,29 +62,26 @@ export const TwoColumnsContainerBlock = ({
   className,
   ...rest
 }: DivProps) => {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   return (
-    <div
-      className={classNames(className, styles.twoColumnsContainerBlock)}
-      {...rest}
-    >
+    <div className={cx(className, styles.twoColumnsContainerBlock)} {...rest}>
       {children}
     </div>
   );
 };
 export const Block = ({ children, className, ...rest }: DivProps) => {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   return (
-    <div className={classNames(className, styles.block)} {...rest}>
+    <div className={cx(className, styles.block)} {...rest}>
       {children}
     </div>
   );
 };
 
 export const WhiteBlock = ({ children, className, ...rest }: DivProps) => {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   return (
-    <div className={classNames(className, styles.whiteBlock)} {...rest}>
+    <div className={cx(className, styles.whiteBlock)} {...rest}>
       {children}
     </div>
   );
@@ -96,9 +92,9 @@ export const WhiteNarrowBlock = ({
   className,
   ...rest
 }: DivProps) => {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   return (
-    <div className={classNames(className, styles.whiteNarrowBlock)} {...rest}>
+    <div className={cx(className, styles.whiteNarrowBlock)} {...rest}>
       {children}
     </div>
   );

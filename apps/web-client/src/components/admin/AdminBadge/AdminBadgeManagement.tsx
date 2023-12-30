@@ -274,7 +274,7 @@ function BadgeGenerateModal({
             onChange={onUploadChange}
             fileList={getUploadFileList()}
           >
-            <Button icon={<UploadOutlined rev={0} />}>로고파일 업로드</Button>
+            <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>
       </Form>
@@ -384,7 +384,7 @@ function BadgeEditModal({
             onChange={onUploadChange}
             fileList={getUploadFileList()}
           >
-            <Button icon={<UploadOutlined rev={0} />}>로고파일 업로드</Button>
+            <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>
       </Form>

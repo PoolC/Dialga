@@ -4,7 +4,6 @@ import { createStyles } from 'antd-style';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
-import classNames from 'classnames';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -37,13 +36,13 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMessageFormPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const [content, setContent] = useState('');
   const history = useHistory();
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space
           direction={'vertical'}
           className={styles.fullWidth}
@@ -56,7 +55,7 @@ export default function MyPageMessageFormPage() {
                 type="text"
                 onClick={() => history.goBack()}
               >
-                <ArrowLeftOutlined rev={0} />
+                <ArrowLeftOutlined />
               </Button>
               <Typography.Text className={styles.topBoxName}>
                 쪽지보내기

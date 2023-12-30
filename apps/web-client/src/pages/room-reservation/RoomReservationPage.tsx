@@ -1,20 +1,14 @@
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { createStyles } from 'antd-style';
-import classNames from 'classnames';
 import { Button, Modal, Space } from 'antd';
 import {
   Calendar,
   SlotInfo,
   Event,
   Views,
-  dateFnsLocalizer,
+  dayjsLocalizer,
 } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import ko from 'date-fns/locale/ko';
 import {
   LocalTimeReq,
   queryKey,
@@ -22,19 +16,11 @@ import {
   useAppMutation,
   useAppQuery,
 } from '~/lib/api-v2';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales: {
-    ko: ko,
-  },
-});
+const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -86,7 +72,7 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function RoomReservationPage() {
   // data
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
 
   const [startDate, setStartDate] = useState(() =>
@@ -143,9 +129,7 @@ export default function RoomReservationPage() {
       }
     }
 
-    const purpose = window.prompt(
-      "'행사명 - 이름'을 입력해주세요(ex. 웹세미나 - 홍길동).",
-    );
+    const purpose = window.prompt('행사명(예. 웹세미나) 입력해주세요.');
 
     if (!purpose) {
       return;
@@ -229,7 +213,7 @@ export default function RoomReservationPage() {
   return (
     <>
       <Block>
-        <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+        <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
           <div className={styles.wrapper}>
             <Space
               direction="vertical"
@@ -249,7 +233,7 @@ export default function RoomReservationPage() {
                   style={{
                     width: '100%',
                     height: 1000,
-                    minWidth: '800px',
+                    minWidth: '600px',
                   }}
                   culture="ko"
                   defaultView={Views.WEEK}
@@ -288,7 +272,7 @@ export default function RoomReservationPage() {
         <p className={styles.eventTime}>
           시작: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
           <br />
-          끝: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
+          종료: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
         </p>
       </Modal>
     </>
