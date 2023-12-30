@@ -56,8 +56,6 @@ const useStyles = createStyles(({ css }) => ({
     color: #666;
   `,
   calendarWrap: css`
-    display: flex;
-    justify-content: center;
     .rbc-today {
       background-color: rgb(250, 250, 250);
     }
@@ -71,6 +69,7 @@ const useStyles = createStyles(({ css }) => ({
     .rbc-header {
       border-bottom: none;
     }
+    overflow-x: auto;
   `,
   fullWidth: css`
     width: 100%;
@@ -247,7 +246,11 @@ export default function RoomReservationPage() {
                 <Calendar
                   localizer={localizer}
                   selectable
-                  style={{ width: '100%', height: 500 }}
+                  style={{
+                    width: '100%',
+                    height: 1000,
+                    minWidth: '800px',
+                  }}
                   culture="ko"
                   defaultView={Views.WEEK}
                   views={{
