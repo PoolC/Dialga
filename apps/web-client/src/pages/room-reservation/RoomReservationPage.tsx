@@ -7,14 +7,9 @@ import {
   SlotInfo,
   Event,
   Views,
-  dateFnsLocalizer,
+  dayjsLocalizer,
 } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import ko from 'date-fns/locale/ko';
 import {
   LocalTimeReq,
   queryKey,
@@ -24,17 +19,9 @@ import {
 } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales: {
-    ko: ko,
-  },
-});
+const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`

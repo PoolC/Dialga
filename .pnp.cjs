@@ -3893,7 +3893,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.2"],\
             ["codemirror", "npm:5.65.16"],\
             ["concurrently", "npm:8.2.2"],\
-            ["date-fns", "npm:3.0.6"],\
             ["dayjs", "npm:1.11.10"],\
             ["dotenv", "npm:8.6.0"],\
             ["form-data", "npm:4.0.0"],\
@@ -6096,13 +6095,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["date-fns", "npm:2.30.0"],\
             ["@babel/runtime", "npm:7.23.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:3.0.6", {\
-          "packageLocation": "./.yarn/cache/date-fns-npm-3.0.6-5f59bceef3-ee62b8e764.zip/node_modules/date-fns/",\
-          "packageDependencies": [\
-            ["date-fns", "npm:3.0.6"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -8,6 +8,7 @@ import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import isBetween from 'dayjs/plugin/isBetween';
+import ko from 'dayjs/locale/ko';
 
 dayjsImpl.extend(customParseFormat);
 dayjsImpl.extend(advancedFormat);
@@ -17,5 +18,6 @@ dayjsImpl.extend(weekOfYear);
 dayjsImpl.extend(weekYear);
 dayjsImpl.extend(objectSupport);
 dayjsImpl.extend(isBetween);
+dayjsImpl.locale(ko);
 
 export const dayjs = dayjsImpl;
