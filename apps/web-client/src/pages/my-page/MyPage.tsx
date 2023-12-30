@@ -9,15 +9,7 @@ import {
   Typography,
 } from 'antd';
 import { createStyles } from 'antd-style';
-import { AiFillMessage } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import {
-  BsFillPencilFill,
-  BsFillQuestionCircleFill,
-  BsFillStarFill,
-} from 'react-icons/bs';
-import { BiSolidUser } from 'react-icons/bi';
-import { IoIosArrowForward } from 'react-icons/io';
 import {
   BadgeControllerService,
   BaekjoonControllerService,
@@ -33,6 +25,14 @@ import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useMessage } from '~/hooks/useMessage';
+import {
+  ArrowRightOutlined,
+  EditTwoTone,
+  MessageTwoTone,
+  QuestionCircleFilled,
+  StarTwoTone,
+  UserOutlined,
+} from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -121,22 +121,22 @@ export default function MyPage() {
   }[] = [
     {
       title: '회원 정보 수정',
-      icon: <BiSolidUser size={24} />,
+      icon: <UserOutlined size={24} />,
       link: '/my-info',
     },
     {
       title: '내가 쓴 글',
-      icon: <BsFillPencilFill size={24} color={'#ffd43b'} />,
+      icon: <EditTwoTone size={24} twoToneColor="#ffd43b" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '내가 스크랩한 글',
-      icon: <BsFillStarFill size={24} color={'#ffa94d'} />,
+      icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '쪽지',
-      icon: <AiFillMessage size={24} color={'#4dabf7'} />,
+      icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
   ];
@@ -245,7 +245,7 @@ export default function MyPage() {
                   </Space>
                 }
               >
-                <BsFillQuestionCircleFill />
+                <QuestionCircleFilled />
               </Popover>
             </Typography.Title>
             {baekjoon?.data && (
@@ -300,7 +300,7 @@ export default function MyPage() {
                         {item.icon}
                         <Typography.Text>{item.title}</Typography.Text>
                       </div>
-                      <IoIosArrowForward size={18} color={'#ced4da'} />
+                      <ArrowRightOutlined size={18} color={'#ced4da'} />
                     </Link>
                   </List.Item>
                 ) : (
@@ -309,7 +309,7 @@ export default function MyPage() {
                       {item.icon}
                       <Typography.Text>{item.title}</Typography.Text>
                     </div>
-                    <IoIosArrowForward size={18} color={'#ced4da'} />
+                    <ArrowRightOutlined size={18} color={'#ced4da'} />
                   </List.Item>
                 )
               }

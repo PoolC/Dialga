@@ -28,13 +28,13 @@ import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { stringify } from 'qs';
-import { FiUpload } from 'react-icons/fi';
 import { createStyles } from 'antd-style';
 import dayjs from 'dayjs';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { noop } from '~/lib/utils/noop';
 import getFileUrl from '~/lib/utils/getFileUrl';
+import { UploadOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -335,7 +335,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
                   onChange={onUploadChange}
                   fileList={getUploadFileList()}
                 >
-                  <Button icon={<FiUpload />}>파일 업로드</Button>
+                  <Button icon={<UploadOutlined />}>파일 업로드</Button>
                 </Upload>
                 <Button
                   type={'primary'}

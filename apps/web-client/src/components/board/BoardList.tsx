@@ -12,8 +12,6 @@ import {
 import { ColumnsType } from 'antd/es/table';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
-import { GoPencil } from 'react-icons/go';
-import { FaRegCommentAlt } from 'react-icons/fa';
 import { createStyles } from 'antd-style';
 import {
   PostControllerService,
@@ -28,6 +26,7 @@ import dayjs from 'dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
+import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
@@ -138,7 +137,7 @@ export default function BoardList({
                   {dayjs(post.createdAt).format('YYYY. MM. DD')}
                 </Typography.Text>
                 <div className={styles.commentWrap}>
-                  <FaRegCommentAlt />
+                  <CommentOutlined />
                   {post.commentCount ?? 0}
                 </div>
               </Space>
@@ -160,7 +159,7 @@ export default function BoardList({
   const renderWriteButton = () => {
     const button = (
       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-        <Button type={'primary'} icon={<GoPencil />}>
+        <Button type={'primary'} icon={<EditOutlined />}>
           글쓰기
         </Button>
       </Link>
