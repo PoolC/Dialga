@@ -27,7 +27,7 @@ import {
   useAppMutation,
   useAppQuery,
 } from '~/lib/api-v2';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 import { useSelector } from 'react-redux';
 import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';

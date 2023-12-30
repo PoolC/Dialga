@@ -1,5 +1,5 @@
 import { createStyles } from 'antd-style';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 import { memo } from 'react';
 import { BaekjoonResponse } from '~/lib/api-v2';
 import ActivityCalendar, {

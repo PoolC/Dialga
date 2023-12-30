@@ -29,7 +29,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { noop } from '~/lib/utils/noop';

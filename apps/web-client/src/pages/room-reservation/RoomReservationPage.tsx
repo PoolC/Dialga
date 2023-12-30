@@ -22,7 +22,7 @@ import {
   useAppMutation,
   useAppQuery,
 } from '~/lib/api-v2';
-import dayjs from 'dayjs';
+import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
 import { useEffect, useState } from 'react';
 
