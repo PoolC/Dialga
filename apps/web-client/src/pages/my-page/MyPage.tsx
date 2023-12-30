@@ -20,7 +20,6 @@ import {
 } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
-import classNames from 'classnames';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
@@ -110,7 +109,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
 
   const listData: {
@@ -188,7 +187,7 @@ export default function MyPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space direction={'vertical'} className={styles.fullWidth} size={40}>
           <Space className={styles.wrapper} size={'middle'}>
             <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
@@ -269,7 +268,7 @@ export default function MyPage() {
                     key={el.id}
                     onClick={() => onBadgeButtonClick(el.id!)}
                     shape={'circle'}
-                    className={classNames(styles.badgeButton, {
+                    className={cx(styles.badgeButton, {
                       active: me?.badge?.id === el.id,
                     })}
                   >

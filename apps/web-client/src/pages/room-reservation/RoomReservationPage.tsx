@@ -1,6 +1,5 @@
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { createStyles } from 'antd-style';
-import classNames from 'classnames';
 import { Button, Modal, Space } from 'antd';
 import {
   Calendar,
@@ -73,7 +72,7 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function RoomReservationPage() {
   // data
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
 
   const [startDate, setStartDate] = useState(() =>
@@ -216,7 +215,7 @@ export default function RoomReservationPage() {
   return (
     <>
       <Block>
-        <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+        <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
           <div className={styles.wrapper}>
             <Space
               direction="vertical"

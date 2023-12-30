@@ -9,7 +9,6 @@ import {
   useAppQueries,
 } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
-import classNames from 'classnames';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 
@@ -76,7 +75,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageBadgeListPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
 
   const [{ data: allBadges }, { data: me }] = useAppQueries({
     queries: [
@@ -148,7 +147,7 @@ export default function MyPageBadgeListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space className={styles.wrapper} size={'middle'}>
           <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
           <Space>
@@ -177,9 +176,7 @@ export default function MyPageBadgeListPage() {
                     src={getFileUrl(badge.imageUrl)}
                     alt={badge.name}
                     size={40}
-                    className={classNames(
-                      badge.own ? styles.owned : styles.notOwned,
-                    )}
+                    className={cx(badge.own ? styles.owned : styles.notOwned)}
                   />
                 </Tooltip>
               ))}
@@ -213,9 +210,7 @@ export default function MyPageBadgeListPage() {
                   src={getFileUrl(badge.imageUrl)}
                   alt={badge.name}
                   size={40}
-                  className={classNames(
-                    badge.own ? styles.owned : styles.notOwned,
-                  )}
+                  className={cx(badge.own ? styles.owned : styles.notOwned)}
                 />
               </Tooltip>
             ))}
@@ -238,9 +233,7 @@ export default function MyPageBadgeListPage() {
                   src={getFileUrl(badge.imageUrl)}
                   alt={badge.name}
                   size={40}
-                  className={classNames(
-                    badge.own ? styles.owned : styles.notOwned,
-                  )}
+                  className={cx(badge.own ? styles.owned : styles.notOwned)}
                 />
               </Tooltip>
             ))}

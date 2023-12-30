@@ -6,7 +6,6 @@ import { useSearchParams } from '~/hooks/useSearchParams';
 import { useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
-import classNames from 'classnames';
 import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
@@ -24,7 +23,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardListPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const searchParams = useSearchParams();
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
 
@@ -74,7 +73,7 @@ export default function BoardListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <div className={styles.wrapper}>
           <Tabs
             items={items}

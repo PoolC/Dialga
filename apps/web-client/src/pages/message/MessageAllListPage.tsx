@@ -3,7 +3,6 @@ import { createStyles } from 'antd-style';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import classNames from 'classnames';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -39,7 +38,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MessageAllListPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const history = useHistory();
 
   const data = [
@@ -59,7 +58,7 @@ export default function MessageAllListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space
           direction={'vertical'}
           className={styles.fullWidth}

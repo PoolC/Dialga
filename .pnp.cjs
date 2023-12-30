@@ -3890,11 +3890,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["antd", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:5.12.6"],\
             ["antd-style", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:3.6.1"],\
             ["axios", "npm:0.21.4"],\
-            ["classnames", "npm:2.3.2"],\
             ["codemirror", "npm:5.65.16"],\
             ["concurrently", "npm:8.2.2"],\
             ["dayjs", "npm:1.11.10"],\
-            ["dotenv", "npm:8.6.0"],\
             ["form-data", "npm:4.0.0"],\
             ["openapi-typescript-codegen", "npm:0.25.0"],\
             ["prettier", "npm:3.1.1"],\
@@ -6295,15 +6293,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dom-helpers", "npm:5.2.1"],\
             ["@babel/runtime", "npm:7.23.6"],\
             ["csstype", "npm:3.1.2"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["dotenv", [\
-        ["npm:8.6.0", {\
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.6.0-2ce3e9f7bb-38e902c80b.zip/node_modules/dotenv/",\
-          "packageDependencies": [\
-            ["dotenv", "npm:8.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\

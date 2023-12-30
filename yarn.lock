@@ -2422,11 +2422,9 @@ __metadata:
     antd: ^5.7.3
     antd-style: ^3.6.1
     axios: ^0.21.2
-    classnames: ^2.3.2
     codemirror: ^5.65.15
     concurrently: ^8.2.1
     dayjs: ^1.11.9
-    dotenv: ^8.2.0
     form-data: ^4.0.0
     openapi-typescript-codegen: ^0.25.0
     prettier: ^3.1.1
@@ -4306,13 +4304,6 @@ __metadata:
     "@babel/runtime": ^7.8.7
     csstype: ^3.0.2
   checksum: 863ba9e086f7093df3376b43e74ce4422571d404fc9828bf2c56140963d5edf0e56160f9b2f3bb61b282c07f8fc8134f023c98fd684bddcb12daf7b0f14d951c
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^8.2.0":
-  version: 8.6.0
-  resolution: "dotenv@npm:8.6.0"
-  checksum: 38e902c80b0666ab59e9310a3d24ed237029a7ce34d976796349765ac96b8d769f6df19090f1f471b77a25ca391971efde8a1ea63bb83111bd8bec8e5cc9b2cd
   languageName: node
   linkType: hard
 

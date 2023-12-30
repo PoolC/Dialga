@@ -18,7 +18,6 @@ import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { stringify } from 'qs';
-import classNames from 'classnames';
 import {
   CommentControllerService,
   PostControllerService,
@@ -139,7 +138,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardDetailPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
   const history = useHistory();
 
@@ -391,7 +390,7 @@ export default function BoardDetailPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         {renderContent()}
       </WhiteBlock>
     </Block>

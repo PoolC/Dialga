@@ -4,7 +4,6 @@ import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
-import classNames from 'classnames';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -40,7 +39,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMessageListPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const history = useHistory();
 
   const data = [
@@ -60,7 +59,7 @@ export default function MyPageMessageListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space
           direction={'vertical'}
           className={styles.fullWidth}
