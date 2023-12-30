@@ -27,6 +27,7 @@ import { queryClient } from '~/lib/utils/queryClient';
 import { UploadChangeParam } from 'antd/es/upload';
 import { createStyles } from 'antd-style';
 import { useMessage } from '~/hooks/useMessage';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 /* ---------------------------
  * BADGE MANAGEMENT TABLE
@@ -102,7 +103,7 @@ export default function AdminBadgeManagement() {
     {
       key: 'image',
       title: '이미지',
-      render: (_, { imageUrl }) => <Avatar src={imageUrl} />,
+      render: (_, { imageUrl }) => <Avatar src={getFileUrl(imageUrl)} />,
     },
     {
       key: 'category',
@@ -247,8 +248,8 @@ function BadgeGenerateModal({
       ? [
           {
             uid: 'SOME_UID',
-            url: form.values.imageUrl,
-            name: form.values.imageUrl,
+            url: getFileUrl(form.values.imageUrl),
+            name: decodeURI(form.values.imageUrl),
           },
         ]
       : [];
@@ -357,8 +358,8 @@ function BadgeEditModal({
       ? [
           {
             uid: 'SOME_UID',
-            url: form.values.imageUrl,
-            name: form.values.imageUrl,
+            url: getFileUrl(form.values.imageUrl),
+            name: decodeURI(form.values.imageUrl),
           },
         ]
       : [];

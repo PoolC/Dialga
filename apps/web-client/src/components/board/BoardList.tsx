@@ -74,6 +74,12 @@ const useStyles = createStyles(({ css }) => ({
     height: 35px;
     border: 1px solid #47be9b;
   `,
+  clamp: css`
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+  `,
 }));
 
 export default function BoardList({
@@ -140,7 +146,7 @@ export default function BoardList({
             <Space direction={'vertical'} size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
               {post?.body && (
-                <Typography.Text>
+                <Typography.Text className={styles.clamp}>
                   {getInnerTextFromHtml(post.body)}
                 </Typography.Text>
               )}
