@@ -67,6 +67,12 @@ const useStyles = createStyles(({ css }) => ({
     display: flex;
     gap: 24px;
   `,
+  owned: css`
+    border: 2px solid #47be9b;
+  `,
+  notOwned: css`
+    border: 2px solid #eee;
+  `,
 }));
 
 export default function MyPageBadgeListPage() {
@@ -167,7 +173,14 @@ export default function MyPageBadgeListPage() {
               ?.filter((badge) => badge.category === 'ATTENDANCE')
               .map((badge) => (
                 <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                  <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} />
+                  <Avatar
+                    src={getFileUrl(badge.imageUrl)}
+                    alt={badge.name}
+                    size={40}
+                    className={classNames(
+                      badge.own ? styles.owned : styles.notOwned,
+                    )}
+                  />
                 </Tooltip>
               ))}
           </div>
@@ -196,7 +209,14 @@ export default function MyPageBadgeListPage() {
           <div className={styles.badgeWrap}>
             {baekjoonSuccessiveSolveBadges.map((badge) => (
               <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} />
+                <Avatar
+                  src={getFileUrl(badge.imageUrl)}
+                  alt={badge.name}
+                  size={40}
+                  className={classNames(
+                    badge.own ? styles.owned : styles.notOwned,
+                  )}
+                />
               </Tooltip>
             ))}
           </div>
@@ -214,7 +234,14 @@ export default function MyPageBadgeListPage() {
           <div className={styles.badgeWrap}>
             {baekjoonTierBadges.map((badge) => (
               <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} />
+                <Avatar
+                  src={getFileUrl(badge.imageUrl)}
+                  alt={badge.name}
+                  size={40}
+                  className={classNames(
+                    badge.own ? styles.owned : styles.notOwned,
+                  )}
+                />
               </Tooltip>
             ))}
           </div>

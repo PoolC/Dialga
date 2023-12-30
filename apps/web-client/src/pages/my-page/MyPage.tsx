@@ -104,6 +104,9 @@ const useStyles = createStyles(({ css }) => ({
       border-color: #47be9b;
     }
   `,
+  badge: css`
+    border: 2px solid #47be9b;
+  `,
 }));
 
 export default function MyPage() {
@@ -195,7 +198,12 @@ export default function MyPage() {
                   {me?.name}님
                 </Typography.Text>
                 {me?.badge && (
-                  <Avatar src={getFileUrl(me?.badge.imageUrl)} alt={me?.name} />
+                  <Avatar
+                    src={getFileUrl(me?.badge.imageUrl)}
+                    alt={me?.name}
+                    size={40}
+                    className={styles.badge}
+                  />
                 )}
               </Space>
               <Typography.Text>{me?.introduction}</Typography.Text>
@@ -265,7 +273,11 @@ export default function MyPage() {
                       active: me?.badge?.id === el.id,
                     })}
                   >
-                    <Avatar src={getFileUrl(el.imageUrl)} alt={el.name} />
+                    <Avatar
+                      src={getFileUrl(el.imageUrl)}
+                      alt={el.name}
+                      size={40}
+                    />
                   </Button>
                 ))}
               </Space>
