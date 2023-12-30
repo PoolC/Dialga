@@ -58,7 +58,7 @@ const Menus = ({
     },
     {
       to: `/${MENU.ROOM_RESERVATION}`,
-      visible: true,
+      visible: isLogin,
       content: 'Room',
     },
     {
