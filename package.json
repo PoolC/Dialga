@@ -10,14 +10,15 @@
     "web:dev": "yarn web-client dev"
   },
   "resolutions": {
-    "@types/react-redux@npm:7.1.25/@types/react": "17.0.2",
-    "@types/hoist-non-react-statics@npm:3.3.2/@types/react": "17.0.2",
-    "@types/react-dom@npm:17.0.2/@types/react": "17.0.2",
-    "@types/react-router-dom@npm:5.3.3/@types/react": "17.0.2",
-    "@types/react-router@npm:5.1.20/@types/react": "17.0.2",
-    "@types/react-big-calendar@npm:1.8.7/@types/react": "17.0.2",
-    "@toast-ui/react-editor@npm:2.5.1/react": "*",
-    "antd-style@npm:3.4.3/react": "*"
+    "@types/react-redux@npm:7.1.25/@types/react": "^17.0.74",
+    "@types/hoist-non-react-statics@npm:3.3.2/@types/react": "^17.0.74",
+    "@types/react-dom@npm:17.0.25/@types/react": "^17.0.74",
+    "@types/react-router-dom@npm:5.3.3/@types/react": "^17.0.74",
+    "@types/react-router@npm:5.1.20/@types/react": "^17.0.74",
+    "@types/react-big-calendar@npm:1.8.7/@types/react": "^17.0.74",
+    "@types/react-redux@npm:7.1.33/@types/react": "^17.0.74",
+    "antd-style@npm:3.4.3/react": "*",
+    "@toast-ui/react-editor@npm:^2.5.1/react": "*"
   },
   "devDependencies": {
     "prettier": "^3.1.1",

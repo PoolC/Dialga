@@ -56,7 +56,7 @@ export default function MyPageMessageFormPage() {
                 type="text"
                 onClick={() => history.goBack()}
               >
-                <ArrowLeftOutlined rev={0} />
+                <ArrowLeftOutlined />
               </Button>
               <Typography.Text className={styles.topBoxName}>
                 쪽지보내기

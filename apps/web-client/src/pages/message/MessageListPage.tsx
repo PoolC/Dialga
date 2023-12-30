@@ -73,7 +73,7 @@ export default function MyPageMessageListPage() {
                 type="text"
                 onClick={() => history.goBack()}
               >
-                <ArrowLeftOutlined rev={0} />
+                <ArrowLeftOutlined />
               </Button>
               <Typography.Text className={styles.topBoxName}>
                 익명

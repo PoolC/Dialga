@@ -2445,9 +2445,9 @@ __metadata:
     "@toast-ui/react-editor": ^2.5.1
     "@types/node": ^18.15.3
     "@types/qs": ^6.9.7
-    "@types/react": ^17.0.2
+    "@types/react": ^17.0.74
     "@types/react-big-calendar": ^1.8.7
-    "@types/react-dom": ^17.0.2
+    "@types/react-dom": ^17.0.25
     "@types/react-redux": ^7.1.25
     "@types/react-router-dom": ^5.3.3
     "@types/redux-actions": ^2.6.5
@@ -2977,7 +2977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.2":
+"@types/react-dom@npm:^17.0.25":
   version: 17.0.25
   resolution: "@types/react-dom@npm:17.0.25"
   dependencies:
@@ -3019,7 +3019,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:>=16.9.11":
+"@types/react@npm:>=16.9.11":
   version: 18.2.46
   resolution: "@types/react@npm:18.2.46"
   dependencies:
@@ -3030,17 +3030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@types/react@npm:17.0.2"
-  dependencies:
-    "@types/prop-types": "*"
-    csstype: ^3.0.2
-  checksum: a5198857165feddcbfc7d33e3322460ac62b8894d702414496a825b0c82272911ec33a42ef7c9d623a59308070eef4dfee6ff834b0674aa3f87eeb644196ee3b
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17, @types/react@npm:^17.0.2":
+"@types/react@npm:^17.0.74":
   version: 17.0.74
   resolution: "@types/react@npm:17.0.74"
   dependencies:
@@ -8450,7 +8440,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:4.2.1, redux@npm:^4.0.0, redux@npm:^4.0.4, redux@npm:^4.2.1":
+"redux@npm:^4.0.0, redux@npm:^4.0.4, redux@npm:^4.2.1":
   version: 4.2.1
   resolution: "redux@npm:4.2.1"
   dependencies:

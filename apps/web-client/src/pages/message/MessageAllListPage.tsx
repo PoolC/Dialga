@@ -72,7 +72,7 @@ export default function MessageAllListPage() {
                 type="text"
                 onClick={() => history.goBack()}
               >
-                <ArrowLeftOutlined rev={0} />
+                <ArrowLeftOutlined />
               </Button>
               <Typography.Text className={styles.topBoxName}>
                 쪽지목록
