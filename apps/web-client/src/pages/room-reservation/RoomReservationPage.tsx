@@ -24,7 +24,7 @@ import {
 } from '~/lib/api-v2';
 import dayjs from 'dayjs';
 import { useMessage } from '~/hooks/useMessage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const localizer = dateFnsLocalizer({
   format,
@@ -226,6 +226,7 @@ export default function RoomReservationPage() {
     );
   };
 
+  // template
   return (
     <>
       <Block>
@@ -257,6 +258,9 @@ export default function RoomReservationPage() {
                   onSelectSlot={onSelectSlot}
                   onSelectEvent={onSelectEvent}
                   onRangeChange={onRangeChange}
+                  min={new Date(0, 0, 0, 7, 0, 0)}
+                  max={new Date(0, 0, 0, 23, 0, 0)}
+                  scrollToTime={new Date(0, 0, 0, 7, 0, 0)}
                 />
               </div>
             </Space>
