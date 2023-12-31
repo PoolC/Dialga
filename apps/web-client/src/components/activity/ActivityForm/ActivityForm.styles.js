@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Input } from 'antd';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
 
@@ -59,7 +60,7 @@ export const Plan = styled.div`
   max-width: 90%;
 `;
 
-export const StyledInput = styled.input`
+export const StyledInput = styled(Input)`
   outline: 0;
   border: 1px solid ${colors.brown[0]};
   height: 2rem;
@@ -141,7 +142,7 @@ export const CapacityContainer = styled.div`
   display: flex;
   align-items: center;
   & > input {
-    width: 4rem;
+    width: 8rem;
   }
   & > span {
     margin-left: 0.5rem;

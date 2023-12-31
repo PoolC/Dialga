@@ -33,6 +33,7 @@ import Modal from '../../common/Modal/Modal';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import throttle from '../../../lib/utils/throttle';
 import { DeleteFilled } from '@ant-design/icons';
+import { Input as AntdInput, Radio } from 'antd';
 
 const TagItem = memo(({ tag, onDeleteTag }) => {
   const handleDeleteTag = () => {
@@ -193,21 +194,19 @@ const ActivityForm = ({
               <Item>
                 <label htmlFor="seminar">형태</label>
                 <div>
-                  <input
-                    type="radio"
+                  <Radio
                     name="seminar"
                     value="seminar"
-                    checked={seminar === true ? true : false}
+                    checked={seminar}
                     onChange={onChangeSeminar}
                   />
                   <span>세미나</span>
                 </div>
                 <div>
-                  <input
-                    type="radio"
+                  <Radio
                     name="seminar"
                     value="study"
-                    checked={seminar === true ? false : true}
+                    checked={!seminar}
                     onChange={onChangeSeminar}
                   />
                   <span>스터디</span>
@@ -249,7 +248,7 @@ const ActivityForm = ({
                     name="hour"
                     onChange={onChangeHour}
                     placeholder="ex) 2"
-                    style={{ width: '4rem' }}
+                    style={{ width: '6rem' }}
                   />
                   <span>시간 진행</span>
                 </HourContainer>
