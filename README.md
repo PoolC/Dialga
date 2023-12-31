@@ -22,8 +22,10 @@
 
 ### run
 
+- Node.js ^18(>=20 can make error)
+- yarn ^3
+
 ```sh
-# yarn(version >= 3.0) must be installed
 yarn
 yarn web:dev
 ```
