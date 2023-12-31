@@ -46,5 +46,6 @@
 - react 버전 18로 업그레이드
   - react-router-dom v6 업그레이드
   - suspense 도입 및 레기서 api호출들 tanstack-query로 모두 전환
+  - react 18 업그레이드 해야 antd 관련 불필요한 warning 방지 가능함. [관련 이슈](https://github.com/ant-design/ant-design/issues/44994)
 - vite-ssr 도입 -> 세미나 메타태그 생성
 - 레거시 페이지들 마이그레이션
