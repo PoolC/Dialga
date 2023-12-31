@@ -1,23 +1,6 @@
-import {
-  Avatar,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Space,
-  Table,
-  Typography,
-  Upload,
-  UploadFile,
-} from 'antd';
+import { Avatar, Button, Form, Input, Modal, Space, Table, Typography, Upload, UploadFile } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import {
-  BadgeControllerService,
-  CustomApi,
-  queryKey,
-  useAppMutation,
-  useAppQuery,
-} from '~/lib/api-v2';
+import { BadgeControllerService, CustomApi, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
@@ -59,8 +42,7 @@ export default function AdminBadgeManagement() {
     queryFn: BadgeControllerService.getAllBadgeUsingGet,
   });
 
-  const onRefecthAllBadges = () =>
-    queryClient.invalidateQueries(queryKey.badge.all);
+  const onRefecthAllBadges = () => queryClient.invalidateQueries(queryKey.badge.all);
 
   const { mutate: deleteBadge } = useAppMutation({
     mutationFn: BadgeControllerService.deleteBadgeUsingDelete,
@@ -103,9 +85,7 @@ export default function AdminBadgeManagement() {
     {
       key: 'image',
       title: '이미지',
-      render: (_, { imageUrl }) => (
-        <Avatar src={getFileUrl(imageUrl)} size={60} />
-      ),
+      render: (_, { imageUrl }) => <Avatar src={getFileUrl(imageUrl)} size={60} />,
     },
     {
       key: 'category',
@@ -128,11 +108,7 @@ export default function AdminBadgeManagement() {
       render: (_, { id, category }) => (
         <Space>
           <Button onClick={() => onEditButtonClick(id)}>수정</Button>
-          <Button
-            danger
-            onClick={() => onDangerButtonClick(id)}
-            disabled={['BAEKJOON', 'ATTENDANCE'].includes(category)}
-          >
+          <Button danger onClick={() => onDangerButtonClick(id)} disabled={['BAEKJOON', 'ATTENDANCE'].includes(category)}>
             삭제
           </Button>
         </Space>
@@ -146,19 +122,9 @@ export default function AdminBadgeManagement() {
         <Button type={'primary'} onClick={() => setShowGenerateModal(true)}>
           뱃지생성하기
         </Button>
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          pagination={{ position: ['bottomCenter'] }}
-          rowKey={'id'}
-        />
+        <Table columns={columns} dataSource={dataSource} pagination={{ position: ['bottomCenter'] }} rowKey={'id'} />
       </Space>
-      {showGenerateModal && (
-        <BadgeGenerateModal
-          onCancel={() => setShowGenerateModal(false)}
-          onOk={onRefecthAllBadges}
-        />
-      )}
+      {showGenerateModal && <BadgeGenerateModal onCancel={() => setShowGenerateModal(false)} onOk={onRefecthAllBadges} />}
       {showEditModal && (
         <BadgeEditModal
           onCancel={() => setShowEditModal(false)}
@@ -183,13 +149,7 @@ const generateSchema = z.object({
   description: z.string().min(1),
 });
 
-function BadgeGenerateModal({
-  onOk: _onOk,
-  onCancel,
-}: {
-  onOk: () => void;
-  onCancel: () => void;
-}) {
+function BadgeGenerateModal({ onOk: _onOk, onCancel }: { onOk: () => void; onCancel: () => void }) {
   const form = useForm<z.infer<typeof generateSchema>>({
     validate: zodResolver(generateSchema),
     initialValues: {
@@ -271,11 +231,7 @@ function BadgeGenerateModal({
           <Input.TextArea {...form.getInputProps('description')} />
         </Form.Item>
         <Form.Item label={'로고'}>
-          <Upload
-            beforeUpload={() => false}
-            onChange={onUploadChange}
-            fileList={getUploadFileList()}
-          >
+          <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
             <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>
@@ -295,15 +251,7 @@ const editSchema = z.object({
   description: z.string().min(1),
 });
 
-function BadgeEditModal({
-  onCancel,
-  onOk: _onOk,
-  initialValues,
-}: {
-  onCancel: () => void;
-  onOk: () => void;
-  initialValues: z.infer<typeof editSchema>;
-}) {
+function BadgeEditModal({ onCancel, onOk: _onOk, initialValues }: { onCancel: () => void; onOk: () => void; initialValues: z.infer<typeof editSchema> }) {
   const form = useForm<z.infer<typeof editSchema>>({
     validate: zodResolver(editSchema),
     initialValues,
@@ -381,11 +329,7 @@ function BadgeEditModal({
           <Input.TextArea {...form.getInputProps('description')} />
         </Form.Item>
         <Form.Item label={'로고'}>
-          <Upload
-            beforeUpload={() => false}
-            onChange={onUploadChange}
-            fileList={getUploadFileList()}
-          >
+          <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
             <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>

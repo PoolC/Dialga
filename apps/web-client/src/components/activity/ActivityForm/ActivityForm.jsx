@@ -22,12 +22,7 @@ import {
   TitleContainer,
 } from './ActivityForm.styles';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
-import {
-  File,
-  FileContainer,
-  FileContainerTitle,
-  FileDeleteButton,
-} from '~/components/board-legacy/PostForm/PostForm.styles';
+import { File, FileContainer, FileContainerTitle, FileDeleteButton } from '~/components/board-legacy/PostForm/PostForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import Modal from '../../common/Modal/Modal';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
@@ -52,44 +47,17 @@ const TagList = ({ tags, onDeleteTag }) => {
   );
 };
 
-const ActivityForm = ({
-  activity,
-  onCreateActivity,
-  onUpdateActivity,
-  errorMessage,
-  buttons,
-  errorModalVisible,
-  onCloseErrorModal,
-}) => {
+const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessage, buttons, errorModalVisible, onCloseErrorModal }) => {
   const editorRef = useRef();
-  const [title, onChangeTitle] = useInput(
-    activity ? activity.title : '',
-    notEmptyValidation,
-  );
-  const [description, onChangeDescription] = useState(
-    activity ? activity.description : '',
-  );
-  const [startDate, onChangeStartDate] = useInput(
-    activity ? activity.startDate : '',
-    notEmptyValidation,
-  );
+  const [title, onChangeTitle] = useInput(activity ? activity.title : '', notEmptyValidation);
+  const [description, onChangeDescription] = useState(activity ? activity.description : '');
+  const [startDate, onChangeStartDate] = useInput(activity ? activity.startDate : '', notEmptyValidation);
   const [seminar, setSeminar] = useState(activity ? activity.seminar : true);
-  const [classHour, onChangeClassHour] = useInput(
-    activity ? activity.classHour : '',
-    notEmptyValidation,
-  );
-  const [hour, onChangeHour] = useInput(
-    activity ? activity.hour : '',
-    notEmptyValidation,
-  );
-  const [capacity, onChangeCapacity] = useInput(
-    activity ? activity.capacity : '',
-    notEmptyValidation,
-  );
+  const [classHour, onChangeClassHour] = useInput(activity ? activity.classHour : '', notEmptyValidation);
+  const [hour, onChangeHour] = useInput(activity ? activity.hour : '', notEmptyValidation);
+  const [capacity, onChangeCapacity] = useInput(activity ? activity.capacity : '', notEmptyValidation);
   const [files, setFiles] = useState(activity ? activity.fileList : []);
-  const [tags, onChangeTags] = useState(
-    activity ? activity.tags.map((tag) => tag.name) : [],
-  );
+  const [tags, onChangeTags] = useState(activity ? activity.tags.map((tag) => tag.name) : []);
   const [tag, onChangeTag] = useInput('', notEmptyValidation);
 
   const onEditorChange = (e) => {
@@ -153,13 +121,7 @@ const ActivityForm = ({
 
   return (
     <>
-      <Modal
-        contents={errorMessage}
-        buttons={buttons}
-        visible={errorModalVisible}
-        onConfirm={onCloseErrorModal}
-        onCancel={onCloseErrorModal}
-      />
+      <Modal contents={errorMessage} buttons={buttons} visible={errorModalVisible} onConfirm={onCloseErrorModal} onCancel={onCloseErrorModal} />
       <Block>
         <WhiteBlock>
           <TitleContainer>
@@ -168,47 +130,23 @@ const ActivityForm = ({
           <StyledForm autoComplete="off">
             <ItemContainer style={{ margin: '0' }}>
               <Item>
-                <Input
-                  valueText={title}
-                  labelText="세미나/스터디 제목"
-                  typeText="text"
-                  nameText="title"
-                  onChangeFunc={onChangeTitle}
-                  placeholderText="ex) 파이썬 기초 세미나"
-                />
+                <Input valueText={title} labelText="세미나/스터디 제목" typeText="text" nameText="title" onChangeFunc={onChangeTitle} placeholderText="ex) 파이썬 기초 세미나" />
               </Item>
             </ItemContainer>
             <ItemContainer>
               <Item>
-                <Input
-                  valueText={startDate}
-                  labelText="시작일"
-                  typeText="date"
-                  nameText="startDate"
-                  onChangeFunc={onChangeStartDate}
-                  placeholderText="YYYY-MM-DD"
-                />
+                <Input valueText={startDate} labelText="시작일" typeText="date" nameText="startDate" onChangeFunc={onChangeStartDate} placeholderText="YYYY-MM-DD" />
               </Item>
             </ItemContainer>
             <ItemContainer>
               <Item>
                 <label htmlFor="seminar">형태</label>
                 <div>
-                  <Radio
-                    name="seminar"
-                    value="seminar"
-                    checked={seminar}
-                    onChange={onChangeSeminar}
-                  />
+                  <Radio name="seminar" value="seminar" checked={seminar} onChange={onChangeSeminar} />
                   <span>세미나</span>
                 </div>
                 <div>
-                  <Radio
-                    name="seminar"
-                    value="study"
-                    checked={!seminar}
-                    onChange={onChangeSeminar}
-                  />
+                  <Radio name="seminar" value="study" checked={!seminar} onChange={onChangeSeminar} />
                   <span>스터디</span>
                 </div>
               </Item>
@@ -217,13 +155,7 @@ const ActivityForm = ({
               <Item>
                 <label htmlFor="capacity">정원</label>
                 <CapacityContainer>
-                  <StyledInput
-                    value={capacity}
-                    type="number"
-                    name="capacity"
-                    onChange={onChangeCapacity}
-                    placeholder="ex) 10"
-                  />
+                  <StyledInput value={capacity} type="number" name="capacity" onChange={onChangeCapacity} placeholder="ex) 10" />
                   <span> 명</span>
                 </CapacityContainer>
               </Item>
@@ -232,24 +164,11 @@ const ActivityForm = ({
               <Item>
                 <label htmlFor="classHour">시간</label>
                 <HourContainer>
-                  <StyledInput
-                    value={classHour}
-                    type="text"
-                    name="classHour"
-                    onChange={onChangeClassHour}
-                    placeholder="ex) 매주 금요일 14시"
-                  />
+                  <StyledInput value={classHour} type="text" name="classHour" onChange={onChangeClassHour} placeholder="ex) 매주 금요일 14시" />
                   <span>에</span>
                 </HourContainer>
                 <HourContainer>
-                  <StyledInput
-                    value={hour}
-                    type="number"
-                    name="hour"
-                    onChange={onChangeHour}
-                    placeholder="ex) 2"
-                    style={{ width: '6rem' }}
-                  />
+                  <StyledInput value={hour} type="number" name="hour" onChange={onChangeHour} placeholder="ex) 2" style={{ width: '6rem' }} />
                   <span>시간 진행</span>
                 </HourContainer>
               </Item>
@@ -262,13 +181,7 @@ const ActivityForm = ({
                   ex) #기초 #파이썬 #웹 #프론트엔드
                 </p>
                 <TagInput>
-                  <StyledInput
-                    value={tag}
-                    onChange={onChangeTag}
-                    type="text"
-                    name="tag"
-                    placeholder="ex) 기초"
-                  />
+                  <StyledInput value={tag} onChange={onChangeTag} type="text" name="tag" placeholder="ex) 기초" />
                   <ActionButton onClick={onAddTag}>추가</ActionButton>
                 </TagInput>
                 <TagListHeader>추가된 태그 목록</TagListHeader>
@@ -280,26 +193,14 @@ const ActivityForm = ({
               <Item>
                 <label htmlFor="activityTitle">계획서</label>
                 <Plan>
-                  <Editor
-                    initialEditType="wysiwyg"
-                    initialValue={description}
-                    ref={editorRef}
-                    onChange={(e) => onEditorChange(e)}
-                    style={{ width: '100%' }}
-                  />
-                  <FileContainerTitle style={{ width: '100%' }}>
-                    첨부된 파일 목록
-                  </FileContainerTitle>
+                  <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} style={{ width: '100%' }} />
+                  <FileContainerTitle style={{ width: '100%' }}>첨부된 파일 목록</FileContainerTitle>
                   <FileContainer style={{ width: '100%', maxWidth: '100%' }}>
                     {files?.length !== 0
                       ? files.map((file) => (
                           <File key={file}>
-                            <a href={getFileUrl(file)}>
-                              {getDecodedFileUrl(file)}
-                            </a>
-                            <FileDeleteButton
-                              onClick={(e) => handleDeleteFile(e, file)}
-                            >
+                            <a href={getFileUrl(file)}>{getDecodedFileUrl(file)}</a>
+                            <FileDeleteButton onClick={(e) => handleDeleteFile(e, file)}>
                               <DeleteFilled />
                             </FileDeleteButton>
                           </File>
@@ -307,24 +208,12 @@ const ActivityForm = ({
                       : '첨부된 파일 없음'}
                   </FileContainer>
                   <ButtonContainer>
-                    <FileUploadButton
-                      onSubmit={setFiles}
-                      files={files}
-                      multiple={true}
-                    />
+                    <FileUploadButton onSubmit={setFiles} files={files} multiple={true} />
                   </ButtonContainer>
                 </Plan>
               </Item>
             </ItemContainer>
-            {activity ? (
-              <StyledActionButton onClick={handleUpdate}>
-                수정
-              </StyledActionButton>
-            ) : (
-              <StyledActionButton onClick={handleCreate}>
-                제출
-              </StyledActionButton>
-            )}
+            {activity ? <StyledActionButton onClick={handleUpdate}>수정</StyledActionButton> : <StyledActionButton onClick={handleCreate}>제출</StyledActionButton>}
           </StyledForm>
         </WhiteBlock>
       </Block>

@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  UseMutationOptions,
-  UseMutationResult,
-} from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 import { useMessage } from '~/hooks/useMessage';
 
 /**
@@ -11,20 +7,10 @@ import { useMessage } from '~/hooks/useMessage';
  *  - avoid duplicate request
  *  @see https://medium.com/@jdimitrop/react-query-avoiding-duplicate-mutation-requests-38c722e7a2e9
  * */
-export const useAppMutation = <
-  TData = unknown,
-  TError = unknown,
-  TVariables = void,
-  TContext = unknown,
->({
+export const useAppMutation = <TData = unknown, TError = unknown, TVariables = void, TContext = unknown>({
   mutationFn,
   ...rest
-}: UseMutationOptions<TData, TError, TVariables, TContext>): UseMutationResult<
-  TData,
-  TError,
-  TVariables,
-  TContext
-> => {
+}: UseMutationOptions<TData, TError, TVariables, TContext>): UseMutationResult<TData, TError, TVariables, TContext> => {
   const message = useMessage();
   const mutationResults = useMutation(mutationFn!, {
     onError() {

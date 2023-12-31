@@ -22,9 +22,7 @@ const RegisterSuccessContainer = () => {
   return (
     <>
       {loading && <Spinner />}
-      {!loading && (
-        <RegisterSuccess isSubscriptionPeriod={isSubscriptionPeriod} />
-      )}
+      {!loading && <RegisterSuccess isSubscriptionPeriod={isSubscriptionPeriod} />}
     </>
   );
 };

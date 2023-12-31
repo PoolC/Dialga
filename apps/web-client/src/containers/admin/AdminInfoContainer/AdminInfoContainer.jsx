@@ -22,16 +22,7 @@ const AdminInfoContainer = ({ history }) => {
 
   if (info === null) return null;
 
-  const onUpdateInfo = ({
-    presidentName,
-    phoneNumber,
-    location,
-    locationUrl,
-    introduction,
-    mainImageUrl,
-    isSubscriptionPeriod,
-    applyUri,
-  }) => {
+  const onUpdateInfo = ({ presidentName, phoneNumber, location, locationUrl, introduction, mainImageUrl, isSubscriptionPeriod, applyUri }) => {
     if (
       !presidentName ||
       !phoneNumber ||
@@ -81,16 +72,7 @@ const AdminInfoContainer = ({ history }) => {
 
   const buttons = <ActionButton onClick={onCloseErrorModal}>확인</ActionButton>;
 
-  return (
-    <AdminInfo
-      info={info}
-      onUpdate={onUpdateInfo}
-      errorMessage={errorMessage}
-      buttons={buttons}
-      errorModalVisible={errorModalVisible}
-      onCloseErrorModal={onCloseErrorModal}
-    />
-  );
+  return <AdminInfo info={info} onUpdate={onUpdateInfo} errorMessage={errorMessage} buttons={buttons} errorModalVisible={errorModalVisible} onCloseErrorModal={onCloseErrorModal} />;
 };
 
 export default withRouter(AdminInfoContainer);

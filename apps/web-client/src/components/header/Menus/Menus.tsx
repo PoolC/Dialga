@@ -90,20 +90,12 @@ const Menus = ({
             ),
         )}
         {!isLogin && (
-          <LinkButton
-            className="right-menu"
-            onClick={onToggleMenu}
-            to="/register"
-          >
+          <LinkButton className="right-menu" onClick={onToggleMenu} to="/register">
             Sign Up
           </LinkButton>
         )}
         {!isLogin && (
-          <ActionButton
-            className="right-menu sign-in"
-            onClick={onToggleMenu}
-            to="/login"
-          >
+          <ActionButton className="right-menu sign-in" onClick={onToggleMenu} to="/login">
             Sign In
           </ActionButton>
         )}
@@ -111,10 +103,7 @@ const Menus = ({
       <RightHeaderMenu>
         {isLogin && (
           <Dropdown menu={{ items: dropDownItems }}>
-            <Button
-              shape={'circle'}
-              style={{ padding: 0, width: '40px', height: '40px' }}
-            >
+            <Button shape={'circle'} style={{ padding: 0, width: '40px', height: '40px' }}>
               <Avatar src={profileImageURL} size={36} />
             </Button>
           </Dropdown>

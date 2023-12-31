@@ -2,11 +2,7 @@ import { createStyles } from 'antd-style';
 import { dayjs } from '~/lib/utils/dayjs';
 import { memo } from 'react';
 import { BaekjoonResponse } from '~/lib/api-v2';
-import ActivityCalendar, {
-  Activity,
-  Labels,
-  Level,
-} from 'react-activity-calendar';
+import ActivityCalendar, { Activity, Labels, Level } from 'react-activity-calendar';
 import { Tooltip } from 'antd';
 
 const useStyles = createStyles(({ css }) => ({
@@ -22,11 +18,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-function MyPageGrassSection({
-  baekjoonData,
-}: {
-  baekjoonData: BaekjoonResponse[];
-}) {
+function MyPageGrassSection({ baekjoonData }: { baekjoonData: BaekjoonResponse[] }) {
   const { styles } = useStyles();
 
   const getDisplayingMonths = () => {
@@ -60,9 +52,7 @@ function MyPageGrassSection({
 
         const formattedDate = date.format('YYYY-MM-DD');
 
-        const filtered = baekjoonData.filter(
-          (data) => data.date === formattedDate,
-        );
+        const filtered = baekjoonData.filter((data) => data.date === formattedDate);
 
         res.push({
           date: formattedDate,
@@ -91,11 +81,7 @@ function MyPageGrassSection({
       <div className={styles.calendarWrap}>
         <ActivityCalendar
           data={getDisplayingDays()}
-          renderBlock={(block, activity) => (
-            <Tooltip title={`${activity.count}개 풀이 | ${activity.date}`}>
-              {block}
-            </Tooltip>
-          )}
+          renderBlock={(block, activity) => <Tooltip title={`${activity.count}개 풀이 | ${activity.date}`}>{block}</Tooltip>}
           theme={{
             light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
           }}

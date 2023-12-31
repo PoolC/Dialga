@@ -6,18 +6,7 @@ import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
 import Input from '../../common/Input/Input';
 import { StyledSearchActionButton } from '../AdminProjectForm/AdminProjectForm.styles';
-import {
-  ContentsContainer,
-  MemberListRow,
-  StyledActionButton,
-  Table,
-  TableHead,
-  TitleContainer,
-  StyledSelect,
-  SearchHeader,
-  SearchResult,
-  MemberSearchForm,
-} from './AdminMember.styles';
+import { ContentsContainer, MemberListRow, StyledActionButton, Table, TableHead, TitleContainer, StyledSelect, SearchHeader, SearchResult, MemberSearchForm } from './AdminMember.styles';
 
 const MemberTableHead = () => {
   return (
@@ -39,19 +28,8 @@ const MemberTableHead = () => {
   );
 };
 
-const Member = ({
-  member,
-  handleAcceptMember,
-  handleWithdrawMember,
-  handleToggleAdmin,
-  handleUpdateMemberRole,
-  roles,
-  history,
-}) => {
-  const [role, onChangeRole] = useInput(
-    member.role ? member.role : 'MEMBER',
-    notEmptyValidation,
-  );
+const Member = ({ member, handleAcceptMember, handleWithdrawMember, handleToggleAdmin, handleUpdateMemberRole, roles, history }) => {
+  const [role, onChangeRole] = useInput(member.role ? member.role : 'MEMBER', notEmptyValidation);
 
   const moveToMemberDetail = () => {
     history.push(`/${MENU.MEMBER}/${member.loginID}`);
@@ -65,56 +43,26 @@ const Member = ({
       <td className="member-list-row loginId hide">{member.loginID}</td>
       <td className="member-list-row email hide">{member.email}</td>
       <td className="member-list-row phone hide">{member.phoneNumber}</td>
-      <td className="member-list-row isActivated">
-        {member.isActivated ? 'o' : 'x'}
-      </td>
-      <td
-        className="member-list-row small-button"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <td className="member-list-row isActivated">{member.isActivated ? 'o' : 'x'}</td>
+      <td className="member-list-row small-button" onClick={(e) => e.stopPropagation()}>
         {member.isActivated ? (
-          <StyledActionButton
-            onClick={(e) => handleWithdrawMember(e, member.loginID)}
-            className="delete"
-          >
+          <StyledActionButton onClick={(e) => handleWithdrawMember(e, member.loginID)} className="delete">
             탈퇴
           </StyledActionButton>
         ) : (
-          <StyledActionButton
-            onClick={(e) => handleAcceptMember(e, member.loginID)}
-          >
-            승인
-          </StyledActionButton>
+          <StyledActionButton onClick={(e) => handleAcceptMember(e, member.loginID)}>승인</StyledActionButton>
         )}
       </td>
       <td className="member-list-row isAdmin">{member.isAdmin ? 'o' : 'x'}</td>
-      <td
-        className="member-list-row small-button"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <td className="member-list-row small-button" onClick={(e) => e.stopPropagation()}>
         {member.isActivated &&
           (member.isAdmin ? (
-            <StyledActionButton
-              onClick={(e) =>
-                handleToggleAdmin(e, member.loginID, member.isAdmin)
-              }
-            >
-              해제
-            </StyledActionButton>
+            <StyledActionButton onClick={(e) => handleToggleAdmin(e, member.loginID, member.isAdmin)}>해제</StyledActionButton>
           ) : (
-            <StyledActionButton
-              onClick={(e) =>
-                handleToggleAdmin(e, member.loginID, member.isAdmin)
-              }
-            >
-              임명
-            </StyledActionButton>
+            <StyledActionButton onClick={(e) => handleToggleAdmin(e, member.loginID, member.isAdmin)}>임명</StyledActionButton>
           ))}
       </td>
-      <td
-        className="member-list-row status"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <td className="member-list-row status" onClick={(e) => e.stopPropagation()}>
         {member.isActivated && (
           <>
             <StyledSelect value={role} onChange={onChangeRole}>
@@ -124,10 +72,7 @@ const Member = ({
                 </option>
               ))}
             </StyledSelect>
-            <StyledActionButton
-              onClick={(e) => handleUpdateMemberRole(e, member.loginID, role)}
-              style={{ marginLeft: '0.5rem' }}
-            >
+            <StyledActionButton onClick={(e) => handleUpdateMemberRole(e, member.loginID, role)} style={{ marginLeft: '0.5rem' }}>
               수정
             </StyledActionButton>
           </>
@@ -137,18 +82,7 @@ const Member = ({
   );
 };
 
-const AdminMember = ({
-  members,
-  onAcceptMember,
-  onWithdrawMember,
-  onToggleAdmin,
-  onUpdateMemberRole,
-  onSearchMember,
-  searchMembers,
-  onDeleteUnacceptedMembers,
-  roles,
-  history,
-}) => {
+const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin, onUpdateMemberRole, onSearchMember, searchMembers, onDeleteUnacceptedMembers, roles, history }) => {
   const [searchMember, onChangeSearchMember] = useInput('', notEmptyValidation);
 
   const handleWithdrawMember = (e, loginID) => {
@@ -173,9 +107,7 @@ const AdminMember = ({
 
   const handleDeleteUnacceptedMembers = (e) => {
     e.preventDefault();
-    let result = window.confirm(
-      `[주의] 승인 전 회원들을 모두 탈퇴 처리 하시겠습니까? 정보는 모두 DB에서 삭제되며 복구할 수 없습니다.`,
-    );
+    let result = window.confirm(`[주의] 승인 전 회원들을 모두 탈퇴 처리 하시겠습니까? 정보는 모두 DB에서 삭제되며 복구할 수 없습니다.`);
     if (result) {
       onDeleteUnacceptedMembers();
     }
@@ -193,20 +125,11 @@ const AdminMember = ({
       <TitleContainer>회원 관리</TitleContainer>
       <ContentsContainer>
         <MemberSearchForm onSubmit={onClickSearch}>
-          <Input
-            valueText={searchMember}
-            labelText=""
-            typeText="text"
-            nameText="id"
-            onChangeFunc={onChangeSearchMember}
-            placeholderText="회원 이름으로 검색"
-          />
+          <Input valueText={searchMember} labelText="" typeText="text" nameText="id" onChangeFunc={onChangeSearchMember} placeholderText="회원 이름으로 검색" />
           <StyledSearchActionButton>검색</StyledSearchActionButton>
         </MemberSearchForm>
         <SearchHeader>회원 검색 결과</SearchHeader>
-        {searchMembers.length === 0 && (
-          <SearchResult>검색 결과가 없습니다</SearchResult>
-        )}
+        {searchMembers.length === 0 && <SearchResult>검색 결과가 없습니다</SearchResult>}
         {searchMembers.length !== 0 && (
           <Table>
             <MemberTableHead />
@@ -229,9 +152,7 @@ const AdminMember = ({
         <SearchHeader>
           승인 전 회원 목록
           <span>
-            <StyledDeleteButton onClick={handleDeleteUnacceptedMembers}>
-              전체 삭제
-            </StyledDeleteButton>
+            <StyledDeleteButton onClick={handleDeleteUnacceptedMembers}>전체 삭제</StyledDeleteButton>
           </span>
         </SearchHeader>
         <Table>

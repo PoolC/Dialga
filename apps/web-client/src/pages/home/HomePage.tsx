@@ -1,10 +1,4 @@
-import {
-  PoolcControllerService,
-  PostControllerService,
-  ProjectControllerService,
-  queryKey,
-  useAppQueries,
-} from '~/lib/api-v2';
+import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppQueries } from '~/lib/api-v2';
 import { Skeleton } from 'antd';
 import Carousel from '~/components/home/Carousel/Carousel';
 import ApplyBanner from '~/components/home/ApplyBanner/ApplyBanner';
@@ -37,27 +31,26 @@ const useStyles = createStyles(({ css }) => ({
 const HomePage = () => {
   const { styles } = useStyles();
 
-  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] =
-    useAppQueries({
-      queries: [
-        {
-          queryKey: queryKey.poolc.poolc,
-          queryFn: PoolcControllerService.findPoolcUsingGet,
-        },
-        {
-          queryKey: queryKey.project.all,
-          queryFn: ProjectControllerService.findProjectsUsingGet,
-        },
-        {
-          queryKey: queryKey.post.all('NOTICE', 0),
-          queryFn: () =>
-            PostControllerService.viewPostsByBoardUsingGet({
-              boardTitle: getBoardTitleByBoardType('NOTICE'),
-              page: 0,
-            }),
-        },
-      ],
-    });
+  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] = useAppQueries({
+    queries: [
+      {
+        queryKey: queryKey.poolc.poolc,
+        queryFn: PoolcControllerService.findPoolcUsingGet,
+      },
+      {
+        queryKey: queryKey.project.all,
+        queryFn: ProjectControllerService.findProjectsUsingGet,
+      },
+      {
+        queryKey: queryKey.post.all('NOTICE', 0),
+        queryFn: () =>
+          PostControllerService.viewPostsByBoardUsingGet({
+            boardTitle: getBoardTitleByBoardType('NOTICE'),
+            page: 0,
+          }),
+      },
+    ],
+  });
 
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
   const role = useAppSelector((state) => state.auth.user.role);
@@ -77,10 +70,7 @@ const HomePage = () => {
   }
 
   const isHideApplyBanner =
-    poolcInfo.isSubscriptionPeriod == null ||
-    (poolcInfo.isSubscriptionPeriod === true && poolcInfo.applyUri == null) ||
-    poolcInfo.isSubscriptionPeriod === false ||
-    (isLogin && role !== 'UNACCEPTED');
+    poolcInfo.isSubscriptionPeriod == null || (poolcInfo.isSubscriptionPeriod === true && poolcInfo.applyUri == null) || poolcInfo.isSubscriptionPeriod === false || (isLogin && role !== 'UNACCEPTED');
 
   return (
     <div className={styles.block}>

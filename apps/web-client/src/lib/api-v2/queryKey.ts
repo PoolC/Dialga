@@ -12,8 +12,7 @@ export const queryKey = {
     member: (loginId: string) => ['badge.member', loginId] as const,
   },
   post: {
-    all: (boardType: BoardType, page: number) =>
-      ['post.all', boardType, page] as const,
+    all: (boardType: BoardType, page: number) => ['post.all', boardType, page] as const,
     post: (id: number) => ['post.post', id] as const,
   },
   baekjoon: {

@@ -1,14 +1,5 @@
 import { MENU } from '../../../constants/menus';
-import {
-  MainNoticeContents,
-  NoticeContainerTitle,
-  RecentNoticeBlock,
-  RecentNoticeCardDate,
-  RecentNoticeCardTitle,
-  RecentNoticeItem,
-  RecentNoticeList,
-  StyledLink,
-} from './RecentNotice.styles';
+import { MainNoticeContents, NoticeContainerTitle, RecentNoticeBlock, RecentNoticeCardDate, RecentNoticeCardTitle, RecentNoticeItem, RecentNoticeList, StyledLink } from './RecentNotice.styles';
 import { dayjs } from '~/lib/utils/dayjs';
 import { PushpinTwoTone } from '@ant-design/icons';
 
@@ -26,13 +17,9 @@ const RecentNotice = ({ notices }) => {
           {notices?.map((notice) => (
             <RecentNoticeItem key={notice.postId}>
               <RecentNoticeCardTitle>
-                <StyledLink to={`/${MENU.BOARD}/${notice.postId}`}>
-                  {notice.title}
-                </StyledLink>
+                <StyledLink to={`/${MENU.BOARD}/${notice.postId}`}>{notice.title}</StyledLink>
               </RecentNoticeCardTitle>
-              <RecentNoticeCardDate>
-                {dayjs(notice.createdAt).format('YYYY. MM. DD')}
-              </RecentNoticeCardDate>
+              <RecentNoticeCardDate>{dayjs(notice.createdAt).format('YYYY. MM. DD')}</RecentNoticeCardDate>
             </RecentNoticeItem>
           ))}
         </RecentNoticeList>

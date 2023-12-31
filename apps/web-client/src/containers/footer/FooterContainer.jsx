@@ -7,13 +7,7 @@ const FooterContainer = () => {
     queryFn: PoolcControllerService.findPoolcUsingGet,
   });
 
-  return (
-    <Footer
-      presidentName={poolcInfo?.presidentName ?? ''}
-      phoneNumber={poolcInfo?.phoneNumber ?? ''}
-      location={poolcInfo?.location ?? ''}
-    />
-  );
+  return <Footer presidentName={poolcInfo?.presidentName ?? ''} phoneNumber={poolcInfo?.phoneNumber ?? ''} location={poolcInfo?.location ?? ''} />;
 };
 
 export default FooterContainer;

@@ -21,11 +21,7 @@ const IntroContainer = () => {
 
   return (
     <>
-      <Intro
-        loading={loading}
-        introduction={introduction}
-        locationUrl={locationUrl}
-      />
+      <Intro loading={loading} introduction={introduction} locationUrl={locationUrl} />
     </>
   );
 };

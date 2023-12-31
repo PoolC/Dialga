@@ -18,14 +18,7 @@ const BookList = ({ loading, books, member, onBorrowBook, onReturnBook }) => {
           {!loading && (
             <List>
               {books.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  onBorrowBook={onBorrowBook}
-                  onReturnBook={onReturnBook}
-                  isLogin={isLogin}
-                  user={user}
-                />
+                <BookCard key={book.id} book={book} onBorrowBook={onBorrowBook} onReturnBook={onReturnBook} isLogin={isLogin} user={user} />
               ))}
             </List>
           )}

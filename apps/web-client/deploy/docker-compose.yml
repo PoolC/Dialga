@@ -16,7 +16,7 @@ services:
     build:
       dockerfile: nginx.Dockerfile
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
       - web-logs:/var/log/nginx
       - app-assets:/var/www

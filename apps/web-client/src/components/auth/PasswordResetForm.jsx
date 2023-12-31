@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import useInput from '../../hooks/useInput';
-import {
-  emailValidation,
-  passwordValidation,
-} from '../../lib/utils/validation';
+import { emailValidation, passwordValidation } from '../../lib/utils/validation';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import { FormList, FormListHeader, SubmitButton } from './AuthForm.styles';
 import { Input } from './AuthForm';
@@ -24,21 +21,9 @@ const Description = styled.p`
   word-break: keep-all;
 `;
 
-const PasswordResetForm = ({
-  type,
-  message,
-  onChangeMessage,
-  modalVisible,
-  handleModalOpen,
-  handleModalClose,
-  onSubmit,
-  loading = false,
-}) => {
+const PasswordResetForm = ({ type, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, onSubmit, loading = false }) => {
   const [email, onChangeEmail, emailError] = useInput('', emailValidation);
-  const [password, onChangePassword, passwordError] = useInput(
-    '',
-    passwordValidation,
-  );
+  const [password, onChangePassword, passwordError] = useInput('', passwordValidation);
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordError] = useState(false);
 
@@ -56,12 +41,7 @@ const PasswordResetForm = ({
   };
 
   const resetPasswordValidation = () => {
-    return !(
-      passwordError ||
-      !password ||
-      passwordCheckError ||
-      !passwordCheck
-    );
+    return !(passwordError || !password || passwordCheckError || !passwordCheck);
   };
 
   const sendEmailValidation = () => {
@@ -107,19 +87,12 @@ const PasswordResetForm = ({
 
   return (
     <>
-      <RegisterModalContainer
-        visible={modalVisible}
-        onConfirm={handleModalClose}
-        onCancel={handleModalClose}
-        message={message}
-      />
+      <RegisterModalContainer visible={modalVisible} onConfirm={handleModalClose} onCancel={handleModalClose} message={message} />
       <Block>
         <WhiteBlock>
           {loading && <Spinner />}
           <FormListHeader>
-            <h2 className="form_list_title">
-              {type === 'email' ? '비밀번호 찾기' : '비밀번호 재설정'}
-            </h2>
+            <h2 className="form_list_title">{type === 'email' ? '비밀번호 찾기' : '비밀번호 재설정'}</h2>
           </FormListHeader>
           {type === 'email' && (
             <Description>
@@ -131,15 +104,7 @@ const PasswordResetForm = ({
           <FormList>
             {type === 'reset' && (
               <>
-                <Input
-                  valueText={password}
-                  labelText="새로운 비밀번호"
-                  typeText="password"
-                  nameText="password"
-                  error={passwordError}
-                  onChangeFunc={onChangePassword}
-                  placeholderText="8자리 이상"
-                />
+                <Input valueText={password} labelText="새로운 비밀번호" typeText="password" nameText="password" error={passwordError} onChangeFunc={onChangePassword} placeholderText="8자리 이상" />
                 <Input
                   valueText={passwordCheck}
                   labelText="새로운 비밀번호 확인"
@@ -149,22 +114,12 @@ const PasswordResetForm = ({
                   onChangeFunc={onChangePasswordCheck}
                   placeholderText="8자리 이상"
                 />
-                <SubmitButton onClick={handleSubmit}>
-                  비밀번호 재설정
-                </SubmitButton>
+                <SubmitButton onClick={handleSubmit}>비밀번호 재설정</SubmitButton>
               </>
             )}
             {type === 'email' && (
               <>
-                <Input
-                  valueText={email}
-                  labelText="이메일"
-                  typeText="email"
-                  nameText="email"
-                  error={emailError}
-                  onChangeFunc={onChangeEmail}
-                  placeholderText="ex) email@example.com"
-                />
+                <Input valueText={email} labelText="이메일" typeText="email" nameText="email" error={emailError} onChangeFunc={onChangeEmail} placeholderText="ex) email@example.com" />
                 <SubmitButton onClick={handleSubmit}>이메일 전송</SubmitButton>
               </>
             )}

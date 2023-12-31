@@ -8,16 +8,8 @@ const RegisterPage = () => {
     <>
       <>
         <Switch>
-          <Route
-            exact
-            path="/register/success"
-            component={RegisterSuccessContainer}
-          />
-          <Route
-            component={RegisterFormContainer}
-            path={`/${MENU.SIGNUP}`}
-            exact
-          />
+          <Route exact path="/register/success" component={RegisterSuccessContainer} />
+          <Route component={RegisterFormContainer} path={`/${MENU.SIGNUP}`} exact />
         </Switch>
       </>
     </>

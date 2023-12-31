@@ -21,13 +21,7 @@ const AdminActivityContainer = ({ history }) => {
   const onOpenActivity = (activityID) => {
     activityAPI.openActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(
-          activities.map((activity) =>
-            activity.id === activityID
-              ? { ...activity, available: true }
-              : activity,
-          ),
-        );
+        setActivities(activities.map((activity) => (activity.id === activityID ? { ...activity, available: true } : activity)));
       }
     });
   };
@@ -35,13 +29,7 @@ const AdminActivityContainer = ({ history }) => {
   const onCloseActivity = (activityID) => {
     activityAPI.closeActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(
-          activities.map((activity) =>
-            activity.id === activityID
-              ? { ...activity, available: false }
-              : activity,
-          ),
-        );
+        setActivities(activities.map((activity) => (activity.id === activityID ? { ...activity, available: false } : activity)));
       }
     });
   };
@@ -49,21 +37,12 @@ const AdminActivityContainer = ({ history }) => {
   const onDeleteActivity = (activityID) => {
     activityAPI.deleteActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(
-          activities.filter((activity) => activity.id !== activityID),
-        );
+        setActivities(activities.filter((activity) => activity.id !== activityID));
       }
     });
   };
 
-  return (
-    <AdminActivity
-      activities={activities}
-      onOpenActivity={onOpenActivity}
-      onCloseActivity={onCloseActivity}
-      onDeleteActivity={onDeleteActivity}
-    />
-  );
+  return <AdminActivity activities={activities} onOpenActivity={onOpenActivity} onCloseActivity={onCloseActivity} onDeleteActivity={onDeleteActivity} />;
 };
 
 export default withRouter(AdminActivityContainer);

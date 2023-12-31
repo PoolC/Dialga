@@ -1,8 +1,4 @@
-import {
-  CarouselBlock,
-  MainCarousel,
-  MainCarouselImage,
-} from './Carousel.styles';
+import { CarouselBlock, MainCarousel, MainCarouselImage } from './Carousel.styles';
 import mainBanner from '~/assets/images/main-banner.png';
 
 const Carousel = () => {

@@ -31,14 +31,10 @@ const ActivityListContainer = ({ location, history, match }) => {
             history.push(`/${MENU.ACTIVITIES}?semester=${res.data.data[0]}`);
             return;
           }
-          activityAPI
-            .getActivitiesByYears(
-              currentLocation ? currentLocation : res.data.data[0],
-            )
-            .then((activities) => {
-              setActivities(activities.data.data);
-              setLoading(false);
-            });
+          activityAPI.getActivitiesByYears(currentLocation ? currentLocation : res.data.data[0]).then((activities) => {
+            setActivities(activities.data.data);
+            setLoading(false);
+          });
         }
       }
     });
@@ -69,9 +65,7 @@ const ActivityListContainer = ({ location, history, match }) => {
   const onDeleteActivity = (activityID) => {
     activityAPI.deleteActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(
-          activities.filter((activity) => activity.id !== activityID),
-        );
+        setActivities(activities.filter((activity) => activity.id !== activityID));
       }
     });
   };
@@ -79,18 +73,8 @@ const ActivityListContainer = ({ location, history, match }) => {
   return (
     <>
       <TwoColumnsContainerBlock>
-        <ActivityMenu
-          loading={loading}
-          semesters={semesters}
-          currentLocation={currentLocation}
-        />
-        <ActivityList
-          loading={loading}
-          activities={activities}
-          onToggleRegisterActivity={onToggleRegisterActivity}
-          onDeleteActivity={onDeleteActivity}
-          member={member}
-        />
+        <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
+        <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
       </TwoColumnsContainerBlock>
     </>
   );

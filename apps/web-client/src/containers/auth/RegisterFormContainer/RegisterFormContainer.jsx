@@ -19,18 +19,7 @@ const RegisterFormContainer = ({ location, history }) => {
     setModalVisible(false);
   };
 
-  const onSubmit = ({
-    id,
-    password,
-    passwordCheck,
-    name,
-    email,
-    department,
-    studentId,
-    phoneNumber,
-    introduction,
-    profileImageURL,
-  }) => {
+  const onSubmit = ({ id, password, passwordCheck, name, email, department, studentId, phoneNumber, introduction, profileImageURL }) => {
     try {
       const response = authAPI.register({
         id,

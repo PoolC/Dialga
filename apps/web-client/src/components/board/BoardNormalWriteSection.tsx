@@ -2,24 +2,8 @@ import { FormEventHandler, useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import {
-  Breadcrumb,
-  Button,
-  Divider,
-  Form,
-  Input,
-  Space,
-  Typography,
-  Upload,
-} from 'antd';
-import {
-  ApiError,
-  CustomApi,
-  PostControllerService,
-  queryKey,
-  useAppMutation,
-  useAppQuery,
-} from '~/lib/api-v2';
+import { Breadcrumb, Button, Divider, Form, Input, Space, Typography, Upload } from 'antd';
+import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadChangeParam } from 'antd/es/upload';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory } from 'react-router-dom';
@@ -64,13 +48,7 @@ const schema = z.object({
   fileList: z.array(z.string()),
 });
 
-export default function BoardNormalWriteSection({
-  boardType,
-  postId,
-}: {
-  boardType: Exclude<BoardType, 'JOB'>;
-  postId: number;
-}) {
+export default function BoardNormalWriteSection({ boardType, postId }: { boardType: Exclude<BoardType, 'JOB'>; postId: number }) {
   const { styles } = useStyles();
   const history = useHistory();
   const message = useMessage();
@@ -224,69 +202,34 @@ export default function BoardNormalWriteSection({
   return (
     <Block>
       <WhiteBlock>
-        <Space
-          direction={'vertical'}
-          size={0}
-          className={styles.wrapper}
-          split={<Divider className={styles.divider} />}
-        >
+        <Space direction={'vertical'} size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
           <Breadcrumb
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
               {
-                title: (
-                  <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>
-                    {getBoardTitleByBoardType(boardType)}
-                  </Link>
-                ),
+                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitleByBoardType(boardType)}</Link>,
               },
             ]}
           />
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
-            <Space
-              direction={'vertical'}
-              className={styles.fullWidth}
-              size={'middle'}
-            >
-              <Space
-                direction={'vertical'}
-                className={styles.titleWrap}
-                size={0}
-              >
-                <Typography.Title level={3}>
-                  {getBoardTitleByBoardType(boardType)}
-                </Typography.Title>
+            <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
+              <Space direction={'vertical'} className={styles.titleWrap} size={0}>
+                <Typography.Title level={3}>{getBoardTitleByBoardType(boardType)}</Typography.Title>
                 <Typography>{renderDescription()}</Typography>
               </Space>
               <div className={styles.fullWidth}>
                 <Form.Item label={'제목'}>
-                  <Input
-                    placeholder={'제목을 입력해주세요.'}
-                    {...form.getInputProps('title')}
-                  />
+                  <Input placeholder={'제목을 입력해주세요.'} {...form.getInputProps('title')} />
                 </Form.Item>
                 <div onInput={onEditorInput} className={styles.editorWrap}>
                   <Editor initialEditType="wysiwyg" ref={editorRef} />
                 </div>
-                <Space
-                  direction={'horizontal'}
-                  align={'start'}
-                  className={styles.buttonWrap}
-                >
-                  <Upload
-                    beforeUpload={() => false}
-                    onChange={onUploadChange}
-                    fileList={getUploadFileList()}
-                  >
+                <Space direction={'horizontal'} align={'start'} className={styles.buttonWrap}>
+                  <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
                     <Button icon={<UploadOutlined />}>파일 업로드</Button>
                   </Upload>
                   <Space>
-                    <Button
-                      type={'primary'}
-                      htmlType={'submit'}
-                      className={styles.fullWidth}
-                      disabled={!form.isValid()}
-                    >
+                    <Button type={'primary'} htmlType={'submit'} className={styles.fullWidth} disabled={!form.isValid()}>
                       등록
                     </Button>
                   </Space>

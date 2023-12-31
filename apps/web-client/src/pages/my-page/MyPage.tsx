@@ -1,37 +1,15 @@
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
-import {
-  Avatar,
-  Button,
-  List,
-  Popover,
-  Progress,
-  Space,
-  Typography,
-} from 'antd';
+import { Avatar, Button, List, Popover, Progress, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { Link } from 'react-router-dom';
-import {
-  BadgeControllerService,
-  BaekjoonControllerService,
-  MemberControllerService,
-  queryKey,
-  useAppMutation,
-  useAppQueries,
-} from '~/lib/api-v2';
+import { BadgeControllerService, BaekjoonControllerService, MemberControllerService, queryKey, useAppMutation, useAppQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useMessage } from '~/hooks/useMessage';
-import {
-  ArrowRightOutlined,
-  EditTwoTone,
-  MessageTwoTone,
-  QuestionCircleFilled,
-  StarTwoTone,
-  UserOutlined,
-} from '@ant-design/icons';
+import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -142,27 +120,26 @@ export default function MyPage() {
 
   const activityMinimumHour = 6;
 
-  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] =
-    useAppQueries({
-      queries: [
-        {
-          queryKey: queryKey.member.hour,
-          queryFn: MemberControllerService.getMyActivityTimeUsingGet,
-        },
-        {
-          queryKey: queryKey.member.me,
-          queryFn: MemberControllerService.getMeUsingGet,
-        },
-        {
-          queryKey: queryKey.badge.badge,
-          queryFn: BadgeControllerService.getMyBadgeUsingGet,
-        },
-        {
-          queryKey: queryKey.baekjoon.baekjoon,
-          queryFn: BaekjoonControllerService.getMyBaekjoonUsingGet,
-        },
-      ],
-    });
+  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppQueries({
+    queries: [
+      {
+        queryKey: queryKey.member.hour,
+        queryFn: MemberControllerService.getMyActivityTimeUsingGet,
+      },
+      {
+        queryKey: queryKey.member.me,
+        queryFn: MemberControllerService.getMeUsingGet,
+      },
+      {
+        queryKey: queryKey.badge.badge,
+        queryFn: BadgeControllerService.getMyBadgeUsingGet,
+      },
+      {
+        queryKey: queryKey.baekjoon.baekjoon,
+        queryFn: BaekjoonControllerService.getMyBaekjoonUsingGet,
+      },
+    ],
+  });
 
   const { mutate: selectBadge } = useAppMutation({
     mutationFn: BadgeControllerService.selectBadgeUsingPost,
@@ -193,17 +170,8 @@ export default function MyPage() {
             <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
             <Space direction={'vertical'}>
               <Space>
-                <Typography.Text className={styles.userName}>
-                  {me?.name}님
-                </Typography.Text>
-                {me?.badge && (
-                  <Avatar
-                    src={getFileUrl(me?.badge.imageUrl)}
-                    alt={me?.name}
-                    size={60}
-                    className={styles.badge}
-                  />
-                )}
+                <Typography.Text className={styles.userName}>{me?.name}님</Typography.Text>
+                {me?.badge && <Avatar src={getFileUrl(me?.badge.imageUrl)} alt={me?.name} size={60} className={styles.badge} />}
               </Space>
               <Typography.Text>{me?.introduction}</Typography.Text>
             </Space>
@@ -213,12 +181,7 @@ export default function MyPage() {
             <Typography.Text>
               {myHour?.hour ?? 0}시간 / {activityMinimumHour}시간
             </Typography.Text>
-            <Progress
-              percent={Math.floor(
-                ((myHour?.hour ?? 0) / activityMinimumHour) * 100,
-              )}
-              strokeColor={'#47be9b'}
-            />
+            <Progress percent={Math.floor(((myHour?.hour ?? 0) / activityMinimumHour) * 100)} strokeColor={'#47be9b'} />
           </Space>
           <Space direction="vertical" className={styles.wrapper}>
             <Typography.Title level={5} className={styles.grassTitle}>
@@ -232,13 +195,7 @@ export default function MyPage() {
                       <br />
                       백준문제를 풀면 풀씨 잔디를 심을 수 있습니다.
                     </Typography.Text>
-                    <a
-                      href={
-                        'https://chrome.google.com/webstore/detail/poolc-baekjoon-hub/doeamknhlolnflkmhbhkagganhjjbefe?hl=ko'
-                      }
-                      target={'_blank'}
-                      rel="noopener noreferrer"
-                    >
+                    <a href={'https://chrome.google.com/webstore/detail/poolc-baekjoon-hub/doeamknhlolnflkmhbhkagganhjjbefe?hl=ko'} target={'_blank'} rel="noopener noreferrer">
                       <Button type={'primary'}>익스텐션 설치하러가기 ✨</Button>
                     </a>
                   </Space>
@@ -247,17 +204,12 @@ export default function MyPage() {
                 <QuestionCircleFilled />
               </Popover>
             </Typography.Title>
-            {baekjoon?.data && (
-              <MyPageGrassSection baekjoonData={baekjoon.data} />
-            )}
+            {baekjoon?.data && <MyPageGrassSection baekjoonData={baekjoon.data} />}
           </Space>
           <Space direction="vertical" size={0} className={styles.wrapper}>
             <Typography.Title level={5} className={styles.badgeTitle}>
               얻은 뱃지
-              <Link
-                to={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`}
-                className={styles.badgeLink}
-              >
+              <Link to={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`} className={styles.badgeLink}>
                 모든 뱃지보기 <span>&gt;</span>
               </Link>
             </Typography.Title>
@@ -272,11 +224,7 @@ export default function MyPage() {
                       active: me?.badge?.id === el.id,
                     })}
                   >
-                    <Avatar
-                      src={getFileUrl(el.imageUrl)}
-                      alt={el.name}
-                      size={50}
-                    />
+                    <Avatar src={getFileUrl(el.imageUrl)} alt={el.name} size={50} />
                   </Button>
                 ))}
               </Space>

@@ -59,23 +59,13 @@ export default function MessageAllListPage() {
   return (
     <Block>
       <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
-        <Space
-          direction={'vertical'}
-          className={styles.fullWidth}
-          size={'large'}
-        >
+        <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
           <Space className={styles.topBox}>
             <Space>
-              <Button
-                shape="circle"
-                type="text"
-                onClick={() => history.goBack()}
-              >
+              <Button shape="circle" type="text" onClick={() => history.goBack()}>
                 <ArrowLeftOutlined />
               </Button>
-              <Typography.Text className={styles.topBoxName}>
-                쪽지목록
-              </Typography.Text>
+              <Typography.Text className={styles.topBoxName}>쪽지목록</Typography.Text>
             </Space>
           </Space>
           <List
@@ -85,9 +75,7 @@ export default function MessageAllListPage() {
               <List.Item>
                 <Space direction="vertical" className={styles.fullWidth}>
                   <Space className={styles.metaInfo}>
-                    <Typography.Text className={styles.messageType}>
-                      받은 쪽지
-                    </Typography.Text>
+                    <Typography.Text className={styles.messageType}>받은 쪽지</Typography.Text>
                     <Typography.Text>2023.08.15 19:20:50</Typography.Text>
                   </Space>
                   <Typography.Text>내용내용내용</Typography.Text>

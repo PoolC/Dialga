@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import poolcIcon from '~/assets/images/poolc-icon.png';
 import { Link } from 'react-router-dom';
-import {
-  BarsIcon,
-  HeaderBlock,
-  HeaderIconBox,
-  HeaderIcons,
-  LogoImage,
-} from './Header.styles';
+import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
 import Menus from './Menus/Menus';
 import { Avatar, Button, Dropdown } from 'antd';
 import { MENU } from '~/constants/menus';
@@ -87,15 +81,7 @@ const Header = ({ member, onLogout }) => {
           </BarsIcon>
         </HeaderIconBox>
       </HeaderIcons>
-      <Menus
-        menuVisible={menuVisible}
-        onToggleMenu={onToggleMenu}
-        isLogin={isLogin}
-        role={role}
-        isAdmin={isAdmin}
-        dropDownItems={dropDownItems}
-        profileImageURL={profileImageURL}
-      />
+      <Menus menuVisible={menuVisible} onToggleMenu={onToggleMenu} isLogin={isLogin} role={role} isAdmin={isAdmin} dropDownItems={dropDownItems} profileImageURL={profileImageURL} />
     </HeaderBlock>
   );
 };

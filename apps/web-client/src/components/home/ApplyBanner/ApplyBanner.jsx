@@ -40,9 +40,7 @@ const ApplyBanner = ({ history }) => {
   return (
     <BannerBlock>
       {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-      <Banner onClick={redirectToApplyPage}>
-        PoolC 신입 모집 지원하러 가기 ✨
-      </Banner>
+      <Banner onClick={redirectToApplyPage}>PoolC 신입 모집 지원하러 가기 ✨</Banner>
     </BannerBlock>
   );
 };

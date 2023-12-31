@@ -20,11 +20,7 @@ import {
   TitleContainer,
 } from './ActivityDetail.styles.js';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
-import {
-  File,
-  FileContainer,
-  FileContainerTitle,
-} from '~/components/board-legacy/PostForm/PostForm.styles';
+import { File, FileContainer, FileContainerTitle } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { FullText } from '../ActivityCard/ActivityCard.styles';
 import ActivityRegisterModalContainer from '../../../containers/activity/ActivityModalContainer/ActivityRegisterModalContainer';
@@ -35,15 +31,7 @@ const Tag = ({ tag }) => {
   return <TagCard>#{tag}</TagCard>;
 };
 
-const ActivityDetail = ({
-  loading,
-  activity,
-  activityMembers,
-  activityMemberIDs,
-  activitySessions,
-  member,
-  onToggleRegisterActivity,
-}) => {
+const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs, activitySessions, member, onToggleRegisterActivity }) => {
   const {
     status: { isLogin },
     user: { memberId, role },
@@ -115,27 +103,13 @@ const ActivityDetail = ({
               </TagContainer>
               {activity.available && isLogin && isAuthorizedRole(role) && (
                 <ButtonContainer>
-                  {activity.available &&
-                    memberId !== activity.host.loginID &&
-                    !activityMemberIDs?.includes(memberId) &&
-                    activityMemberIDs?.length < activity.capacity && (
-                      <StyledButton onClick={handleRegisterModalOpen}>
-                        신청
-                      </StyledButton>
-                    )}
-                  {activity.available &&
-                    memberId !== activity.host.loginID &&
-                    !activityMemberIDs?.includes(memberId) &&
-                    activityMemberIDs?.length >= activity.capacity && (
-                      <FullText>[정원 마감]</FullText>
-                    )}
-                  {activity.available &&
-                    memberId !== activity.host.loginID &&
-                    activityMemberIDs?.includes(memberId) && (
-                      <StyledButton onClick={handleRegisterModalOpen}>
-                        신청 취소
-                      </StyledButton>
-                    )}
+                  {activity.available && memberId !== activity.host.loginID && !activityMemberIDs?.includes(memberId) && activityMemberIDs?.length < activity.capacity && (
+                    <StyledButton onClick={handleRegisterModalOpen}>신청</StyledButton>
+                  )}
+                  {activity.available && memberId !== activity.host.loginID && !activityMemberIDs?.includes(memberId) && activityMemberIDs?.length >= activity.capacity && (
+                    <FullText>[정원 마감]</FullText>
+                  )}
+                  {activity.available && memberId !== activity.host.loginID && activityMemberIDs?.includes(memberId) && <StyledButton onClick={handleRegisterModalOpen}>신청 취소</StyledButton>}
                 </ButtonContainer>
               )}
               <PlanContainer>
@@ -148,9 +122,7 @@ const ActivityDetail = ({
                   {activity.fileList?.length !== 0
                     ? activity.fileList?.map((file) => (
                         <File key={file}>
-                          <a href={getFileUrl(file)}>
-                            {getDecodedFileUrl(file)}
-                          </a>
+                          <a href={getFileUrl(file)}>{getDecodedFileUrl(file)}</a>
                         </File>
                       ))
                     : '첨부된 파일 없음'}
@@ -170,13 +142,7 @@ const ActivityDetail = ({
                 <h2>회차 정보</h2>
                 <Sessions>
                   {activitySessions?.map((session) => (
-                    <SessionContainer
-                      key={session.id}
-                      session={session}
-                      activityID={activity.id}
-                      host={activity.host}
-                      role={role}
-                    />
+                    <SessionContainer key={session.id} session={session} activityID={activity.id} host={activity.host} role={role} />
                   ))}
                 </Sessions>
               </SessionBlock>

@@ -34,10 +34,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
             history.push(`/${MENU.FORBIDDEN}`);
             return;
           }
-          if (
-            user.status === SUCCESS.OK &&
-            user.data.loginID !== activityResponse.data.data.host.loginID
-          ) {
+          if (user.status === SUCCESS.OK && user.data.loginID !== activityResponse.data.data.host.loginID) {
             history.push(`/${MENU.FORBIDDEN}`);
             return;
           }
@@ -47,22 +44,15 @@ const ActivityAttendanceContainer = ({ match, history }) => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
 
-      const activityMemberResponse = await activityAPI.getActivityMembers(
-        activityID,
-      );
+      const activityMemberResponse = await activityAPI.getActivityMembers(activityID);
       setActivityMembers(activityMemberResponse.data.data);
 
-      const activitySessionsResponse = await activityAPI.getActivitySessions(
-        activityID,
-      );
+      const activitySessionsResponse = await activityAPI.getActivitySessions(activityID);
       setActivitySessions(activitySessionsResponse.data.data);
 
       if (sessionID) {
-        const activitySessionResponse = await activityAPI.getActivitySession(
-          sessionID,
-        );
-        const sessionAttendance =
-          await activityAPI.getActivitySessionAttendances(sessionID);
+        const activitySessionResponse = await activityAPI.getActivitySession(sessionID);
+        const sessionAttendance = await activityAPI.getActivitySessionAttendances(sessionID);
         setSessionAttendance(sessionAttendance.data.data);
         setActivitySession(activitySessionResponse.data);
       }
@@ -71,14 +61,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
     })();
   }, [activityID, sessionID, history]);
 
-  const onCreateSession = async ({
-    sessionNumber,
-    date,
-    description,
-    attendances,
-    hour,
-    fileList,
-  }) => {
+  const onCreateSession = async ({ sessionNumber, date, description, attendances, hour, fileList }) => {
     if (!date || !description || hour === '') {
       setErrorMessage('모든 항목을 입력해주세요');
       onShowErrorModal();
@@ -99,11 +82,10 @@ const ActivityAttendanceContainer = ({ match, history }) => {
         fileList,
       });
       const sessionID = sessionCreateResponse.data.id;
-      const sessionAttendancesCreateResponse =
-        await activityAPI.checkActivityAttendance({
-          sessionID,
-          memberLoginIDs: attendances.map((attendance) => attendance.loginID),
-        });
+      const sessionAttendancesCreateResponse = await activityAPI.checkActivityAttendance({
+        sessionID,
+        memberLoginIDs: attendances.map((attendance) => attendance.loginID),
+      });
       if (sessionAttendancesCreateResponse.status === SUCCESS.OK) {
         history.push(`/${MENU.ACTIVITY}/${activityID}`);
       }
@@ -115,13 +97,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
     }
   };
 
-  const onUpdateSession = async ({
-    date,
-    description,
-    attendances,
-    hour,
-    fileList,
-  }) => {
+  const onUpdateSession = async ({ date, description, attendances, hour, fileList }) => {
     if (!date || !description || hour === '') {
       setErrorMessage('모든 항목을 입력해주세요');
       onShowErrorModal();

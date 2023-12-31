@@ -1,28 +1,14 @@
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
-import {
-  Attendance,
-  AttendanceList,
-  Date,
-  Description,
-  SessionCard,
-  SessionDivider,
-  SessionNumber,
-} from './Session.styles';
+import { Attendance, AttendanceList, Date, Description, SessionCard, SessionDivider, SessionNumber } from './Session.styles';
 import { Viewer } from '@toast-ui/react-editor';
-import {
-  File,
-  FileContainer,
-  FileContainerTitle,
-} from '~/components/board-legacy/PostForm/PostForm.styles';
+import { File, FileContainer, FileContainerTitle } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
 const Session = ({ session, memberInfo, activityID, attendance, host }) => {
   const { id, description, date, sessionNumber, hour, fileList } = session;
-  const members = attendance
-    .filter((a) => a.attended === true)
-    .map((a) => a.member);
+  const members = attendance.filter((a) => a.attended === true).map((a) => a.member);
   const {
     status: { isLogin },
     user: { memberId, role },
@@ -60,11 +46,7 @@ const Session = ({ session, memberInfo, activityID, attendance, host }) => {
           </AttendanceList>
         )}
       </SessionCard>
-      {isLogin && host.loginID === memberId && (
-        <ActionButton to={`/${MENU.ACTIVITY}/${activityID}/attendance/${id}`}>
-          수정
-        </ActionButton>
-      )}
+      {isLogin && host.loginID === memberId && <ActionButton to={`/${MENU.ACTIVITY}/${activityID}/attendance/${id}`}>수정</ActionButton>}
       <SessionDivider />
     </>
   );

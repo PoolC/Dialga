@@ -1,24 +1,9 @@
-import {
-  Avatar,
-  Button,
-  Empty,
-  Pagination,
-  Result,
-  Skeleton,
-  Space,
-  Table,
-  Typography,
-} from 'antd';
+import { Avatar, Button, Empty, Pagination, Result, Skeleton, Space, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
-import {
-  PostControllerService,
-  PostResponse,
-  queryKey,
-  useAppQuery,
-} from '~/lib/api-v2';
+import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
@@ -81,13 +66,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export default function BoardList({
-  boardType,
-  page,
-}: {
-  boardType: BoardType;
-  page: number;
-}) {
+export default function BoardList({ boardType, page }: { boardType: BoardType; page: number }) {
   // data
   const { styles } = useStyles();
   const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
@@ -117,25 +96,14 @@ export default function BoardList({
     {
       render: (_, post) => (
         <Link to={`${MENU.BOARD}/${post.postId}`} className={styles.link}>
-          <Space
-            direction={'vertical'}
-            className={styles.fullWidth}
-            size={'middle'}
-          >
+          <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
             <Space className={styles.metaInfoArea} size={'middle'}>
               <Space>
                 <Typography.Text>{post.writerName}</Typography.Text>
-                {post.badge && (
-                  <Avatar
-                    src={getFileUrl(post.badge?.imageUrl)}
-                    className={styles.badge}
-                  />
-                )}
+                {post.badge && <Avatar src={getFileUrl(post.badge?.imageUrl)} className={styles.badge} />}
               </Space>
               <Space size={'middle'}>
-                <Typography.Text type={'secondary'}>
-                  {dayjs(post.createdAt).format('YYYY. MM. DD')}
-                </Typography.Text>
+                <Typography.Text type={'secondary'}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
                 <div className={styles.commentWrap}>
                   <CommentOutlined />
                   {post.commentCount ?? 0}
@@ -144,11 +112,7 @@ export default function BoardList({
             </Space>
             <Space direction={'vertical'} size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
-              {post?.body && (
-                <Typography.Text className={styles.clamp}>
-                  {getInnerTextFromHtml(post.body)}
-                </Typography.Text>
-              )}
+              {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromHtml(post.body)}</Typography.Text>}
             </Space>
           </Space>
         </Link>
@@ -177,37 +141,21 @@ export default function BoardList({
       <div className={styles.topArea}>{renderWriteButton()}</div>
       {match(boardListQuery)
         .with({ status: 'loading' }, () => <Skeleton />)
-        .with({ status: 'error' }, () => (
-          <Result status="500" subTitle="에러가 발생했습니다." />
-        ))
-        .with(
-          { status: 'success' },
-          ({ data: { posts: postList, maxPage } }) => {
-            if (!postList || postList.length === 0) {
-              return <Empty />;
-            }
+        .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
+        .with({ status: 'success' }, ({ data: { posts: postList, maxPage } }) => {
+          if (!postList || postList.length === 0) {
+            return <Empty />;
+          }
 
-            return (
-              <>
-                <Table
-                  dataSource={postList}
-                  columns={columns}
-                  showHeader={false}
-                  pagination={false}
-                  rowKey={'postId'}
-                />
-                <div className={styles.paginationWrap}>
-                  <Pagination
-                    current={page}
-                    total={maxPage ? maxPage * 10 : 0}
-                    showSizeChanger={false}
-                    onChange={onPageChange}
-                  />
-                </div>
-              </>
-            );
-          },
-        )
+          return (
+            <>
+              <Table dataSource={postList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
+              <div className={styles.paginationWrap}>
+                <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
+              </div>
+            </>
+          );
+        })
         .exhaustive()}
     </div>
   );

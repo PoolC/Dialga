@@ -27,10 +27,7 @@ const RegisterSuccess = ({ isSubscriptionPeriod }) => {
     <Block>
       <WhiteBlock>
         <Contents>
-          <CheckCircleTwoTone
-            twoToneColor={colors.mint[1]}
-            style={{ marginBottom: '20px', fontSize: '40px' }}
-          />
+          <CheckCircleTwoTone twoToneColor={colors.mint[1]} style={{ marginBottom: '20px', fontSize: '40px' }} />
           <h2>회원가입 요청 완료</h2>
           <p>회원가입 요청이 전송되었습니다.</p>
           {!isSubscriptionPeriod && (

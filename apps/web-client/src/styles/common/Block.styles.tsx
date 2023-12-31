@@ -1,10 +1,7 @@
 import colors from '../../lib/styles/colors';
 import { createStyles } from 'antd-style';
 
-type DivProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+type DivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 const useStyles = createStyles(({ css }) => ({
   twoColumnsContainerBlock: css`
@@ -57,11 +54,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export const TwoColumnsContainerBlock = ({
-  children,
-  className,
-  ...rest
-}: DivProps) => {
+export const TwoColumnsContainerBlock = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
     <div className={cx(className, styles.twoColumnsContainerBlock)} {...rest}>
@@ -87,11 +80,7 @@ export const WhiteBlock = ({ children, className, ...rest }: DivProps) => {
   );
 };
 
-export const WhiteNarrowBlock = ({
-  children,
-  className,
-  ...rest
-}: DivProps) => {
+export const WhiteNarrowBlock = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
     <div className={cx(className, styles.whiteNarrowBlock)} {...rest}>

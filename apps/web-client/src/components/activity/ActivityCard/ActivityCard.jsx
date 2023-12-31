@@ -20,14 +20,7 @@ import ActivityRegisterModalContainer from '../../../containers/activity/Activit
 import ActivityDeleteModalContainer from '../../../containers/activity/ActivityModalContainer/ActivityDeleteModalContainer';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
-const ActivityCard = ({
-  activity,
-  onToggleRegisterActivity,
-  onDeleteActivity,
-  isLogin,
-  memberId,
-  role,
-}) => {
+const ActivityCard = ({ activity, onToggleRegisterActivity, onDeleteActivity, isLogin, memberId, role }) => {
   const [members, setMembers] = useState(activity.memberLoginIds);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -59,23 +52,11 @@ const ActivityCard = ({
     setDeleteModalVisible(false);
   };
 
-  const { id, title, host, startDate, classHour, capacity, available, tags } =
-    activity;
+  const { id, title, host, startDate, classHour, capacity, available, tags } = activity;
   return (
     <>
-      <ActivityRegisterModalContainer
-        visible={registerModalVisible}
-        activityTitle={title}
-        onConfirm={handleConfirm}
-        onCancel={handleRegisterCancel}
-        isRegister={!members.includes(memberId)}
-      />
-      <ActivityDeleteModalContainer
-        visible={deleteModalVisible}
-        activityTitle={title}
-        onConfirm={handleDelete}
-        onCancel={handleDeleteCancel}
-      />
+      <ActivityRegisterModalContainer visible={registerModalVisible} activityTitle={title} onConfirm={handleConfirm} onCancel={handleRegisterCancel} isRegister={!members.includes(memberId)} />
+      <ActivityDeleteModalContainer visible={deleteModalVisible} activityTitle={title} onConfirm={handleDelete} onCancel={handleDeleteCancel} />
       <ActivityCardBlock>
         <ActivityCardContainer>
           <StyledLink to={`/${MENU.ACTIVITY}/${id}`}>
@@ -94,48 +75,16 @@ const ActivityCard = ({
               <ActivityTag key={tag.name}>#{tag.name}</ActivityTag>
             ))}
           </ActivityTags>
-          {isLogin &&
-            isAuthorizedRole(role) &&
-            (memberId === host.loginID || available) && (
-              <ActivityButtons>
-                {memberId === host.loginID && (
-                  <StyledActionButton to={`/${MENU.ACTIVITY}/edit/${id}`}>
-                    관리
-                  </StyledActionButton>
-                )}
-                {memberId === host.loginID && (
-                  <StyledActionButton to={`/${MENU.ACTIVITY}/${id}/attendance`}>
-                    출석
-                  </StyledActionButton>
-                )}
-                {memberId === host.loginID && (
-                  <StyledDeleteButton onClick={handleDeleteModalOpen}>
-                    삭제
-                  </StyledDeleteButton>
-                )}
-                {available &&
-                  memberId !== host.loginID &&
-                  !members.includes(memberId) &&
-                  members.length < capacity && (
-                    <StyledActionButton onClick={handleRegisterModalOpen}>
-                      신청
-                    </StyledActionButton>
-                  )}
-                {available &&
-                  memberId !== host.loginID &&
-                  !members.includes(memberId) &&
-                  members.length >= capacity && (
-                    <FullText>[정원 마감]</FullText>
-                  )}
-                {available &&
-                  memberId !== host.loginID &&
-                  members.includes(memberId) && (
-                    <StyledActionButton onClick={handleRegisterModalOpen}>
-                      신청 취소
-                    </StyledActionButton>
-                  )}
-              </ActivityButtons>
-            )}
+          {isLogin && isAuthorizedRole(role) && (memberId === host.loginID || available) && (
+            <ActivityButtons>
+              {memberId === host.loginID && <StyledActionButton to={`/${MENU.ACTIVITY}/edit/${id}`}>관리</StyledActionButton>}
+              {memberId === host.loginID && <StyledActionButton to={`/${MENU.ACTIVITY}/${id}/attendance`}>출석</StyledActionButton>}
+              {memberId === host.loginID && <StyledDeleteButton onClick={handleDeleteModalOpen}>삭제</StyledDeleteButton>}
+              {available && memberId !== host.loginID && !members.includes(memberId) && members.length < capacity && <StyledActionButton onClick={handleRegisterModalOpen}>신청</StyledActionButton>}
+              {available && memberId !== host.loginID && !members.includes(memberId) && members.length >= capacity && <FullText>[정원 마감]</FullText>}
+              {available && memberId !== host.loginID && members.includes(memberId) && <StyledActionButton onClick={handleRegisterModalOpen}>신청 취소</StyledActionButton>}
+            </ActivityButtons>
+          )}
         </ActivityCardContainer>
       </ActivityCardBlock>
     </>
