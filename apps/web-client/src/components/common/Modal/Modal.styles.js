@@ -94,16 +94,6 @@ export const HeaderBar = styled.div`
   height: 35px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
-  & > .fa-times {
-    cursor: pointer;
-    margin-right: 15px;
-    color: ${colors.brown[1]};
-    transition: 0.3s ease-in;
-    &:hover {
-      color: ${colors.brown[0]};
-      transition: 0.3s ease-in;
-    }
-  }
 `;
 
 export const ContentContainer = styled.div`

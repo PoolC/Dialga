@@ -1,13 +1,8 @@
+import { CheckCircleTwoTone } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import ActionButton from '../common/Buttons/ActionButton';
-
-const StyledIcon = styled.i`
-  color: ${colors.mint[1]};
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
-`;
 
 const Contents = styled.div`
   display: flex;
@@ -31,7 +26,10 @@ const PasswordResetEmailSuccess = () => {
     <Block>
       <WhiteBlock>
         <Contents>
-          <StyledIcon className="far fa-check-circle"></StyledIcon>
+          <CheckCircleTwoTone
+            twoToneColor={colors.mint[1]}
+            style={{ marginBottom: '20px', fontSize: '40px' }}
+          />
           <h2>비밀번호 재설정 이메일 전송 완료</h2>
           <p>비밀번호 재설정 이메일이 전송되었습니다.</p>
           <p>이메일로 전송된 링크를 통해 비밀번호를 재설정해주세요.</p>

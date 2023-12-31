@@ -134,6 +134,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
   commentBody: css`
     white-space: pre-line;
+    margin-bottom: 0px !important;
   `,
 }));
 

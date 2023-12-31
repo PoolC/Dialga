@@ -6,6 +6,8 @@ import {
   ModalBlock,
   ModalContainer,
 } from './Modal.styles.js';
+import { CloseOutlined } from '@ant-design/icons';
+import colors from '~/lib/styles/colors.js';
 
 const Modal = ({ contents, buttons, visible, onConfirm, onCancel }) => {
   const [animate, setAnimate] = useState(false);
@@ -29,7 +31,11 @@ const Modal = ({ contents, buttons, visible, onConfirm, onCancel }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <HeaderBar>
-          <i className="fas fa-times" onClick={onCancel}></i>
+          <CloseOutlined
+            twoToneColor={colors.brown[1]}
+            style={{ marginRight: '15px', cursor: 'pointer' }}
+            onClick={onCancel}
+          />
         </HeaderBar>
         <ContentContainer>{contents}</ContentContainer>
         <ButtonContainer>{buttons}</ButtonContainer>

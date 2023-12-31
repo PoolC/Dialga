@@ -3,12 +3,7 @@ import { MENU } from '../../constants/menus';
 import colors from '../../lib/styles/colors';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import ActionButton from '../common/Buttons/ActionButton';
-
-const StyledIcon = styled.i`
-  color: ${colors.mint[1]};
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
-`;
+import { CheckCircleTwoTone } from '@ant-design/icons';
 
 const Contents = styled.div`
   display: flex;
@@ -32,7 +27,10 @@ const PasswordResetSuccess = () => {
     <Block>
       <WhiteBlock>
         <Contents>
-          <StyledIcon className="far fa-check-circle"></StyledIcon>
+          <CheckCircleTwoTone
+            twoToneColor={colors.mint[1]}
+            style={{ marginBottom: '20px', fontSize: '40px' }}
+          />
           <h2>비밀번호 재설정 완료</h2>
           <p>비밀번호가 재설정되었습니다.</p>
           <p>새로운 비밀번호로 로그인 해 주세요.</p>

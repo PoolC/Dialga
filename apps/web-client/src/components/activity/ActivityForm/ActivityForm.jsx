@@ -27,12 +27,12 @@ import {
   FileContainer,
   FileContainerTitle,
   FileDeleteButton,
-  StyledDeleteIcon,
 } from '~/components/board-legacy/PostForm/PostForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import Modal from '../../common/Modal/Modal';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import throttle from '../../../lib/utils/throttle';
+import { DeleteFilled } from '@ant-design/icons';
 
 const TagItem = memo(({ tag, onDeleteTag }) => {
   const handleDeleteTag = () => {
@@ -301,7 +301,7 @@ const ActivityForm = ({
                             <FileDeleteButton
                               onClick={(e) => handleDeleteFile(e, file)}
                             >
-                              <StyledDeleteIcon className="far fa-trash-alt"></StyledDeleteIcon>
+                              <DeleteFilled />
                             </FileDeleteButton>
                           </File>
                         ))

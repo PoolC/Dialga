@@ -175,7 +175,7 @@ export default function MyPageBadgeListPage() {
                   <Avatar
                     src={getFileUrl(badge.imageUrl)}
                     alt={badge.name}
-                    size={40}
+                    size={60}
                     className={cx(badge.own ? styles.owned : styles.notOwned)}
                   />
                 </Tooltip>
@@ -209,7 +209,7 @@ export default function MyPageBadgeListPage() {
                 <Avatar
                   src={getFileUrl(badge.imageUrl)}
                   alt={badge.name}
-                  size={40}
+                  size={60}
                   className={cx(badge.own ? styles.owned : styles.notOwned)}
                 />
               </Tooltip>
@@ -232,7 +232,7 @@ export default function MyPageBadgeListPage() {
                 <Avatar
                   src={getFileUrl(badge.imageUrl)}
                   alt={badge.name}
-                  size={40}
+                  size={60}
                   className={cx(badge.own ? styles.owned : styles.notOwned)}
                 />
               </Tooltip>

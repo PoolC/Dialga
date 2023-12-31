@@ -1,4 +1,6 @@
+import { CloseOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
+import colors from '~/lib/styles/colors.js';
 import {
   ButtonContainer,
   ContentContainer,
@@ -39,7 +41,11 @@ const FileUploadModal = ({
     <ModalBlock disappear={!visible} onClick={onCancel}>
       <ModalContainer disappear={!visible} onClick={(e) => e.stopPropagation()}>
         <HeaderBar>
-          <i className="fas fa-times" onClick={onCancel}></i>
+          <CloseOutlined
+            twoToneColor={colors.brown[1]}
+            style={{ marginRight: '15px', cursor: 'pointer' }}
+            onClick={onCancel}
+          />
         </HeaderBar>
         <ContentContainer>
           <ModalName>파일 업로드</ModalName>
