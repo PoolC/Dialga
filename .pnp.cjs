@@ -3883,6 +3883,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-big-calendar", "npm:1.8.7"],\
             ["@types/react-dom", "npm:17.0.25"],\
             ["@types/react-redux", "npm:7.1.33"],\
+            ["@types/react-router", "npm:5.1.20"],\
             ["@types/react-router-dom", "npm:5.3.3"],\
             ["@types/redux-actions", "npm:2.6.5"],\
             ["@types/redux-devtools-extension", "npm:2.13.2"],\
@@ -3904,6 +3905,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-redux", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:7.2.9"],\
             ["react-router", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:5.3.4"],\
             ["react-router-dom", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:5.3.4"],\
+            ["react-topbar-progress-indicator", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:4.1.1"],\
             ["redux", "npm:4.2.1"],\
             ["redux-actions", "npm:2.6.5"],\
             ["redux-devtools-extension", "virtual:60235f5845017c6723510e09e8afa9c9d1ea9ae8c860b4a883fb97fca686e8c7e39c731e9086294e46aa63d0a7cf0125066a4aae38389cfc3b93a51bc05d7800#npm:2.13.9"],\
@@ -11470,6 +11472,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["react-topbar-progress-indicator", [\
+        ["npm:4.1.1", {\
+          "packageLocation": "./.yarn/cache/react-topbar-progress-indicator-npm-4.1.1-9582ae4e3b-751c14bf13.zip/node_modules/react-topbar-progress-indicator/",\
+          "packageDependencies": [\
+            ["react-topbar-progress-indicator", "npm:4.1.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:4.1.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-topbar-progress-indicator-virtual-9a59b0abbe/0/cache/react-topbar-progress-indicator-npm-4.1.1-9582ae4e3b-751c14bf13.zip/node_modules/react-topbar-progress-indicator/",\
+          "packageDependencies": [\
+            ["react-topbar-progress-indicator", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:4.1.1"],\
+            ["@types/react", "npm:17.0.74"],\
+            ["react", "npm:17.0.2"],\
+            ["topbar", "npm:0.1.4"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["readable-stream", [\
         ["npm:1.0.34", {\
           "packageLocation": "./.yarn/cache/readable-stream-npm-1.0.34-db63158f3f-85042c537e.zip/node_modules/readable-stream/",\
@@ -12487,6 +12512,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/toggle-selection-npm-1.0.6-c506b73005-a90dc80ed1.zip/node_modules/toggle-selection/",\
           "packageDependencies": [\
             ["toggle-selection", "npm:1.0.6"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["topbar", [\
+        ["npm:0.1.4", {\
+          "packageLocation": "./.yarn/cache/topbar-npm-0.1.4-1171f25411-aa9e57131b.zip/node_modules/topbar/",\
+          "packageDependencies": [\
+            ["topbar", "npm:0.1.4"]\
           ],\
           "linkType": "HARD"\
         }]\

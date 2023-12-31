@@ -15,6 +15,7 @@ import BusinessScrollTopOnRouteChange from '~/components/@business/BusinessScrol
 import { Global } from '@emotion/react';
 import { globalStyles } from '~/styles/globalStyles';
 import { theme } from '~/styles/theme';
+import BusinessShowProgressOnRouteChange from './components/@business/BusinessShowProgressOnRouteChange';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store =
@@ -46,6 +47,7 @@ ReactDOM.render(
         <MessageProvider>
           <BrowserRouter>
             <BusinessScrollTopOnRouteChange />
+            <BusinessShowProgressOnRouteChange />
             <App />
           </BrowserRouter>
         </MessageProvider>
