@@ -18,6 +18,24 @@
 - redux
 - ...
 
+## setting
+
+### run
+
+```sh
+# yarn(version >= 3.0) must be installed
+yarn
+yarn web:dev
+```
+
+### vscode setting
+
+1. install [ZipFS extension](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
+2. run `yarn dlx @yarnpkg/sdks vscode` in terminal
+3. `View > Command Palette > Typescript: Select Typescript version > Use Workspace Version`
+
+[https://kimyanglogging.tistory.com/8](https://kimyanglogging.tistory.com/8)
+
 ## 수정사항
 
 - node 버전 18.x로 업그레이드
@@ -48,4 +66,5 @@
   - suspense 도입 및 레기서 api호출들 tanstack-query로 모두 전환
   - react 18 업그레이드 해야 antd 관련 불필요한 warning 방지 가능함. [관련 이슈](https://github.com/ant-design/ant-design/issues/44994)
 - vite-ssr 도입 -> 세미나 메타태그 생성
+- redux 제거. 정 상태관리 필요한 곳은 가벼운 다른 라이브러리로 대체
 - 레거시 페이지들 마이그레이션
