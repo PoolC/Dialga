@@ -10,12 +10,16 @@ import {
   StyledLink,
 } from './RecentNotice.styles';
 import { dayjs } from '~/lib/utils/dayjs';
+import { PushpinTwoTone } from '@ant-design/icons';
 
 const RecentNotice = ({ notices }) => {
   return (
     <RecentNoticeBlock>
       <NoticeContainerTitle>
-        <StyledLink to="/boards/notice">Recent Notices</StyledLink>
+        <StyledLink to="/boards/notice">
+          <PushpinTwoTone twoToneColor="#47be9b" />
+          Recent Notices
+        </StyledLink>
       </NoticeContainerTitle>
       <MainNoticeContents>
         <RecentNoticeList>

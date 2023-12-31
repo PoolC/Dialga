@@ -7,6 +7,12 @@ import {
   RecentProjectList,
   StyledLink,
 } from './RecentProject.styles';
+import {
+  LeftCircleOutlined,
+  LeftOutlined,
+  PushpinTwoTone,
+  RightOutlined,
+} from '@ant-design/icons';
 
 const RecentProject = ({ projects }) => {
   const viewport = useRef(null);
@@ -104,10 +110,13 @@ const RecentProject = ({ projects }) => {
     <>
       <RecentProjectBlock>
         <PrevButton index={index} onClick={handleClickPrev}>
-          <i className="fas fa-chevron-left"></i>
+          <LeftOutlined />
         </PrevButton>
         <h3 className="project_container_title">
-          <StyledLink to="/projects">Recent Projects</StyledLink>
+          <StyledLink to="/projects">
+            <PushpinTwoTone twoToneColor="#47be9b" />
+            Recent Projects
+          </StyledLink>
         </h3>
         <RecentProjectList className="project_card_container" ref={viewport}>
           {projects.map((project, idx) => {
@@ -123,7 +132,7 @@ const RecentProject = ({ projects }) => {
           })}
         </RecentProjectList>
         <NextButton index={index} onClick={handleClickNext}>
-          <i className="fas fa-chevron-right"></i>
+          <RightOutlined />
         </NextButton>
       </RecentProjectBlock>
     </>

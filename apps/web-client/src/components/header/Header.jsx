@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import logoImage from '../../resources/poolc.icon.transparent.png';
+import poolcIcon from '~/assets/poolc-icon.png';
 import { Link } from 'react-router-dom';
 import {
   BarsIcon,
@@ -71,7 +71,7 @@ const Header = ({ member, onLogout }) => {
     <HeaderBlock>
       <HeaderIcons>
         <Link to="/">
-          <LogoImage src={logoImage} alt="logo" onClick={onCloseMenu} />
+          <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
         </Link>
         <HeaderIconBox>
           {isLogin && (
