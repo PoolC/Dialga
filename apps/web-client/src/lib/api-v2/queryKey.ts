@@ -25,4 +25,7 @@ export const queryKey = {
   project: {
     all: ['project.all'] as const,
   },
+  room: {
+    range: (start: any, end: any) => ['room.range', start, end] as const,
+  },
 };

@@ -27,6 +27,7 @@ import { queryClient } from '~/lib/utils/queryClient';
 import { UploadChangeParam } from 'antd/es/upload';
 import { createStyles } from 'antd-style';
 import { useMessage } from '~/hooks/useMessage';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 /* ---------------------------
  * BADGE MANAGEMENT TABLE
@@ -102,7 +103,9 @@ export default function AdminBadgeManagement() {
     {
       key: 'image',
       title: '이미지',
-      render: (_, { imageUrl }) => <Avatar src={imageUrl} />,
+      render: (_, { imageUrl }) => (
+        <Avatar src={getFileUrl(imageUrl)} size={60} />
+      ),
     },
     {
       key: 'category',
@@ -247,8 +250,8 @@ function BadgeGenerateModal({
       ? [
           {
             uid: 'SOME_UID',
-            url: form.values.imageUrl,
-            name: form.values.imageUrl,
+            url: getFileUrl(form.values.imageUrl),
+            name: decodeURI(form.values.imageUrl),
           },
         ]
       : [];
@@ -273,7 +276,7 @@ function BadgeGenerateModal({
             onChange={onUploadChange}
             fileList={getUploadFileList()}
           >
-            <Button icon={<UploadOutlined rev={0} />}>로고파일 업로드</Button>
+            <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>
       </Form>
@@ -357,8 +360,8 @@ function BadgeEditModal({
       ? [
           {
             uid: 'SOME_UID',
-            url: form.values.imageUrl,
-            name: form.values.imageUrl,
+            url: getFileUrl(form.values.imageUrl),
+            name: decodeURI(form.values.imageUrl),
           },
         ]
       : [];
@@ -383,7 +386,7 @@ function BadgeEditModal({
             onChange={onUploadChange}
             fileList={getUploadFileList()}
           >
-            <Button icon={<UploadOutlined rev={0} />}>로고파일 업로드</Button>
+            <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
         </Form.Item>
       </Form>

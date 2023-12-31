@@ -86,7 +86,7 @@ const HomePage = () => {
     <div className={styles.block}>
       <Carousel />
       {isHideApplyBanner ? null : <ApplyBanner />}
-      <RecentNotice notices={noticeInfo.slice(0, 5)} />
+      <RecentNotice notices={noticeInfo.posts?.slice(0, 5) ?? []} />
       <RecentProject projects={projectInfo.data.slice(0, 7)} />
     </div>
   );

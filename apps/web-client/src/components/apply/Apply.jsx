@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import ActionButton from '../common/Buttons/ActionButton';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 
 const Title = styled.h2`
   margin-bottom: 2rem;
@@ -30,11 +31,6 @@ export const Content = styled.div`
     font-size: 0.9rem;
     word-break: keep-all;
   }
-`;
-
-export const StyledIcon = styled.i`
-  font-size: 3rem;
-  color: ${colors.red[0]};
 `;
 
 export const Highlighted = styled.span`
@@ -118,7 +114,10 @@ const Apply = ({ isSubscriptionPeriod, applyUri, history }) => {
           {!isSubscriptionPeriod && (
             <>
               <div>
-                <StyledIcon className="fas fa-exclamation-circle"></StyledIcon>
+                <ExclamationCircleTwoTone
+                  twoToneColor="red"
+                  style={{ marginBottom: '20px', fontSize: '40px' }}
+                />
               </div>
               <div>
                 현재 가입 신청 가능 기간이 아닙니다.

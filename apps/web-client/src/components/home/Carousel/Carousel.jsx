@@ -1,18 +1,15 @@
 import {
   CarouselBlock,
-  // CarouselButton,
   MainCarousel,
   MainCarouselImage,
 } from './Carousel.styles';
+import mainBanner from '~/assets/images/main-banner.png';
 
 const Carousel = () => {
   return (
     <CarouselBlock>
       <MainCarousel>
-        <MainCarouselImage
-          src={'/images/main-carousel-image.png'}
-          alt="main_carousel_image"
-        />
+        <MainCarouselImage src={mainBanner} alt="main_carousel_image" />
       </MainCarousel>
     </CarouselBlock>
   );

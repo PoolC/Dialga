@@ -6,6 +6,7 @@ import getFileUrl from '../../../lib/utils/getFileUrl';
 import { isAuthorizedRole } from '~/lib/utils/checkRole';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 const openCard = keyframes`
   from {
@@ -94,10 +95,6 @@ const BookStatus = styled.p`
   font-weight: 500;
   font-size: 0.9rem;
   flex: 1;
-  & > .fa-caret-down,
-  & > .fa-caret-up {
-    margin-left: 8px;
-  }
 `;
 
 const disappearAnimation = css`
@@ -245,9 +242,9 @@ const BookCard = ({ book, isLogin, user, onBorrowBook, onReturnBook }) => {
           <BookStatus>
             {status === 'AVAILABLE' ? '이용 가능' : '대출중'}
             {open ? (
-              <i className="fas fa-caret-up"></i>
+              <CaretUpOutlined style={{ marginLeft: '8px' }} />
             ) : (
-              <i className="fas fa-caret-down"></i>
+              <CaretDownOutlined style={{ marginLeft: '8px' }} />
             )}
           </BookStatus>
         </BookCardContainer>

@@ -9,24 +9,6 @@ import { lazy, Suspense } from 'react';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
-// dayjs @see https://github.com/react-component/picker/issues/123
-import dayjs from 'dayjs';
-import objectSupport from 'dayjs/plugin/objectSupport';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import localeData from 'dayjs/plugin/localeData';
-import weekday from 'dayjs/plugin/weekday';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import weekYear from 'dayjs/plugin/weekYear';
-
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
-dayjs.extend(objectSupport);
-
 const useStyles = createStyles(({ css }) => ({
   appContainer: css`
     display: flex;
@@ -102,6 +84,9 @@ const MessageAllListPage = lazy(
 );
 const MessageListPage = lazy(() => import('./pages/message/MessageListPage'));
 const MessageFormPage = lazy(() => import('./pages/message/MessageFormPage'));
+const SpaceReservationPage = lazy(
+  () => import('~/pages/room-reservation/RoomReservationPage'),
+);
 
 function App() {
   const { styles } = useStyles();
@@ -171,6 +156,10 @@ function App() {
             <Route
               component={MyPageBadgeListPage}
               path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`}
+            />
+            <Route
+              component={SpaceReservationPage}
+              path={`/${MENU.ROOM_RESERVATION}`}
             />
             <Route component={NotFoundPage} path="/" />
           </Switch>

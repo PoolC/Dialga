@@ -7,7 +7,7 @@ export const MenuBlock = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-    background-color: ${colors.gray[0]};
+    background-color: #fff;
     flex-direction: column;
     z-index: 10;
     position: absolute;

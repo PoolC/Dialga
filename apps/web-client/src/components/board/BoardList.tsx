@@ -12,8 +12,6 @@ import {
 import { ColumnsType } from 'antd/es/table';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
-import { GoPencil } from 'react-icons/go';
-import { FaRegCommentAlt } from 'react-icons/fa';
 import { createStyles } from 'antd-style';
 import {
   PostControllerService,
@@ -24,11 +22,11 @@ import {
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
-import dayjs from 'dayjs';
-import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
+import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
+import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
@@ -71,8 +69,15 @@ const useStyles = createStyles(({ css }) => ({
     height: 40px;
   `,
   badge: css`
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #47be9b;
+  `,
+  clamp: css`
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
   `,
 }));
 
@@ -132,7 +137,7 @@ export default function BoardList({
                   {dayjs(post.createdAt).format('YYYY. MM. DD')}
                 </Typography.Text>
                 <div className={styles.commentWrap}>
-                  <FaRegCommentAlt />
+                  <CommentOutlined />
                   {post.commentCount ?? 0}
                 </div>
               </Space>
@@ -140,7 +145,7 @@ export default function BoardList({
             <Space direction={'vertical'} size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
               {post?.body && (
-                <Typography.Text>
+                <Typography.Text className={styles.clamp}>
                   {getInnerTextFromHtml(post.body)}
                 </Typography.Text>
               )}
@@ -154,7 +159,7 @@ export default function BoardList({
   const renderWriteButton = () => {
     const button = (
       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-        <Button type={'primary'} icon={<GoPencil />}>
+        <Button type={'primary'} icon={<EditOutlined />}>
           글쓰기
         </Button>
       </Link>
@@ -175,30 +180,34 @@ export default function BoardList({
         .with({ status: 'error' }, () => (
           <Result status="500" subTitle="에러가 발생했습니다." />
         ))
-        .with({ status: 'success' }, ({ data: postList }) => {
-          if (postList.length === 0) {
-            return <Empty />;
-          }
+        .with(
+          { status: 'success' },
+          ({ data: { posts: postList, maxPage } }) => {
+            if (!postList || postList.length === 0) {
+              return <Empty />;
+            }
 
-          return (
-            <>
-              <Table
-                dataSource={postList}
-                columns={columns}
-                showHeader={false}
-                pagination={false}
-                rowKey={'postId'}
-              />
-              <div className={styles.paginationWrap}>
-                <Pagination
-                  total={postList[0].boardPostCount}
-                  showSizeChanger={false}
-                  onChange={onPageChange}
+            return (
+              <>
+                <Table
+                  dataSource={postList}
+                  columns={columns}
+                  showHeader={false}
+                  pagination={false}
+                  rowKey={'postId'}
                 />
-              </div>
-            </>
-          );
-        })
+                <div className={styles.paginationWrap}>
+                  <Pagination
+                    current={page}
+                    total={maxPage ? maxPage * 10 : 0}
+                    showSizeChanger={false}
+                    onChange={onPageChange}
+                  />
+                </div>
+              </>
+            );
+          },
+        )
         .exhaustive()}
     </div>
   );

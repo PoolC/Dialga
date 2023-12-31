@@ -1,3 +1,4 @@
+import { AimOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import {
   FooterBlock,
   FooterContent,
@@ -16,15 +17,21 @@ const Footer = ({ presidentName, location, phoneNumber }) => {
         <h3 className="contact_title">Contact</h3>
         <br />
         <FooterContent>
-          <FooterIcon className="fas fa-map-marker-alt footer_icon"></FooterIcon>
+          <FooterIcon>
+            <AimOutlined />
+          </FooterIcon>
           <FooterContentText>{location}</FooterContentText>
         </FooterContent>
         <FooterContent>
-          <FooterIcon className="fas fa-envelope footer_icon"></FooterIcon>
+          <FooterIcon>
+            <MailOutlined />
+          </FooterIcon>
           <FooterContentText>poolc.official@gmail.com</FooterContentText>
         </FooterContent>
         <FooterContent>
-          <FooterIcon className="fas fa-phone-alt footer_icon"></FooterIcon>
+          <FooterIcon>
+            <PhoneOutlined />
+          </FooterIcon>
           <FooterContentText>
             회장 {presidentName} {phoneNumber}
           </FooterContentText>

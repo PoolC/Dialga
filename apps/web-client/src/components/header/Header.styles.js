@@ -10,11 +10,9 @@ export const HeaderBlock = styled.div`
   left: 0;
   right: 0;
   width: 100%;
-  max-width: 1366px;
-  margin: auto;
 
   position: fixed;
-  background-color: ${colors.gray[0]};
+  background-color: #fff;
   border-bottom: 1px solid #eee;
   z-index: 100;
 
@@ -23,7 +21,6 @@ export const HeaderBlock = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 20px;
-    background-color: ${colors.gray[0]};
     z-index: 100;
     top: 0;
     left: 0;
@@ -52,7 +49,6 @@ export const HeaderIcons = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background-color: ${colors.gray[0]};
     position: relative;
     height: 60px;
     top: 0;

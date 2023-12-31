@@ -20,6 +20,7 @@ import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { createStyles } from 'antd-style';
 import { useMessage } from '~/hooks/useMessage';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 /* ---------------------------
  * MEMBER BADGE MANAGEMENT TABLE
@@ -230,7 +231,11 @@ function MemberBadgeListModal({
                 key={badge.id}
               >
                 <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                  <Avatar src={badge.imageUrl} alt={badge.name} />
+                  <Avatar
+                    src={getFileUrl(badge.imageUrl)}
+                    alt={badge.name}
+                    size={60}
+                  />
                 </Tooltip>
               </Checkbox>
             ))}

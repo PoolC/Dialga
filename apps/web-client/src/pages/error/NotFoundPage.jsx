@@ -2,6 +2,7 @@ import { withRouter } from 'react-router';
 import styled from '@emotion/styled';
 import ActionButton from '../../components/common/Buttons/ActionButton';
 import colors from '../../lib/styles/colors';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 
 export const PageBlock = styled.div`
   position: relative;
@@ -27,12 +28,6 @@ export const PageContainer = styled.div`
   min-height: 60vh;
 `;
 
-const ErrorIcon = styled.i`
-  font-size: 3rem;
-  color: ${colors.red[0]};
-  margin-bottom: 1rem;
-`;
-
 const ErrorMessage = styled.p`
   font-size: 1.2rem;
   line-height: 1.5rem;
@@ -46,7 +41,10 @@ const NotFoundPage = ({ history }) => {
   return (
     <PageBlock>
       <PageContainer>
-        <ErrorIcon className="fas fa-exclamation-circle"></ErrorIcon>
+        <ExclamationCircleTwoTone
+          twoToneColor="red"
+          style={{ marginBottom: '20px', fontSize: '40px' }}
+        />
         <ErrorMessage>존재하지 않는 페이지입니다.</ErrorMessage>
         <ActionButton
           onClick={() => {

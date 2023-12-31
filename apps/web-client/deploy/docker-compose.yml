@@ -20,6 +20,7 @@ services:
     volumes:
       - web-logs:/var/log/nginx
       - app-assets:/var/www
+    restart: always
 
 volumes:
   web-logs:

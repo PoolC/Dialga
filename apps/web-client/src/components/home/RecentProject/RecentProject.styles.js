@@ -23,6 +23,9 @@ export const RecentProjectBlock = styled.div`
 
 export const StyledLink = styled(Link)`
   color: ${colors.brown[1]};
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const RecentProjectList = styled.ul`

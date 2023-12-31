@@ -62,9 +62,3 @@ export const FileDeleteButton = styled.button`
     transition: 0.25s ease-in;
   }
 `;
-
-export const StyledDeleteIcon = styled.i`
-  padding: 0;
-  font-size: 0.7rem;
-  margin: 0;
-`;

@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 
@@ -30,7 +31,9 @@ const StyledSpinner = styled.i`
 const Spinner = ({ small = false }) => {
   return (
     <SpinnerBlock small={small}>
-      <StyledSpinner className="fas fa-spinner fa-10x fa-spin"></StyledSpinner>
+      <StyledSpinner>
+        <LoadingOutlined />
+      </StyledSpinner>
     </SpinnerBlock>
   );
 };

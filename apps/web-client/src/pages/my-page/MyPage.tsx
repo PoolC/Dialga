@@ -9,15 +9,7 @@ import {
   Typography,
 } from 'antd';
 import { createStyles } from 'antd-style';
-import { AiFillMessage } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import {
-  BsFillPencilFill,
-  BsFillQuestionCircleFill,
-  BsFillStarFill,
-} from 'react-icons/bs';
-import { BiSolidUser } from 'react-icons/bi';
-import { IoIosArrowForward } from 'react-icons/io';
 import {
   BadgeControllerService,
   BaekjoonControllerService,
@@ -28,11 +20,18 @@ import {
 } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
-import classNames from 'classnames';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useMessage } from '~/hooks/useMessage';
+import {
+  ArrowRightOutlined,
+  EditTwoTone,
+  MessageTwoTone,
+  QuestionCircleFilled,
+  StarTwoTone,
+  UserOutlined,
+} from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -104,10 +103,13 @@ const useStyles = createStyles(({ css }) => ({
       border-color: #47be9b;
     }
   `,
+  badge: css`
+    border: 2px solid #47be9b;
+  `,
 }));
 
 export default function MyPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
 
   const listData: {
@@ -118,25 +120,27 @@ export default function MyPage() {
   }[] = [
     {
       title: '회원 정보 수정',
-      icon: <BiSolidUser size={24} />,
+      icon: <UserOutlined size={24} />,
       link: '/my-info',
     },
     {
       title: '내가 쓴 글',
-      icon: <BsFillPencilFill size={24} color={'#ffd43b'} />,
+      icon: <EditTwoTone size={24} twoToneColor="#ffd43b" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '내가 스크랩한 글',
-      icon: <BsFillStarFill size={24} color={'#ffa94d'} />,
+      icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
     {
       title: '쪽지',
-      icon: <AiFillMessage size={24} color={'#4dabf7'} />,
+      icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
       onClick: () => message.info('기능 준비중입니다!'),
     },
   ];
+
+  const activityMinimumHour = 6;
 
   const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] =
     useAppQueries({
@@ -183,7 +187,7 @@ export default function MyPage() {
 
   return (
     <Block>
-      <WhiteBlock className={classNames(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <Space direction={'vertical'} className={styles.fullWidth} size={40}>
           <Space className={styles.wrapper} size={'middle'}>
             <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
@@ -193,7 +197,12 @@ export default function MyPage() {
                   {me?.name}님
                 </Typography.Text>
                 {me?.badge && (
-                  <Avatar src={getFileUrl(me?.badge.imageUrl)} alt={me?.name} />
+                  <Avatar
+                    src={getFileUrl(me?.badge.imageUrl)}
+                    alt={me?.name}
+                    size={60}
+                    className={styles.badge}
+                  />
                 )}
               </Space>
               <Typography.Text>{me?.introduction}</Typography.Text>
@@ -201,8 +210,15 @@ export default function MyPage() {
           </Space>
           <Space direction="vertical" size={0} className={styles.wrapper}>
             <Typography.Title level={5}>나의 활동시간</Typography.Title>
-            <Typography.Text>{myHour?.hour ?? 0}시간 / 6시간</Typography.Text>
-            <Progress percent={myHour?.hour ?? 0} strokeColor={'#47be9b'} />
+            <Typography.Text>
+              {myHour?.hour ?? 0}시간 / {activityMinimumHour}시간
+            </Typography.Text>
+            <Progress
+              percent={Math.floor(
+                ((myHour?.hour ?? 0) / activityMinimumHour) * 100,
+              )}
+              strokeColor={'#47be9b'}
+            />
           </Space>
           <Space direction="vertical" className={styles.wrapper}>
             <Typography.Title level={5} className={styles.grassTitle}>
@@ -228,7 +244,7 @@ export default function MyPage() {
                   </Space>
                 }
               >
-                <BsFillQuestionCircleFill />
+                <QuestionCircleFilled />
               </Popover>
             </Typography.Title>
             {baekjoon?.data && (
@@ -252,11 +268,15 @@ export default function MyPage() {
                     key={el.id}
                     onClick={() => onBadgeButtonClick(el.id!)}
                     shape={'circle'}
-                    className={classNames(styles.badgeButton, {
+                    className={cx(styles.badgeButton, {
                       active: me?.badge?.id === el.id,
                     })}
                   >
-                    <Avatar src={getFileUrl(el.imageUrl)} alt={el.name} />
+                    <Avatar
+                      src={getFileUrl(el.imageUrl)}
+                      alt={el.name}
+                      size={50}
+                    />
                   </Button>
                 ))}
               </Space>
@@ -279,7 +299,7 @@ export default function MyPage() {
                         {item.icon}
                         <Typography.Text>{item.title}</Typography.Text>
                       </div>
-                      <IoIosArrowForward size={18} color={'#ced4da'} />
+                      <ArrowRightOutlined size={18} color={'#ced4da'} />
                     </Link>
                   </List.Item>
                 ) : (
@@ -288,7 +308,7 @@ export default function MyPage() {
                       {item.icon}
                       <Typography.Text>{item.title}</Typography.Text>
                     </div>
-                    <IoIosArrowForward size={18} color={'#ced4da'} />
+                    <ArrowRightOutlined size={18} color={'#ced4da'} />
                   </List.Item>
                 )
               }
