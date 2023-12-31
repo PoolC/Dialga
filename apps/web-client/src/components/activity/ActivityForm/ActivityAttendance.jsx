@@ -26,12 +26,12 @@ import {
   FileContainer,
   FileContainerTitle,
   FileDeleteButton,
-  StyledDeleteIcon,
 } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { ButtonContainer } from './ActivityForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import throttle from '../../../lib/utils/throttle';
+import { DeleteFilled } from '@ant-design/icons';
 
 const Member = ({ member, attended, handleCheckAttendance }) => {
   const [isChecked, setIsChecked] = useState(attended ? attended : false);
@@ -216,7 +216,7 @@ const ActivityAttendance = ({
                           <FileDeleteButton
                             onClick={(e) => handleDeleteFile(e, file)}
                           >
-                            <StyledDeleteIcon className="far fa-trash-alt"></StyledDeleteIcon>
+                            <DeleteFilled />
                           </FileDeleteButton>
                         </File>
                       ))
