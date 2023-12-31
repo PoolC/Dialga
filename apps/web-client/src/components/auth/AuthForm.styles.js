@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
+import { Input, Select } from 'antd';
 
 export const FormListHeader = styled.header`
   display: flex;
@@ -42,7 +43,7 @@ export const Warning = styled.span`
   transition: 0.3s ease-in;
 `;
 
-export const StyledInput = styled.input`
+export const StyledInput = styled(Input)`
   border: 1px solid ${colors.brown[0]};
   height: 2rem;
   border-radius: 2px;
@@ -74,11 +75,6 @@ export const SubmitButton = styled.button`
   }
 `;
 
-export const StyledTextarea = styled.textarea`
-  outline: 0;
-  width: 100%;
-`;
-
 export const ProfileImageSelectContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -102,7 +98,7 @@ export const ProfileImage = styled.img`
   margin: 10px 5px 0 5px;
 `;
 
-export const StyledSelect = styled.select`
+export const StyledSelect = styled(Select)`
   outline: 0;
   height: 2rem;
   width: 100%;

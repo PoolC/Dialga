@@ -22,13 +22,13 @@ import {
   StyledLabel,
   StyledLink,
   StyledSelect,
-  StyledTextarea,
   SubmitButton,
   Warning,
   WithdrawalButton,
 } from './AuthForm.styles';
 import { MENU } from '../../constants/menus';
 import throttle from '../../lib/utils/throttle';
+import { Input as AntdInput, Select } from 'antd';
 
 const textMap = {
   login: '로그인',
@@ -59,7 +59,7 @@ export const Input = ({
         name={nameText}
         id={nameText}
         disabled={disabledCondition}
-        error={error}
+        error={error ? 1 : 0}
         onChange={onChangeFunc}
         placeholder={placeholderText}
       />
@@ -124,10 +124,7 @@ const AuthForm = ({
       : profileImagePlaceholders[0],
   );
 
-  const [role, onChangeRole] = useInput(
-    userInfo ? userInfo.role : 'MEMBER',
-    notEmptyValidation,
-  );
+  const [role, setRole] = useState(userInfo ? userInfo.role : 'MEMBER');
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordError] = useState(false);
@@ -387,7 +384,7 @@ const AuthForm = ({
                   ))}
                 </ProfileImageSelectContainer>
                 <label htmlFor="introduction">자기소개</label>
-                <StyledTextarea
+                <AntdInput.TextArea
                   value={introduction}
                   name="introduction"
                   id="introduction"
@@ -397,7 +394,7 @@ const AuthForm = ({
                   placeholder="자기 소개를 적어주세요"
                 >
                   {introduction}
-                </StyledTextarea>
+                </AntdInput.TextArea>
               </>
             )}
             <SubmitButton onClick={handleSubmit}>{headerText}</SubmitButton>
@@ -414,11 +411,14 @@ const AuthForm = ({
               </FormListHeader>
               <FormList>
                 <>
-                  <StyledSelect value={role} onChange={onChangeRole}>
+                  <StyledSelect
+                    value={role}
+                    onChange={(value) => setRole(value)}
+                  >
                     {roles?.map((r) => (
-                      <option key={r.name} value={r.name}>
+                      <Select.Option key={r.name} value={r.name}>
                         {r.description}
-                      </option>
+                      </Select.Option>
                     ))}
                   </StyledSelect>
                   <SubmitButton
