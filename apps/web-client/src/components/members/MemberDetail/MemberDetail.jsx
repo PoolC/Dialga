@@ -18,6 +18,8 @@ import {
 } from './MemberDetail.styles';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import Icon from '@ant-design/icons';
+import Avatar from 'antd/es/avatar/avatar';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 const MemberDetail = ({ member }) => {
   const {
@@ -29,6 +31,7 @@ const MemberDetail = ({ member }) => {
     projects,
     hostActivities,
     participantActivities,
+    badge,
   } = member;
   return (
     <Block>
@@ -41,6 +44,7 @@ const MemberDetail = ({ member }) => {
             <NameContainer>
               <Name>{name}</Name>
               {isAdmin && <Status>PoolC임원</Status>}
+              {badge && <Avatar src={getFileUrl(badge.imageUrl)} size={60} />}
             </NameContainer>
             <DepartmentContainer>
               {department && (
@@ -90,7 +94,7 @@ const QuoteLeftIcon = () => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 448 512"
     height="1em"
     width="1em"
@@ -104,7 +108,7 @@ const QuoteRightIcon = () => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 448 512"
     height="1em"
     width="1em"

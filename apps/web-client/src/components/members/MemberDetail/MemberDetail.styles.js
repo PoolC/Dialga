@@ -37,7 +37,7 @@ export const TextContainer = styled.div`
 
 export const NameContainer = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   @media (max-width: 576px) {
     justify-content: center;
   }
