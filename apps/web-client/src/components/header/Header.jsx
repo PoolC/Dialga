@@ -12,6 +12,7 @@ import Menus from './Menus/Menus';
 import { Avatar, Button, Dropdown } from 'antd';
 import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
+import { MenuOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -81,7 +82,9 @@ const Header = ({ member, onLogout }) => {
               </Button>
             </Dropdown>
           )}
-          <BarsIcon onClick={onToggleMenu} className="fas fa-bars"></BarsIcon>
+          <BarsIcon onClick={onToggleMenu}>
+            <MenuOutlined />
+          </BarsIcon>
         </HeaderIconBox>
       </HeaderIcons>
       <Menus

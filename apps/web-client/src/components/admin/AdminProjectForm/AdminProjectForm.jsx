@@ -26,6 +26,7 @@ import {
 import Modal from '../../common/Modal/Modal';
 import getFileUrl from '../../../lib/utils/getFileUrl';
 import throttle from '../../../lib/utils/throttle';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const SearchMember = ({ member, onAddMember, onChangeSearchMember }) => {
   const { name, department, studentId } = member;
@@ -61,7 +62,7 @@ const Member = ({ member, onDeleteMember }) => {
       </MemberInfo>
       <ButtonContainer>
         <ActionButton onClick={(e) => onDeleteMember(e, member)}>
-          <i className="fas fa-times"></i>
+          <DeleteOutlined />
         </ActionButton>
       </ButtonContainer>
     </MemberBlock>

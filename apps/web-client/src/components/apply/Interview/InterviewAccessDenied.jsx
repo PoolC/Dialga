@@ -1,7 +1,7 @@
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
-import { StyledIcon } from '../Apply';
 import { Content } from '../Apply';
 import Spinner from '../../common/Spinner/Spinner';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 
 const InterviewAccessDenied = ({ loading }) => {
   return (
@@ -13,7 +13,10 @@ const InterviewAccessDenied = ({ loading }) => {
           <>
             <Content>
               <div>
-                <StyledIcon className="fas fa-exclamation-circle"></StyledIcon>
+                <ExclamationCircleTwoTone
+                  twoToneColor="red"
+                  style={{ marginBottom: '20px', fontSize: '40px' }}
+                />
               </div>
               <div>
                 현재 가입 신청 가능 기간이 아닙니다.
