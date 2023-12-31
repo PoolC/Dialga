@@ -200,7 +200,7 @@ export default function MyPage() {
                   <Avatar
                     src={getFileUrl(me?.badge.imageUrl)}
                     alt={me?.name}
-                    size={40}
+                    size={60}
                     className={styles.badge}
                   />
                 )}
@@ -275,7 +275,7 @@ export default function MyPage() {
                     <Avatar
                       src={getFileUrl(el.imageUrl)}
                       alt={el.name}
-                      size={40}
+                      size={50}
                     />
                   </Button>
                 ))}

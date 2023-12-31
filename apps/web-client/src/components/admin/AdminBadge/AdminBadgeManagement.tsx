@@ -103,7 +103,9 @@ export default function AdminBadgeManagement() {
     {
       key: 'image',
       title: '이미지',
-      render: (_, { imageUrl }) => <Avatar src={getFileUrl(imageUrl)} />,
+      render: (_, { imageUrl }) => (
+        <Avatar src={getFileUrl(imageUrl)} size={60} />
+      ),
     },
     {
       key: 'category',
