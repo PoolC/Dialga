@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Input } from 'antd';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
 
@@ -65,13 +66,12 @@ export const Hour = styled.div`
   }
 `;
 
-export const HourInput = styled.input`
-  width: 3rem;
+export const HourInput = styled(Input)`
+  width: 6rem;
   outline: 0;
   border: 1px solid ${colors.brown[0]};
   height: 2rem;
   border-radius: 2px;
-  max-width: 320px;
   outline: ${colors.gray[1]};
 `;
 
@@ -122,6 +122,8 @@ export const Members = styled.ul`
 
 export const MemberBlock = styled.li`
   display: flex;
+  align-items: center;
+  gap: 5px;
   margin: 5px;
 `;
 

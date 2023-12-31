@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
+import { Input as AntdInput } from 'antd';
 
 const StyledLabel = styled.label`
   margin: 2rem 0 1rem 0;
   font-weight: 400;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled(AntdInput)`
   width: 15rem;
-  outline: 0;
   border: 1px solid ${colors.brown[0]};
   height: 2rem;
   border-radius: 2px;
@@ -36,7 +36,7 @@ const Input = ({
         name={nameText}
         id={nameText}
         disabled={disabledCondition}
-        error={error}
+        error={error ? 1 : 0}
         onChange={onChangeFunc}
         placeholder={placeholderText}
       />

@@ -32,6 +32,7 @@ import { ButtonContainer } from './ActivityForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import throttle from '../../../lib/utils/throttle';
 import { DeleteFilled } from '@ant-design/icons';
+import { Checkbox } from 'antd';
 
 const Member = ({ member, attended, handleCheckAttendance }) => {
   const [isChecked, setIsChecked] = useState(attended ? attended : false);
@@ -43,8 +44,7 @@ const Member = ({ member, attended, handleCheckAttendance }) => {
 
   return (
     <MemberBlock key={member.loginID}>
-      <input
-        type="checkbox"
+      <Checkbox
         value={member.loginID}
         onChange={handleCheck}
         checked={isChecked}
