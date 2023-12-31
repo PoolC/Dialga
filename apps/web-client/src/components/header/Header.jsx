@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import poolcIcon from '~/assets/poolc-icon.png';
+import poolcIcon from '~/assets/images/poolc-icon.png';
 import { Link } from 'react-router-dom';
 import {
   BarsIcon,

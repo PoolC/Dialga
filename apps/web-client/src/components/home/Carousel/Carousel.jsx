@@ -3,7 +3,7 @@ import {
   MainCarousel,
   MainCarouselImage,
 } from './Carousel.styles';
-import mainBanner from '~/assets/main-banner.png';
+import mainBanner from '~/assets/images/main-banner.png';
 
 const Carousel = () => {
   return (
