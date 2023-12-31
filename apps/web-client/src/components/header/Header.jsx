@@ -41,7 +41,7 @@ const Header = ({ member, onLogout }) => {
   };
 
   const handleLogout = () => {
-    onToggleMenu();
+    setMenuVisible(false);
     onLogout();
   };
 
