@@ -41,10 +41,7 @@ const NotFoundPage = ({ history }) => {
   return (
     <PageBlock>
       <PageContainer>
-        <ExclamationCircleTwoTone
-          twoToneColor="red"
-          style={{ marginBottom: '20px', fontSize: '40px' }}
-        />
+        <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
         <ErrorMessage>존재하지 않는 페이지입니다.</ErrorMessage>
         <ActionButton
           onClick={() => {

@@ -43,30 +43,16 @@ export default function MyPageMessageFormPage() {
   return (
     <Block>
       <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
-        <Space
-          direction={'vertical'}
-          className={styles.fullWidth}
-          size={'large'}
-        >
+        <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
           <Space className={styles.topBox}>
             <Space>
-              <Button
-                shape="circle"
-                type="text"
-                onClick={() => history.goBack()}
-              >
+              <Button shape="circle" type="text" onClick={() => history.goBack()}>
                 <ArrowLeftOutlined />
               </Button>
-              <Typography.Text className={styles.topBoxName}>
-                쪽지보내기
-              </Typography.Text>
+              <Typography.Text className={styles.topBoxName}>쪽지보내기</Typography.Text>
             </Space>
           </Space>
-          <Input.TextArea
-            className={styles.textarea}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <Input.TextArea className={styles.textarea} value={content} onChange={(e) => setContent(e.target.value)} />
           <Button type="primary" block>
             메세지 보내기
           </Button>

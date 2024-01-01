@@ -2,27 +2,8 @@ import { FormEventHandler, useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import {
-  Breadcrumb,
-  Button,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Radio,
-  Space,
-  Typography,
-  Upload,
-} from 'antd';
-import {
-  ApiError,
-  CustomApi,
-  PostControllerService,
-  PostCreateRequest,
-  queryKey,
-  useAppMutation,
-  useAppQuery,
-} from '~/lib/api-v2';
+import { Breadcrumb, Button, DatePicker, Divider, Form, Input, Radio, Space, Typography, Upload } from 'antd';
+import { ApiError, CustomApi, PostControllerService, PostCreateRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadChangeParam } from 'antd/es/upload';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory } from 'react-router-dom';
@@ -127,15 +108,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
     { value: 'OTHER' },
   ];
 
-  const fields: { value: string }[] = [
-    { value: '웹' },
-    { value: '모바일' },
-    { value: '인공지능' },
-    { value: '데이터사이언스' },
-    { value: '블록체인' },
-    { value: '시스템' },
-    { value: '기타' },
-  ];
+  const fields: { value: string }[] = [{ value: '웹' }, { value: '모바일' }, { value: '인공지능' }, { value: '데이터사이언스' }, { value: '블록체인' }, { value: '시스템' }, { value: '기타' }];
 
   // methods
   // NOTE 에디터에서 값을 직접 가져올 수 없어서 이벤트 버블링 이용
@@ -240,12 +213,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   return (
     <Block>
       <WhiteBlock>
-        <Space
-          direction={'vertical'}
-          size={0}
-          className={styles.wrapper}
-          split={<Divider className={styles.divider} />}
-        >
+        <Space direction={'vertical'} size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
           <Breadcrumb
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
@@ -262,33 +230,17 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
               },
             ]}
           />
-          <Space
-            direction={'vertical'}
-            className={styles.fullWidth}
-            size={'middle'}
-          >
+          <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
             <Space direction={'vertical'} className={styles.titleWrap} size={0}>
               <Typography.Title level={3}>취업게시판</Typography.Title>
               <Typography>취업 관련 글을 작성해보아요</Typography>
             </Space>
-            <Form
-              labelCol={{ span: 2 }}
-              wrapperCol={{ span: 22 }}
-              onSubmitCapture={form.onSubmit(onFormSubmit, noop)}
-            >
+            <Form labelCol={{ span: 2 }} wrapperCol={{ span: 22 }} onSubmitCapture={form.onSubmit(onFormSubmit, noop)}>
               <Form.Item label="제목">
-                <Input
-                  placeholder={'제목을 입력해주세요.'}
-                  {...form.getInputProps('title')}
-                />
+                <Input placeholder={'제목을 입력해주세요.'} {...form.getInputProps('title')} />
               </Form.Item>
               <Form.Item label="고용형태">
-                <Radio.Group
-                  onChange={(e) =>
-                    form.setFieldValue('position', e.target.value)
-                  }
-                  value={form.values.position}
-                >
+                <Radio.Group onChange={(e) => form.setFieldValue('position', e.target.value)} value={form.values.position}>
                   {positions.map((position) => (
                     <Radio key={position.value} value={position.value}>
                       {convertPositionToText(position.value)}
@@ -297,16 +249,10 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="지역">
-                <Input
-                  placeholder="지역을 입력해주세요."
-                  {...form.getInputProps('region')}
-                />
+                <Input placeholder="지역을 입력해주세요." {...form.getInputProps('region')} />
               </Form.Item>
               <Form.Item label="분야">
-                <Radio.Group
-                  onChange={(e) => form.setFieldValue('field', e.target.value)}
-                  value={form.values.field}
-                >
+                <Radio.Group onChange={(e) => form.setFieldValue('field', e.target.value)} value={form.values.field}>
                   {fields.map((field) => (
                     <Radio key={field.value} value={field.value}>
                       {field.value}
@@ -315,34 +261,16 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="마감일자">
-                <DatePicker
-                  value={dayjs(form.values.deadline) as any}
-                  onChange={(_, date) =>
-                    date && form.setFieldValue('deadline', date)
-                  }
-                />
+                <DatePicker value={dayjs(form.values.deadline) as any} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
               </Form.Item>
               <div onInput={onEditorInput}>
                 <Editor initialEditType="wysiwyg" ref={editorRef} />
               </div>
-              <Space
-                direction={'horizontal'}
-                align={'start'}
-                className={styles.buttonWrap}
-              >
-                <Upload
-                  beforeUpload={() => false}
-                  onChange={onUploadChange}
-                  fileList={getUploadFileList()}
-                >
+              <Space direction={'horizontal'} align={'start'} className={styles.buttonWrap}>
+                <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
                   <Button icon={<UploadOutlined />}>파일 업로드</Button>
                 </Upload>
-                <Button
-                  type={'primary'}
-                  htmlType={'submit'}
-                  className={styles.fullWidth}
-                  disabled={!form.isValid()}
-                >
+                <Button type={'primary'} htmlType={'submit'} className={styles.fullWidth} disabled={!form.isValid()}>
                   등록
                 </Button>
               </Space>

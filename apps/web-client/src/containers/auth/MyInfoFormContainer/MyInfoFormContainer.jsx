@@ -4,10 +4,7 @@ import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as authAPI from '../../../lib/api/auth';
 import * as memberAPI from '../../../lib/api/member';
-import {
-  removeHeaderAccessToken,
-  setHeaderAccessToken,
-} from '../../../lib/utils/axiosUtil';
+import { removeHeaderAccessToken, setHeaderAccessToken } from '../../../lib/utils/axiosUtil';
 import { MENU } from '../../../constants/menus';
 import Spinner from '../../../components/common/Spinner/Spinner';
 import { logout } from '../../../modules/auth';
@@ -71,15 +68,7 @@ const MyInfoFormContainer = ({ location, history }) => {
     setMessage(msg);
   }
 
-  const onSubmit = ({
-    name,
-    password,
-    passwordCheck,
-    email,
-    phoneNumber,
-    introduction,
-    profileImageURL,
-  }) => {
+  const onSubmit = ({ name, password, passwordCheck, email, phoneNumber, introduction, profileImageURL }) => {
     try {
       const response = authAPI.updateUser({
         name,

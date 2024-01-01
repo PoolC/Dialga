@@ -78,25 +78,9 @@ const FileUploadButton = ({ files, onSubmit, multiple }) => {
 
   return (
     <>
-      <FileUploadModal
-        visible={modalVisible}
-        file={file}
-        onUploadFile={onUploadFile}
-        onBrowseFile={onBrowseFile}
-        onCancel={() => setModalVisible(false)}
-      />
-      <Modal
-        contents={errorMessage}
-        buttons={buttons}
-        visible={errorModalVisible}
-        onConfirm={onCloseErrorModal}
-        onCancel={onCloseErrorModal}
-      />
-      <ActionButton
-        className="file"
-        onClick={onShowModal}
-        style={{ marginBottom: '1rem' }}
-      >
+      <FileUploadModal visible={modalVisible} file={file} onUploadFile={onUploadFile} onBrowseFile={onBrowseFile} onCancel={() => setModalVisible(false)} />
+      <Modal contents={errorMessage} buttons={buttons} visible={errorModalVisible} onConfirm={onCloseErrorModal} onCancel={onCloseErrorModal} />
+      <ActionButton className="file" onClick={onShowModal} style={{ marginBottom: '1rem' }}>
         파일 첨부
       </ActionButton>
     </>

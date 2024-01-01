@@ -17,21 +17,14 @@ const AdminInterviewTimeContainer = () => {
     });
   }, []);
 
-  const handleCreateInterviewTime = ({
-    date,
-    startTime,
-    endTime,
-    capacity,
-  }) => {
+  const handleCreateInterviewTime = ({ date, startTime, endTime, capacity }) => {
     setLoading(true);
-    interviewAPI
-      .createInterviewSlot({ date, startTime, endTime, capacity })
-      .then((res) => {
-        if (res.status === SUCCESS.OK) {
-          setData(res.data.data);
-          setLoading(false);
-        }
-      });
+    interviewAPI.createInterviewSlot({ date, startTime, endTime, capacity }).then((res) => {
+      if (res.status === SUCCESS.OK) {
+        setData(res.data.data);
+        setLoading(false);
+      }
+    });
   };
 
   const handleDeleteInterviewTime = ({ slotId }) => {
@@ -55,20 +48,13 @@ const AdminInterviewTimeContainer = () => {
     });
   };
 
-  const handleUpdateInterviewTime = ({
-    slotId,
-    startTime,
-    endTime,
-    capacity,
-  }) => {
-    interviewAPI
-      .updateInterviewSlot({ slotId, startTime, endTime, capacity })
-      .then((res) => {
-        if (res.status === SUCCESS.OK) {
-          setData(res.data.data);
-          alert('면접 시간 슬롯이 성공적으로 수정되었습니다.');
-        }
-      });
+  const handleUpdateInterviewTime = ({ slotId, startTime, endTime, capacity }) => {
+    interviewAPI.updateInterviewSlot({ slotId, startTime, endTime, capacity }).then((res) => {
+      if (res.status === SUCCESS.OK) {
+        setData(res.data.data);
+        alert('면접 시간 슬롯이 성공적으로 수정되었습니다.');
+      }
+    });
   };
 
   return (

@@ -21,12 +21,7 @@ import {
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import Modal from '../../common/Modal/Modal';
 import { Editor } from '@toast-ui/react-editor';
-import {
-  File,
-  FileContainer,
-  FileContainerTitle,
-  FileDeleteButton,
-} from '~/components/board-legacy/PostForm/PostForm.styles';
+import { File, FileContainer, FileContainerTitle, FileDeleteButton } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { ButtonContainer } from './ActivityForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
@@ -44,11 +39,7 @@ const Member = ({ member, attended, handleCheckAttendance }) => {
 
   return (
     <MemberBlock key={member.loginID}>
-      <Checkbox
-        value={member.loginID}
-        onChange={handleCheck}
-        checked={isChecked}
-      />
+      <Checkbox value={member.loginID} onChange={handleCheck} checked={isChecked} />
       {member.name}
     </MemberBlock>
   );
@@ -69,47 +60,24 @@ const ActivityAttendance = ({
 }) => {
   const { title } = activity;
   const editorRef = useRef();
-  const newSessionCount = activitySession
-    ? activitySession.sessionNumber
-    : sessionNumber;
+  const newSessionCount = activitySession ? activitySession.sessionNumber : sessionNumber;
 
-  const [date, onChangeDate] = useInput(
-    activitySession ? activitySession.date : '',
-    notEmptyValidation,
-  );
+  const [date, onChangeDate] = useInput(activitySession ? activitySession.date : '', notEmptyValidation);
 
-  const [description, onChangeDescription] = useState(
-    activitySession ? activitySession.description : '',
-  );
+  const [description, onChangeDescription] = useState(activitySession ? activitySession.description : '');
 
-  const [hour, onChangeHour] = useInput(
-    activitySession ? activitySession.hour : '',
-    notEmptyValidation,
-  );
+  const [hour, onChangeHour] = useInput(activitySession ? activitySession.hour : '', notEmptyValidation);
 
-  const [fileList, setFileList] = useState(
-    activitySession ? activitySession.fileList : [],
-  );
+  const [fileList, setFileList] = useState(activitySession ? activitySession.fileList : []);
 
-  const [attendances, setAttendances] = useState(
-    sessionAttendance
-      ? sessionAttendance
-          .filter((attendance) => attendance.attended === true)
-          .map((attendance) => attendance.member)
-      : [],
-  );
+  const [attendances, setAttendances] = useState(sessionAttendance ? sessionAttendance.filter((attendance) => attendance.attended === true).map((attendance) => attendance.member) : []);
 
   const handleCheckAttendance = (member, isChecked) => {
     if (!isChecked) {
-      setAttendances([
-        ...attendances,
-        { name: member.name, loginID: member.loginID },
-      ]);
+      setAttendances([...attendances, { name: member.name, loginID: member.loginID }]);
       return;
     }
-    setAttendances(
-      attendances.filter((attendance) => attendance.loginID !== member.loginID),
-    );
+    setAttendances(attendances.filter((attendance) => attendance.loginID !== member.loginID));
   };
 
   const handleUpdate = (e) => {
@@ -147,13 +115,7 @@ const ActivityAttendance = ({
 
   return (
     <>
-      <Modal
-        contents={errorMessage}
-        buttons={buttons}
-        visible={errorModalVisible}
-        onConfirm={onCloseErrorModal}
-        onCancel={onCloseErrorModal}
-      />
+      <Modal contents={errorMessage} buttons={buttons} visible={errorModalVisible} onConfirm={onCloseErrorModal} onCancel={onCloseErrorModal} />
       <Block>
         <WhiteBlock>
           <TitleContainer>
@@ -165,14 +127,7 @@ const ActivityAttendance = ({
           <StyledForm>
             <DateContainer>
               <Date>
-                <Input
-                  valueText={date}
-                  labelText="날짜"
-                  typeText="date"
-                  nameText="date"
-                  onChangeFunc={onChangeDate}
-                  placeholderText="YYYY-MM-DD"
-                />
+                <Input valueText={date} labelText="날짜" typeText="date" nameText="date" onChangeFunc={onChangeDate} placeholderText="YYYY-MM-DD" />
               </Date>
             </DateContainer>
             <HourContainer>
@@ -180,14 +135,7 @@ const ActivityAttendance = ({
                 <label htmlFor="hour">진행 시간</label>
                 <p>반올림하여 정수로 입력</p>
                 <div>
-                  <HourInput
-                    value={hour}
-                    label="진행 시간"
-                    type="number"
-                    name="hour"
-                    onChange={onChangeHour}
-                    placeholder="ex) 2"
-                  />
+                  <HourInput value={hour} label="진행 시간" type="number" name="hour" onChange={onChangeHour} placeholder="ex) 2" />
                   <span style={{ marginLeft: '0.5rem' }}>시간</span>
                 </div>
               </Hour>
@@ -196,26 +144,14 @@ const ActivityAttendance = ({
               <Description>
                 <label htmlFor="description">내용</label>
                 <p>예시: 파이썬의 변수에 대해 공부 / A 논문 스터디 등</p>
-                <Editor
-                  initialEditType="wysiwyg"
-                  initialValue={description}
-                  ref={editorRef}
-                  onChange={(e) => onEditorChange(e)}
-                  style={{ width: '100%' }}
-                />
-                <FileContainerTitle style={{ width: '100%' }}>
-                  첨부된 파일 목록
-                </FileContainerTitle>
+                <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} style={{ width: '100%' }} />
+                <FileContainerTitle style={{ width: '100%' }}>첨부된 파일 목록</FileContainerTitle>
                 <FileContainer style={{ width: '100%', maxWidth: '100%' }}>
                   {fileList?.length !== 0
                     ? fileList.map((file) => (
                         <File key={file}>
-                          <a href={getFileUrl(file)}>
-                            {getDecodedFileUrl(file)}
-                          </a>
-                          <FileDeleteButton
-                            onClick={(e) => handleDeleteFile(e, file)}
-                          >
+                          <a href={getFileUrl(file)}>{getDecodedFileUrl(file)}</a>
+                          <FileDeleteButton onClick={(e) => handleDeleteFile(e, file)}>
                             <DeleteFilled />
                           </FileDeleteButton>
                         </File>
@@ -223,11 +159,7 @@ const ActivityAttendance = ({
                     : '첨부된 파일 없음'}
                 </FileContainer>
                 <ButtonContainer>
-                  <FileUploadButton
-                    onSubmit={setFileList}
-                    files={fileList}
-                    multiple={true}
-                  />
+                  <FileUploadButton onSubmit={setFileList} files={fileList} multiple={true} />
                 </ButtonContainer>
               </Description>
             </DescriptionContainer>
@@ -237,31 +169,12 @@ const ActivityAttendance = ({
               <Members>
                 {sessionAttendance
                   ? sessionAttendance.map((attendance) => (
-                      <Member
-                        key={attendance.member.loginID}
-                        member={attendance.member}
-                        attended={attendance.attended}
-                        handleCheckAttendance={handleCheckAttendance}
-                      />
+                      <Member key={attendance.member.loginID} member={attendance.member} attended={attendance.attended} handleCheckAttendance={handleCheckAttendance} />
                     ))
-                  : activityMembers.map((member) => (
-                      <Member
-                        key={member.loginID}
-                        member={member}
-                        handleCheckAttendance={handleCheckAttendance}
-                      />
-                    ))}
+                  : activityMembers.map((member) => <Member key={member.loginID} member={member} handleCheckAttendance={handleCheckAttendance} />)}
               </Members>
             </MemberContainer>
-            {sessionAttendance ? (
-              <StyledActionButton onClick={handleUpdate}>
-                수정
-              </StyledActionButton>
-            ) : (
-              <StyledActionButton onClick={handleCreate}>
-                제출
-              </StyledActionButton>
-            )}
+            {sessionAttendance ? <StyledActionButton onClick={handleUpdate}>수정</StyledActionButton> : <StyledActionButton onClick={handleCreate}>제출</StyledActionButton>}
           </StyledForm>
         </WhiteBlock>
       </Block>

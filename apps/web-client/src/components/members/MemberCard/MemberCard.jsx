@@ -2,16 +2,7 @@ import colors from '~/lib/styles/colors';
 import { randomNumber } from '~/lib/utils/random';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 
-import {
-  MemberCardBlock,
-  MemberCardMajor,
-  MemberCardName,
-  MemberCardStatus,
-  MemberCardText,
-  MemberCardThumbnail,
-  MemberItem,
-  StyledLink,
-} from './MemberCard.styles';
+import { MemberCardBlock, MemberCardMajor, MemberCardName, MemberCardStatus, MemberCardText, MemberCardThumbnail, MemberItem, StyledLink } from './MemberCard.styles';
 import { MENU } from '~/constants/menus';
 
 const MemberCard = ({ member }) => {
@@ -24,10 +15,7 @@ const MemberCard = ({ member }) => {
             background: colors.mint[randomNumber(colors.mint.length)],
           }}
         >
-          <MemberCardThumbnail
-            src={getProfileImageUrl(profileImageURL)}
-            alt="member_thumbnail"
-          />
+          <MemberCardThumbnail src={getProfileImageUrl(profileImageURL)} alt="member_thumbnail" />
           <MemberCardText>
             <MemberCardName>
               {name}

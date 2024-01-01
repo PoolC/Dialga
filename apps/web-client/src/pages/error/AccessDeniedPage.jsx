@@ -41,10 +41,7 @@ const AccessDeniedPage = ({ history }) => {
   return (
     <PageBlock>
       <PageContainer>
-        <ExclamationCircleTwoTone
-          twoToneColor="red"
-          style={{ marginBottom: '20px', fontSize: '40px' }}
-        />
+        <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
         <ErrorMessage>권한이 없습니다.</ErrorMessage>
         <ActionButton
           onClick={() => {

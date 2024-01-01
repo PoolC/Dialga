@@ -16,9 +16,7 @@ function init() {
   }
 
   // base url
-  OpenAPI.BASE = import.meta.env.DEV
-    ? '/api/mincho'
-    : import.meta.env.VITE_API_BASE_URL;
+  OpenAPI.BASE = import.meta.env.DEV ? '/api/mincho' : import.meta.env.VITE_API_BASE_URL;
 }
 
 init();

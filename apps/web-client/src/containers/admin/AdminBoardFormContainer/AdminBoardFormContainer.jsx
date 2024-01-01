@@ -27,12 +27,7 @@ const AdminBoardFormContainer = ({ match, history, location }) => {
     return null;
   }
 
-  const onCreateBoard = ({
-    name,
-    urlPath,
-    readPermission,
-    writePermission,
-  }) => {
+  const onCreateBoard = ({ name, urlPath, readPermission, writePermission }) => {
     if (!name || !urlPath || !readPermission || !writePermission) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
@@ -60,12 +55,7 @@ const AdminBoardFormContainer = ({ match, history, location }) => {
       });
   };
 
-  const onUpdateBoard = ({
-    name,
-    urlPath,
-    readPermission,
-    writePermission,
-  }) => {
+  const onUpdateBoard = ({ name, urlPath, readPermission, writePermission }) => {
     if (!name || !urlPath || !readPermission || !writePermission) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();

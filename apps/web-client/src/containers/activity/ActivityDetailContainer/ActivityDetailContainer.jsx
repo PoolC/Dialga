@@ -69,16 +69,8 @@ const ActivityDetailContainer = ({ match }) => {
             alert('성공적으로 신청되었습니다.');
           }
           if (activityMemberIDs?.includes(member.user.memberId)) {
-            setActivityMemberIDs(
-              activityMemberIDs?.filter(
-                (memberID) => memberID !== member.user.memberId,
-              ),
-            );
-            setActivityMembers(
-              activityMembers?.filter(
-                (m) => m.memberID !== member.user.memberId,
-              ),
-            );
+            setActivityMemberIDs(activityMemberIDs?.filter((memberID) => memberID !== member.user.memberId));
+            setActivityMembers(activityMembers?.filter((m) => m.memberID !== member.user.memberId));
             alert('성공적으로 신청 취소되었습니다.');
           }
         }
@@ -92,9 +84,7 @@ const ActivityDetailContainer = ({ match }) => {
 
   return (
     <ActivityDetail
-      loading={
-        activityLoading || activityMembersLoading || activitySessionsLoading
-      }
+      loading={activityLoading || activityMembersLoading || activitySessionsLoading}
       activity={activity}
       activityMembers={activityMembers}
       activityMemberIDs={activityMemberIDs}

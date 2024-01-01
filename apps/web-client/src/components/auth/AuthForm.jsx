@@ -3,14 +3,7 @@ import profileImagePlaceholders from '../../constants/profileImagePlaceholders';
 import RegisterModalContainer from '../../containers/auth/RegisterModalContainer/RegisterModalContainer';
 import useInput from '../../hooks/useInput';
 import getFileUrl from '../../lib/utils/getFileUrl';
-import {
-  emailValidation,
-  idValidation,
-  notEmptyValidation,
-  passwordValidation,
-  phoneNumberValidation,
-  withdrawCheckValidation,
-} from '../../lib/utils/validation';
+import { emailValidation, idValidation, notEmptyValidation, passwordValidation, phoneNumberValidation, withdrawCheckValidation } from '../../lib/utils/validation';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import {
   FormList,
@@ -36,16 +29,7 @@ const textMap = {
   update: '회원 정보 수정',
 };
 
-export const Input = ({
-  valueText,
-  labelText,
-  typeText,
-  nameText,
-  error,
-  onChangeFunc,
-  placeholderText,
-  disabledCondition,
-}) => {
+export const Input = ({ valueText, labelText, typeText, nameText, error, onChangeFunc, placeholderText, disabledCondition }) => {
   const message = '형식이 올바르지 않습니다.';
   return (
     <>
@@ -53,86 +37,31 @@ export const Input = ({
         {labelText}
         <Warning error={error}>{message}</Warning>
       </StyledLabel>
-      <StyledInput
-        value={valueText}
-        type={typeText}
-        name={nameText}
-        id={nameText}
-        disabled={disabledCondition}
-        error={error ? 1 : 0}
-        onChange={onChangeFunc}
-        placeholder={placeholderText}
-      />
+      <StyledInput value={valueText} type={typeText} name={nameText} id={nameText} disabled={disabledCondition} error={error ? 1 : 0} onChange={onChangeFunc} placeholder={placeholderText} />
     </>
   );
 };
 
-const AuthForm = ({
-  history,
-  type,
-  onSubmit,
-  message,
-  onChangeMessage,
-  modalVisible,
-  handleModalOpen,
-  handleModalClose,
-  userInfo,
-  onUpdateMemberRoleBySelf,
-  roles,
-  onWithdraw,
-}) => {
+const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, userInfo, onUpdateMemberRoleBySelf, roles, onWithdraw }) => {
   const headerText = textMap[type];
 
-  const [id, onChangeId, idError] = useInput(
-    userInfo ? userInfo.loginID : '',
-    idValidation,
-  );
-  const [password, onChangePassword, passwordError] = useInput(
-    '',
-    passwordValidation,
-  );
-  const [name, onChangeName, nameError] = useInput(
-    userInfo ? userInfo.name : '',
-    notEmptyValidation,
-  );
-  const [email, onChangeEmail, emailError] = useInput(
-    userInfo ? userInfo.email : '',
-    emailValidation,
-  );
-  const [phoneNumber, onChangePhoneNumber, phoneNumberError] = useInput(
-    userInfo ? userInfo.phoneNumber : '',
-    phoneNumberValidation,
-  );
-  const [department, onChangeDepartment, departmentError] = useInput(
-    userInfo ? userInfo.department : '',
-    notEmptyValidation,
-  );
-  const [studentId, onChangeStudentId, studentIdError] = useInput(
-    userInfo ? userInfo.studentID : '',
-    notEmptyValidation,
-  );
-  const [introduction, onChangeIntroduction, introductionError] = useInput(
-    userInfo ? userInfo.introduction : '',
-    notEmptyValidation,
-  );
+  const [id, onChangeId, idError] = useInput(userInfo ? userInfo.loginID : '', idValidation);
+  const [password, onChangePassword, passwordError] = useInput('', passwordValidation);
+  const [name, onChangeName, nameError] = useInput(userInfo ? userInfo.name : '', notEmptyValidation);
+  const [email, onChangeEmail, emailError] = useInput(userInfo ? userInfo.email : '', emailValidation);
+  const [phoneNumber, onChangePhoneNumber, phoneNumberError] = useInput(userInfo ? userInfo.phoneNumber : '', phoneNumberValidation);
+  const [department, onChangeDepartment, departmentError] = useInput(userInfo ? userInfo.department : '', notEmptyValidation);
+  const [studentId, onChangeStudentId, studentIdError] = useInput(userInfo ? userInfo.studentID : '', notEmptyValidation);
+  const [introduction, onChangeIntroduction, introductionError] = useInput(userInfo ? userInfo.introduction : '', notEmptyValidation);
 
-  const [profileImageURL, setProfileImageURL] = useState(
-    userInfo
-      ? userInfo.profileImageURL
-        ? userInfo.profileImageURL
-        : profileImagePlaceholders[0]
-      : profileImagePlaceholders[0],
-  );
+  const [profileImageURL, setProfileImageURL] = useState(userInfo ? (userInfo.profileImageURL ? userInfo.profileImageURL : profileImagePlaceholders[0]) : profileImagePlaceholders[0]);
 
   const [role, setRole] = useState(userInfo ? userInfo.role : 'MEMBER');
 
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordCheckError, setPasswordError] = useState(false);
 
-  const [withdrawCheck, onChangeWithdrawCheck, withdrawCheckError] = useInput(
-    '',
-    withdrawCheckValidation,
-  );
+  const [withdrawCheck, onChangeWithdrawCheck, withdrawCheckError] = useInput('', withdrawCheckValidation);
 
   const handlePasswordCheckError = (input) => {
     if (password !== input) {
@@ -171,18 +100,7 @@ const AuthForm = ({
   };
 
   const updateValidation = () => {
-    return !(
-      passwordError ||
-      !password ||
-      passwordCheckError ||
-      !passwordCheck ||
-      emailError ||
-      !email ||
-      phoneNumberError ||
-      !phoneNumber ||
-      introductionError ||
-      !introduction
-    );
+    return !(passwordError || !password || passwordCheckError || !passwordCheck || emailError || !email || phoneNumberError || !phoneNumber || introductionError || !introduction);
   };
 
   const loginValidation = () => {
@@ -271,37 +189,15 @@ const AuthForm = ({
 
   return (
     <>
-      <RegisterModalContainer
-        visible={modalVisible}
-        onConfirm={handleModalClose}
-        onCancel={handleModalClose}
-        message={message}
-      />
+      <RegisterModalContainer visible={modalVisible} onConfirm={handleModalClose} onCancel={handleModalClose} message={message} />
       <Block>
         <WhiteBlock>
           <FormListHeader>
             <h2 className="form_list_title">{headerText}</h2>
           </FormListHeader>
           <FormList>
-            <Input
-              valueText={id}
-              labelText="아이디"
-              typeText="text"
-              nameText="id"
-              error={idError}
-              disabledCondition={type === 'update'}
-              onChangeFunc={onChangeId}
-              placeholderText="영/숫자 4~12자리"
-            />
-            <Input
-              valueText={password}
-              labelText="비밀번호"
-              typeText="password"
-              nameText="password"
-              error={passwordError}
-              onChangeFunc={onChangePassword}
-              placeholderText="8자리 이상"
-            />
+            <Input valueText={id} labelText="아이디" typeText="text" nameText="id" error={idError} disabledCondition={type === 'update'} onChangeFunc={onChangeId} placeholderText="영/숫자 4~12자리" />
+            <Input valueText={password} labelText="비밀번호" typeText="password" nameText="password" error={passwordError} onChangeFunc={onChangePassword} placeholderText="8자리 이상" />
             {type !== 'login' && (
               <Input
                 valueText={passwordCheck}
@@ -325,15 +221,7 @@ const AuthForm = ({
                   onChangeFunc={onChangeName}
                   placeholderText="ex) 김풀씨"
                 />
-                <Input
-                  valueText={email}
-                  labelText="이메일"
-                  typeText="email"
-                  nameText="email"
-                  error={emailError}
-                  onChangeFunc={onChangeEmail}
-                  placeholderText="ex) email@example.com"
-                />
+                <Input valueText={email} labelText="이메일" typeText="email" nameText="email" error={emailError} onChangeFunc={onChangeEmail} placeholderText="ex) email@example.com" />
                 <Input
                   valueText={phoneNumber}
                   labelText="전화번호"
@@ -367,43 +255,20 @@ const AuthForm = ({
                 <ProfileImageSelectContainer>
                   {[0, 1, 2, 3, 4].map((num) => (
                     <ProfileImageSelect key={num}>
-                      <input
-                        type="radio"
-                        value={num}
-                        onChange={onChangeProfileImageURL}
-                        checked={
-                          profileImageURL === profileImagePlaceholders[num]
-                            ? true
-                            : false
-                        }
-                      />
-                      <ProfileImage
-                        src={getFileUrl(profileImagePlaceholders[num])}
-                      />
+                      <input type="radio" value={num} onChange={onChangeProfileImageURL} checked={profileImageURL === profileImagePlaceholders[num] ? true : false} />
+                      <ProfileImage src={getFileUrl(profileImagePlaceholders[num])} />
                     </ProfileImageSelect>
                   ))}
                 </ProfileImageSelectContainer>
                 <label htmlFor="introduction">자기소개</label>
-                <AntdInput.TextArea
-                  value={introduction}
-                  name="introduction"
-                  id="introduction"
-                  cols="30"
-                  rows="5"
-                  onChange={onChangeIntroduction}
-                  placeholder="자기 소개를 적어주세요"
-                >
+                <AntdInput.TextArea value={introduction} name="introduction" id="introduction" cols="30" rows="5" onChange={onChangeIntroduction} placeholder="자기 소개를 적어주세요">
                   {introduction}
                 </AntdInput.TextArea>
               </>
             )}
             <SubmitButton onClick={handleSubmit}>{headerText}</SubmitButton>
           </FormList>
-          {type === 'login' && (
-            <StyledLink to={`/${MENU.PASSWORD}`}>
-              비밀번호를 잊어버리셨나요?
-            </StyledLink>
-          )}
+          {type === 'login' && <StyledLink to={`/${MENU.PASSWORD}`}>비밀번호를 잊어버리셨나요?</StyledLink>}
           {type === 'update' && (
             <>
               <FormListHeader>
@@ -411,10 +276,7 @@ const AuthForm = ({
               </FormListHeader>
               <FormList>
                 <>
-                  <StyledSelect
-                    value={role}
-                    onChange={(value) => setRole(value)}
-                  >
+                  <StyledSelect value={role} onChange={(value) => setRole(value)}>
                     {roles?.map((r) => (
                       <Select.Option key={r.name} value={r.name}>
                         {r.description}
@@ -444,11 +306,7 @@ const AuthForm = ({
                   onChangeFunc={onChangeWithdrawCheck}
                   placeholderText="탈퇴를 확인합니다"
                 />
-                <WithdrawalButton
-                  onClick={(e) => handleWithdraw(e)}
-                  style={{ marginLeft: '0.5rem' }}
-                  disabled={withdrawCheckError || !withdrawCheck}
-                >
+                <WithdrawalButton onClick={(e) => handleWithdraw(e)} style={{ marginLeft: '0.5rem' }} disabled={withdrawCheckError || !withdrawCheck}>
                   탈퇴
                 </WithdrawalButton>
               </FormList>

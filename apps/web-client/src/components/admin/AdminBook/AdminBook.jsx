@@ -1,16 +1,7 @@
 import ActionButton from '../../common/Buttons/ActionButton';
 
 import { MENU } from '../../../constants/menus';
-import {
-  BookListRow,
-  ButtonContainer,
-  ContentsContainer,
-  StyledActionButton,
-  StyledImage,
-  Table,
-  TableHead,
-  TitleContainer,
-} from './AdminBook.styles';
+import { BookListRow, ButtonContainer, ContentsContainer, StyledActionButton, StyledImage, Table, TableHead, TitleContainer } from './AdminBook.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import getFileUrl from '../../../lib/utils/getFileUrl';
 
@@ -44,18 +35,10 @@ const AdminBook = ({ books, onDeleteBook }) => {
                 </td>
                 <td className="book-list-row">{book.title}</td>
                 <td className="book-list-row hide">{book.author}</td>
-                <td className="book-list-row hide">
-                  {book.status === 'AVAILABLE' ? '이용 가능' : '대출중'}
-                </td>
+                <td className="book-list-row hide">{book.status === 'AVAILABLE' ? '이용 가능' : '대출중'}</td>
                 <td className="book-list-row">
-                  <StyledActionButton
-                    to={`/${MENU.ADMIN}/books/edit/${book.id}`}
-                  >
-                    편집
-                  </StyledActionButton>
-                  <StyledActionButton onClick={(e) => handleDelete(e, book.id)}>
-                    삭제
-                  </StyledActionButton>
+                  <StyledActionButton to={`/${MENU.ADMIN}/books/edit/${book.id}`}>편집</StyledActionButton>
+                  <StyledActionButton onClick={(e) => handleDelete(e, book.id)}>삭제</StyledActionButton>
                 </td>
               </BookListRow>
             ))}

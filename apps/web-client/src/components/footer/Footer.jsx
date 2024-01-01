@@ -1,12 +1,5 @@
 import { AimOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
-import {
-  FooterBlock,
-  FooterContent,
-  FooterContentText,
-  FooterDivider,
-  FooterIcon,
-  FooterItem,
-} from './Footer.styles';
+import { FooterBlock, FooterContent, FooterContentText, FooterDivider, FooterIcon, FooterItem } from './Footer.styles';
 
 const Footer = ({ presidentName, location, phoneNumber }) => {
   const date = new Date();
@@ -48,9 +41,7 @@ const Footer = ({ presidentName, location, phoneNumber }) => {
         </FooterContent>
         <br />
         <FooterContent>
-          <FooterContentText>
-            구인/홍보 문의는 이메일로 연락주시기 바랍니다.
-          </FooterContentText>
+          <FooterContentText>구인/홍보 문의는 이메일로 연락주시기 바랍니다.</FooterContentText>
         </FooterContent>
       </FooterItem>
       <FooterDivider />
@@ -63,9 +54,7 @@ const Footer = ({ presidentName, location, phoneNumber }) => {
           </FooterContentText>
         </div>
         <div className="footer_rights_content">
-          <FooterContentText>
-            ⓒ {thisYear} All Rights Reserved. PoolC
-          </FooterContentText>
+          <FooterContentText>ⓒ {thisYear} All Rights Reserved. PoolC</FooterContentText>
         </div>
       </FooterItem>
     </FooterBlock>

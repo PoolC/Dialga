@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  ButtonContainer,
-  ContentContainer,
-  HeaderBar,
-  ModalBlock,
-  ModalContainer,
-} from './Modal.styles.js';
+import { ButtonContainer, ContentContainer, HeaderBar, ModalBlock, ModalContainer } from './Modal.styles.js';
 import { CloseOutlined } from '@ant-design/icons';
 import colors from '~/lib/styles/colors.js';
 
@@ -25,17 +19,9 @@ const Modal = ({ contents, buttons, visible, onConfirm, onCancel }) => {
 
   return (
     <ModalBlock disappear={!visible} onClick={onCancel}>
-      <ModalContainer
-        disappear={!visible}
-        className="modal-container"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <ModalContainer disappear={!visible} className="modal-container" onClick={(e) => e.stopPropagation()}>
         <HeaderBar>
-          <CloseOutlined
-            twoToneColor={colors.brown[1]}
-            style={{ marginRight: '15px', cursor: 'pointer' }}
-            onClick={onCancel}
-          />
+          <CloseOutlined twoToneColor={colors.brown[1]} style={{ marginRight: '15px', cursor: 'pointer' }} onClick={onCancel} />
         </HeaderBar>
         <ContentContainer>{contents}</ContentContainer>
         <ButtonContainer>{buttons}</ButtonContainer>

@@ -1,14 +1,7 @@
 import ActionButton from '../../common/Buttons/ActionButton';
 
 import { MENU } from '../../../constants/menus';
-import {
-  ButtonContainer,
-  ContentsContainer,
-  ProjectListRow,
-  Table,
-  TableHead,
-  TitleContainer,
-} from './AdminProject.styles';
+import { ButtonContainer, ContentsContainer, ProjectListRow, Table, TableHead, TitleContainer } from './AdminProject.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 
 const AdminProject = ({ projects, onDeleteProject }) => {
@@ -20,9 +13,7 @@ const AdminProject = ({ projects, onDeleteProject }) => {
     <WhiteNarrowBlock>
       <TitleContainer>프로젝트 관리</TitleContainer>
       <ButtonContainer>
-        <ActionButton to={`/${MENU.ADMIN}/projects/new`}>
-          프로젝트 생성
-        </ActionButton>
+        <ActionButton to={`/${MENU.ADMIN}/projects/new`}>프로젝트 생성</ActionButton>
       </ButtonContainer>
       <ContentsContainer>
         <Table>
@@ -39,14 +30,8 @@ const AdminProject = ({ projects, onDeleteProject }) => {
                 <td className="project-list-row">{project.name}</td>
                 <td className="project-list-row">{project.genre}</td>
                 <td className="project-list-row">
-                  <ActionButton
-                    to={`/${MENU.ADMIN}/projects/edit/${project.id}`}
-                  >
-                    편집
-                  </ActionButton>
-                  <ActionButton onClick={(e) => handleDelete(e, project.id)}>
-                    삭제
-                  </ActionButton>
+                  <ActionButton to={`/${MENU.ADMIN}/projects/edit/${project.id}`}>편집</ActionButton>
+                  <ActionButton onClick={(e) => handleDelete(e, project.id)}>삭제</ActionButton>
                 </td>
               </ProjectListRow>
             ))}

@@ -53,81 +53,20 @@ const AdminPage = ({ history }) => {
     <AdminContainerBlock>
       <AdminMenu menus={menus} />
       <Switch>
-        <Route
-          component={AdminInfoContainer}
-          path={`/${MENU.ADMIN}/info`}
-          exact
-        />
+        <Route component={AdminInfoContainer} path={`/${MENU.ADMIN}/info`} exact />
 
-        <Route
-          component={AdminMemberContainer}
-          path={`/${MENU.ADMIN}/members`}
-          exact
-        />
-        <Route
-          component={AdminPassContainer}
-          path={`/${MENU.ADMIN}/pass`}
-          exact
-        />
-        <Route
-          component={AdminBoardFormContainer}
-          path={[
-            `/${MENU.ADMIN}/boards/new`,
-            `/${MENU.ADMIN}/boards/edit/:boardID`,
-          ]}
-          exact
-        />
-        <Route
-          component={AdminBoardContainer}
-          path={`/${MENU.ADMIN}/boards`}
-          exact
-        />
-        <Route
-          component={AdminProjectFormContainer}
-          path={[
-            `/${MENU.ADMIN}/projects/edit/:projectID`,
-            `/${MENU.ADMIN}/projects/new`,
-          ]}
-          exact
-        />
-        <Route
-          component={AdminProjectContainer}
-          path={`/${MENU.ADMIN}/projects`}
-          exact
-        />
-        <Route
-          component={AdminActivityContainer}
-          path={`/${MENU.ADMIN}/activities`}
-          exact
-        />
-        <Route
-          component={AdminBookFormContainer}
-          path={[
-            `/${MENU.ADMIN}/books/new`,
-            `/${MENU.ADMIN}/books/edit/:bookID`,
-          ]}
-          exact
-        />
-        <Route
-          component={AdminBookContainer}
-          path={`/${MENU.ADMIN}/books`}
-          exact
-        />
-        <Route
-          component={AdminInterviewTimeContainer}
-          path={`/${MENU.ADMIN}/interview-time`}
-          exact
-        />
-        <Route
-          component={AdminInterviewContainer}
-          path={`/${MENU.ADMIN}/interview`}
-          exact
-        />
-        <Route
-          component={AdminBadgeContainer}
-          path={`/${MENU.ADMIN}/badge`}
-          exact
-        />
+        <Route component={AdminMemberContainer} path={`/${MENU.ADMIN}/members`} exact />
+        <Route component={AdminPassContainer} path={`/${MENU.ADMIN}/pass`} exact />
+        <Route component={AdminBoardFormContainer} path={[`/${MENU.ADMIN}/boards/new`, `/${MENU.ADMIN}/boards/edit/:boardID`]} exact />
+        <Route component={AdminBoardContainer} path={`/${MENU.ADMIN}/boards`} exact />
+        <Route component={AdminProjectFormContainer} path={[`/${MENU.ADMIN}/projects/edit/:projectID`, `/${MENU.ADMIN}/projects/new`]} exact />
+        <Route component={AdminProjectContainer} path={`/${MENU.ADMIN}/projects`} exact />
+        <Route component={AdminActivityContainer} path={`/${MENU.ADMIN}/activities`} exact />
+        <Route component={AdminBookFormContainer} path={[`/${MENU.ADMIN}/books/new`, `/${MENU.ADMIN}/books/edit/:bookID`]} exact />
+        <Route component={AdminBookContainer} path={`/${MENU.ADMIN}/books`} exact />
+        <Route component={AdminInterviewTimeContainer} path={`/${MENU.ADMIN}/interview-time`} exact />
+        <Route component={AdminInterviewContainer} path={`/${MENU.ADMIN}/interview`} exact />
+        <Route component={AdminBadgeContainer} path={`/${MENU.ADMIN}/badge`} exact />
         <Route component={AdminHomeContainer} path={`/${MENU.ADMIN}`} exact />
       </Switch>
     </AdminContainerBlock>

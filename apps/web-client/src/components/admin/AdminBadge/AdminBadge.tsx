@@ -28,8 +28,7 @@ type MenuType = 'BADGE' | 'MEMBER_BADGE';
 export default function AdminBadge() {
   const { styles } = useStyles();
   const searchParams = useSearchParams();
-  const menuType: MenuType = (searchParams.get('menuType') ??
-    'BADGE') as MenuType;
+  const menuType: MenuType = (searchParams.get('menuType') ?? 'BADGE') as MenuType;
   const history = useHistory();
 
   const items: { key: MenuType; label: string; children: JSX.Element }[] = [
@@ -45,18 +44,12 @@ export default function AdminBadge() {
     },
   ];
 
-  const onTabChange = (key: string) =>
-    history.push(`/${MENU.ADMIN}/badge?${stringify({ menuType: key })}`);
+  const onTabChange = (key: string) => history.push(`/${MENU.ADMIN}/badge?${stringify({ menuType: key })}`);
 
   return (
     <WhiteNarrowBlock>
       <div className={styles.titleConatiner}>뱃지관리</div>
-      <Tabs
-        className={styles.fullWidth}
-        items={items}
-        defaultActiveKey={menuType}
-        onChange={onTabChange}
-      />
+      <Tabs className={styles.fullWidth} items={items} defaultActiveKey={menuType} onChange={onTabChange} />
     </WhiteNarrowBlock>
   );
 }

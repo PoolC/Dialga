@@ -31,17 +31,11 @@ const ActivityFormContainer = ({ match, history }) => {
           authAPI
             .loadUser()
             .then((user) => {
-              if (
-                user.status === SUCCESS.OK &&
-                user.data.isActivated === false
-              ) {
+              if (user.status === SUCCESS.OK && user.data.isActivated === false) {
                 history.push(`/${MENU.FORBIDDEN}`);
                 return;
               }
-              if (
-                user.status === SUCCESS.OK &&
-                user.data.loginID !== res.data.data.host.loginID
-              ) {
+              if (user.status === SUCCESS.OK && user.data.loginID !== res.data.data.host.loginID) {
                 history.push(`/${MENU.FORBIDDEN}`);
                 return;
               }
@@ -59,26 +53,8 @@ const ActivityFormContainer = ({ match, history }) => {
     }
   }, [activityID, memberId, history]);
 
-  const onCreateActivity = ({
-    title,
-    description,
-    startDate,
-    seminar,
-    classHour,
-    hour,
-    capacity,
-    tags,
-    fileList,
-  }) => {
-    if (
-      !title ||
-      !description ||
-      !startDate ||
-      !classHour ||
-      !hour ||
-      !capacity ||
-      !tags
-    ) {
+  const onCreateActivity = ({ title, description, startDate, seminar, classHour, hour, capacity, tags, fileList }) => {
+    if (!title || !description || !startDate || !classHour || !hour || !capacity || !tags) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
       return;
@@ -110,26 +86,8 @@ const ActivityFormContainer = ({ match, history }) => {
       });
   };
 
-  const onUpdateActivity = ({
-    title,
-    description,
-    startDate,
-    seminar,
-    classHour,
-    hour,
-    capacity,
-    tags,
-    fileList,
-  }) => {
-    if (
-      !title ||
-      !description ||
-      !startDate ||
-      !classHour ||
-      !hour ||
-      !capacity ||
-      !tags
-    ) {
+  const onUpdateActivity = ({ title, description, startDate, seminar, classHour, hour, capacity, tags, fileList }) => {
+    if (!title || !description || !startDate || !classHour || !hour || !capacity || !tags) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
       return;

@@ -15,9 +15,7 @@ const MemberList = ({ members, loading }) => {
         {!loading && (
           <StyledMemberList>
             {members
-              .filter(
-                (member) => !UNAUTHORIZED_MEMBER_ROLES.includes(member.role),
-              )
+              .filter((member) => !UNAUTHORIZED_MEMBER_ROLES.includes(member.role))
               .map((member) => (
                 <MemberCard key={member.loginID} member={member} />
               ))}

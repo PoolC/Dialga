@@ -39,20 +39,8 @@ const AdminMemberContainer = ({ history }) => {
     memberAPI.acceptMember(loginID).then((res) => {
       if (res.status === SUCCESS.OK) {
         alert('회원 승인이 완료되었습니다.');
-        setMembers(
-          members.map((member) =>
-            member.loginID === loginID
-              ? { ...member, isActivated: true }
-              : member,
-          ),
-        );
-        setSearchMembers(
-          searchMembers.map((member) =>
-            member.loginID === loginID
-              ? { ...member, isActivated: true }
-              : member,
-          ),
-        );
+        setMembers(members.map((member) => (member.loginID === loginID ? { ...member, isActivated: true } : member)));
+        setSearchMembers(searchMembers.map((member) => (member.loginID === loginID ? { ...member, isActivated: true } : member)));
       }
     });
   };
@@ -62,9 +50,7 @@ const AdminMemberContainer = ({ history }) => {
       if (res.status === SUCCESS.OK) {
         alert('회원 탈퇴가 완료되었습니다.');
         setMembers(members.filter((member) => member.loginID !== loginID));
-        setSearchMembers(
-          searchMembers.filter((member) => member.loginID !== loginID),
-        );
+        setSearchMembers(searchMembers.filter((member) => member.loginID !== loginID));
       }
     });
   };
@@ -73,20 +59,8 @@ const AdminMemberContainer = ({ history }) => {
     memberAPI.toggleAdmin({ loginID, isAdmin }).then((res) => {
       if (res.status === SUCCESS.OK) {
         alert('관리자 임명이 완료되었습니다.');
-        setMembers(
-          members.map((member) =>
-            member.loginID === loginID
-              ? { ...member, isAdmin: !isAdmin }
-              : member,
-          ),
-        );
-        setSearchMembers(
-          searchMembers.map((member) =>
-            member.loginID === loginID
-              ? { ...member, isAdmin: !isAdmin }
-              : member,
-          ),
-        );
+        setMembers(members.map((member) => (member.loginID === loginID ? { ...member, isAdmin: !isAdmin } : member)));
+        setSearchMembers(searchMembers.map((member) => (member.loginID === loginID ? { ...member, isAdmin: !isAdmin } : member)));
       }
     });
   };
@@ -95,16 +69,8 @@ const AdminMemberContainer = ({ history }) => {
     memberAPI.updateMemberRole({ loginID, role }).then((res) => {
       if (res.status === SUCCESS.OK) {
         alert('회원 상태 변경이 완료되었습니다.');
-        setMembers(
-          members.map((member) =>
-            member.loginID === loginID ? { ...member, role: role } : member,
-          ),
-        );
-        setSearchMembers(
-          searchMembers.map((member) =>
-            member.loginID === loginID ? { ...member, role: role } : member,
-          ),
-        );
+        setMembers(members.map((member) => (member.loginID === loginID ? { ...member, role: role } : member)));
+        setSearchMembers(searchMembers.map((member) => (member.loginID === loginID ? { ...member, role: role } : member)));
       }
     });
   };

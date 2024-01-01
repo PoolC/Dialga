@@ -185,8 +185,7 @@ const BookDetailButton = styled(ActionButton)`
 `;
 
 const BookCard = ({ book, isLogin, user, onBorrowBook, onReturnBook }) => {
-  const { id, title, author, imageURL, status, info, borrower, borrowDate } =
-    book;
+  const { id, title, author, imageURL, status, info, borrower, borrowDate } = book;
 
   const [animate, setAnimate] = useState(false);
   const [open, setOpen] = useState(false);
@@ -226,13 +225,7 @@ const BookCard = ({ book, isLogin, user, onBorrowBook, onReturnBook }) => {
 
   return (
     <>
-      <BookModalContainer
-        visible={modalVisible}
-        bookTitle={title}
-        status={status}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      <BookModalContainer visible={modalVisible} bookTitle={title} status={status} onConfirm={handleConfirm} onCancel={handleCancel} />
       <BookCardBlock>
         <BookCardContainer open={open} animate={animate} onClick={handleCard}>
           <BookInfoContainer>
@@ -241,11 +234,7 @@ const BookCard = ({ book, isLogin, user, onBorrowBook, onReturnBook }) => {
           </BookInfoContainer>
           <BookStatus>
             {status === 'AVAILABLE' ? '이용 가능' : '대출중'}
-            {open ? (
-              <CaretUpOutlined style={{ marginLeft: '8px' }} />
-            ) : (
-              <CaretDownOutlined style={{ marginLeft: '8px' }} />
-            )}
+            {open ? <CaretUpOutlined style={{ marginLeft: '8px' }} /> : <CaretDownOutlined style={{ marginLeft: '8px' }} />}
           </BookStatus>
         </BookCardContainer>
         <BookContentsContainer open={open}>
@@ -269,15 +258,9 @@ const BookCard = ({ book, isLogin, user, onBorrowBook, onReturnBook }) => {
             {isLogin &&
               isAuthorizedRole(user.role) &&
               (status === 'AVAILABLE' ? (
-                <BookDetailButton onClick={handleModalOpen}>
-                  대출
-                </BookDetailButton>
+                <BookDetailButton onClick={handleModalOpen}>대출</BookDetailButton>
               ) : (
-                user.memberId === borrower?.loginID && (
-                  <BookDetailButton onClick={handleModalOpen}>
-                    반납
-                  </BookDetailButton>
-                )
+                user.memberId === borrower?.loginID && <BookDetailButton onClick={handleModalOpen}>반납</BookDetailButton>
               ))}
           </BookDetailContainer>
         </BookContentsContainer>

@@ -28,13 +28,7 @@ const AdminInterviewContainer = () => {
     });
   };
 
-  return (
-    <AdminInterview
-      data={data}
-      loading={loading}
-      handleCancelInterview={handleCancelInterview}
-    />
-  );
+  return <AdminInterview data={data} loading={loading} handleCancelInterview={handleCancelInterview} />;
 };
 
 export default AdminInterviewContainer;
