@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import colors from '../../../lib/styles/colors';
-import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
+import colors from '../../lib/styles/colors';
+import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
 
 const Title = styled.h2`
   margin-bottom: 4rem;

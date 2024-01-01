@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 import getFileUrl from '../../lib/utils/getFileUrl';
 import { Viewer } from '@toast-ui/react-editor';
 import colors from '../../lib/styles/colors';
-import Spinner from '../common/Spinner/Spinner';
+import { PoolcControllerService, queryKey, useAppQuery } from '~/lib/api-v2';
+import { useAppSuspenseQuery } from '~/lib/api-v2/useAppSuspenseQuery';
 
 const Title = styled.h2`
   margin-bottom: 2rem;
@@ -77,20 +78,20 @@ const StyledImage = styled.img`
   max-width: 400px;
 `;
 
-const Intro = ({ loading, introduction, locationUrl }) => {
+const Intro = () => {
+  const { data: info } = useAppSuspenseQuery({
+    queryKey: queryKey.poolc.poolc,
+    queryFn: PoolcControllerService.findPoolcUsingGet,
+  });
+
   return (
     <WhiteNarrowBlock>
       <Title>PoolC 소개</Title>
-      {loading && <Spinner />}
-      {!loading && (
-        <>
-          <Body>
-            <Viewer initialValue={introduction} />
-          </Body>
-          <Title>동아리방 위치</Title>
-          <StyledImage src={getFileUrl(locationUrl)} />
-        </>
-      )}
+      <Body>
+        <Viewer initialValue={info.introduction ?? ''} />
+      </Body>
+      <Title>동아리방 위치</Title>
+      <StyledImage src={getFileUrl(info.locationUrl)} />
     </WhiteNarrowBlock>
   );
 };

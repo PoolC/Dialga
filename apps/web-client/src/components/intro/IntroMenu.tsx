@@ -1,11 +1,14 @@
-import { withRouter } from 'react-router-dom';
-import { MENU } from '../../../constants/menus';
-import { SelectedLinkButton } from '../../../styles/common/Button.styles';
-import { MenuBlock, MenuItem, MenuList } from '../../../styles/common/Menu.styles';
-import LinkButton from '../../common/Buttons/LinkButton';
+import { useLocation } from 'react-router-dom';
+import { Menu } from '~/pages/intro/IntroPage';
+import { MENU } from '../../constants/menus';
+import { SelectedLinkButton } from '../../styles/common/Button.styles';
+import { MenuBlock, MenuItem, MenuList } from '../../styles/common/Menu.styles';
+import LinkButton from '../common/Buttons/LinkButton';
 
-const IntroMenu = ({ menus, location }) => {
+const IntroMenu = ({ menus }: { menus: Menu[] }) => {
+  const location = useLocation();
   const currentLocation = location.pathname.replace('/intro', '');
+
   return (
     <MenuBlock>
       <MenuList>
@@ -25,4 +28,4 @@ const IntroMenu = ({ menus, location }) => {
   );
 };
 
-export default withRouter(IntroMenu);
+export default IntroMenu;
