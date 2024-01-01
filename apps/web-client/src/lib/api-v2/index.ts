@@ -6,3 +6,5 @@ export * from './useAppMutation';
 export * from './useAppQueries';
 export * from './useAppInfiniteQuery';
 export * from './customApi';
+export * from './useAppSuspenseQueries';
+export * from './useAppSuspenseQuery';

@@ -1,7 +1,6 @@
-import ActionButton from '../../common/Buttons/ActionButton';
-
+import ActionButton from '~/common/Buttons/ActionButton';
+import { WhiteNarrowBlock } from '~/styles/common/Block.styles';
 import { ActivityListRow, ContentsContainer, Table, TableHead, TitleContainer } from './AdminActivity.styles';
-import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 
 const AdminActivity = ({ activities, onOpenActivity, onCloseActivity, onDeleteActivity }) => {
   const handleClose = (e, activityID) => {

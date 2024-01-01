@@ -1,12 +1,11 @@
-import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppQueries } from '~/lib/api-v2';
-import Carousel from '~/components/home/Carousel';
+import { createStyles } from 'antd-style';
 import ApplyBanner from '~/components/home/ApplyBanner';
+import Carousel from '~/components/home/Carousel';
+import RecentNotice from '~/components/home/RecentNotice';
 import RecentProject from '~/components/home/RecentProject';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
-import RecentNotice from '~/components/home/RecentNotice';
-import { useAppSuspeneseQueries } from '~/lib/api-v2/useAppSuspenseQueries';
-import { createStyles } from 'antd-style';
 
 const useStyles = createStyles(({ css }) => ({
   block: css`
