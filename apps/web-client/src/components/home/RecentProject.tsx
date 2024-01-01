@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import ProjectCard from '../../projects/ProjectCard/ProjectCard';
+import ProjectCard from '../projects/ProjectCard/ProjectCard';
 import { NextButton, PrevButton, RecentProjectBlock, RecentProjectList, StyledLink } from './RecentProject.styles';
 import { LeftCircleOutlined, LeftOutlined, PushpinTwoTone, RightOutlined } from '@ant-design/icons';
+import { ProjectResponse } from '~/lib/api-v2';
 
-const RecentProject = ({ projects }) => {
-  const viewport = useRef(null);
-  const target_0 = useRef(null);
-  const target_1 = useRef(null);
-  const target_2 = useRef(null);
-  const target_3 = useRef(null);
-  const target_4 = useRef(null);
-  const target_5 = useRef(null);
-  const target_6 = useRef(null);
+const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
+  const viewport = useRef<HTMLUListElement | null>(null);
+  const target_0 = useRef<HTMLDivElement | null>(null);
+  const target_1 = useRef<HTMLDivElement | null>(null);
+  const target_2 = useRef<HTMLDivElement | null>(null);
+  const target_3 = useRef<HTMLDivElement | null>(null);
+  const target_4 = useRef<HTMLDivElement | null>(null);
+  const target_5 = useRef<HTMLDivElement | null>(null);
+  const target_6 = useRef<HTMLDivElement | null>(null);
   const targetRefs = [target_0, target_1, target_2, target_3, target_4, target_5, target_6];
 
   const [index, setIndex] = useState(0);
@@ -23,7 +24,7 @@ const RecentProject = ({ projects }) => {
       threshold: 0.3,
     };
 
-    const handleIntersection = (entries, observer) => {
+    const handleIntersection: IntersectionObserverCallback = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           if (entry.boundingClientRect.x < 0) {
@@ -55,10 +56,15 @@ const RecentProject = ({ projects }) => {
   }, [viewport]);
 
   const handleClickPrev = () => {
-    let step = Math.floor(viewport.current.getBoundingClientRect().width / 270);
+    const step = Math.floor(viewport.current!.getBoundingClientRect().width / 270);
     const newIndex = index - step < 0 ? 0 : index - step;
     setIndex(newIndex);
     const targetCard = document.querySelector(`#recent-project-card${newIndex}`);
+
+    if (!targetCard) {
+      return;
+    }
+
     targetCard.scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
@@ -67,12 +73,14 @@ const RecentProject = ({ projects }) => {
   };
 
   const handleClickNext = () => {
-    let targetCard;
-    let newIndex;
-    let step = Math.floor(viewport.current.getBoundingClientRect().width / 270);
-    newIndex = index + step > 6 ? 6 : index + step;
+    const step = Math.floor(viewport.current!.getBoundingClientRect().width / 270);
+    const newIndex = index + step > 6 ? 6 : index + step;
     setIndex(newIndex);
-    targetCard = document.querySelector(`#recent-project-card${newIndex}`);
+    const targetCard = document.querySelector(`#recent-project-card${newIndex}`);
+
+    if (!targetCard) {
+      return;
+    }
 
     targetCard.scrollIntoView({
       behavior: 'smooth',
@@ -84,7 +92,7 @@ const RecentProject = ({ projects }) => {
   return (
     <>
       <RecentProjectBlock>
-        <PrevButton index={index} onClick={handleClickPrev}>
+        <PrevButton aria-index={index} onClick={handleClickPrev}>
           <LeftOutlined />
         </PrevButton>
         <h3 className="project_container_title">
@@ -102,7 +110,7 @@ const RecentProject = ({ projects }) => {
             );
           })}
         </RecentProjectList>
-        <NextButton index={index} onClick={handleClickNext}>
+        <NextButton aria-index={index} onClick={handleClickNext}>
           <RightOutlined />
         </NextButton>
       </RecentProjectBlock>

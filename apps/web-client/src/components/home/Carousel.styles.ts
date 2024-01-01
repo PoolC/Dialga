@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import colors from '../../../lib/styles/colors';
+import colors from '../../lib/styles/colors';
 
 export const CarouselBlock = styled.div`
   display: flex;

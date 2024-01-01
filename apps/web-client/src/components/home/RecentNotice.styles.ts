@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
-import colors from '../../../lib/styles/colors';
+import colors from '../../lib/styles/colors';
 
 export const RecentNoticeBlock = styled.div`
   display: flex;

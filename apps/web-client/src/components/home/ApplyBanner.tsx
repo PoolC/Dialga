@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { MENU } from '../../../constants/menus';
-import colors from '../../../lib/styles/colors';
-import { withRouter } from 'react-router-dom';
+import { MENU } from '../../constants/menus';
+import colors from '../../lib/styles/colors';
+import { useHistory } from 'react-router-dom';
 
 const BannerBlock = styled.div`
   display: flex;
@@ -29,20 +29,18 @@ export const Banner = styled.div`
   &:hover {
     transition: 0.3s;
     opacity: 0.75;
-    //background-color: ${colors.mint[1]};
   }
 `;
 
-const ApplyBanner = ({ history }) => {
+export default function ApplyBanner() {
+  const history = useHistory();
+
   const redirectToApplyPage = () => {
     history.push(`/${MENU.APPLY}`);
   };
   return (
     <BannerBlock>
-      {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
       <Banner onClick={redirectToApplyPage}>PoolC 신입 모집 지원하러 가기 ✨</Banner>
     </BannerBlock>
   );
-};
-
-export default withRouter(ApplyBanner);
+}

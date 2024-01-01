@@ -1,9 +1,10 @@
-import { MENU } from '../../../constants/menus';
+import { MENU } from '../../constants/menus';
 import { MainNoticeContents, NoticeContainerTitle, RecentNoticeBlock, RecentNoticeCardDate, RecentNoticeCardTitle, RecentNoticeItem, RecentNoticeList, StyledLink } from './RecentNotice.styles';
 import { dayjs } from '~/lib/utils/dayjs';
 import { PushpinTwoTone } from '@ant-design/icons';
+import { PostResponse } from '~/lib/api-v2';
 
-const RecentNotice = ({ notices }) => {
+const RecentNotice = ({ notices }: { notices: PostResponse[] }) => {
   return (
     <RecentNoticeBlock>
       <NoticeContainerTitle>
@@ -14,7 +15,7 @@ const RecentNotice = ({ notices }) => {
       </NoticeContainerTitle>
       <MainNoticeContents>
         <RecentNoticeList>
-          {notices?.map((notice) => (
+          {notices.map((notice) => (
             <RecentNoticeItem key={notice.postId}>
               <RecentNoticeCardTitle>
                 <StyledLink to={`/${MENU.BOARD}/${notice.postId}`}>{notice.title}</StyledLink>
