@@ -21,7 +21,7 @@ const useStyles = createStyles(({ css }) => ({
 export default function HomeEntry() {
   const { styles } = useStyles();
 
-  const [{ data: poolcInfo, refetch }, { data: projectInfo }, { data: noticeInfo }] = useAppSuspeneseQueries({
+  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] = useAppSuspeneseQueries({
     queries: [
       {
         queryKey: queryKey.poolc.poolc,
@@ -50,7 +50,6 @@ export default function HomeEntry() {
 
   return (
     <div className={styles.block}>
-      <button onClick={() => refetch()}>click</button>
       <Carousel />
       {isHideApplyBanner ? null : <ApplyBanner />}
       <RecentNotice notices={noticeInfo.posts?.slice(0, 5) ?? []} />

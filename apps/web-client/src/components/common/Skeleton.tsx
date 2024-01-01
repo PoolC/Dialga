@@ -23,6 +23,7 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function Skeleton() {
   const { styles } = useStyles();
+
   return (
     <div className={styles.block}>
       <div className={styles.skeletonWrap}>
