@@ -1,10 +1,10 @@
 import { Route, Switch, withRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
-import IntroMenu from '../../components/intro/IntroMenu/IntroMenu';
+import IntroMenu from '../../components/intro/IntroMenu';
 import { MENU } from '../../constants/menus';
-import FAQContainer from '../../containers/intro/FAQContainer/FAQContainer';
-import IntroContainer from '../../containers/intro/IntroContainer';
-import SNSContainer from '../../containers/intro/SNSContainer/SNSContainer';
+import IntroPoolcEntry from '../../components/intro/IntroPoolcEntry';
+import IntroFAQ from '~/components/intro/IntroFAQ';
+import IntroSNS from '~/components/intro/IntroSNS';
 
 const IntroPageBlock = styled.div`
   position: relative;
@@ -20,22 +20,28 @@ const IntroPageBlock = styled.div`
   }
 `;
 
-const IntroPage = ({ location }) => {
-  const menus = [
+export type Menu = {
+  name: string;
+  url: string;
+};
+
+const IntroPage = () => {
+  const menus: Menu[] = [
     { name: 'PoolC 소개', url: '' },
     { name: '자주 묻는 질문', url: '/faq' },
     { name: 'SNS', url: '/sns' },
   ];
+
   return (
     <IntroPageBlock>
       <IntroMenu menus={menus} />
       <Switch>
-        <Route component={FAQContainer} path={`/${MENU.INTRO}/faq`} exact />
-        <Route component={SNSContainer} path={`/${MENU.INTRO}/sns`} exact />
-        <Route component={IntroContainer} path={`/${MENU.INTRO}`} exact />
+        <Route component={IntroFAQ} path={`/${MENU.INTRO}/faq`} exact />
+        <Route component={IntroSNS} path={`/${MENU.INTRO}/sns`} exact />
+        <Route component={IntroPoolcEntry} path={`/${MENU.INTRO}`} exact />
       </Switch>
     </IntroPageBlock>
   );
 };
 
-export default withRouter(IntroPage);
+export default IntroPage;
