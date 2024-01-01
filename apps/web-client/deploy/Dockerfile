@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN yarn set version 3.6.1
-RUN yarn install --immutable
+RUN yarn install --immutable --immutable-cache
 RUN yarn web-client codegen
 ENTRYPOINT yarn web-client build
 
