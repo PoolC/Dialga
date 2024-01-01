@@ -92,7 +92,7 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
   return (
     <>
       <RecentProjectBlock>
-        <PrevButton aria-index={index} onClick={handleClickPrev}>
+        <PrevButton onClick={handleClickPrev}>
           <LeftOutlined />
         </PrevButton>
         <h3 className="project_container_title">
@@ -110,7 +110,7 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
             );
           })}
         </RecentProjectList>
-        <NextButton aria-index={index} onClick={handleClickNext}>
+        <NextButton onClick={handleClickNext}>
           <RightOutlined />
         </NextButton>
       </RecentProjectBlock>
