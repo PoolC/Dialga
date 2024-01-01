@@ -220,7 +220,7 @@ export default function BoardDetailPage() {
       );
     }
 
-    if (isPostError) {
+    if (isPostError || !post) {
       return <Result status="500" subTitle="에러가 발생했습니다." />;
     }
 

@@ -156,7 +156,11 @@ export default function MyPage() {
       },
       {
         onSuccess() {
-          queryClient.invalidateQueries(queryKey.member.me).catch(console.log);
+          queryClient
+            .invalidateQueries({
+              queryKey: queryKey.member.me,
+            })
+            .catch(console.log);
         },
       },
     );

@@ -12,7 +12,8 @@ export const useAppMutation = <TData = unknown, TError = unknown, TVariables = v
   ...rest
 }: UseMutationOptions<TData, TError, TVariables, TContext>): UseMutationResult<TData, TError, TVariables, TContext> => {
   const message = useMessage();
-  const mutationResults = useMutation(mutationFn!, {
+  const mutationResults = useMutation({
+    mutationFn,
     onError() {
       message.error('에러가 발생했습니다. 잠시 후 다시 시도해주세요.');
     },
@@ -22,7 +23,7 @@ export const useAppMutation = <TData = unknown, TError = unknown, TVariables = v
   return {
     ...mutationResults,
     mutate: (...params: [TVariables]) => {
-      if (!mutationResults.isLoading) {
+      if (!mutationResults.isPending) {
         mutationResults.mutate(...params);
       }
     },

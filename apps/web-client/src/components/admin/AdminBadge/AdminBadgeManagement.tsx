@@ -42,7 +42,10 @@ export default function AdminBadgeManagement() {
     queryFn: BadgeControllerService.getAllBadgeUsingGet,
   });
 
-  const onRefecthAllBadges = () => queryClient.invalidateQueries(queryKey.badge.all);
+  const onRefecthAllBadges = () =>
+    queryClient.invalidateQueries({
+      queryKey: queryKey.badge.all,
+    });
 
   const { mutate: deleteBadge } = useAppMutation({
     mutationFn: BadgeControllerService.deleteBadgeUsingDelete,

@@ -140,7 +140,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
     <div className={styles.wrapper}>
       <div className={styles.topArea}>{renderWriteButton()}</div>
       {match(boardListQuery)
-        .with({ status: 'loading' }, () => <Skeleton />)
+        .with({ status: 'pending' }, () => <Skeleton />)
         .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
         .with({ status: 'success' }, ({ data: { posts: postList, maxPage } }) => {
           if (!postList || postList.length === 0) {
