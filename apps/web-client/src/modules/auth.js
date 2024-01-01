@@ -37,9 +37,7 @@ export const logout = createAction(LOGOUT);
 
 export const initLogin = createAction(LOGIN_INIT);
 
-export const handleExpiredAccessToken = createAction(
-  HANDLE_EXPIRED_ACCESS_TOKEN,
-);
+export const handleExpiredAccessToken = createAction(HANDLE_EXPIRED_ACCESS_TOKEN);
 
 function* loadUserSaga(action) {
   try {
@@ -59,9 +57,7 @@ function* loadUserSaga(action) {
 
 function* setTokenSaga(action) {
   try {
-    yield (client.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${action.data}`);
+    yield (client.defaults.headers.common['Authorization'] = `Bearer ${action.data}`);
     yield setApiAccessToken(action.data);
     yield put({
       type: SET_TOKEN_SUCCESS,
@@ -120,10 +116,7 @@ export function* authSaga() {
   yield takeLatest(LOGIN_SUCCESS, setTokenSaga);
   yield takeLatest(SET_TOKEN_SUCCESS, loadUserSaga);
   yield takeLatest(LOAD_USER, loadUserSaga);
-  yield takeLatest(
-    HANDLE_EXPIRED_ACCESS_TOKEN,
-    handleExpiredAccessTokenRequest,
-  );
+  yield takeLatest(HANDLE_EXPIRED_ACCESS_TOKEN, handleExpiredAccessTokenRequest);
   yield takeLatest(LOGOUT, logoutRequest);
 }
 

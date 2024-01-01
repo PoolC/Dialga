@@ -9,13 +9,7 @@ const AdminPassContainer = () => {
   const onChangeExcepted = (loginID, isExcepted) => {
     memberAPI.updateMemberIsExcepted(loginID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setMembers(
-          members.map((m) =>
-            m.member.loginID === loginID
-              ? { ...m, isExcepted: !isExcepted }
-              : m,
-          ),
-        );
+        setMembers(members.map((m) => (m.member.loginID === loginID ? { ...m, isExcepted: !isExcepted } : m)));
       }
     });
   };
@@ -36,14 +30,7 @@ const AdminPassContainer = () => {
     });
   };
 
-  return (
-    <AdminPass
-      members={members}
-      onChangeExcepted={onChangeExcepted}
-      onSubmit={onSubmit}
-      onWithdraw={onWithdraw}
-    />
-  );
+  return <AdminPass members={members} onChangeExcepted={onChangeExcepted} onSubmit={onSubmit} onWithdraw={onWithdraw} />;
 };
 
 export default AdminPassContainer;

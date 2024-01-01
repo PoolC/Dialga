@@ -68,18 +68,13 @@ export default function BoardListPage() {
       : []),
   ];
 
-  const onTabChange = (key: string) =>
-    history.push(`/${MENU.BOARD}?boardType=${key}&page=1`);
+  const onTabChange = (key: string) => history.push(`/${MENU.BOARD}?boardType=${key}&page=1`);
 
   return (
     <Block>
       <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
         <div className={styles.wrapper}>
-          <Tabs
-            items={items}
-            defaultActiveKey={boardType}
-            onChange={onTabChange}
-          />
+          <Tabs items={items} defaultActiveKey={boardType} onChange={onTabChange} />
         </div>
       </WhiteBlock>
     </Block>

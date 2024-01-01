@@ -53,15 +53,7 @@ const LoginFormContainer = ({ location, history }) => {
   }
 
   return (
-    <AuthForm
-      type="login"
-      onSubmit={onSubmit}
-      message={message}
-      onChangeMessage={onChangeMessage}
-      modalVisible={modalVisible}
-      handleModalOpen={handleModalOpen}
-      handleModalClose={handleModalClose}
-    />
+    <AuthForm type="login" onSubmit={onSubmit} message={message} onChangeMessage={onChangeMessage} modalVisible={modalVisible} handleModalOpen={handleModalOpen} handleModalClose={handleModalClose} />
   );
 };
 

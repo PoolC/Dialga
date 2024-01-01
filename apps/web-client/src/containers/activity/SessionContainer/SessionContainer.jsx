@@ -10,9 +10,7 @@ const SessionContainer = ({ activityID, session, host }) => {
 
   useEffect(() => {
     (async () => {
-      const response = await activityAPI.getActivitySessionAttendances(
-        sessionID,
-      );
+      const response = await activityAPI.getActivitySessionAttendances(sessionID);
       setAttendance(response.data.data);
     })();
   }, [sessionID]);
@@ -21,15 +19,7 @@ const SessionContainer = ({ activityID, session, host }) => {
     return null;
   }
 
-  return (
-    <Session
-      session={session}
-      attendance={attendance}
-      memberInfo={member}
-      activityID={activityID}
-      host={host}
-    />
-  );
+  return <Session session={session} attendance={attendance} memberInfo={member} activityID={activityID} host={host} />;
 };
 
 export default SessionContainer;

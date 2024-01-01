@@ -1,7 +1,4 @@
-import {
-  ADMIN_MEMBER_ROLES,
-  UNAUTHORIZED_MEMBER_ROLES,
-} from '../../constants/memberRoles';
+import { ADMIN_MEMBER_ROLES, UNAUTHORIZED_MEMBER_ROLES } from '../../constants/memberRoles';
 
 export const isAuthorizedRole = (role) => {
   return role !== null && !UNAUTHORIZED_MEMBER_ROLES.includes(role);

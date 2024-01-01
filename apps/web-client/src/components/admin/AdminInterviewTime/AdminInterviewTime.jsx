@@ -24,29 +24,10 @@ import useInput from '../../../hooks/useInput';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
 import { StyledButton } from '~/components/board-legacy/Post/Post.styles';
 
-const DateTimeForm = ({
-  id,
-  date,
-  startTime,
-  endTime,
-  capacity,
-  currentIntervieweesCount,
-  onCreateInterviewTime,
-  onDeleteInterviewTime,
-  onUpdateInterviewTime,
-}) => {
-  const [start, onChangeStart] = useInput(
-    startTime ? startTime : '',
-    notEmptyValidation,
-  );
-  const [end, onChangeEnd] = useInput(
-    endTime ? endTime : '',
-    notEmptyValidation,
-  );
-  const [capa, onChangeCapa] = useInput(
-    capacity ? capacity : '',
-    notEmptyValidation,
-  );
+const DateTimeForm = ({ id, date, startTime, endTime, capacity, currentIntervieweesCount, onCreateInterviewTime, onDeleteInterviewTime, onUpdateInterviewTime }) => {
+  const [start, onChangeStart] = useInput(startTime ? startTime : '', notEmptyValidation);
+  const [end, onChangeEnd] = useInput(endTime ? endTime : '', notEmptyValidation);
+  const [capa, onChangeCapa] = useInput(capacity ? capacity : '', notEmptyValidation);
 
   const handleCreateInterviewTime = (e) => {
     e.preventDefault();
@@ -85,62 +66,28 @@ const DateTimeForm = ({
       )}
       <StyledTimeForm>
         <StyledLabel htmlFor="interview-start-time">시작 시간</StyledLabel>
-        <StyledTimeInput
-          type="time"
-          name="interview-start-time"
-          id=""
-          value={start}
-          onChange={onChangeStart}
-        />
+        <StyledTimeInput type="time" name="interview-start-time" id="" value={start} onChange={onChangeStart} />
       </StyledTimeForm>
       <StyledTimeForm>
         <StyledLabel htmlFor="interview-end-time">종료 시간</StyledLabel>
-        <StyledTimeInput
-          type="time"
-          name="interview-start-time"
-          id=""
-          value={end}
-          onChange={onChangeEnd}
-        />
+        <StyledTimeInput type="time" name="interview-start-time" id="" value={end} onChange={onChangeEnd} />
       </StyledTimeForm>
-      <StyledCapacityForm>
-        현재 신청 인원 {currentIntervieweesCount} 명
-      </StyledCapacityForm>
+      <StyledCapacityForm>현재 신청 인원 {currentIntervieweesCount} 명</StyledCapacityForm>
       <StyledCapacityForm>
         <StyledLabel htmlFor="interview-capacity">정원</StyledLabel>
-        <StyledCapacityInput
-          type="number"
-          name="interview-capacity"
-          id=""
-          value={capa}
-          onChange={onChangeCapa}
-        />
+        <StyledCapacityInput type="number" name="interview-capacity" id="" value={capa} onChange={onChangeCapa} />
         <span>명</span>
       </StyledCapacityForm>
       <TimeCapacityButtonContainer>
-        <StyledButton
-          onClick={id ? handleUpdateInterviewTime : handleCreateInterviewTime}
-        >
-          {id ? '수정' : '제출'}
-        </StyledButton>
-        <StyledDeleteButton onClick={handleDeleteInterviewTime}>
-          삭제
-        </StyledDeleteButton>
+        <StyledButton onClick={id ? handleUpdateInterviewTime : handleCreateInterviewTime}>{id ? '수정' : '제출'}</StyledButton>
+        <StyledDeleteButton onClick={handleDeleteInterviewTime}>삭제</StyledDeleteButton>
       </TimeCapacityButtonContainer>
     </StyledDateTimeForm>
   );
 };
 
-const InterviewForm = ({
-  data,
-  onCreateInterviewTime,
-  onDeleteInterviewTime,
-  onUpdateInterviewTime,
-}) => {
-  const [date, onChangeDate] = useInput(
-    data ? data.date : '',
-    notEmptyValidation,
-  );
+const InterviewForm = ({ data, onCreateInterviewTime, onDeleteInterviewTime, onUpdateInterviewTime }) => {
+  const [date, onChangeDate] = useInput(data ? data.date : '', notEmptyValidation);
   const [slots, setSlots] = useState(data ? data.slots : []);
   const onAddTime = (e) => {
     e.preventDefault();
@@ -158,12 +105,7 @@ const InterviewForm = ({
     <StyledInterviewForm>
       <StyledDateForm>
         <StyledLabel htmlFor="interview-date">날짜</StyledLabel>
-        <StyledDateInput
-          type="date"
-          htmlFor="interview-date"
-          value={date}
-          onChange={onChangeDate}
-        />
+        <StyledDateInput type="date" htmlFor="interview-date" value={date} onChange={onChangeDate} />
       </StyledDateForm>
       <StyledTimeFormList>
         {slots.map((s) => (
@@ -186,15 +128,7 @@ const InterviewForm = ({
   );
 };
 
-const AdminInterviewTime = ({
-  data,
-  loading,
-  setData,
-  onCreateInterviewTime,
-  onDeleteInterviewTime,
-  onDeleteAllInterviewTime,
-  onUpdateInterviewTime,
-}) => {
+const AdminInterviewTime = ({ data, loading, setData, onCreateInterviewTime, onDeleteInterviewTime, onDeleteAllInterviewTime, onUpdateInterviewTime }) => {
   const onAddDate = (e) => {
     e.preventDefault();
     setData([...data, { date: '', slots: [] }]);
@@ -202,9 +136,7 @@ const AdminInterviewTime = ({
 
   const onClickDeleteAll = (e) => {
     e.preventDefault();
-    let result = window.confirm(
-      '[주의] 모든 면접 시간 슬롯을 삭제하시겠습니까?',
-    );
+    let result = window.confirm('[주의] 모든 면접 시간 슬롯을 삭제하시겠습니까?');
     if (result) {
       onDeleteAllInterviewTime();
     }
@@ -219,13 +151,7 @@ const AdminInterviewTime = ({
         <>
           <Form>
             {data?.map((d) => (
-              <InterviewForm
-                key={d.date}
-                data={d}
-                onCreateInterviewTime={onCreateInterviewTime}
-                onDeleteInterviewTime={onDeleteInterviewTime}
-                onUpdateInterviewTime={onUpdateInterviewTime}
-              />
+              <InterviewForm key={d.date} data={d} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />
             ))}
           </Form>
           <ActionButton onClick={onAddDate}>날짜 추가</ActionButton>

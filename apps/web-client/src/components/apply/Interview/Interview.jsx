@@ -1,15 +1,7 @@
 import { useState } from 'react';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import Spinner from '../../common/Spinner/Spinner';
-import {
-  DisabledActionButton,
-  InterviewWarningBlock,
-  StyledDateBlock,
-  StyledTimeBlock,
-  StyledTimeList,
-  TimeBlockCapacity,
-  TimeBlockTime,
-} from './Interview.styles';
+import { DisabledActionButton, InterviewWarningBlock, StyledDateBlock, StyledTimeBlock, StyledTimeList, TimeBlockCapacity, TimeBlockTime } from './Interview.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
 import { useSelector } from 'react-redux';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
@@ -19,17 +11,7 @@ import InterviewCancelModal from './InterviewModal/InterviewCancelModal';
 import { MEMBER_ROLE } from '../../../constants/memberRoles';
 import LinkButton from '../../common/Buttons/LinkButton';
 
-const TimeBlock = ({
-  date,
-  startTime,
-  endTime,
-  capacity,
-  num,
-  mySlotId,
-  id,
-  handleSelectInterviewTime,
-  handleCancelInterviewTime,
-}) => {
+const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
   const role = member.user.role;
   const isLogin = member.status.isLogin;
@@ -74,22 +56,8 @@ const TimeBlock = ({
 
   return (
     <>
-      <InterviewSelectModal
-        date={date}
-        startTime={startTime}
-        endTime={endTime}
-        visible={selectModalVisible}
-        onConfirm={onConfirmSelect}
-        onCancel={onCloseSelectModal}
-      />
-      <InterviewCancelModal
-        date={date}
-        startTime={startTime}
-        endTime={endTime}
-        visible={cancelModalVisible}
-        onConfirm={onConfirmCancel}
-        onCancel={onCloseCancelModal}
-      />
+      <InterviewSelectModal date={date} startTime={startTime} endTime={endTime} visible={selectModalVisible} onConfirm={onConfirmSelect} onCancel={onCloseSelectModal} />
+      <InterviewCancelModal date={date} startTime={startTime} endTime={endTime} visible={cancelModalVisible} onConfirm={onConfirmCancel} onCancel={onCloseCancelModal} />
       <StyledTimeBlock>
         <TimeBlockTime>
           {getHourMinuteString(startTime)} ~ {getHourMinuteString(endTime)}
@@ -102,9 +70,7 @@ const TimeBlock = ({
           <>
             {mySlotId === null && capacity > num && (
               <div>
-                <ActionButton onClick={onSelectInterviewTime}>
-                  신청
-                </ActionButton>
+                <ActionButton onClick={onSelectInterviewTime}>신청</ActionButton>
               </div>
             )}
             {mySlotId !== id && capacity <= num && (
@@ -112,11 +78,7 @@ const TimeBlock = ({
                 <DisabledActionButton>마감</DisabledActionButton>
               </div>
             )}
-            {mySlotId === id && (
-              <StyledDeleteButton onClick={onCancelInterviewTime}>
-                취소
-              </StyledDeleteButton>
-            )}
+            {mySlotId === id && <StyledDeleteButton onClick={onCancelInterviewTime}>취소</StyledDeleteButton>}
           </>
         )}
       </StyledTimeBlock>
@@ -124,13 +86,7 @@ const TimeBlock = ({
   );
 };
 
-const DateBlock = ({
-  data,
-  loginId,
-  mySlotId,
-  handleSelectInterviewTime,
-  handleCancelInterviewTime,
-}) => {
+const DateBlock = ({ data, loginId, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   return (
     <>
       <StyledDateBlock>{data?.date}</StyledDateBlock>
@@ -158,13 +114,7 @@ const DateBlock = ({
   );
 };
 
-const Interview = ({
-  loading,
-  data,
-  mySlotId,
-  handleSelectInterviewTime,
-  handleCancelInterviewTime,
-}) => {
+const Interview = ({ loading, data, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
   //const role = member.user.role;
   const isLogin = member.status.isLogin;
@@ -191,14 +141,7 @@ const Interview = ({
           <>
             {data?.map((d) => {
               return (
-                <DateBlock
-                  key={d.date}
-                  data={d}
-                  loginId={loginId}
-                  mySlotId={mySlotId}
-                  handleSelectInterviewTime={handleSelectInterviewTime}
-                  handleCancelInterviewTime={handleCancelInterviewTime}
-                />
+                <DateBlock key={d.date} data={d} loginId={loginId} mySlotId={mySlotId} handleSelectInterviewTime={handleSelectInterviewTime} handleCancelInterviewTime={handleCancelInterviewTime} />
               );
             })}
           </>

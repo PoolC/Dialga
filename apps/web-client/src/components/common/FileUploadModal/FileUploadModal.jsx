@@ -17,13 +17,7 @@ import {
   StyledForm,
 } from './FileUploadModal.styles.js';
 
-const FileUploadModal = ({
-  visible,
-  file,
-  onUploadFile,
-  onBrowseFile,
-  onCancel,
-}) => {
+const FileUploadModal = ({ visible, file, onUploadFile, onBrowseFile, onCancel }) => {
   const [animate, setAnimate] = useState(false);
   const [localVisible, setLocalVisible] = useState(visible);
 
@@ -41,34 +35,20 @@ const FileUploadModal = ({
     <ModalBlock disappear={!visible} onClick={onCancel}>
       <ModalContainer disappear={!visible} onClick={(e) => e.stopPropagation()}>
         <HeaderBar>
-          <CloseOutlined
-            twoToneColor={colors.brown[1]}
-            style={{ marginRight: '15px', cursor: 'pointer' }}
-            onClick={onCancel}
-          />
+          <CloseOutlined twoToneColor={colors.brown[1]} style={{ marginRight: '15px', cursor: 'pointer' }} onClick={onCancel} />
         </HeaderBar>
         <ContentContainer>
           <ModalName>파일 업로드</ModalName>
           <StyledForm encType="multipart/form-data" onSubmit={onUploadFile}>
             <FileNameContainer>
               <FileLabel>선택된 파일</FileLabel>
-              {file ? (
-                <FileName>{file?.name}</FileName>
-              ) : (
-                <FileName>선택된 파일이 없습니다</FileName>
-              )}
+              {file ? <FileName>{file?.name}</FileName> : <FileName>선택된 파일이 없습니다</FileName>}
             </FileNameContainer>
             <ButtonContainer>
-              <StyledFileButton
-                className="browse-file"
-                htmlFor="my_file"
-                onChange={onBrowseFile}
-              >
+              <StyledFileButton className="browse-file" htmlFor="my_file" onChange={onBrowseFile}>
                 파일 찾기
               </StyledFileButton>
-              <StyledActionButton className="upload-file">
-                이 파일 첨부
-              </StyledActionButton>
+              <StyledActionButton className="upload-file">이 파일 첨부</StyledActionButton>
             </ButtonContainer>
             <StyledFileInput type="file" onChange={onBrowseFile} id="my_file" />
           </StyledForm>

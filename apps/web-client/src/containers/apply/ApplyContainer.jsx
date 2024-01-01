@@ -16,15 +16,9 @@ const ApplyContainer = () => {
     });
   });
 
-  if (
-    isSubscriptionPeriod == null ||
-    (isSubscriptionPeriod === true && applyUri == null)
-  )
-    return null;
+  if (isSubscriptionPeriod == null || (isSubscriptionPeriod === true && applyUri == null)) return null;
 
-  return (
-    <Apply isSubscriptionPeriod={isSubscriptionPeriod} applyUri={applyUri} />
-  );
+  return <Apply isSubscriptionPeriod={isSubscriptionPeriod} applyUri={applyUri} />;
 };
 
 export default ApplyContainer;

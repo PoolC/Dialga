@@ -1,16 +1,7 @@
 import { MENU } from '../../../constants/menus';
 import getFileUrl from '../../../lib/utils/getFileUrl';
 import { getParametersForUnsplash } from '../../../lib/utils/imageUtils';
-import {
-  Card,
-  ProjectCardBlock,
-  ProjectDescription,
-  ProjectGenre,
-  ProjectThumbnail,
-  ProjectTitle,
-  StyledLink,
-  ThumbnailContainer,
-} from './ProjectCard.styles';
+import { Card, ProjectCardBlock, ProjectDescription, ProjectGenre, ProjectThumbnail, ProjectTitle, StyledLink, ThumbnailContainer } from './ProjectCard.styles';
 
 const ProjectCard = ({ project }) => {
   const { id, thumbnailURL, name, genre, description } = project;

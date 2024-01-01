@@ -10,19 +10,11 @@ export default function BoardWritePage() {
   const postId = Number(searchParams.get('postId') ?? 0);
 
   return match(boardType)
-    .with('NOTICE', () => (
-      <BoardNormalWriteSection postId={postId} boardType={'NOTICE'} />
-    ))
-    .with('FREE', () => (
-      <BoardNormalWriteSection postId={postId} boardType={'FREE'} />
-    ))
+    .with('NOTICE', () => <BoardNormalWriteSection postId={postId} boardType={'NOTICE'} />)
+    .with('FREE', () => <BoardNormalWriteSection postId={postId} boardType={'FREE'} />)
     .with('JOB', () => <BoardJobWriteSection postId={postId} />)
-    .with('PROJECT', () => (
-      <BoardNormalWriteSection postId={postId} boardType={'PROJECT'} />
-    ))
-    .with('CS', () => (
-      <BoardNormalWriteSection postId={postId} boardType={'CS'} />
-    ))
+    .with('PROJECT', () => <BoardNormalWriteSection postId={postId} boardType={'PROJECT'} />)
+    .with('CS', () => <BoardNormalWriteSection postId={postId} boardType={'CS'} />)
     .otherwise(() => {
       throw new Error(`invalid boardType: ${boardType}`);
     });

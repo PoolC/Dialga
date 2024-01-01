@@ -1,21 +1,5 @@
-import {
-  Badge,
-  BadgeControllerService,
-  MemberControllerService,
-  queryKey,
-  useAppMutation,
-  useAppQuery,
-} from '~/lib/api-v2';
-import {
-  Avatar,
-  Button,
-  Checkbox,
-  Modal,
-  Space,
-  Table,
-  Tooltip,
-  Typography,
-} from 'antd';
+import { Badge, BadgeControllerService, MemberControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { Avatar, Button, Checkbox, Modal, Space, Table, Tooltip, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { createStyles } from 'antd-style';
@@ -49,8 +33,7 @@ export default function AdminMemberBadgeManagement() {
       email: member.email ?? '',
     })) ?? [];
 
-  const [showMemberBadgeListModal, setShowMemberBadgeListModal] =
-    useState(false);
+  const [showMemberBadgeListModal, setShowMemberBadgeListModal] = useState(false);
   const [activeMemberId, setActiveMemberId] = useState('');
 
   // render
@@ -94,19 +77,8 @@ export default function AdminMemberBadgeManagement() {
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        pagination={false}
-        rowKey={'loginId'}
-      />
-      {showMemberBadgeListModal && (
-        <MemberBadgeListModal
-          onOk={() => setShowMemberBadgeListModal(false)}
-          onCancel={() => setShowMemberBadgeListModal(false)}
-          loginId={activeMemberId}
-        />
-      )}
+      <Table columns={columns} dataSource={dataSource} pagination={false} rowKey={'loginId'} />
+      {showMemberBadgeListModal && <MemberBadgeListModal onOk={() => setShowMemberBadgeListModal(false)} onCancel={() => setShowMemberBadgeListModal(false)} loginId={activeMemberId} />}
     </>
   );
 }
@@ -128,15 +100,7 @@ const useMemberBadgeListModalStyles = createStyles(({ css }) => ({
   `,
 }));
 
-function MemberBadgeListModal({
-  onOk: _onOk,
-  onCancel,
-  loginId,
-}: {
-  onOk: () => void;
-  onCancel: () => void;
-  loginId: string;
-}) {
+function MemberBadgeListModal({ onOk: _onOk, onCancel, loginId }: { onOk: () => void; onCancel: () => void; loginId: string }) {
   // states
   const { styles } = useMemberBadgeListModalStyles();
   const message = useMessage();
@@ -146,9 +110,7 @@ function MemberBadgeListModal({
     queryFn: () => BadgeControllerService.getMemberBadgeUsingGet({ loginId }),
   });
 
-  const [badgeOwnList, setBadgeOwnList] = useState<
-    { id: number; own: boolean }[]
-  >([]);
+  const [badgeOwnList, setBadgeOwnList] = useState<{ id: number; own: boolean }[]>([]);
 
   const { mutate: assignBadge } = useAppMutation({
     mutationFn: BadgeControllerService.assignBadgeUsingPost,
@@ -156,22 +118,14 @@ function MemberBadgeListModal({
 
   // actions
   const onToggleCheckBox = (id: number) => {
-    setBadgeOwnList((list) =>
-      list.map((item) => (item.id === id ? { ...item, own: !item.own } : item)),
-    );
+    setBadgeOwnList((list) => list.map((item) => (item.id === id ? { ...item, own: !item.own } : item)));
   };
 
   const onOk = () => {
     if (!memberBadgeList?.data) {
       return;
     }
-    const isChanged = Boolean(
-      badgeOwnList.find(
-        (badge) =>
-          memberBadgeList.data!.find(({ id }) => id === badge.id)?.own !==
-          badge.own,
-      ),
-    );
+    const isChanged = Boolean(badgeOwnList.find((badge) => memberBadgeList.data!.find(({ id }) => id === badge.id)?.own !== badge.own));
 
     if (!isChanged) {
       _onOk();
@@ -225,17 +179,9 @@ function MemberBadgeListModal({
           <Typography.Text>{loginId}님의 뱃지목록입니다.</Typography.Text>
           <div className={styles.badgeWrap}>
             {memberBadgeList?.data?.map((badge) => (
-              <Checkbox
-                onChange={() => onToggleCheckBox(badge.id!)}
-                checked={badgeOwnList.find(({ id }) => id === badge.id)?.own}
-                key={badge.id}
-              >
+              <Checkbox onChange={() => onToggleCheckBox(badge.id!)} checked={badgeOwnList.find(({ id }) => id === badge.id)?.own} key={badge.id}>
                 <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                  <Avatar
-                    src={getFileUrl(badge.imageUrl)}
-                    alt={badge.name}
-                    size={60}
-                  />
+                  <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} size={60} />
                 </Tooltip>
               </Checkbox>
             ))}

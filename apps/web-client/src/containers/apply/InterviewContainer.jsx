@@ -68,17 +68,9 @@ const InterviewContainer = () => {
 
   return (
     <>
-      {isSubscriptionPeriod === false && (
-        <InterviewAccessDenied loading={loading} />
-      )}
+      {isSubscriptionPeriod === false && <InterviewAccessDenied loading={loading} />}
       {isSubscriptionPeriod && (
-        <Interview
-          mySlotId={mySlotId}
-          data={data}
-          loading={loading}
-          handleSelectInterviewTime={handleSelectInterviewTime}
-          handleCancelInterviewTime={handleCancelInterviewTime}
-        />
+        <Interview mySlotId={mySlotId} data={data} loading={loading} handleSelectInterviewTime={handleSelectInterviewTime} handleCancelInterviewTime={handleCancelInterviewTime} />
       )}
     </>
   );

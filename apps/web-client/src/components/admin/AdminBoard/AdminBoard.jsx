@@ -1,14 +1,7 @@
 import ActionButton from '../../common/Buttons/ActionButton';
 
 import { MENU } from '../../../constants/menus';
-import {
-  BoardListRow,
-  ButtonContainer,
-  ContentsContainer,
-  Table,
-  TableHead,
-  TitleContainer,
-} from './AdminBoard.styles';
+import { BoardListRow, ButtonContainer, ContentsContainer, Table, TableHead, TitleContainer } from './AdminBoard.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 
 const AdminBoard = ({ boards, onDeleteBoard }) => {
@@ -21,9 +14,7 @@ const AdminBoard = ({ boards, onDeleteBoard }) => {
     <WhiteNarrowBlock>
       <TitleContainer>게시판 관리</TitleContainer>
       <ButtonContainer>
-        <ActionButton to={`/${MENU.ADMIN}/boards/new`}>
-          게시판 생성
-        </ActionButton>
+        <ActionButton to={`/${MENU.ADMIN}/boards/new`}>게시판 생성</ActionButton>
       </ButtonContainer>
       <ContentsContainer>
         <Table>
@@ -44,12 +35,8 @@ const AdminBoard = ({ boards, onDeleteBoard }) => {
                 <td className="board-list-row">{board.readPermission}</td>
                 <td className="board-list-row">{board.writePermission}</td>
                 <td className="board-list-row">
-                  <ActionButton to={`/${MENU.ADMIN}/boards/edit/${board.id}`}>
-                    편집
-                  </ActionButton>
-                  <ActionButton onClick={(e) => handleDelete(e, board.id)}>
-                    삭제
-                  </ActionButton>
+                  <ActionButton to={`/${MENU.ADMIN}/boards/edit/${board.id}`}>편집</ActionButton>
+                  <ActionButton onClick={(e) => handleDelete(e, board.id)}>삭제</ActionButton>
                 </td>
               </BoardListRow>
             ))}

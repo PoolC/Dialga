@@ -1,31 +1,14 @@
 import ActionButton from '../../common/Buttons/ActionButton';
 import { useState } from 'react';
-import {
-  ContentsContainer,
-  ExpellActionButton,
-  MemberListRow,
-  StyledForm,
-  StyledInput,
-  Table,
-  TableHead,
-  TitleContainer,
-} from './AdminPass.styles';
+import { ContentsContainer, ExpellActionButton, MemberListRow, StyledForm, StyledInput, Table, TableHead, TitleContainer } from './AdminPass.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import useInput from '../../../hooks/useInput';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import { MENU } from '../../../constants/menus';
 import { withRouter } from 'react-router';
 
-const Member = ({
-  member,
-  minimumLimit,
-  handleChangeExcepted,
-  handleWithdraw,
-  history,
-}) => {
-  const [isExpelled, setIsExpelled] = useState(
-    member.member.role === 'EXPELLED',
-  );
+const Member = ({ member, minimumLimit, handleChangeExcepted, handleWithdraw, history }) => {
+  const [isExpelled, setIsExpelled] = useState(member.member.role === 'EXPELLED');
 
   const moveToMemberDetail = () => {
     history.push(`/${MENU.MEMBER}/${member.member.loginID}`);
@@ -34,24 +17,13 @@ const Member = ({
   return (
     <MemberListRow key={member.member.loginID} onClick={moveToMemberDetail}>
       <td className="member-list-row name">{member.member.name}</td>
-      <td className="member-list-row hide studentId">
-        {member.member.studentID}
-      </td>
-      <td className="member-list-row hide department">
-        {member.member.department}
-      </td>
+      <td className="member-list-row hide studentId">{member.member.studentID}</td>
+      <td className="member-list-row hide department">{member.member.department}</td>
       <td className="member-list-row hour">{member.hour} 시간</td>
       <td className="member-list-row isExcepted">{member.isExcepted && 'o'}</td>
-      <td className="member-list-row fullfill">
-        {member.hour >= minimumLimit && 'o'}
-      </td>
-      <td className="member-list-row pass">
-        {member.isExcepted || member.hour >= minimumLimit ? 'o' : 'x'}
-      </td>
-      <td
-        className="member-list-row pass-button"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <td className="member-list-row fullfill">{member.hour >= minimumLimit && 'o'}</td>
+      <td className="member-list-row pass">{member.isExcepted || member.hour >= minimumLimit ? 'o' : 'x'}</td>
+      <td className="member-list-row pass-button" onClick={(e) => e.stopPropagation()}>
         <ActionButton
           onClick={() => {
             handleChangeExcepted(member.member.loginID, member.isExcepted);
@@ -76,13 +48,7 @@ const Member = ({
   );
 };
 
-const AdminPass = ({
-  members,
-  onSubmit,
-  onChangeExcepted,
-  onWithdraw,
-  history,
-}) => {
+const AdminPass = ({ members, onSubmit, onChangeExcepted, onWithdraw, history }) => {
   const [minimumLimit, onChangeMinimumLimit] = useInput('', notEmptyValidation);
 
   const handleSubmit = (e) => {
@@ -97,12 +63,7 @@ const AdminPass = ({
         <StyledForm style={{ marginBottom: '2rem' }}>
           <label style={{ marginBottom: '0.5rem' }}>최소 활동 기준</label>
           <div>
-            <StyledInput
-              value={minimumLimit}
-              onChange={onChangeMinimumLimit}
-              type="number"
-              placeholder="ex) 6"
-            />
+            <StyledInput value={minimumLimit} onChange={onChangeMinimumLimit} type="number" placeholder="ex) 6" />
             <span>시간</span>
           </div>
           <ActionButton onClick={handleSubmit}>입력</ActionButton>
@@ -129,14 +90,7 @@ const AdminPass = ({
                 (member) =>
                   !member.isExcepted &&
                   member.hour < minimumLimit && (
-                    <Member
-                      key={member.member.loginID}
-                      member={member}
-                      minimumLimit={minimumLimit}
-                      handleChangeExcepted={onChangeExcepted}
-                      handleWithdraw={onWithdraw}
-                      history={history}
-                    />
+                    <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
                   ),
               )}
           </tbody>
@@ -162,14 +116,7 @@ const AdminPass = ({
               .map(
                 (member) =>
                   (member.isExcepted || member.hour >= minimumLimit) && (
-                    <Member
-                      key={member.member.loginID}
-                      member={member}
-                      minimumLimit={minimumLimit}
-                      handleChangeExcepted={onChangeExcepted}
-                      handleWithdraw={onWithdraw}
-                      history={history}
-                    />
+                    <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
                   ),
               )}
           </tbody>
@@ -193,16 +140,7 @@ const AdminPass = ({
             {members
               ?.filter((m) => m.member.isActivated)
               .map((member) => {
-                return (
-                  <Member
-                    key={member.member.loginID}
-                    member={member}
-                    minimumLimit={minimumLimit}
-                    handleChangeExcepted={onChangeExcepted}
-                    handleWithdraw={onWithdraw}
-                    history={history}
-                  />
-                );
+                return <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />;
               })}
           </tbody>
         </Table>
