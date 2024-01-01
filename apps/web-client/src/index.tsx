@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
@@ -33,7 +33,9 @@ export function setUser() {
 sagaMiddleware.run(rootSaga);
 setUser();
 
-ReactDOM.render(
+const $root = document.getElementById('root')!;
+
+ReactDOM.createRoot($root).render(
   <Provider store={store}>
     <Global styles={globalStyles} />
     <ConfigProvider theme={theme}>
@@ -48,5 +50,4 @@ ReactDOM.render(
       </QueryClientProvider>
     </ConfigProvider>
   </Provider>,
-  document.getElementById('root'),
 );
