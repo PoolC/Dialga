@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import Skeleton from '../common/Skeleton';
 import IntroPoolc from './IntroPoolc';
 

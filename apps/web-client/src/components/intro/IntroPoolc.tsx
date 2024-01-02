@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 import getFileUrl from '../../lib/utils/getFileUrl';
 import { Viewer } from '@toast-ui/react-editor';
 import colors from '../../lib/styles/colors';
-import { PoolcControllerService, queryKey, useAppQuery } from '~/lib/api-v2';
-import { useAppSuspenseQuery } from '~/lib/api-v2/useAppSuspenseQuery';
+import { PoolcControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
 
 const Title = styled.h2`
   margin-bottom: 2rem;

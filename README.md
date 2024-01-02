@@ -22,12 +22,13 @@
 
 ### run
 
-- Node.js ^18(>=20 can make error)
-- yarn ^3
+- Node.js ^20
+- yarn ^3.7.0
 
 ```sh
-yarn
-yarn web:dev
+yarn # install packages
+yarn web-client codegen # generate types
+yarn web-client dev # load dev server
 ```
 
 ### vscode setting
@@ -40,9 +41,10 @@ yarn web:dev
 
 ## 수정사항
 
-- node 버전 18.x로 업그레이드
-- react 버전 17.x로 업그레이드
-- 신규 기능들 typescript 4.x로 제작
+- node 버전 29.x로 업그레이드
+- react 버전 18.x로 업그레이드
+  - react 18 업그레이드 해야 antd 관련 불필요한 warning 방지 가능함. [관련 이슈](https://github.com/ant-design/ant-design/issues/44994)
+- 신규 기능들 typescript 5.x로 제작
 - 디자인 시안 부재 + 톤앤매너 맞추기 위해 antd 사용. 당장의 생산성 + 향후 다크모드 도입시의 빠른 기능 추가 위해 antd-style 이용해 커스텀
 - styled-components를 emotion으로 마이그레이션
   - antd와의 호환성, 더 적은 용량
@@ -63,10 +65,8 @@ yarn web:dev
 
 ## TODOS
 
-- react 버전 18로 업그레이드
-  - react-router-dom v6 업그레이드
-  - suspense 도입 및 레기서 api호출들 tanstack-query로 모두 전환
-  - react 18 업그레이드 해야 antd 관련 불필요한 warning 방지 가능함. [관련 이슈](https://github.com/ant-design/ant-design/issues/44994)
+- react-router-dom v6 업그레이드
+- suspense 도입 및 레기서 api호출들 tanstack-query로 모두 전환
 - vite-ssr 도입 -> 세미나 메타태그 생성
 - redux 제거. 정 상태관리 필요한 곳은 가벼운 다른 라이브러리로 대체
 - 레거시 페이지들 마이그레이션
