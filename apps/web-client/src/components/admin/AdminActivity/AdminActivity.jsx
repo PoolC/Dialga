@@ -1,5 +1,5 @@
-import ActionButton from '~/common/Buttons/ActionButton';
-import { WhiteNarrowBlock } from '~/styles/common/Block.styles';
+import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
+import ActionButton from '../../common/Buttons/ActionButton';
 import { ActivityListRow, ContentsContainer, Table, TableHead, TitleContainer } from './AdminActivity.styles';
 
 const AdminActivity = ({ activities, onOpenActivity, onCloseActivity, onDeleteActivity }) => {
