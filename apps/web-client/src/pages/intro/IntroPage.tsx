@@ -1,10 +1,10 @@
-import { Route, Switch, withRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
-import IntroMenu from '../../components/intro/IntroMenu';
-import { MENU } from '../../constants/menus';
-import IntroPoolcEntry from '../../components/intro/IntroPoolcEntry';
+import { Route, Switch } from 'react-router-dom';
 import IntroFAQ from '~/components/intro/IntroFAQ';
 import IntroSNS from '~/components/intro/IntroSNS';
+import IntroMenu from '../../components/intro/IntroMenu';
+import IntroPoolcEntry from '../../components/intro/IntroPoolcEntry';
+import { MENU } from '../../constants/menus';
 
 const IntroPageBlock = styled.div`
   position: relative;
@@ -15,7 +15,6 @@ const IntroPageBlock = styled.div`
   display: flex;
 
   @media (max-width: 768px) {
-    margin-bottom: 600px;
     flex-direction: column;
   }
 `;

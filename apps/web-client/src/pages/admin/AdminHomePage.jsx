@@ -1,22 +1,22 @@
 import styled from '@emotion/styled';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import AdminBadgeContainer from '~/containers/admin/AdminBadgeContainer/AdminBadgeContainer';
 import AdminMenu from '../../components/admin/AdminMenu/AdminMenu';
-import AdminInfoContainer from '../../containers/admin/AdminInfoContainer/AdminInfoContainer';
 import { MENU } from '../../constants/menus';
-import AdminMemberContainer from '../../containers/admin/AdminMemberContainer/AdminMemberContainer';
-import AdminPassContainer from '../../containers/admin/AdminPassContainer/AdminPassContainer';
-import AdminBoardContainer from '../../containers/admin/AdminBoardContainer/AdminBoardContainer';
-import AdminProjectContainer from '../../containers/admin/AdminProjectContainer/AdminProjectContainer';
 import AdminActivityContainer from '../../containers/admin/AdminActivityContainer/AdminActivityContainer';
-import AdminBookContainer from '../../containers/admin/AdminBookContainer/AdminBookContainer';
+import AdminBoardContainer from '../../containers/admin/AdminBoardContainer/AdminBoardContainer';
 import AdminBoardFormContainer from '../../containers/admin/AdminBoardFormContainer/AdminBoardFormContainer';
-import AdminProjectFormContainer from '../../containers/admin/AdminProjectFormContainer/AdminProjectFormContainer';
+import AdminBookContainer from '../../containers/admin/AdminBookContainer/AdminBookContainer';
 import AdminBookFormContainer from '../../containers/admin/AdminBookFormContainer/AdminBookFormContainer';
 import AdminHomeContainer from '../../containers/admin/AdminHomeContainer/AdminHomeContainer';
-import useAdminCheck from '../../hooks/useAdminCheck';
+import AdminInfoContainer from '../../containers/admin/AdminInfoContainer/AdminInfoContainer';
 import AdminInterviewContainer from '../../containers/admin/AdminInterviewContainer/AdminInterviewContainer';
 import AdminInterviewTimeContainer from '../../containers/admin/AdminInterviewTimeContainer/AdminInterviewTimeContainer';
-import AdminBadgeContainer from '~/containers/admin/AdminBadgeContainer/AdminBadgeContainer';
+import AdminMemberContainer from '../../containers/admin/AdminMemberContainer/AdminMemberContainer';
+import AdminPassContainer from '../../containers/admin/AdminPassContainer/AdminPassContainer';
+import AdminProjectContainer from '../../containers/admin/AdminProjectContainer/AdminProjectContainer';
+import AdminProjectFormContainer from '../../containers/admin/AdminProjectFormContainer/AdminProjectFormContainer';
+import useAdminCheck from '../../hooks/useAdminCheck';
 
 const AdminContainerBlock = styled.div`
   position: relative;
@@ -27,7 +27,6 @@ const AdminContainerBlock = styled.div`
   display: flex;
 
   @media (max-width: 768px) {
-    margin-bottom: 600px;
     flex-direction: column;
   }
 `;
