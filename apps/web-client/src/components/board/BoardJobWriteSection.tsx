@@ -40,13 +40,15 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
+const stringSchema = z.string().refine((str) => str.trim().length > 0);
+
 const schema = z.object({
-  title: z.string().min(1),
-  body: z.string().min(1),
-  position: z.string().min(1),
-  field: z.string().min(1),
-  deadline: z.string().min(1),
-  region: z.string().min(1),
+  title: stringSchema,
+  body: stringSchema,
+  position: stringSchema,
+  field: stringSchema,
+  deadline: stringSchema,
+  region: stringSchema,
   fileList: z.array(z.string()),
 });
 

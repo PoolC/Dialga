@@ -42,9 +42,11 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
+const stringSchema = z.string().refine((str) => str.trim().length > 0);
+
 const schema = z.object({
-  title: z.string().min(1),
-  body: z.string().min(1),
+  title: stringSchema,
+  body: stringSchema,
   fileList: z.array(z.string()),
 });
 
