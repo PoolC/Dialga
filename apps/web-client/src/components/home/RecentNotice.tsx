@@ -8,7 +8,7 @@ const RecentNotice = ({ notices }: { notices: PostResponse[] }) => {
   return (
     <RecentNoticeBlock>
       <NoticeContainerTitle>
-        <StyledLink to="/boards/notice">
+        <StyledLink to="/board">
           <PushpinTwoTone twoToneColor="#47be9b" />
           Recent Notices
         </StyledLink>
