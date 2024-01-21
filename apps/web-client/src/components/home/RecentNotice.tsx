@@ -1,4 +1,4 @@
-import { MENU } from '../../constants/menus';
+import { MENU } from '~/constants/menus';
 import { MainNoticeContents, NoticeContainerTitle, RecentNoticeBlock, RecentNoticeCardDate, RecentNoticeCardTitle, RecentNoticeItem, RecentNoticeList, StyledLink } from './RecentNotice.styles';
 import { dayjs } from '~/lib/utils/dayjs';
 import { PushpinTwoTone } from '@ant-design/icons';
