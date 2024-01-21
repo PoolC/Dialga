@@ -1,7 +1,7 @@
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { createStyles } from 'antd-style';
 import { Button, Modal, Space } from 'antd';
-import { Calendar, SlotInfo, Event, Views, dayjsLocalizer } from 'react-big-calendar';
+import { Calendar, dayjsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { LocalTimeReq, queryKey, RoomControllerService, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
@@ -244,7 +244,7 @@ export default function RoomReservationPage() {
         <p className={styles.eventTime}>
           시작: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
           <br />
-          종료: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
+          종료: {dayjs(currentEvent?.end).format('MM월 DD일 HH시 mm분')}
         </p>
       </Modal>
     </>

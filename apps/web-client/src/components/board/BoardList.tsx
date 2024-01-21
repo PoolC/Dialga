@@ -143,13 +143,19 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
         .with({ status: 'pending' }, () => <Skeleton />)
         .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
         .with({ status: 'success' }, ({ data: { posts: postList, maxPage } }) => {
-          if (!postList || postList.length === 0) {
+          if (!postList) {
+            return <Empty />;
+          }
+
+          const filteredList = postList.filter(Boolean);
+
+          if (filteredList.length === 0) {
             return <Empty />;
           }
 
           return (
             <>
-              <Table dataSource={postList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
+              <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
               <div className={styles.paginationWrap}>
                 <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
               </div>
