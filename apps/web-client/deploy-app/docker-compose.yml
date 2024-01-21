@@ -1,0 +1,8 @@
+version: '1'
+services:
+  app:
+    build:
+      context: ../../.. # root
+      dockerfile: ./apps/web-client/deploy-app/Dockerfile
+    volumes:
+      - ../build:/app/apps/web-client/build
