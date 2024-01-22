@@ -44,7 +44,6 @@ export const HeaderIcons = styled.div`
   color: ${colors.brown[0]};
 
   @media (max-width: 768px) {
-    position: sticky;
     display: flex;
     align-items: center;
     justify-content: space-between;
