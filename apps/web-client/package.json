@@ -26,6 +26,7 @@
     "react-big-calendar": "^1.8.5",
     "react-dom": "^18.2.0",
     "react-redux": "^7.2.2",
+    "react-reveal": "^1.2.2",
     "react-router": "^5.3.3",
     "react-router-dom": "^5.3.3",
     "react-topbar-progress-indicator": "^4.1.1",

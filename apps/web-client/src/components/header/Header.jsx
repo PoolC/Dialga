@@ -14,6 +14,21 @@ const useStyles = createStyles(({ css }) => ({
     height: 40px;
     padding: 0;
   `,
+  logo: css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin-right: 10px;
+  `,
+  badge: css`
+    background-color: #47be9b;
+    padding: 4px 8px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+  `,
 }));
 
 const Header = ({ member, onLogout }) => {
@@ -66,7 +81,10 @@ const Header = ({ member, onLogout }) => {
     <HeaderBlock>
       <HeaderIcons>
         <Link to="/">
-          <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
+          <div className={styles.logo}>
+            <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
+            <div className={styles.badge}>Beta</div>
+          </div>
         </Link>
         <HeaderIconBox>
           {isLogin && (

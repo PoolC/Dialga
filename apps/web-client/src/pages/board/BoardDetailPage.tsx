@@ -198,11 +198,7 @@ export default function BoardDetailPage() {
       {
         onSuccess() {
           message.success('삭제되었습니다.');
-          history.push(
-            `/${MENU.BOARD}?${stringify({
-              boardType: post?.boardType,
-            })}`,
-          );
+          history.go(-1);
         },
       },
     );
