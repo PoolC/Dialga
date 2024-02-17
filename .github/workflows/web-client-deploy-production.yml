@@ -18,22 +18,20 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             DIRECTORY=dialga
-            
+
             if [ -d "$DIRECTORY" ]
             then
-              cd "$DIRECTORY/Dialga"
-            else
-              mkdir $DIRECTORY
               cd $DIRECTORY
+            else
               git clone https://github.com/PoolC/Dialga.git
-              cd Dialga
+              mv Dialga $DIRECTORY
             fi
-            
+
             BRANCH=release/web-client
-            
+
             git branch -c $BRANCH
             git checkout $BRANCH
             git pull origin $BRANCH || exit 1
-            
+
             docker compose -f=./apps/web-client/deploy-app/docker-compose.yml down
-            docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build 
+            docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
