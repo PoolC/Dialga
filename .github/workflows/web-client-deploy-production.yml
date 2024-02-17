@@ -23,5 +23,5 @@ jobs:
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: '/apps/web-client/build'
-          targret: dialga/apps/web-client/build
+          target: dialga/apps/web-client/build
           rm: true
