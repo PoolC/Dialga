@@ -83,7 +83,7 @@ const Header = ({ member, onLogout }) => {
         <Link to="/">
           <div className={styles.logo}>
             <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
-            <div className={styles.badge}>Beta</div>
+            <div className={styles.badge}>BETA</div>
           </div>
         </Link>
         <HeaderIconBox>
