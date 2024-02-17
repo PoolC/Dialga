@@ -16,7 +16,9 @@ jobs:
           docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
 
       - name: debug
-        run: ls -al ./apps/web-client/build
+        run: |
+          pwd 
+          ls -al ./apps/web-client/build
 
       - name: scp
         uses: appleboy/scp-action@v0.1.7
