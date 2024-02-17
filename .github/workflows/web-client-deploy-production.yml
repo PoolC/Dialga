@@ -9,29 +9,19 @@ jobs:
     runs-on: ubuntu-22.04
     environment: production # @TODO.. rename to 'web-client-deploy-production'
     steps:
-      - name: clone and execute
+      - uses: actions/checkout@v4
+
+      - name: build
+        run: |
+          docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
+
+      - name: scp
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: |
-            DIRECTORY=dialga
-
-            if [ -d "$DIRECTORY" ]
-            then
-              cd $DIRECTORY
-            else
-              git clone https://github.com/PoolC/Dialga.git
-              mv Dialga $DIRECTORY
-            fi
-
-            BRANCH=release/web-client
-
-            git branch -c $BRANCH
-            git checkout $BRANCH
-            git pull origin $BRANCH || exit 1
-
-            docker compose -f=./apps/web-client/deploy-app/docker-compose.yml down
-            docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
+          source: './apps/web-client/build'
+          targret: dialga/apps/web-client/build
+          rm: true
