@@ -16,12 +16,12 @@ jobs:
           docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
 
       - name: scp
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: './apps/web-client/build'
+          source: '/apps/web-client/build'
           targret: dialga/apps/web-client/build
           rm: true
