@@ -35,23 +35,15 @@ export const globalStyles = css`
 
   body {
     position: relative;
-    width: 100vw;
     min-height: 100vh;
     line-height: 1;
     background-color: rgb(250, 250, 250);
-    margin: 0;
-    padding: 0;
     outline: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     color: #4c3722;
     scroll-behavior: smooth;
   }
 
   #root {
-    width: 100vw;
     min-height: 100vh;
     position: relative;
     margin: 0;

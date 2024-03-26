@@ -5,7 +5,6 @@ import RecentProject from '~/components/home/RecentProject';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
-import { Fade } from 'react-reveal';
 import ApplyBanner from '~/components/home/ApplyBanner';
 
 const useStyles = createStyles(({ css }) => ({
@@ -50,20 +49,10 @@ export default function HomeEntry() {
 
   return (
     <div className={styles.block}>
-      <Fade>
-        <Carousel />
-      </Fade>
-      {Boolean(!isHideApplyBanner) && (
-        <Fade duration={1000}>
-          <ApplyBanner />
-        </Fade>
-      )}
-      <Fade>
-        <RecentNotice notices={noticeInfo.posts?.slice(0, 5) ?? []} />
-      </Fade>
-      <Fade>
-        <RecentProject projects={projectInfo.data.slice(0, 7)} />
-      </Fade>
+      <Carousel />
+      {Boolean(!isHideApplyBanner) && <ApplyBanner />}
+      <RecentNotice notices={noticeInfo.posts?.slice(0, 5) ?? []} />
+      <RecentProject projects={projectInfo.data.slice(0, 7)} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ export const CarouselBlock = styled.div`
   width: 95vw;
   max-width: 1366px;
   max-height: 400px;
-  margin: 0px 0 40px 0;
+  margin: 0px auto 40px;
 `;
 
 export const MainCarousel = styled.div`
@@ -25,7 +25,6 @@ export const MainCarousel = styled.div`
 
 export const MainCarouselImage = styled.img`
   height: 50vh;
-  max-width: 1366px;
   max-height: 400px;
   border-radius: 50px;
 `;

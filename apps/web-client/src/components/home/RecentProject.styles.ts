@@ -8,7 +8,6 @@ export const RecentProjectBlock = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
 
   max-width: 1366px;
 
