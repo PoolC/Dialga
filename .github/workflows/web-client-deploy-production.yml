@@ -15,11 +15,6 @@ jobs:
         run: |
           docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
 
-      - name: debug
-        run: |
-          pwd 
-          ls -al ./apps/web-client/build
-
       - name: scp
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -27,5 +22,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: './apps/web-client/build/*'
+          source: './apps/web-client/build'
           target: /home/ubuntu/dialga/apps/web-client
