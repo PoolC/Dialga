@@ -1,5 +1,5 @@
 const loginPoolc = ({ loginID, password }) => {
-  const BASE_URL = 'http://server.poolc.kr:8080';
+  const BASE_URL = 'http://poolc.org';
   const AUTHENTICATION_URL = `${BASE_URL}/login`;
   const data = JSON.stringify({ loginID, password });
 
