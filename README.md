@@ -70,3 +70,4 @@ yarn web-client dev # load dev server
 - vite-ssr 도입 -> 세미나 메타태그 생성
 - redux 제거. 정 상태관리 필요한 곳은 가벼운 다른 라이브러리로 대체
 - 레거시 페이지들 마이그레이션
+
