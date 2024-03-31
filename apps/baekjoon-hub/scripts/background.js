@@ -1,4 +1,4 @@
-const POOLC_BASE_URL = 'https://poolc.kr/api';
+const POOLC_BASE_URL = 'https://poolc.org/api';
 
 const appFetch = (...args) =>
   fetch(...args).then((res) => {
