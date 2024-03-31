@@ -4,7 +4,7 @@ import LinkButton from '../../common/Buttons/LinkButton';
 import { LeftHeaderMenu, MenuBlock, RightHeaderMenu } from './Menus.styles';
 import { Avatar, Button, Dropdown, MenuProps } from 'antd';
 import { MENU } from '~/constants/menus';
-import { useLocation } from 'react-router-dom';
+import { useRouterState } from '@tanstack/react-router';
 
 const Menus = ({
   menuVisible,
@@ -68,7 +68,8 @@ const Menus = ({
     },
   ];
 
-  const location = useLocation();
+  const router = useRouterState();
+  const location = router.location;
 
   return (
     <MenuBlock className={menuVisible ? 'menus open' : 'menus'}>

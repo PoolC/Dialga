@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import poolcIcon from '~/assets/images/poolc-icon.png';
-import { Link } from 'react-router-dom';
-import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
-import Menus from './Menus/Menus';
-import { Avatar, Button, Dropdown } from 'antd';
-import { MENU } from '~/constants/menus';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../modules/auth';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { createStyles } from 'antd-style';
+import { useState } from 'react';
 import { MenuOutlined } from '@ant-design/icons';
+import { Dropdown, Button, Avatar } from 'antd';
+import { HeaderBlock, HeaderIcons, LogoImage, HeaderIconBox, BarsIcon } from './Header.styles';
+import Menus from './Menus/Menus';
+import poolcIcon from '~/assets/images/poolc-icon.png';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -31,7 +32,16 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-const Header = ({ member, onLogout }) => {
+export default function Header() {
+  const dispatch = useDispatch();
+  const member = useSelector((state) => (state as any).auth);
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    dispatch(logout());
+    navigate({ to: '/' });
+  };
+
   const { styles } = useStyles();
 
   const {
@@ -57,7 +67,7 @@ const Header = ({ member, onLogout }) => {
   const dropDownItems = (() => {
     const arr = [
       {
-        label: <Link to={`/${MENU.MY_PAGE}`}>My Page</Link>,
+        label: <Link to={'/my-page'}>My Page</Link>,
         key: 'my-page',
       },
       {
@@ -69,7 +79,7 @@ const Header = ({ member, onLogout }) => {
 
     if (isAdmin) {
       arr.splice(2, 0, {
-        label: <Link to={`/${MENU.ADMIN}`}>Admin</Link>,
+        label: <Link to={'/admin'}>Admin</Link>,
         key: 'admin',
       });
     }
@@ -99,9 +109,7 @@ const Header = ({ member, onLogout }) => {
           </BarsIcon>
         </HeaderIconBox>
       </HeaderIcons>
-      <Menus menuVisible={menuVisible} onToggleMenu={onToggleMenu} isLogin={isLogin} role={role} isAdmin={isAdmin} dropDownItems={dropDownItems} profileImageURL={profileImageURL} />
+      <Menus menuVisible={menuVisible} onToggleMenu={onToggleMenu} isLogin={isLogin} role={role} dropDownItems={dropDownItems} profileImageURL={profileImageURL} />
     </HeaderBlock>
   );
-};
-
-export default Header;
+}

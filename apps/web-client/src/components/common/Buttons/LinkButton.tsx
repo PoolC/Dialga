@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import colors from '../../../lib/styles/colors';
 import styled from '@emotion/styled';
+import { Link } from '@tanstack/react-router';
 
 const StyledLink = styled(Link)`
   font-weight: 700;
@@ -20,7 +20,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LinkButton = (props) => {
+const LinkButton = (props: any) => {
   return <StyledLink {...props} />;
 };
 

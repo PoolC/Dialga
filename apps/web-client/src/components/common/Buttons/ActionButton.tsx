@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
+import { Link } from '@tanstack/react-router';
 
 const StyledActionButton = styled.button`
   background-color: ${colors.mint[2]};
@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const ActionButton = (props) => {
+const ActionButton = (props: any) => {
   return props.to ? (
     <StyledActionButton {...props}>
       <StyledLink to={props.to}>{props.children}</StyledLink>

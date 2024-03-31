@@ -1,5 +1,5 @@
+import { useRouter } from '@tanstack/react-router';
 import { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import colors from '~/lib/styles/colors';
 
@@ -12,7 +12,8 @@ TopBarProgress.config({
 });
 
 export default function BusinessShowProgressOnRouteChange() {
-  const location = useLocation();
+  const router = useRouter();
+  const location = router.history.location;
   const [progressVisible, setProgressVisible] = useState(false);
   const timeoutRef = useRef(0);
 
@@ -25,7 +26,7 @@ export default function BusinessShowProgressOnRouteChange() {
     return () => {
       window.clearTimeout(timeoutRef.current);
     };
-  }, [location.key]);
+  }, [location]);
 
   return progressVisible ? <TopBarProgress /> : null;
 }

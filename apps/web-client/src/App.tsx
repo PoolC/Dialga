@@ -1,7 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
 import { MENU } from './constants/menus';
-import FooterContainer from './containers/footer/FooterContainer';
-import HeaderContainer from './containers/header/HeaderContainer';
 import { createStyles } from 'antd-style';
 import { lazy, Suspense } from 'react';
 

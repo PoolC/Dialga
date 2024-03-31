@@ -1,12 +1,13 @@
-import { useLocation } from 'react-router-dom';
+import { useRouter } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 export default function BusinessScrollTopOnRouteChange() {
-  const location = useLocation();
+  const router = useRouter();
+  const location = router.history.location;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location.key]);
+  }, [location]);
 
   return null;
 }

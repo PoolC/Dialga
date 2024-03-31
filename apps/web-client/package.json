@@ -9,6 +9,8 @@
     "@emotion/styled": "^11.11.0",
     "@mantine/form": "^6.0.19",
     "@tanstack/react-query": "^5.17.0",
+    "@tanstack/react-router": "^1.26.1",
+    "@tanstack/router-vite-plugin": "^1.25.0",
     "@toast-ui/editor": "^2.5.4",
     "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
     "@toast-ui/editor-plugin-color-syntax": "^1.0.1",
@@ -62,7 +64,9 @@
     "check:type:watch": "tsc --noEmit --watch",
     "codegen": "openapi -i https://poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
     "postinstall": "yarn codegen",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "route:gen": "tsr generate",
+    "route:gen:watch": "tsr watch"
   },
   "browserslist": {
     "production": [
@@ -75,5 +79,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "type": "module"
 }
