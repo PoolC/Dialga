@@ -31,4 +31,4 @@ jobs:
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: './apps/web-client/build'
-          target: /home/ubuntu/dialga/apps/web-client
+          target: ~/dialga/apps/web-client
