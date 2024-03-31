@@ -13,7 +13,6 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api/mincho': {
           target: process.env.VITE_API_BASE_URL,
-          // target: 'http://localhost:8000',
           changeOrigin: true,
           rewrite: (path: string) => path.replace(/^\/api\/mincho/, ''),
           secure: false,
