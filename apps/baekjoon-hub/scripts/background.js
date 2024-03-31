@@ -1,4 +1,4 @@
-const POOLC_BASE_URL = 'http://server.poolc.kr:8080';
+const POOLC_BASE_URL = 'https://poolc.kr/api';
 
 const appFetch = (...args) =>
   fetch(...args).then((res) => {
