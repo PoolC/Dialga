@@ -51,19 +51,18 @@
     "@vitejs/plugin-react": "^4.0.4",
     "concurrently": "^8.2.1",
     "openapi-typescript-codegen": "^0.25.0",
-    "prettier": "^3.1.1",
-    "typescript": "^5.3.3",
     "vite": "^4.4.7"
   },
   "scripts": {
     "start": "vite",
     "dev": "yarn start",
     "build": "vite build",
-    "sync:type": "npx typesync",
+    "sync:type": "yarn dlx typesync",
     "check:type": "tsc --noEmit",
     "check:type:watch": "tsc --noEmit --watch",
     "codegen": "openapi -i https://poolc.kr/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "postinstall": "yarn codegen"
   },
   "browserslist": {
     "production": [

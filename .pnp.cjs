@@ -3896,7 +3896,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dayjs", "npm:1.11.10"],\
             ["form-data", "npm:4.0.0"],\
             ["openapi-typescript-codegen", "npm:0.25.0"],\
-            ["prettier", "npm:3.1.1"],\
             ["qs", "npm:6.11.2"],\
             ["react", "npm:18.2.0"],\
             ["react-activity-calendar", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:2.2.1"],\
@@ -3912,7 +3911,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redux-devtools-extension", "virtual:60235f5845017c6723510e09e8afa9c9d1ea9ae8c860b4a883fb97fca686e8c7e39c731e9086294e46aa63d0a7cf0125066a4aae38389cfc3b93a51bc05d7800#npm:2.13.9"],\
             ["redux-saga", "npm:1.2.3"],\
             ["ts-pattern", "npm:4.3.0"],\
-            ["typescript", "patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=e012d7"],\
             ["vite", "virtual:1976df9f66099404609180f288d7625241102adbbeacf1a12c1cfdfe607bfddad9f2fdbcd490df17e987bd7b6490bd730307ffd287824c3e2ca9f82da35c80b3#npm:4.5.1"],\
             ["zod", "npm:3.22.4"]\
           ],\
