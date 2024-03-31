@@ -9,7 +9,7 @@ const BannerBlock = styled.div`
   align-items: center;
   width: 95vw;
   max-width: 1366px;
-  margin: 0px 0 10px 0;
+  margin: 0px auto 10px;
 `;
 
 export const Banner = styled.div`
@@ -20,9 +20,9 @@ export const Banner = styled.div`
   font-weight: 600;
   justify-content: center;
   align-items: center;
-  width: 95%;
   border-radius: 10px;
   box-shadow: ${colors.gray[1]};
+  width: 95%;
   height: 60px;
   background-color: ${colors.mint[2]};
   transition: 0.3s;
