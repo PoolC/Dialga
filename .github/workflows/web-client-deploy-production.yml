@@ -2,7 +2,7 @@ name: web client deploy production
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   deploy:
