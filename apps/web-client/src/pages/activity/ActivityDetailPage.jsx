@@ -1,7 +1,9 @@
 import ActivityDetailContainer from '../../containers/activity/ActivityDetailContainer/ActivityDetailContainer';
 
-const ActivityDetailPage = () => {
-  return <ActivityDetailContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ActivityDetailPage;
+export function ActivityDetailPage() {
+  return <ActivityDetailContainer />;
+}

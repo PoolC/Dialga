@@ -1,7 +1,9 @@
 import ActivityFormContainer from '../../containers/activity/ActivityFormContainer/ActivityFormContainer';
 
-const ActivityAdminPage = () => {
-  return <ActivityFormContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ActivityAdminPage;
+export function ActivityAdminPage() {
+  return <ActivityFormContainer />;
+}

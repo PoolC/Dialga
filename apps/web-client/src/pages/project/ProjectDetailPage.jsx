@@ -1,7 +1,9 @@
 import ProjectDetailContainer from '../../containers/project/ProjectDetailContainer/ProjectDetailContainer';
 
-const ProjectDetailPage = () => {
-  return <ProjectDetailContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ProjectDetailPage;
+export function ProjectDetailPage() {
+  return <ProjectDetailContainer />;
+}

@@ -1,7 +1,9 @@
 import ProjectListContainer from '../../containers/project/ProjectListContainer/ProjectListContainer';
 
-const ProjectListPage = () => {
-  return <ProjectListContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ProjectListPage;
+export function ProjectListPage() {
+  return <ProjectListContainer />;
+}

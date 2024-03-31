@@ -1,7 +1,10 @@
 import MemberListContainer from '../../containers/member/MemberListContainer/MemberListContainer';
+import { json } from 'react-router-dom';
 
-const MemberListPage = () => {
+export function loader() {
+  return json({});
+}
+
+export const MemberListPage = () => {
   return <MemberListContainer />;
 };
-
-export default MemberListPage;

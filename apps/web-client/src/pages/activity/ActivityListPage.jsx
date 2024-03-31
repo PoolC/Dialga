@@ -1,7 +1,9 @@
 import ActivityListContainer from '../../containers/activity/ActivityListContainer/ActivityListContainer';
 
-const ActivityListPage = () => {
-  return <ActivityListContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ActivityListPage;
+export function ActivityListPage() {
+  return <ActivityListContainer />;
+}

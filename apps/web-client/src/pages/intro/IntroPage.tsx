@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes, json } from 'react-router-dom';
 import IntroFAQ from '~/components/intro/IntroFAQ';
 import IntroSNS from '~/components/intro/IntroSNS';
 import IntroMenu from '../../components/intro/IntroMenu';
@@ -24,7 +24,11 @@ export type Menu = {
   url: string;
 };
 
-const IntroPage = () => {
+export function loader() {
+  return json({});
+}
+
+export function IntroPage() {
   const menus: Menu[] = [
     { name: 'PoolC 소개', url: '' },
     { name: '자주 묻는 질문', url: '/faq' },
@@ -34,13 +38,11 @@ const IntroPage = () => {
   return (
     <IntroPageBlock>
       <IntroMenu menus={menus} />
-      <Switch>
-        <Route component={IntroFAQ} path={`/${MENU.INTRO}/faq`} exact />
-        <Route component={IntroSNS} path={`/${MENU.INTRO}/sns`} exact />
-        <Route component={IntroPoolcEntry} path={`/${MENU.INTRO}`} exact />
-      </Switch>
+      <Routes>
+        <Route element={<IntroFAQ />} path={`/${MENU.INTRO}/faq`} />
+        <Route element={<IntroSNS />} path={`/${MENU.INTRO}/sns`} />
+        <Route element={<IntroPoolcEntry />} path={`/${MENU.INTRO}`} />
+      </Routes>
     </IntroPageBlock>
   );
-};
-
-export default IntroPage;
+}

@@ -1,7 +1,10 @@
+import { json } from 'react-router-dom';
 import ActivityAttendanceContainer from '../../containers/activity/ActivityFormContainer/ActivityAttendanceContainer';
 
-const ActivityAttendancePage = () => {
-  return <ActivityAttendanceContainer />;
-};
+export function loader() {
+  return json({});
+}
 
-export default ActivityAttendancePage;
+export function ActivityAttendancePage() {
+  return <ActivityAttendanceContainer />;
+}
