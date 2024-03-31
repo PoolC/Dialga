@@ -2,18 +2,26 @@ name: web client deploy production
 
 on:
   push:
-    branches: [release/web-client]
+    branches: [master]
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
-    environment: production # @TODO.. rename to 'web-client-deploy-production'
+    environment: production
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
       - name: build
         run: |
-          docker compose -f=./apps/web-client/deploy-app/docker-compose.yml up -d --build
+          yarn set version 3.7.0
+          yarn install --immutable --immutable-cache
+          yarn web-client codegen
+          yarn web-client build
 
       - name: scp
         uses: appleboy/scp-action@v0.1.7
@@ -22,5 +30,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: './apps/web-client/build'
-          target: /home/ubuntu/dialga/apps/web-client
+          source: ./apps/web-client/build/*
+          target: ~/dialga/apps/web-client/build
+          strip_components: 3

@@ -60,9 +60,9 @@
     "sync:type": "yarn dlx typesync",
     "check:type": "tsc --noEmit",
     "check:type:watch": "tsc --noEmit --watch",
-    "codegen": "openapi -i https://poolc.kr/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
-    "prettier": "prettier --write .",
-    "postinstall": "yarn codegen"
+    "postinstall": "yarn codegen",
+    "codegen": "openapi -i https://poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
+    "prettier": "prettier --write ."
   },
   "browserslist": {
     "production": [
