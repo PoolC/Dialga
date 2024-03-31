@@ -32,3 +32,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: ./apps/web-client/build/*
           target: ~/dialga/apps/web-client/build
+          strip_components: 1
