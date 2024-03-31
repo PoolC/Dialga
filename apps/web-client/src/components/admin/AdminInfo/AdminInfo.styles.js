@@ -23,7 +23,7 @@ export const StyledInput = styled.input`
   outline: ${colors.gray[1]};
 `;
 
-export const StyledForm = styled.form`
+export const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
