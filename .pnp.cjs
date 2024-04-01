@@ -214,12 +214,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@apidevtools/json-schema-ref-parser", [\
-        ["npm:11.5.4", {\
-          "packageLocation": "./.yarn/cache/@apidevtools-json-schema-ref-parser-npm-11.5.4-957129b847-3f4bd685d8.zip/node_modules/@apidevtools/json-schema-ref-parser/",\
+        ["npm:9.0.9", {\
+          "packageLocation": "./.yarn/cache/@apidevtools-json-schema-ref-parser-npm-9.0.9-cda77aa4ae-b21f6bdd37.zip/node_modules/@apidevtools/json-schema-ref-parser/",\
           "packageDependencies": [\
-            ["@apidevtools/json-schema-ref-parser", "npm:11.5.4"],\
+            ["@apidevtools/json-schema-ref-parser", "npm:9.0.9"],\
             ["@jsdevtools/ono", "npm:7.1.3"],\
             ["@types/json-schema", "npm:7.0.15"],\
+            ["call-me-maybe", "npm:1.0.2"],\
             ["js-yaml", "npm:4.1.0"]\
           ],\
           "linkType": "HARD"\
@@ -4104,7 +4105,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["concurrently", "npm:8.2.2"],\
             ["dayjs", "npm:1.11.10"],\
             ["form-data", "npm:4.0.0"],\
-            ["openapi-typescript-codegen", "npm:0.28.0"],\
+            ["openapi-typescript-codegen", "npm:0.25.0"],\
             ["pattycake", "npm:0.0.2"],\
             ["qs", "npm:6.11.2"],\
             ["react", "npm:18.2.0"],\
@@ -5993,6 +5994,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["call-me-maybe", [\
+        ["npm:1.0.2", {\
+          "packageLocation": "./.yarn/cache/call-me-maybe-npm-1.0.2-a465269a37-42ff2d0bed.zip/node_modules/call-me-maybe/",\
+          "packageDependencies": [\
+            ["call-me-maybe", "npm:1.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["callsites", [\
         ["npm:3.1.0", {\
           "packageLocation": "./.yarn/cache/callsites-npm-3.1.0-268f989910-072d17b6ab.zip/node_modules/callsites/",\
@@ -6244,10 +6254,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["commander", [\
-        ["npm:12.0.0", {\
-          "packageLocation": "./.yarn/cache/commander-npm-12.0.0-6d673541cb-bce9e243dc.zip/node_modules/commander/",\
+        ["npm:11.1.0", {\
+          "packageLocation": "./.yarn/cache/commander-npm-11.1.0-56e979613c-fd1a8557c6.zip/node_modules/commander/",\
           "packageDependencies": [\
-            ["commander", "npm:12.0.0"]\
+            ["commander", "npm:11.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9194,6 +9204,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["json-schema-ref-parser", [\
+        ["npm:9.0.9", {\
+          "packageLocation": "./.yarn/cache/json-schema-ref-parser-npm-9.0.9-1203e379cb-e05166a84c.zip/node_modules/json-schema-ref-parser/",\
+          "packageDependencies": [\
+            ["json-schema-ref-parser", "npm:9.0.9"],\
+            ["@apidevtools/json-schema-ref-parser", "npm:9.0.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["json-schema-traverse", [\
         ["npm:0.4.1", {\
           "packageLocation": "./.yarn/cache/json-schema-traverse-npm-0.4.1-4759091693-7486074d3b.zip/node_modules/json-schema-traverse/",\
@@ -9983,15 +10003,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["openapi-typescript-codegen", [\
-        ["npm:0.28.0", {\
-          "packageLocation": "./.yarn/cache/openapi-typescript-codegen-npm-0.28.0-027cf311de-0a8787fff7.zip/node_modules/openapi-typescript-codegen/",\
+        ["npm:0.25.0", {\
+          "packageLocation": "./.yarn/cache/openapi-typescript-codegen-npm-0.25.0-fb96d909fa-1006023fe8.zip/node_modules/openapi-typescript-codegen/",\
           "packageDependencies": [\
-            ["openapi-typescript-codegen", "npm:0.28.0"],\
-            ["@apidevtools/json-schema-ref-parser", "npm:11.5.4"],\
+            ["openapi-typescript-codegen", "npm:0.25.0"],\
             ["camelcase", "npm:6.3.0"],\
-            ["commander", "npm:12.0.0"],\
+            ["commander", "npm:11.1.0"],\
             ["fs-extra", "npm:11.2.0"],\
-            ["handlebars", "npm:4.7.8"]\
+            ["handlebars", "npm:4.7.8"],\
+            ["json-schema-ref-parser", "npm:9.0.9"]\
           ],\
           "linkType": "HARD"\
         }]\

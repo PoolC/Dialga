@@ -114,14 +114,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apidevtools/json-schema-ref-parser@npm:^11.5.4":
-  version: 11.5.4
-  resolution: "@apidevtools/json-schema-ref-parser@npm:11.5.4"
+"@apidevtools/json-schema-ref-parser@npm:9.0.9":
+  version: 9.0.9
+  resolution: "@apidevtools/json-schema-ref-parser@npm:9.0.9"
   dependencies:
     "@jsdevtools/ono": ^7.1.3
-    "@types/json-schema": ^7.0.15
+    "@types/json-schema": ^7.0.6
+    call-me-maybe: ^1.0.1
     js-yaml: ^4.1.0
-  checksum: 3f4bd685d85e6a1c4dd9df2795f36480e737d50d1b920e8ea21f29e3e76df400beb8bdaf87f31d5bbff3f7f3256384bec8aba101e1cee1234965cd06d5020a6d
+  checksum: b21f6bdd37d2942c3967ee77569bc74fadd1b922f688daf5ef85057789a2c3a7f4afc473aa2f3a93ec950dabb6ef365f8bd9cf51e4e062a1ee1e59b989f8f9b4
   languageName: node
   linkType: hard
 
@@ -2607,7 +2608,7 @@ __metadata:
     concurrently: ^8.2.1
     dayjs: ^1.11.9
     form-data: ^4.0.0
-    openapi-typescript-codegen: ^0.28.0
+    openapi-typescript-codegen: ^0.25.0
     pattycake: ^0.0.2
     qs: ^6.9.7
     react: ^18.2.0
@@ -3151,7 +3152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.15":
+"@types/json-schema@npm:^7.0.6":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 97ed0cb44d4070aecea772b7b2e2ed971e10c81ec87dd4ecc160322ffa55ff330dace1793489540e3e318d90942064bb697cc0f8989391797792d919737b3b98
@@ -4056,6 +4057,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"call-me-maybe@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "call-me-maybe@npm:1.0.2"
+  checksum: 42ff2d0bed5b207e3f0122589162eaaa47ba618f79ad2382fe0ba14d9e49fbf901099a6227440acc5946f86a4953e8aa2d242b330b0a5de4d090bb18f8935cae
+  languageName: node
+  linkType: hard
+
 "callsites@npm:^3.0.0":
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
@@ -4276,10 +4284,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "commander@npm:12.0.0"
-  checksum: bce9e243dc008baba6b8d923f95b251ad115e6e7551a15838d7568abebcca0fc832da1800cf37caf37852f35ce4b7fb794ba7a4824b88c5adb1395f9268642df
+"commander@npm:^11.0.0":
+  version: 11.1.0
+  resolution: "commander@npm:11.1.0"
+  checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
   languageName: node
   linkType: hard
 
@@ -5396,7 +5404,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.2.0":
+"fs-extra@npm:^11.1.1":
   version: 11.2.0
   resolution: "fs-extra@npm:11.2.0"
   dependencies:
@@ -5643,7 +5651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:^4.7.8":
+"handlebars@npm:^4.7.7":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
   dependencies:
@@ -6786,6 +6794,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-schema-ref-parser@npm:^9.0.9":
+  version: 9.0.9
+  resolution: "json-schema-ref-parser@npm:9.0.9"
+  dependencies:
+    "@apidevtools/json-schema-ref-parser": 9.0.9
+  checksum: e05166a84c702f54f192edb2eb2e39236c3b03c30561777d63fd156ecd3aa3d2fffc0806a5703384bfba3c78800b1dc05f8da1ea25e6470b35a823210f7d48c4
+  languageName: node
+  linkType: hard
+
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -7495,18 +7512,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-typescript-codegen@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "openapi-typescript-codegen@npm:0.28.0"
+"openapi-typescript-codegen@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "openapi-typescript-codegen@npm:0.25.0"
   dependencies:
-    "@apidevtools/json-schema-ref-parser": ^11.5.4
     camelcase: ^6.3.0
-    commander: ^12.0.0
-    fs-extra: ^11.2.0
-    handlebars: ^4.7.8
+    commander: ^11.0.0
+    fs-extra: ^11.1.1
+    handlebars: ^4.7.7
+    json-schema-ref-parser: ^9.0.9
   bin:
     openapi: bin/index.js
-  checksum: 0a8787fff7885c0894e64d59e8a2b68057cfa1cad807e2c334511881620edb1410d37e09ec2a6f5e008ecb31502d7bc04a0438c10518a34a4c911518e104b3aa
+  checksum: 1006023fe82b81e300a240af6604ddc39bc604737d9f36577e4ccc223ea999e63301c707af0d195ac8ace0265a034f8888229e9065425808ab973fcc1f13f1fc
   languageName: node
   linkType: hard
 
