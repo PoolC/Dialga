@@ -53,6 +53,7 @@ yarn web-client dev # load dev server
 - cra환경을 vite로 마이그레이션
 - api 중복 호출 및 정합성 깨지는 문제를 tanstack-query로 해결. 백엔드 api와의 정합성 유지 위해 openapi-typescript-generator 사용
 - 수정사항에 맞게 배포환경 dockerizing
+- toast-ui editor를 v2에서 v3로 업그레이드
 
 ## 신규 기능들
 
