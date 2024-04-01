@@ -17,6 +17,7 @@ import {
   StyledForm,
   Title,
   TitleContainer,
+  EditorWrap,
 } from './ActivityAttendance.styles';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import Modal from '../../common/Modal/Modal';
@@ -144,7 +145,9 @@ const ActivityAttendance = ({
               <Description>
                 <label htmlFor="description">내용</label>
                 <p>예시: 파이썬의 변수에 대해 공부 / A 논문 스터디 등</p>
-                <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} style={{ width: '100%' }} />
+                <EditorWrap>
+                  <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} />
+                </EditorWrap>
                 <FileContainerTitle style={{ width: '100%' }}>첨부된 파일 목록</FileContainerTitle>
                 <FileContainer style={{ width: '100%', maxWidth: '100%' }}>
                   {fileList?.length !== 0

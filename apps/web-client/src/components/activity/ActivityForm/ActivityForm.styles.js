@@ -20,6 +20,7 @@ export const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 export const StyledActionButton = styled(ActionButton)`
@@ -28,12 +29,14 @@ export const StyledActionButton = styled(ActionButton)`
 
 export const ItemContainer = styled.div`
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const Item = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   label {
     margin-bottom: 10px;
     font-weight: 700;
@@ -41,7 +44,7 @@ export const Item = styled.div`
   textarea {
     outline: 0;
   }
-  p {
+  & > p {
     color: ${colors.brown[0]};
     font-size: 0.9rem;
     margin-bottom: 10px;
@@ -56,8 +59,12 @@ export const Plan = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 90%;
-  max-width: 90%;
+  padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  & > div {
+    width: 100%;
+  }
 `;
 
 export const StyledInput = styled(Input)`

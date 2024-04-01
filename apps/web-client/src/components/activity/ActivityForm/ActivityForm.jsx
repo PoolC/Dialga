@@ -193,7 +193,7 @@ const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessa
               <Item>
                 <label htmlFor="activityTitle">계획서</label>
                 <Plan>
-                  <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} style={{ width: '100%' }} />
+                  <Editor initialEditType="wysiwyg" initialValue={description} ref={editorRef} onChange={(e) => onEditorChange(e)} />
                   <FileContainerTitle style={{ width: '100%' }}>첨부된 파일 목록</FileContainerTitle>
                   <FileContainer style={{ width: '100%', maxWidth: '100%' }}>
                     {files?.length !== 0

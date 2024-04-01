@@ -77,6 +77,7 @@ export const HourInput = styled(Input)`
 
 export const DescriptionContainer = styled.div`
   margin-bottom: 30px;
+  width: 100%;
 `;
 
 export const Description = styled.div`
@@ -84,6 +85,8 @@ export const Description = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
   label {
     margin-bottom: 10px;
     font-weight: 700;
@@ -91,7 +94,7 @@ export const Description = styled.div`
   textarea {
     outline: 0;
   }
-  p {
+  & > p {
     color: ${colors.brown[0]};
     font-size: 0.9rem;
     margin-bottom: 10px;
@@ -131,8 +134,16 @@ export const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 export const StyledActionButton = styled(ActionButton)`
   width: 160px;
+`;
+
+export const EditorWrap = styled.div`
+  width: 100%;
+  & > div {
+    width: 100%;
+  }
 `;
