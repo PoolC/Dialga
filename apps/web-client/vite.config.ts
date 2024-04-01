@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import pattycake from 'pattycake';
 
 export default defineConfig(({ mode }) => {
   // @see https://stackoverflow.com/a/66389044
@@ -24,12 +23,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
     },
-    plugins: [
-      react(),
-      pattycake.vite({
-        disableOptionalChaining: true,
-      }),
-    ],
+    plugins: [react()],
     define: {
       'process.env': {},
     },

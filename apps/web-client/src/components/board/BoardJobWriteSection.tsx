@@ -116,7 +116,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   // NOTE 에디터에서 값을 직접 가져올 수 없어서 이벤트 버블링 이용
   const onEditorInput: FormEventHandler = () => {
     form.setValues({
-      body: editorRef.current?.getInstance().getHtml(),
+      body: editorRef.current?.getInstance().getHTML(),
     });
   };
 
@@ -208,7 +208,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         region: savedPost.region,
         position: savedPost.position,
       });
-      editorRef.current?.getInstance().setHtml(savedPost.body ?? '');
+      editorRef.current?.getInstance().setHTML(savedPost.body ?? '');
     }
   }, [savedPost]);
 
