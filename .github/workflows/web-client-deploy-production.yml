@@ -18,7 +18,7 @@ jobs:
 
       - name: build
         run: |
-          yarn set version 3.7.0
+          yarn set version 3.8.1
           yarn install --immutable --immutable-cache
           yarn web-client codegen
           yarn web-client build
