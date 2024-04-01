@@ -4,7 +4,18 @@ import ActionButton from '../../common/Buttons/ActionButton';
 import Input from '../../common/Input/Input';
 import { Editor } from '@toast-ui/react-editor';
 import { notEmptyValidation } from '../../../lib/utils/validation';
-import { ButtonContainer, MemberBlock, MemberContainer, MemberInfo, MemberSearchForm, StyledActionButton, StyledForm, StyledSearchActionButton, TitleContainer } from './AdminProjectForm.styles';
+import {
+  ButtonContainer,
+  MemberBlock,
+  MemberContainer,
+  MemberInfo,
+  MemberSearchForm,
+  StyledActionButton,
+  StyledForm,
+  StyledSearchActionButton,
+  TitleContainer,
+  EditorWrap,
+} from './AdminProjectForm.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import { FileName } from '../../common/FileUploadModal/FileUploadModal.styles';
@@ -123,7 +134,9 @@ const AdminProjectForm = ({
           </ImageContainer>
           <Input valueText={description} labelText="설명 요약" typeText="text" nameText="description" onChangeFunc={onChangeDescription} placeholderText="공백 포함 30자 이내" />
           <label>프로젝트 내용</label>
-          <Editor initialEditType="wysiwyg" initialValue={body} ref={editorRef} onChange={(e) => onEditorChange(e)} />
+          <EditorWrap>
+            <Editor initialEditType="wysiwyg" initialValue={body} ref={editorRef} onChange={(e) => onEditorChange(e)} />
+          </EditorWrap>
           <label>참여자</label>
           <MemberSearchForm onSubmit={onClickSearch}>
             <Input valueText={searchMember} labelText="" typeText="text" nameText="id" onChangeFunc={handleChangeSearchMember} placeholderText="회원 이름으로 검색" />

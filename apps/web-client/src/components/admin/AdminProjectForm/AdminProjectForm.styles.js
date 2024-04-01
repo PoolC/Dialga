@@ -85,3 +85,10 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   margin-left: 1rem;
 `;
+
+export const EditorWrap = styled.div`
+  width: 100%;
+  & > div {
+    width: 100%;
+  }
+`;

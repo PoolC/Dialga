@@ -27,6 +27,7 @@ export const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   & > label {
     margin: 2rem 0 1rem 0;
     font-weight: 600;
@@ -64,4 +65,11 @@ export const Description = styled.p`
   color: ${colors.brown[0]};
   font-size: 0.8rem;
   margin-bottom: 1rem;
+`;
+
+export const EditorWrap = styled.div`
+  width: 100%;
+  & > div {
+    width: 100%;
+  }
 `;

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import useInput from '../../../hooks/useInput';
 import { notEmptyValidation } from '../../../lib/utils/validation';
-import { Description, ImageContainer, ImageContainerHeader, StyledActionButton, StyledForm, StyledImage, StyledInput, TitleContainer } from './AdminInfo.styles';
+import { Description, EditorWrap, ImageContainer, ImageContainerHeader, StyledActionButton, StyledForm, StyledImage, StyledInput, TitleContainer } from './AdminInfo.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import { FileName } from '../../common/FileUploadModal/FileUploadModal.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
@@ -70,7 +70,9 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
           </ImageContainer>
           <label>동아리 소개</label>
           <Description>홈페이지 PoolC 메뉴-'동아리 소개'에 반영됩니다</Description>
-          <Editor initialEditType="wysiwyg" initialValue={introduction} ref={editorRef} onChange={(e) => onEditorChange(e)} />
+          <EditorWrap>
+            <Editor initialEditType="wysiwyg" initialValue={introduction} ref={editorRef} onChange={(e) => onEditorChange(e)} />
+          </EditorWrap>
           <label>메인 이미지 관리</label>
           <Description>이미지 사이즈는 1000px * 200px으로 맞춰주세요</Description>
           <FileUploadButton onSubmit={setMainImageUrl} />
