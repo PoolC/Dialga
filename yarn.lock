@@ -2615,7 +2615,6 @@ __metadata:
     react-big-calendar: ^1.8.5
     react-dom: ^18.2.0
     react-redux: ^7.2.2
-    react-reveal: ^1.2.2
     react-router: ^5.3.3
     react-router-dom: ^5.3.3
     react-topbar-progress-indicator: ^4.1.1
@@ -7811,7 +7810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.10, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8570,17 +8569,6 @@ __metadata:
   version: 0.14.0
   resolution: "react-refresh@npm:0.14.0"
   checksum: dc69fa8c993df512f42dd0f1b604978ae89bd747c0ed5ec595c0cc50d535fb2696619ccd98ae28775cc01d0a7c146a532f0f7fb81dc22e1977c242a4912312f4
-  languageName: node
-  linkType: hard
-
-"react-reveal@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "react-reveal@npm:1.2.2"
-  dependencies:
-    prop-types: ^15.5.10
-  peerDependencies:
-    react: ^15.3.0 || ^16.0.0
-  checksum: c15f62ed8bee3be2e51f2e5a902dea830dea9eee9dad6e860eaf83793b94e99dcba8f124332e0f4642bae4e93bf5d83af6418699c2849da023428c36c67535d4
   languageName: node
   linkType: hard
 
