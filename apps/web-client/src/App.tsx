@@ -6,7 +6,6 @@ import { createStyles } from 'antd-style';
 import { lazy, Suspense } from 'react';
 
 // toast ui - global
-import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 const useStyles = createStyles(({ css }) => ({
