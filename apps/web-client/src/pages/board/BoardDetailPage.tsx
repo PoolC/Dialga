@@ -17,6 +17,7 @@ import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
