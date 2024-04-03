@@ -122,9 +122,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
 
   const onUploadChange = (info: UploadChangeParam) => {
     if (info.file.status === 'removed') {
+      const getPureName = (name: string) => name.split('/').pop()!;
+
       form.setFieldValue(
         'fileList',
-        form.values.fileList.filter((file) => file !== info.file.name),
+        form.values.fileList.filter((file) => getPureName(file) !== encodeURIComponent(getPureName(info.file.name))),
       );
       return;
     }
