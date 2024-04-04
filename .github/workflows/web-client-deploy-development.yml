@@ -1,13 +1,13 @@
-name: web client deploy production
+name: web client deploy development
 
 on:
   push:
-    branches: [master]
+    branches: [dev]
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
-    environment: production
+    environment: development
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +18,7 @@ jobs:
 
       - name: build
         run: |
-          rm ./apps/web-client/.env && mv ./apps/web-client/.env.prod ./apps/web-client/.env
+          rm ./apps/web-client/.env && mv ./apps/web-client/.env.dev ./apps/web-client/.env
           yarn set version 3.8.1
           yarn install --immutable --immutable-cache
           yarn web-client codegen
