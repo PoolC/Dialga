@@ -9,7 +9,11 @@ export default class BusinessErrorBoundary extends React.Component<PropsWithChil
 
   render() {
     if (this.state.hasError) {
-      return <h1>에러가 발생했습니다. 잠시 후 다시 시도해주세요.</h1>;
+      return (
+        <div style={{ padding: '20px' }}>
+          <h1>에러가 발생했습니다. 잠시 후 다시 시도해주세요.</h1>
+        </div>
+      );
     }
 
     return this.props.children;
