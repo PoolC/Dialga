@@ -70,12 +70,14 @@ export default function MyPageMyPostsEntry() {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page') ?? 1);
 
-  const { data: postList } = useAppSuspenseQuery({
+  const {
+    data: { posts, maxPage },
+  } = useAppSuspenseQuery({
     queryKey: queryKey.post.myPosts(page - 1),
     queryFn: () => PostControllerService.viewMyPostsUsingGet({ page: page - 1 }),
   });
 
-  const filteredList = postList.filter(Boolean);
+  const filteredList = (posts ?? []).filter(Boolean);
 
   const history = useHistory();
 
@@ -89,7 +91,7 @@ export default function MyPageMyPostsEntry() {
   const columns: ColumnsType<PostResponse> = [
     {
       render: (_, post) => (
-        <Link to={`${MENU.BOARD}/${post.postId}`} className={styles.link}>
+        <Link to={`/${MENU.BOARD}/${post.postId}`} className={styles.link}>
           <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
             <Space className={styles.metaInfoArea} size={'middle'}>
               <Space>
@@ -114,15 +116,18 @@ export default function MyPageMyPostsEntry() {
     },
   ];
 
-  const maxPage = 10;
-  return filteredList ? (
-    <Empty />
-  ) : (
-    <>
-      <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
-      <div className={styles.paginationWrap}>
-        <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
-      </div>
-    </>
+  return (
+    <div className={styles.fullWidth}>
+      {filteredList.length === 0 ? (
+        <Empty />
+      ) : (
+        <>
+          <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
+          <div className={styles.paginationWrap}>
+            <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
+          </div>
+        </>
+      )}
+    </div>
   );
 }
