@@ -104,7 +104,7 @@ export default function MyPage() {
     {
       title: '내가 쓴 글',
       icon: <EditTwoTone size={24} twoToneColor="#ffd43b" />,
-      onClick: () => message.info('기능 준비중입니다!'),
+      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_POSTS}`,
     },
     {
       title: '내가 스크랩한 글',
