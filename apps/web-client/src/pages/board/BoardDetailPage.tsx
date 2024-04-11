@@ -17,7 +17,7 @@ import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
+import { Viewer } from '@toast-ui/react-editor';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -262,7 +262,9 @@ export default function BoardDetailPage() {
             ) : (
               <Typography.Title level={2}>{post.title}</Typography.Title>
             )}
-            <div dangerouslySetInnerHTML={{ __html: post.body ?? '' }} className={styles.content}></div>
+            <div className={styles.content}>
+              <Viewer initialValue={post.body} />
+            </div>
             {post.fileList && post.fileList.length > 0 && (
               <div className={styles.fileListBox}>
                 <Typography.Text className={styles.fileListTitle}>첨부파일</Typography.Text>
