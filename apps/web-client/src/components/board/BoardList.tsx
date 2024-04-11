@@ -10,7 +10,7 @@ import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { getInnerTextFromHtml } from '~/lib/utils/getInnerTextFromHtml';
+import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
@@ -112,7 +112,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
             </Space>
             <Space direction={'vertical'} size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
-              {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromHtml(post.body)}</Typography.Text>}
+              {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromMarkdown(post.body)}</Typography.Text>}
             </Space>
           </Space>
         </Link>
