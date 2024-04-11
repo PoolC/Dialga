@@ -22,6 +22,7 @@ const MENU = {
   BOARD: 'board',
   MY_PAGE: 'my-page',
   MY_PAGE_BADGE_LIST: 'badge-list',
+  MY_PAGE_MY_POSTS: 'my-posts',
   MESSAGE_LIST: 'message-list',
   MESSAGE_FORM: 'message-form',
   MESSAGE_ALL_LIST: 'message-all-list',
