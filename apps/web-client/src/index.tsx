@@ -16,6 +16,7 @@ import { Global } from '@emotion/react';
 import { globalStyles } from '~/styles/globalStyles';
 import { theme } from '~/styles/theme';
 import BusinessShowProgressOnRouteChange from './components/@business/BusinessShowProgressOnRouteChange';
+import BusinessErrorBoundary from './components/@business/BusinessErrorBoundary';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer, applyMiddleware(sagaMiddleware)) : createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
@@ -44,7 +45,9 @@ ReactDOM.createRoot($root).render(
           <BrowserRouter>
             <BusinessScrollTopOnRouteChange />
             <BusinessShowProgressOnRouteChange />
-            <App />
+            <BusinessErrorBoundary>
+              <App />
+            </BusinessErrorBoundary>
           </BrowserRouter>
         </MessageProvider>
       </QueryClientProvider>

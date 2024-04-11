@@ -71,8 +71,8 @@ export default function MyPageMyPostsEntry() {
   const page = Number(searchParams.get('page') ?? 1);
 
   const { data: postList } = useAppSuspenseQuery({
-    queryKey: queryKey.post.myPosts,
-    queryFn: () => PostControllerService.viewMyPostsUsingGet({ page }),
+    queryKey: queryKey.post.myPosts(page - 1),
+    queryFn: () => PostControllerService.viewMyPostsUsingGet({ page: page - 1 }),
   });
 
   const filteredList = postList.filter(Boolean);
