@@ -10,9 +10,7 @@ import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   wrapper: css`
     width: 100%;

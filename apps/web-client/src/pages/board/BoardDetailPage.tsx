@@ -48,9 +48,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
   `,
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   actionButtonGroup: css`
     justify-content: flex-end;
