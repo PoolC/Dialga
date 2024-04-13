@@ -14,9 +14,7 @@ import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
     box-sizing: border-box;
-    &.scope {
-      padding: 30px 20px;
-    }
+    padding: 30px 20px;
   `,
   wrapper: css`
     width: 100%;
@@ -168,7 +166,7 @@ export default function MyPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <Space direction={'vertical'} className={styles.fullWidth} size={40}>
           <Space className={styles.wrapper} size={'middle'}>
             <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />

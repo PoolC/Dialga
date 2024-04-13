@@ -12,9 +12,7 @@ const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   wrapper: css`
     width: 100%;
@@ -60,7 +58,7 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function RoomReservationPage() {
   // data
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const message = useMessage();
 
   const [startDate, setStartDate] = useState(() => dayjs().startOf('week').format('YYYY-MM-DD'));
@@ -191,7 +189,7 @@ export default function RoomReservationPage() {
   return (
     <>
       <Block>
-        <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+        <WhiteBlock className={styles.whiteBlock}>
           <div className={styles.wrapper}>
             <Space direction="vertical" size="large" className={styles.fullWidth}>
               <Space direction="vertical" size="middle">

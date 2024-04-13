@@ -7,9 +7,7 @@ import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 20px;
-    }
+    padding: 30px 20px;
   `,
   wrapper: css`
     width: 100%;
@@ -36,13 +34,13 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMessageFormPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const [content, setContent] = useState('');
   const history = useHistory();
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
           <Space className={styles.topBox}>
             <Space>

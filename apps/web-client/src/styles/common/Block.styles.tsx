@@ -57,7 +57,7 @@ const useStyles = createStyles(({ css }) => ({
 export const TwoColumnsContainerBlock = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
-    <div className={cx(className, styles.twoColumnsContainerBlock)} {...rest}>
+    <div className={cx(styles.twoColumnsContainerBlock, className)} {...rest}>
       {children}
     </div>
   );
@@ -65,7 +65,7 @@ export const TwoColumnsContainerBlock = ({ children, className, ...rest }: DivPr
 export const Block = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
-    <div className={cx(className, styles.block)} {...rest}>
+    <div className={cx(styles.block, className)} {...rest}>
       {children}
     </div>
   );
@@ -74,7 +74,7 @@ export const Block = ({ children, className, ...rest }: DivProps) => {
 export const WhiteBlock = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
-    <div className={cx(className, styles.whiteBlock)} {...rest}>
+    <div className={cx(styles.whiteBlock, className)} {...rest}>
       {children}
     </div>
   );
@@ -83,7 +83,7 @@ export const WhiteBlock = ({ children, className, ...rest }: DivProps) => {
 export const WhiteNarrowBlock = ({ children, className, ...rest }: DivProps) => {
   const { styles, cx } = useStyles();
   return (
-    <div className={cx(className, styles.whiteNarrowBlock)} {...rest}>
+    <div className={cx(styles.whiteNarrowBlock, className)} {...rest}>
       {children}
     </div>
   );

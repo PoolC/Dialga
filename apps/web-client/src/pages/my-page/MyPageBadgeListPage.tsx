@@ -8,11 +8,9 @@ import getFileUrl from '~/lib/utils/getFileUrl';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 20px;
-      align-items: stretch;
-      gap: 40px;
-    }
+    padding: 30px 20px;
+    align-items: stretch;
+    gap: 40px;
   `,
   wrapper: css`
     width: 100%;
@@ -130,7 +128,7 @@ export default function MyPageBadgeListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <Space className={styles.wrapper} size={'middle'}>
           <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
           <Space>

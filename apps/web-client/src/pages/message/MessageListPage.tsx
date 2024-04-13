@@ -7,9 +7,7 @@ import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 20px;
-    }
+    padding: 30px 20px;
   `,
   wrapper: css`
     width: 100%;
@@ -39,7 +37,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMessageListPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const history = useHistory();
 
   const data = [
@@ -59,7 +57,7 @@ export default function MyPageMessageListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
           <Space className={styles.topBox}>
             <Space>

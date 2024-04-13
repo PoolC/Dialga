@@ -23,7 +23,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardListPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const searchParams = useSearchParams();
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
 
@@ -72,7 +72,7 @@ export default function BoardListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <div className={styles.wrapper}>
           <Tabs items={items} defaultActiveKey={boardType} onChange={onTabChange} />
         </div>

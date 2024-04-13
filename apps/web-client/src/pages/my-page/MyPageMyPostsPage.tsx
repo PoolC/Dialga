@@ -7,9 +7,7 @@ import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   wrapper: css`
     width: 100%;
@@ -30,11 +28,11 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMyPostsPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <div className={styles.wrapper}>
           <Space direction="vertical" size="large" className={styles.fullWidth}>
             <Space direction="vertical" size="middle">

@@ -120,7 +120,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardDetailPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const message = useMessage();
   const history = useHistory();
 
@@ -323,7 +323,7 @@ export default function BoardDetailPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>{renderContent()}</WhiteBlock>
+      <WhiteBlock className={styles.whiteBlock}>{renderContent()}</WhiteBlock>
     </Block>
   );
 }
