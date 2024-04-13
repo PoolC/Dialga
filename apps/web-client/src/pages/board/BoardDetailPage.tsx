@@ -1,11 +1,11 @@
-import { Avatar, Breadcrumb, Button, Descriptions, Divider, Form, Input, Popconfirm, Result, Skeleton, Space, Typography } from 'antd';
+import { Avatar, Breadcrumb, Button, Descriptions, Divider, Form, Input, Popconfirm, Result, Skeleton, Space, Tooltip, Typography } from 'antd';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { stringify } from 'qs';
-import { CommentControllerService, PostControllerService, PostResponse, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { CommentControllerService, PostControllerService, PostResponse, ScrapControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { useSelector } from 'react-redux';
 import { useMessage } from '~/hooks/useMessage';
@@ -18,6 +18,8 @@ import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { Viewer } from '@toast-ui/react-editor';
+import { queryClient } from '~/lib/utils/queryClient';
+import { FolderOpenOutlined, FolderOpenTwoTone } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -139,9 +141,9 @@ export default function BoardDetailPage() {
   //   mutationFn: PostControllerService.likePostUsingPost,
   // });
   //
-  // const { mutate: addScrap } = useAppMutation({
-  //   mutationFn: ScrapControllerService.addScrapUsingPost,
-  // });
+  const { mutate: addScrap } = useAppMutation({
+    mutationFn: ScrapControllerService.addScrapUsingPost,
+  });
 
   const { mutate: deletePost } = useAppMutation({
     mutationFn: PostControllerService.deletePostUsingDelete,
@@ -169,25 +171,27 @@ export default function BoardDetailPage() {
   //   );
   // };
   //
-  // const onScrapClick = () => {
-  //   if (isWriter) {
-  //     message.warn('자기 자신의 글은 스크랩할 수 없습니다.');
-  //     return;
-  //   }
-  //
-  //   addScrap(
-  //     {
-  //       postId,
-  //     },
-  //     {
-  //       onSuccess() {
-  //         queryClient
-  //           .invalidateQueries(queryKey.post.post(postId))
-  //           .catch(console.log);
-  //       },
-  //     },
-  //   );
-  // };
+  const onScrapClick = () => {
+    if (isWriter) {
+      message.warn('자기 자신의 글은 스크랩할 수 없습니다.');
+      return;
+    }
+
+    addScrap(
+      {
+        postId,
+      },
+      {
+        onSuccess() {
+          queryClient
+            .invalidateQueries({
+              queryKey: queryKey.post.post(postId),
+            })
+            .catch(console.log);
+        },
+      },
+    );
+  };
 
   const onDeleteConfirm = () => {
     deletePost(
@@ -276,26 +280,22 @@ export default function BoardDetailPage() {
               </div>
             )}
           </Space>
-          {/*<Space className={styles.buttonGroup}>*/}
-          {/*  <Tooltip title={'좋아요'}>*/}
-          {/*    <Button*/}
-          {/*      icon={<FcLike />}*/}
-          {/*      className={styles.emotionButton}*/}
-          {/*      onClick={onLikeClick}*/}
-          {/*    >*/}
-          {/*      {post.likeCount ?? 0}*/}
-          {/*    </Button>*/}
-          {/*  </Tooltip>*/}
-          {/*  <Tooltip title={'스크랩'}>*/}
-          {/*    <Button*/}
-          {/*      icon={<BsFillStarFill color={'orange'} />}*/}
-          {/*      className={styles.emotionButton}*/}
-          {/*      onClick={onScrapClick}*/}
-          {/*    >*/}
-          {/*      {post.scrapCount ?? 0}*/}
-          {/*    </Button>*/}
-          {/*  </Tooltip>*/}
-          {/*</Space>*/}
+          <Space className={styles.buttonGroup}>
+            {/*  <Tooltip title={'좋아요'}>*/}
+            {/*    <Button*/}
+            {/*      icon={<FcLike />}*/}
+            {/*      className={styles.emotionButton}*/}
+            {/*      onClick={onLikeClick}*/}
+            {/*    >*/}
+            {/*      {post.likeCount ?? 0}*/}
+            {/*    </Button>*/}
+            {/*  </Tooltip>*/}
+            <Tooltip title={'스크랩'}>
+              <Button icon={<FolderOpenTwoTone twoToneColor={'orange'} />} className={styles.emotionButton} onClick={onScrapClick}>
+                {post.scrapCount ?? 0}
+              </Button>
+            </Tooltip>
+          </Space>
           {isWriter && (
             <Space className={styles.actionButtonGroup}>
               <Link

@@ -107,7 +107,7 @@ export default function MyPage() {
     {
       title: '내가 스크랩한 글',
       icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
-      onClick: () => message.info('기능 준비중입니다!'),
+      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`,
     },
     {
       title: '쪽지',
