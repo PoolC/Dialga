@@ -66,7 +66,6 @@ export const TimeBlockCapacity = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-// eslint-disable-next-line
 export const DisabledActionButton = styled(ActionButton)`
   cursor: default;
   background-color: ${colors.gray[2]};
