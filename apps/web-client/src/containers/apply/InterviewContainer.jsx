@@ -48,7 +48,7 @@ const InterviewContainer = () => {
           window.location.reload();
         }
       })
-      .catch((e) => {
+      .catch(() => {
         alert('면접 신청에 실패하였습니다.');
         window.location.reload();
       });

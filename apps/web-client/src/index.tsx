@@ -26,7 +26,7 @@ export function setUser() {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) return; // 로그인 상태가 아니라면 아무것도 안함
     store.dispatch(loadUser());
-  } catch (e) {
+  } catch (_e) {
     console.log('localStorage is not working');
   }
 }

@@ -1,9 +1,17 @@
 import React, { PropsWithChildren } from 'react';
 
-export default class BusinessErrorBoundary extends React.Component<PropsWithChildren> {
-  state = { hasError: false };
+export default class BusinessErrorBoundary extends React.Component<
+  PropsWithChildren,
+  {
+    hasError: boolean;
+  }
+> {
+  constructor(props: PropsWithChildren) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 

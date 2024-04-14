@@ -8,7 +8,7 @@ import { TwoColumnsContainerBlock } from '../../../styles/common/Block.styles.ts
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const ActivityListContainer = ({ location, history, match }) => {
+const ActivityListContainer = ({ location, history }) => {
   const currentLocation = location.search.replace('?semester=', '');
   const member = useSelector((state) => state.auth);
 
@@ -72,9 +72,9 @@ const ActivityListContainer = ({ location, history, match }) => {
 
   return (
     <TwoColumnsContainerBlock>
-        <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
-        <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
-      </TwoColumnsContainerBlock>
+      <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
+      <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
+    </TwoColumnsContainerBlock>
   );
 };
 

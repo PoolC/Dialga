@@ -5,7 +5,7 @@ import Spinner from '../../../components/common/Spinner/Spinner';
 import { CLIENT_ERROR, SUCCESS } from '../../../constants/statusCode';
 import { MEMBER_ROLE } from '../../../constants/memberRoles';
 
-const AdminMemberContainer = ({ history }) => {
+const AdminMemberContainer = () => {
   const [memberLoading, setMemberLoading] = useState(true);
   const [rolesLoading, setRolesLoading] = useState(true);
 

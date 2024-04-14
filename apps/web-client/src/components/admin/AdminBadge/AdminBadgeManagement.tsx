@@ -200,7 +200,7 @@ function BadgeGenerateModal({ onOk: _onOk, onCancel }: { onOk: () => void; onCan
     onSubmit(form.values);
   };
 
-  const onUploadChange = (info: UploadChangeParam<UploadFile<any>>) => {
+  const onUploadChange = (info: UploadChangeParam<UploadFile>) => {
     mutateUploadFile(info.file as unknown as File, {
       onSuccess(imageUrl) {
         form.setFieldValue('imageUrl', imageUrl);
@@ -208,7 +208,8 @@ function BadgeGenerateModal({ onOk: _onOk, onCancel }: { onOk: () => void; onCan
     });
   };
 
-  const getUploadFileList = () => form.values.imageUrl
+  const getUploadFileList = () =>
+    form.values.imageUrl
       ? [
           {
             uid: 'SOME_UID',
@@ -296,7 +297,7 @@ function BadgeEditModal({ onCancel, onOk: _onOk, initialValues }: { onCancel: ()
     onSubmit(form.values);
   };
 
-  const onUploadChange = (info: UploadChangeParam<UploadFile<any>>) => {
+  const onUploadChange = (info: UploadChangeParam<UploadFile>) => {
     mutateUploadFile(info.file as unknown as File, {
       onSuccess(imageUrl) {
         form.setFieldValue('imageUrl', imageUrl);
@@ -304,7 +305,8 @@ function BadgeEditModal({ onCancel, onOk: _onOk, initialValues }: { onCancel: ()
     });
   };
 
-  const getUploadFileList = () => form.values.imageUrl
+  const getUploadFileList = () =>
+    form.values.imageUrl
       ? [
           {
             uid: 'SOME_UID',

@@ -33,7 +33,7 @@ import throttle from '../../../lib/utils/throttle';
 const Member = ({ member, attended, handleCheckAttendance }) => {
   const [isChecked, setIsChecked] = useState(attended || false);
 
-  const handleCheck = (e) => {
+  const handleCheck = () => {
     setIsChecked((isChecked) => !isChecked);
     handleCheckAttendance(member, isChecked);
   };
@@ -104,7 +104,7 @@ const ActivityAttendance = ({
     });
   }, 1000);
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     onChangeDescription(markdownContent);

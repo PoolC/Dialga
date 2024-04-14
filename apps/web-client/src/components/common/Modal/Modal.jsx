@@ -3,7 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { ButtonContainer, ContentContainer, HeaderBar, ModalBlock, ModalContainer } from './Modal.styles.js';
 import colors from '~/lib/styles/colors.js';
 
-const Modal = ({ contents, buttons, visible, onConfirm, onCancel }) => {
+const Modal = ({ contents, buttons, visible, onCancel }) => {
   const [animate, setAnimate] = useState(false);
   const [localVisible, setLocalVisible] = useState(visible);
 

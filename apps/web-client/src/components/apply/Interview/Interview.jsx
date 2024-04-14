@@ -13,8 +13,8 @@ import LinkButton from '../../common/Buttons/LinkButton';
 
 const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
-  const {role} = member.user;
-  const {isLogin} = member.status;
+  const { role } = member.user;
+  const { isLogin } = member.status;
   const loginId = member.user.memberId;
 
   const [selectModalVisible, setSelectModalVisible] = useState(false);
@@ -87,33 +87,33 @@ const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, hand
 };
 
 const DateBlock = ({ data, loginId, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => (
-    <>
-      <StyledDateBlock>{data?.date}</StyledDateBlock>
-      <StyledTimeList>
-        {data?.slots.map((d) => (
-            <TimeBlock
-              key={d.slotId}
-              id={d.slotId}
-              date={data?.date}
-              startTime={d.startTime}
-              endTime={d.endTime}
-              capacity={d.capacity}
-              num={d.interviewees.length}
-              interviewees={d.interviewees}
-              loginId={loginId}
-              mySlotId={mySlotId}
-              handleSelectInterviewTime={handleSelectInterviewTime}
-              handleCancelInterviewTime={handleCancelInterviewTime}
-            />
-          ))}
-      </StyledTimeList>
-    </>
-  );
+  <>
+    <StyledDateBlock>{data?.date}</StyledDateBlock>
+    <StyledTimeList>
+      {data?.slots.map((d) => (
+        <TimeBlock
+          key={d.slotId}
+          id={d.slotId}
+          date={data?.date}
+          startTime={d.startTime}
+          endTime={d.endTime}
+          capacity={d.capacity}
+          num={d.interviewees.length}
+          interviewees={d.interviewees}
+          loginId={loginId}
+          mySlotId={mySlotId}
+          handleSelectInterviewTime={handleSelectInterviewTime}
+          handleCancelInterviewTime={handleCancelInterviewTime}
+        />
+      ))}
+    </StyledTimeList>
+  </>
+);
 
 const Interview = ({ loading, data, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
   // const role = member.user.role;
-  const {isLogin} = member.status;
+  const { isLogin } = member.status;
 
   const loginId = member.user.memberId;
 
@@ -133,13 +133,10 @@ const Interview = ({ loading, data, mySlotId, handleSelectInterviewTime, handleC
             </ActionButton>
           </InterviewWarningBlock>
         )}
-        {!loading && (
-          <>
-            {data?.map((d) => (
-                <DateBlock key={d.date} data={d} loginId={loginId} mySlotId={mySlotId} handleSelectInterviewTime={handleSelectInterviewTime} handleCancelInterviewTime={handleCancelInterviewTime} />
-              ))}
-          </>
-        )}
+        {!loading &&
+          data?.map((d) => (
+            <DateBlock key={d.date} data={d} loginId={loginId} mySlotId={mySlotId} handleSelectInterviewTime={handleSelectInterviewTime} handleCancelInterviewTime={handleCancelInterviewTime} />
+          ))}
       </WhiteBlock>
     </Block>
   );

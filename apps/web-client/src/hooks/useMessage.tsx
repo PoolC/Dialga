@@ -8,16 +8,16 @@ const MessageContext = createContext<{
   warn: (text: string) => void;
   info: (text: string) => void;
 }>({
-  success: (text: string) => {
+  success: (_text: string) => {
     throw new Error('not override yet. message context - success method');
   },
-  error: (text: string) => {
+  error: (_text: string) => {
     throw new Error('not override yet. message context - error method');
   },
-  warn: (text: string) => {
+  warn: (_text: string) => {
     throw new Error('not override yet. message context - warn method');
   },
-  info: (text: string) => {
+  info: (_text: string) => {
     throw new Error('not override yet. message context - warn method');
   },
 });

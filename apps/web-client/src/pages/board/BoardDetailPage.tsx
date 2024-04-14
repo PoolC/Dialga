@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Viewer } from '@toast-ui/react-editor';
-import { FolderOpenOutlined, FolderOpenTwoTone } from '@ant-design/icons';
+import { FolderOpenTwoTone } from '@ant-design/icons';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
@@ -333,8 +333,8 @@ const commentSchema = z.object({
 function CommentBox({ postId, commentList, onRefetch }: { postId: number; commentList: PostResponse['commentList']; onRefetch: () => void }) {
   const { styles } = useStyles();
   const message = useMessage();
-  const member = useSelector((state: any) => state.auth);
-  const {isLogin} = member.status;
+  const member = useSelector((state: { auth: { status: { isLogin: boolean } } }) => state.auth);
+  const { isLogin } = member.status;
 
   const form = useForm<z.infer<typeof commentSchema>>({
     initialValues: {

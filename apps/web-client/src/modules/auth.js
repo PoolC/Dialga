@@ -39,7 +39,7 @@ export const initLogin = createAction(LOGIN_INIT);
 
 export const handleExpiredAccessToken = createAction(HANDLE_EXPIRED_ACCESS_TOKEN);
 
-function* loadUserSaga(action) {
+function* loadUserSaga(_action) {
   try {
     const result = yield call(authAPI.loadUser);
     yield put({
@@ -148,7 +148,7 @@ const auth = handleActions(
         status: 'INIT',
       },
     }),
-    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
+    [LOGIN_SUCCESS]: (state) => ({
       ...state,
       login: {
         status: 'SUCCESS',
@@ -167,24 +167,24 @@ const auth = handleActions(
       authError: error,
     }),
     [LOAD_USER_SUCCESS]: (state, { data }) => ({
-        ...state,
-        status: {
-          isLogin: true,
-          init: false,
-        },
-        user: {
-          memberId: data.loginID,
-          isAdmin: data.isAdmin,
-          name: data.name,
-          role: data.role,
-          profileImageURL: getProfileImageUrl(data.profileImageURL),
-        },
-      }),
+      ...state,
+      status: {
+        isLogin: true,
+        init: false,
+      },
+      user: {
+        memberId: data.loginID,
+        isAdmin: data.isAdmin,
+        name: data.name,
+        role: data.role,
+        profileImageURL: getProfileImageUrl(data.profileImageURL),
+      },
+    }),
     [LOAD_USER_FAILURE]: (state, { payload: error }) => ({
       ...state,
       authError: error,
     }),
-    [LOGOUT]: (state, { payload: error }) => ({
+    [LOGOUT]: (state) => ({
       ...state,
       login: {
         status: 'INIT',

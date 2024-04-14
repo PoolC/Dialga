@@ -17,8 +17,34 @@ module.exports = {
         'react/jsx-filename-extension': 'off',
         'react/prop-types': 'off',
         'react/jsx-props-no-spreading': 'off',
-        'eslint/no-alert': 'off',
-        'eslint/no-shadow': 'off',
+        'react/jsx-no-bind': 'off',
+        'react/destructuring-assignment': 'off',
+        'react/no-array-index-key': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          {
+            args: 'all',
+            argsIgnorePattern: '^_',
+            caughtErrors: 'all',
+            caughtErrorsIgnorePattern: '^_',
+            destructuredArrayIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            ignoreRestSiblings: true,
+          },
+        ],
+
+        // 아래 내용들은 수정의 범위가 너무 넓어지므로 일단 off로 설정
+        'jsx-a11y/label-has-associated-control': 'off',
+        'jsx-a11y/control-has-associated-control': 'off',
+        'no-alert': 'off',
+        'no-shadow': 'off',
+        'no-use-before-define': 'off',
+        'no-restricted-globals': 'off',
+        'no-undef': 'off',
+        'no-restricted-syntax': 'off',
+        'no-plusplus': 'off',
+        // @typescript-eslint/no-explicit-any와 중복되므로
+        'no-unused-vars': 'off',
       },
       parser: '@typescript-eslint/parser',
       env: {

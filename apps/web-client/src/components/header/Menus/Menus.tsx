@@ -16,7 +16,7 @@ const Menus = ({
 }: {
   menuVisible: boolean;
   isLogin: boolean;
-  role: any;
+  role: string | null;
   onToggleMenu: () => void;
   dropDownItems: MenuProps['items'];
   profileImageURL: string;

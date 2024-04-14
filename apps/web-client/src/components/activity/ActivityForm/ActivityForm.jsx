@@ -1,7 +1,7 @@
 import { memo, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { DeleteFilled } from '@ant-design/icons';
-import { Input as AntdInput, Radio } from 'antd';
+import { Radio } from 'antd';
 import ActionButton from '../../common/Buttons/ActionButton';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import useInput from '../../../hooks/useInput';
@@ -38,12 +38,12 @@ const TagItem = memo(({ tag, onDeleteTag }) => {
 });
 
 const TagList = ({ tags, onDeleteTag }) => (
-    <TagListBlock>
-      {tags.map((tag) => (
-        <TagItem key={tag} tag={tag} onDeleteTag={onDeleteTag} />
-      ))}
-    </TagListBlock>
-  );
+  <TagListBlock>
+    {tags.map((tag) => (
+      <TagItem key={tag} tag={tag} onDeleteTag={onDeleteTag} />
+    ))}
+  </TagListBlock>
+);
 
 const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessage, buttons, errorModalVisible, onCloseErrorModal }) => {
   const editorRef = useRef();
@@ -58,7 +58,7 @@ const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessa
   const [tags, onChangeTags] = useState(activity ? activity.tags.map((tag) => tag.name) : []);
   const [tag, onChangeTag] = useInput('', notEmptyValidation);
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     onChangeDescription(markdownContent);

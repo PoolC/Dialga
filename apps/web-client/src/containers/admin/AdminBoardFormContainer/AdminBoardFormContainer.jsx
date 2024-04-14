@@ -6,8 +6,8 @@ import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const AdminBoardFormContainer = ({ match, history, location }) => {
-  const {boardID} = match.params;
+const AdminBoardFormContainer = ({ match, history }) => {
+  const { boardID } = match.params;
 
   const [board, setBoard] = useState(null);
 

@@ -1,4 +1,4 @@
-import { Avatar, Button, List, Popover, Progress, Space, Typography } from 'antd';
+import { Avatar, Button, List, Popover, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { Link } from 'react-router-dom';
 import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
@@ -115,8 +115,6 @@ export default function MyPage() {
       onClick: () => message.info('기능 준비중입니다!'),
     },
   ];
-
-  const activityMinimumHour = 6;
 
   const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppQueries({
     queries: [

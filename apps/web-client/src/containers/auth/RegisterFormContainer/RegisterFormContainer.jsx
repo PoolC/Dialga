@@ -5,7 +5,7 @@ import * as authAPI from '../../../lib/api/auth';
 import { removeHeaderAccessToken } from '../../../lib/utils/axiosUtil';
 import { CLIENT_ERROR, SUCCESS } from '../../../constants/statusCode';
 
-const RegisterFormContainer = ({ location, history }) => {
+const RegisterFormContainer = ({ history }) => {
   const [message, setMessage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -56,7 +56,6 @@ const RegisterFormContainer = ({ location, history }) => {
 
           setMessage('회원가입 실패');
           handleModalOpen();
-          
         });
     } catch (e) {
       console.error(e);

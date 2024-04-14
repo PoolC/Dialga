@@ -69,7 +69,7 @@ export default function MessageAllListPage() {
           <List
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item, index) => (
+            renderItem={() => (
               <List.Item>
                 <Space direction="vertical" className={styles.fullWidth}>
                   <Space className={styles.metaInfo}>

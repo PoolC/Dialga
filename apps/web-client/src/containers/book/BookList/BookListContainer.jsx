@@ -19,7 +19,7 @@ const BookListContainer = () => {
     })();
   }, []);
 
-  const onBorrowBook = (id, status) => {
+  const onBorrowBook = (id) => {
     bookAPI.borrowBook(id).then((res) => {
       if (res.status === SUCCESS.OK) {
         const newBooks = books.map((book) =>
@@ -40,7 +40,7 @@ const BookListContainer = () => {
     });
   };
 
-  const onReturnBook = (id, status) => {
+  const onReturnBook = (id) => {
     bookAPI.returnBook(id).then((res) => {
       if (res.status === SUCCESS.OK) {
         const newBooks = books.map((book) => (book.id === id ? { ...book, status: 'AVAILABLE', borrower: null, borrowDate: null } : book));
@@ -49,9 +49,7 @@ const BookListContainer = () => {
     });
   };
 
-  return (
-    <BookList loading={loading} member={member} books={books} onBorrowBook={onBorrowBook} onReturnBook={onReturnBook} />
-  );
+  return <BookList loading={loading} member={member} books={books} onBorrowBook={onBorrowBook} onReturnBook={onReturnBook} />;
 };
 
 export default BookListContainer;

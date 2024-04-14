@@ -10,7 +10,7 @@ import Spinner from '../../../components/common/Spinner/Spinner';
 import { logout } from '../../../modules/auth';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const MyInfoFormContainer = ({ location, history }) => {
+const MyInfoFormContainer = ({ history }) => {
   const dispatch = useDispatch();
 
   const [userLoading, setUserLoading] = useState(true);
@@ -102,7 +102,6 @@ const MyInfoFormContainer = ({ location, history }) => {
 
           setMessage('정보 수정 실패');
           handleModalOpen();
-          
         });
     } catch (e) {
       console.error(e);

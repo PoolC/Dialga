@@ -42,7 +42,7 @@ export const Input = ({ valueText, labelText, typeText, nameText, error, onChang
   );
 };
 
-const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, userInfo, onUpdateMemberRoleBySelf, roles, onWithdraw }) => {
+const AuthForm = ({ type, onSubmit, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, userInfo, onUpdateMemberRoleBySelf, roles, onWithdraw }) => {
   const headerText = textMap[type];
 
   const [id, onChangeId, idError] = useInput(userInfo ? userInfo.loginID : '', idValidation);
@@ -54,6 +54,7 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
   const [studentId, onChangeStudentId, studentIdError] = useInput(userInfo ? userInfo.studentID : '', notEmptyValidation);
   const [introduction, onChangeIntroduction, introductionError] = useInput(userInfo ? userInfo.introduction : '', notEmptyValidation);
 
+  // eslint-disable-next-line no-nested-ternary
   const [profileImageURL, setProfileImageURL] = useState(userInfo ? (userInfo.profileImageURL ? userInfo.profileImageURL : profileImagePlaceholders[0]) : profileImagePlaceholders[0]);
 
   const [role, setRole] = useState(userInfo ? userInfo.role : 'MEMBER');
@@ -76,7 +77,8 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
     handlePasswordCheckError(e.target.value);
   };
 
-  const registerValidation = () => !(
+  const registerValidation = () =>
+    !(
       idError ||
       !id ||
       passwordError ||
@@ -97,7 +99,8 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
       !introduction
     );
 
-  const updateValidation = () => !(passwordError || !password || passwordCheckError || !passwordCheck || emailError || !email || phoneNumberError || !phoneNumber || introductionError || !introduction);
+  const updateValidation = () =>
+    !(passwordError || !password || passwordCheckError || !passwordCheck || emailError || !email || phoneNumberError || !phoneNumber || introductionError || !introduction);
 
   const loginValidation = () => !(idError || !id || passwordError || !password);
 
