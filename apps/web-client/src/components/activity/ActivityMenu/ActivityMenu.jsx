@@ -4,23 +4,23 @@ import { MenuBlock, MenuItem, MenuList } from '~/styles/common/Menu.styles';
 import Spinner from '../../common/Spinner/Spinner';
 
 const ActivityMenu = ({ loading, semesters, currentLocation }) => (
-    <MenuBlock>
-      <MenuList>
-        {loading && <Spinner small />}
-        {!loading &&
-          semesters.map((semester) =>
-            currentLocation === semester ? (
-              <MenuItem key={semester}>
-                <SelectedLinkButton to={`/activities?semester=${semester}`}>{semester}</SelectedLinkButton>
-              </MenuItem>
-            ) : (
-              <MenuItem key={semester}>
-                <LinkButton to={`/activities?semester=${semester}`}>{semester}</LinkButton>
-              </MenuItem>
-            ),
-          )}
-      </MenuList>
-    </MenuBlock>
-  );
+  <MenuBlock>
+    <MenuList>
+      {loading && <Spinner small />}
+      {!loading &&
+        semesters.map((semester) =>
+          currentLocation === semester ? (
+            <MenuItem key={semester}>
+              <SelectedLinkButton to={`/activities?semester=${semester}`}>{semester}</SelectedLinkButton>
+            </MenuItem>
+          ) : (
+            <MenuItem key={semester}>
+              <LinkButton to={`/activities?semester=${semester}`}>{semester}</LinkButton>
+            </MenuItem>
+          ),
+        )}
+    </MenuList>
+  </MenuBlock>
+);
 
 export default ActivityMenu;

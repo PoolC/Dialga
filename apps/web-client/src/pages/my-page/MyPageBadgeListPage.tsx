@@ -89,12 +89,12 @@ export default function MyPageBadgeListPage() {
   const baekjoonTierBadges = baekjoonBadges.slice(baekjoonBadges.length - 5);
 
   const renderBadgeTooltipTitle = (badge: Badge) => (
-      <div>
-        <span className={styles.badgeName}>{badge.name}</span>
-        <br />
-        <span className={styles.badgeDesc}>{badge.description}</span>
-      </div>
-    );
+    <div>
+      <span className={styles.badgeName}>{badge.name}</span>
+      <br />
+      <span className={styles.badgeDesc}>{badge.description}</span>
+    </div>
+  );
 
   const renderBakejoonTierProgress = (tier: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | 'ruby', count: number) => {
     const title = match(tier)

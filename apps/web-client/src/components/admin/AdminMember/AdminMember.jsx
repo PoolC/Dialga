@@ -9,22 +9,22 @@ import { StyledSearchActionButton } from '../AdminProjectForm/AdminProjectForm.s
 import { ContentsContainer, MemberListRow, StyledActionButton, Table, TableHead, TitleContainer, StyledSelect, SearchHeader, SearchResult, MemberSearchForm } from './AdminMember.styles';
 
 const MemberTableHead = () => (
-    <thead>
-      <TableHead>
-        <th className="member_list_head name">이름</th>
-        <th className="member_list_head department hide">학과</th>
-        <th className="member_list_head studentId">학번</th>
-        <th className="member_list_head loginId hide">아이디</th>
-        <th className="member_list_head email hide">이메일</th>
-        <th className="member_list_head phone hide">연락처</th>
-        <th className="member_list_head isActivated">승인</th>
-        <th className="member_list_head small-button">동작</th>
-        <th className="member_list_head isAdmin">관리자</th>
-        <th className="member_list_head small-button">동작</th>
-        <th className="member_list_head status">상태</th>
-      </TableHead>
-    </thead>
-  );
+  <thead>
+    <TableHead>
+      <th className="member_list_head name">이름</th>
+      <th className="member_list_head department hide">학과</th>
+      <th className="member_list_head studentId">학번</th>
+      <th className="member_list_head loginId hide">아이디</th>
+      <th className="member_list_head email hide">이메일</th>
+      <th className="member_list_head phone hide">연락처</th>
+      <th className="member_list_head isActivated">승인</th>
+      <th className="member_list_head small-button">동작</th>
+      <th className="member_list_head isAdmin">관리자</th>
+      <th className="member_list_head small-button">동작</th>
+      <th className="member_list_head status">상태</th>
+    </TableHead>
+  </thead>
+);
 
 const Member = ({ member, handleAcceptMember, handleWithdrawMember, handleToggleAdmin, handleUpdateMemberRole, roles, history }) => {
   const [role, onChangeRole] = useInput(member.role ? member.role : 'MEMBER', notEmptyValidation);
@@ -159,17 +159,17 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
             {members
               .filter((m) => m.role === 'UNACCEPTED')
               .map((member) => (
-                  <Member
-                    key={member.loginID}
-                    member={member}
-                    handleAcceptMember={handleAcceptMember}
-                    handleWithdrawMember={handleWithdrawMember}
-                    handleToggleAdmin={handleToggleAdmin}
-                    handleUpdateMemberRole={handleUpdateMemberRole}
-                    roles={roles}
-                    history={history}
-                  />
-                ))}
+                <Member
+                  key={member.loginID}
+                  member={member}
+                  handleAcceptMember={handleAcceptMember}
+                  handleWithdrawMember={handleWithdrawMember}
+                  handleToggleAdmin={handleToggleAdmin}
+                  handleUpdateMemberRole={handleUpdateMemberRole}
+                  roles={roles}
+                  history={history}
+                />
+              ))}
           </tbody>
         </Table>
         <SearchHeader>일반 회원 목록</SearchHeader>
@@ -179,17 +179,17 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
             {members
               .filter((m) => m.role === 'MEMBER')
               .map((member) => (
-                  <Member
-                    key={member.loginID}
-                    member={member}
-                    handleAcceptMember={handleAcceptMember}
-                    handleWithdrawMember={handleWithdrawMember}
-                    handleToggleAdmin={handleToggleAdmin}
-                    handleUpdateMemberRole={handleUpdateMemberRole}
-                    roles={roles}
-                    history={history}
-                  />
-                ))}
+                <Member
+                  key={member.loginID}
+                  member={member}
+                  handleAcceptMember={handleAcceptMember}
+                  handleWithdrawMember={handleWithdrawMember}
+                  handleToggleAdmin={handleToggleAdmin}
+                  handleUpdateMemberRole={handleUpdateMemberRole}
+                  roles={roles}
+                  history={history}
+                />
+              ))}
           </tbody>
         </Table>
         <SearchHeader>졸업/수료 회원 목록</SearchHeader>
@@ -199,17 +199,17 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
             {members
               .filter((m) => m.role === 'GRADUATED' || m.role === 'COMPLETE')
               .map((member) => (
-                  <Member
-                    key={member.loginID}
-                    member={member}
-                    handleAcceptMember={handleAcceptMember}
-                    handleWithdrawMember={handleWithdrawMember}
-                    handleToggleAdmin={handleToggleAdmin}
-                    handleUpdateMemberRole={handleUpdateMemberRole}
-                    roles={roles}
-                    history={history}
-                  />
-                ))}
+                <Member
+                  key={member.loginID}
+                  member={member}
+                  handleAcceptMember={handleAcceptMember}
+                  handleWithdrawMember={handleWithdrawMember}
+                  handleToggleAdmin={handleToggleAdmin}
+                  handleUpdateMemberRole={handleUpdateMemberRole}
+                  roles={roles}
+                  history={history}
+                />
+              ))}
           </tbody>
         </Table>
         <SearchHeader>활동 회원 목록</SearchHeader>
@@ -219,17 +219,17 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
             {members
               .filter((m) => m.isActivated)
               .map((member) => (
-                  <Member
-                    key={member.loginID}
-                    member={member}
-                    handleAcceptMember={handleAcceptMember}
-                    handleWithdrawMember={handleWithdrawMember}
-                    handleToggleAdmin={handleToggleAdmin}
-                    handleUpdateMemberRole={handleUpdateMemberRole}
-                    roles={roles}
-                    history={history}
-                  />
-                ))}
+                <Member
+                  key={member.loginID}
+                  member={member}
+                  handleAcceptMember={handleAcceptMember}
+                  handleWithdrawMember={handleWithdrawMember}
+                  handleToggleAdmin={handleToggleAdmin}
+                  handleUpdateMemberRole={handleUpdateMemberRole}
+                  roles={roles}
+                  history={history}
+                />
+              ))}
           </tbody>
         </Table>
         <SearchHeader>비활동 회원 목록</SearchHeader>
@@ -239,17 +239,17 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
             {members
               .filter((m) => !m.isActivated)
               .map((member) => (
-                  <Member
-                    key={member.loginID}
-                    member={member}
-                    handleAcceptMember={handleAcceptMember}
-                    handleWithdrawMember={handleWithdrawMember}
-                    handleToggleAdmin={handleToggleAdmin}
-                    handleUpdateMemberRole={handleUpdateMemberRole}
-                    roles={roles}
-                    history={history}
-                  />
-                ))}
+                <Member
+                  key={member.loginID}
+                  member={member}
+                  handleAcceptMember={handleAcceptMember}
+                  handleWithdrawMember={handleWithdrawMember}
+                  handleToggleAdmin={handleToggleAdmin}
+                  handleUpdateMemberRole={handleUpdateMemberRole}
+                  roles={roles}
+                  history={history}
+                />
+              ))}
           </tbody>
         </Table>
         <SearchHeader>전체 회원 목록</SearchHeader>

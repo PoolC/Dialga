@@ -38,19 +38,19 @@ const ErrorMessage = styled.p`
 `;
 
 const AccessDeniedPage = ({ history }) => (
-    <PageBlock>
-      <PageContainer>
-        <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
-        <ErrorMessage>권한이 없습니다.</ErrorMessage>
-        <ActionButton
-          onClick={() => {
-            history.push('/');
-          }}
-        >
-          메인으로
-        </ActionButton>
-      </PageContainer>
-    </PageBlock>
-  );
+  <PageBlock>
+    <PageContainer>
+      <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
+      <ErrorMessage>권한이 없습니다.</ErrorMessage>
+      <ActionButton
+        onClick={() => {
+          history.push('/');
+        }}
+      >
+        메인으로
+      </ActionButton>
+    </PageContainer>
+  </PageBlock>
+);
 
 export default withRouter(AccessDeniedPage);

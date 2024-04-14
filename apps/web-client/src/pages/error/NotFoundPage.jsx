@@ -38,19 +38,19 @@ const ErrorMessage = styled.p`
 `;
 
 const NotFoundPage = ({ history }) => (
-    <PageBlock>
-      <PageContainer>
-        <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
-        <ErrorMessage>존재하지 않는 페이지입니다.</ErrorMessage>
-        <ActionButton
-          onClick={() => {
-            history.push('/');
-          }}
-        >
-          메인으로
-        </ActionButton>
-      </PageContainer>
-    </PageBlock>
-  );
+  <PageBlock>
+    <PageContainer>
+      <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
+      <ErrorMessage>존재하지 않는 페이지입니다.</ErrorMessage>
+      <ActionButton
+        onClick={() => {
+          history.push('/');
+        }}
+      >
+        메인으로
+      </ActionButton>
+    </PageContainer>
+  </PageBlock>
+);
 
 export default withRouter(NotFoundPage);

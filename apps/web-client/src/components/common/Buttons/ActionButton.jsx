@@ -27,7 +27,8 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const ActionButton = (props) => props.to ? (
+const ActionButton = (props) =>
+  props.to ? (
     <StyledActionButton {...props}>
       <StyledLink to={props.to}>{props.children}</StyledLink>
     </StyledActionButton>

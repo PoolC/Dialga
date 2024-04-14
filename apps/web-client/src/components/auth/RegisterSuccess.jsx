@@ -23,31 +23,31 @@ const Contents = styled.div`
 `;
 
 const RegisterSuccess = ({ isSubscriptionPeriod }) => (
-    <Block>
-      <WhiteBlock>
-        <Contents>
-          <CheckCircleTwoTone twoToneColor={colors.mint[1]} style={{ marginBottom: '20px', fontSize: '40px' }} />
-          <h2>회원가입 요청 완료</h2>
-          <p>회원가입 요청이 전송되었습니다.</p>
-          {!isSubscriptionPeriod && (
-            <>
-              <p>관리자가 승인해야 회원가입이 완료됩니다.</p>
-              <p>관리자의 승인을 기다려주세요.</p>
-            </>
-          )}
-          {isSubscriptionPeriod && (
-            <ActionButton to={`/${MENU.SIGNIN}`} style={{ margin: '2rem' }}>
-              로그인 하러 가기
-            </ActionButton>
-          )}
-          {!isSubscriptionPeriod && (
-            <ActionButton to="/" style={{ margin: '2rem' }}>
-              메인으로
-            </ActionButton>
-          )}
-        </Contents>
-      </WhiteBlock>
-    </Block>
-  );
+  <Block>
+    <WhiteBlock>
+      <Contents>
+        <CheckCircleTwoTone twoToneColor={colors.mint[1]} style={{ marginBottom: '20px', fontSize: '40px' }} />
+        <h2>회원가입 요청 완료</h2>
+        <p>회원가입 요청이 전송되었습니다.</p>
+        {!isSubscriptionPeriod && (
+          <>
+            <p>관리자가 승인해야 회원가입이 완료됩니다.</p>
+            <p>관리자의 승인을 기다려주세요.</p>
+          </>
+        )}
+        {isSubscriptionPeriod && (
+          <ActionButton to={`/${MENU.SIGNIN}`} style={{ margin: '2rem' }}>
+            로그인 하러 가기
+          </ActionButton>
+        )}
+        {!isSubscriptionPeriod && (
+          <ActionButton to="/" style={{ margin: '2rem' }}>
+            메인으로
+          </ActionButton>
+        )}
+      </Contents>
+    </WhiteBlock>
+  </Block>
+);
 
 export default RegisterSuccess;

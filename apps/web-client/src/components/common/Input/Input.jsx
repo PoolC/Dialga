@@ -17,20 +17,20 @@ const StyledInput = styled(AntdInput)`
 `;
 
 const Input = ({ valueText, labelText, typeText, nameText, error, onChangeFunc, placeholderText, disabledCondition }) => (
-    <>
-      <StyledLabel htmlFor={nameText}>{labelText}</StyledLabel>
-      <StyledInput
-        autoComplete="off"
-        value={valueText}
-        type={typeText}
-        name={nameText}
-        id={nameText}
-        disabled={disabledCondition}
-        error={error ? 1 : 0}
-        onChange={onChangeFunc}
-        placeholder={placeholderText}
-      />
-    </>
-  );
+  <>
+    <StyledLabel htmlFor={nameText}>{labelText}</StyledLabel>
+    <StyledInput
+      autoComplete="off"
+      value={valueText}
+      type={typeText}
+      name={nameText}
+      id={nameText}
+      disabled={disabledCondition}
+      error={error ? 1 : 0}
+      onChange={onChangeFunc}
+      placeholder={placeholderText}
+    />
+  </>
+);
 
 export default Input;

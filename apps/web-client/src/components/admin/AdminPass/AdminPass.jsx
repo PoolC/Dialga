@@ -139,7 +139,9 @@ const AdminPass = ({ members, onSubmit, onChangeExcepted, onWithdraw, history })
           <tbody>
             {members
               ?.filter((m) => m.member.isActivated)
-              .map((member) => <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />)}
+              .map((member) => (
+                <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
+              ))}
           </tbody>
         </Table>
       </ContentsContainer>

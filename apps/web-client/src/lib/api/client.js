@@ -31,10 +31,9 @@ if (localStorage.getItem('accessToken')) {
 // );
 
 client.interceptors.response.use(
-  (response) => 
+  (response) =>
     // 요청 성공 시 특정 작업 수행
-     response
-  ,
+    response,
   (error) => {
     // 요청 실패 시 특정 작업 수행
     if (error.response.status === 401) {

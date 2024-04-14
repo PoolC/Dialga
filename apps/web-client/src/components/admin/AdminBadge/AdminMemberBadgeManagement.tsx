@@ -162,12 +162,12 @@ function MemberBadgeListModal({ onOk: _onOk, onCancel, loginId }: { onOk: () => 
 
   // render
   const renderBadgeTooltipTitle = (badge: Badge) => (
-      <div>
-        <span className={styles.badgeName}>{badge.name}</span>
-        <br />
-        <span className={styles.badgeDesc}>{badge.description}</span>
-      </div>
-    );
+    <div>
+      <span className={styles.badgeName}>{badge.name}</span>
+      <br />
+      <span className={styles.badgeDesc}>{badge.description}</span>
+    </div>
+  );
 
   return (
     <Modal open onCancel={onCancel} onOk={onOk}>
