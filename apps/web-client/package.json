@@ -61,6 +61,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "openapi-typescript-codegen": "^0.28.0",
+    "typescript": "^5.3.3",
     "vite": "^5.2.7"
   },
   "scripts": {
@@ -68,8 +69,8 @@
     "dev": "yarn start",
     "build": "vite build",
     "sync:type": "yarn dlx typesync",
-    "check:type": "tsc --noEmit",
-    "check:type:watch": "tsc --noEmit --watch",
+    "check:type": "tsc",
+    "check:type:watch": "tsc --watch",
     "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
     "postinstall": "yarn codegen",
     "prettier": "prettier --write .",
