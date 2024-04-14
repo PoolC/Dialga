@@ -109,7 +109,7 @@ const AdminProjectForm = ({
     onChangeSearchMember(e);
   };
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     // const HTMLContent = editorInstance.getHtml();

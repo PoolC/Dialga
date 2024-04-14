@@ -45,8 +45,7 @@ const AdminBoardFormContainer = ({ match, history }) => {
           history.push('/admin/boards');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
@@ -74,8 +73,7 @@ const AdminBoardFormContainer = ({ match, history }) => {
           history.push('/admin/boards');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

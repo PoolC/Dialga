@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import { ContentsContainer, TitleContainer } from './AdminHome.styles';
 

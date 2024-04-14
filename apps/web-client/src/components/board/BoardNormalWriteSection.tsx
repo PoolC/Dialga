@@ -173,7 +173,8 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
     });
   };
 
-  const getUploadFileList = () => form.values.fileList.map((file, i) => ({
+  const getUploadFileList = () =>
+    form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
       name: decodeURI(file),
@@ -189,6 +190,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
       });
       editorRef.current?.getInstance().setHTML(savedPost.body ?? '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedPost]);
 
   useEffect(() => {

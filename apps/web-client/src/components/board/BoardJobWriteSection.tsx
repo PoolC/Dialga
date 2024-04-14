@@ -138,7 +138,8 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
     });
   };
 
-  const getUploadFileList = () => form.values.fileList.map((file, i) => ({
+  const getUploadFileList = () =>
+    form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
       name: decodeURI(file),
@@ -210,6 +211,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
       });
       editorRef.current?.getInstance().setHTML(savedPost.body ?? '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedPost]);
 
   return (
@@ -263,7 +265,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="마감일자">
-                <DatePicker value={dayjs(form.values.deadline) as any} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
+                <DatePicker value={dayjs(form.values.deadline)} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
               </Form.Item>
               <div onInput={onEditorInput}>
                 <Editor initialEditType="wysiwyg" ref={editorRef} />

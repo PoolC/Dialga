@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import useInput from '../../../hooks/useInput';
@@ -39,7 +40,7 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
     setIsSubscriptionPeriod(e.target.value === 'possible');
   };
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     setIntroduction(markdownContent);

@@ -22,9 +22,7 @@ const ProjectDetailContainer = ({ location }) => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.response);
-      });
+      .catch(() => {});
   }, [projectId]);
 
   if (project === undefined) {

@@ -18,15 +18,12 @@ const MemberListContainer = ({ history }) => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch(() => {
         history.push(`/${MENU.FORBIDDEN}`);
       });
   }, [history]);
 
-  return (
-    <MemberList members={members} loading={loading} />
-  );
+  return <MemberList members={members} loading={loading} />;
 };
 
 export default withRouter(MemberListContainer);

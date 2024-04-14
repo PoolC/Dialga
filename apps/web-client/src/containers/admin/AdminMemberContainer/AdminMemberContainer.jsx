@@ -30,9 +30,7 @@ const AdminMemberContainer = () => {
           setRolesLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.message);
-      });
+      .catch(() => {});
   }, []);
 
   const onAcceptMember = (loginID) => {

@@ -20,46 +20,41 @@ const RegisterFormContainer = ({ history }) => {
   };
 
   const onSubmit = ({ id, password, passwordCheck, name, email, department, studentId, phoneNumber, introduction, profileImageURL }) => {
-    try {
-      const response = authAPI.register({
-        id,
-        password,
-        passwordCheck,
-        name,
-        email,
-        department,
-        studentId,
-        phoneNumber,
-        introduction,
-        profileImageURL,
-      });
-      response
-        .then((res) => {
-          if (res.status === SUCCESS.OK) {
-            setMessage(null);
-            history.push('/register/success');
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-          if (e.response.status === CLIENT_ERROR.CONFLICT) {
-            setMessage('이미 가입된 아이디/이메일/학번입니다.');
-            handleModalOpen();
-            return;
-          }
-
-          if (e.response.status === CLIENT_ERROR.BAD_REQUEST) {
-            setMessage('모든 값을 올바르게 입력해주세요.');
-            handleModalOpen();
-            return;
-          }
-
-          setMessage('회원가입 실패');
+    const response = authAPI.register({
+      id,
+      password,
+      passwordCheck,
+      name,
+      email,
+      department,
+      studentId,
+      phoneNumber,
+      introduction,
+      profileImageURL,
+    });
+    response
+      .then((res) => {
+        if (res.status === SUCCESS.OK) {
+          setMessage(null);
+          history.push('/register/success');
+        }
+      })
+      .catch(() => {
+        if (e.response.status === CLIENT_ERROR.CONFLICT) {
+          setMessage('이미 가입된 아이디/이메일/학번입니다.');
           handleModalOpen();
-        });
-    } catch (e) {
-      console.error(e);
-    }
+          return;
+        }
+
+        if (e.response.status === CLIENT_ERROR.BAD_REQUEST) {
+          setMessage('모든 값을 올바르게 입력해주세요.');
+          handleModalOpen();
+          return;
+        }
+
+        setMessage('회원가입 실패');
+        handleModalOpen();
+      });
   };
 
   const onChangeMessage = (msg) => {

@@ -12,11 +12,9 @@ export default (history) => {
       .then((res) => {
         if (res.status === SUCCESS.OK && res.data.isActivated === false) {
           history.push(`/${MENU.FORBIDDEN}`);
-          
         }
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch(() => {
         history.push(`/${MENU.FORBIDDEN}`);
       });
   }, [member, history]);

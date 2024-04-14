@@ -30,9 +30,7 @@ async function findData(data) {
     }
     const res = await SolvedApiCall(data.problemId);
     return { ...data, ...res };
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
   return null;
 }
 

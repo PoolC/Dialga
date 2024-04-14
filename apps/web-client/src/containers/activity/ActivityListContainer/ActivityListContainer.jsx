@@ -55,9 +55,7 @@ const ActivityListContainer = ({ location, history }) => {
           }
         }
       })
-      .catch((e) => {
-        console.log(e);
-        console.error(e.response?.data?.message);
+      .catch(() => {
         alert(e.response?.data?.message);
       });
   };

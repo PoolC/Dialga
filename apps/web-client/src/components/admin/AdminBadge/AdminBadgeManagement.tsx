@@ -133,7 +133,7 @@ export default function AdminBadgeManagement() {
           onCancel={() => setShowEditModal(false)}
           onOk={() => {
             setShowEditModal(false);
-            onRefecthAllBadges().catch(console.log);
+            onRefecthAllBadges();
           }}
           initialValues={dataSource.find((data) => data.id === editId)!}
         />

@@ -22,13 +22,9 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer, applyMiddleware(sagaMiddleware)) : createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
 export function setUser() {
-  try {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) return; // 로그인 상태가 아니라면 아무것도 안함
-    store.dispatch(loadUser());
-  } catch (_e) {
-    console.log('localStorage is not working');
-  }
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) return; // 로그인 상태가 아니라면 아무것도 안함
+  store.dispatch(loadUser());
 }
 
 sagaMiddleware.run(rootSaga);

@@ -23,35 +23,28 @@ const PasswordResetContainer = ({ history, location }) => {
   };
 
   const onSubmit = ({ password, passwordCheck }) => {
-    try {
-      const response = authAPI.resetPassword({
-        passwordResetToken,
-        password,
-        passwordCheck,
-      });
-      response
-        .then((res) => {
-          if (res.status === SUCCESS.OK) {
-            setMessage(null);
-            history.push(`/${MENU.PASSWORD}/success/${MENU.RESET_PASSWORD}`);
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-
-          if (e.response.status === 400) {
-            setMessage('토큰이 유효하지 않습니다. 관리자에게 문의해주세요.');
-            handleModalOpen();
-            return;
-          }
-
-          setMessage('비밀번호 재설정 실패');
+    const response = authAPI.resetPassword({
+      passwordResetToken,
+      password,
+      passwordCheck,
+    });
+    response
+      .then((res) => {
+        if (res.status === SUCCESS.OK) {
+          setMessage(null);
+          history.push(`/${MENU.PASSWORD}/success/${MENU.RESET_PASSWORD}`);
+        }
+      })
+      .catch(() => {
+        if (e.response.status === 400) {
+          setMessage('토큰이 유효하지 않습니다. 관리자에게 문의해주세요.');
           handleModalOpen();
-          
-        });
-    } catch (e) {
-      console.error(e);
-    }
+          return;
+        }
+
+        setMessage('비밀번호 재설정 실패');
+        handleModalOpen();
+      });
   };
 
   return (

@@ -7,7 +7,7 @@ import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const AdminBookFormContainer = ({ match, history }) => {
-  const {bookID} = match.params;
+  const { bookID } = match.params;
 
   const [book, setBook] = useState(null);
 
@@ -40,8 +40,7 @@ const AdminBookFormContainer = ({ match, history }) => {
           history.push('/admin/books');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
@@ -74,8 +73,7 @@ const AdminBookFormContainer = ({ match, history }) => {
           history.push('/admin/books');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

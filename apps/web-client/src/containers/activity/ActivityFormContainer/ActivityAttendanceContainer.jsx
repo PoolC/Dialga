@@ -9,8 +9,8 @@ import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const ActivityAttendanceContainer = ({ match, history }) => {
-  const {activityID} = match.params;
-  const {sessionID} = match.params;
+  const { activityID } = match.params;
+  const { sessionID } = match.params;
 
   const [loading, setLoading] = useState(true);
 
@@ -36,11 +36,9 @@ const ActivityAttendanceContainer = ({ match, history }) => {
           }
           if (user.status === SUCCESS.OK && user.data.loginID !== activityResponse.data.data.host.loginID) {
             history.push(`/${MENU.FORBIDDEN}`);
-            
           }
         })
-        .catch((e) => {
-          console.error(e.message);
+        .catch(() => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
 
@@ -89,9 +87,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
       if (sessionAttendancesCreateResponse.status === SUCCESS.OK) {
         history.push(`/${MENU.ACTIVITY}/${activityID}`);
       }
-    } catch (e) {
-      console.error('***');
-      console.error(e.response);
+    } catch (_e) {
       setErrorMessage('오류가 발생했습니다');
       onShowErrorModal();
     }
@@ -123,8 +119,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
       if (sessionUpdateResponse.status === SUCCESS.OK) {
         history.push(`/${MENU.ACTIVITY}/${activityID}`);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (_e) {
       setErrorMessage('오류가 발생했습니다');
       onShowErrorModal();
     }

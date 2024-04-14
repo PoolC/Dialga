@@ -8,7 +8,7 @@ import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const AdminProjectFormContainer = ({ match, history }) => {
-  const {projectID} = match.params;
+  const { projectID } = match.params;
 
   const [members, setMembers] = useState([]);
   const [searchMembers, setSearchMembers] = useState([]);
@@ -52,8 +52,7 @@ const AdminProjectFormContainer = ({ match, history }) => {
           history.push('/admin/projects');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
@@ -84,8 +83,7 @@ const AdminProjectFormContainer = ({ match, history }) => {
           history.push('/admin/projects');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

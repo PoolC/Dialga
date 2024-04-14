@@ -40,8 +40,7 @@ const MyInfoFormContainer = ({ history }) => {
             setUserLoading(false);
           }
         })
-        .catch((e) => {
-          console.error(e.message);
+        .catch(() => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
     })();
@@ -57,8 +56,7 @@ const MyInfoFormContainer = ({ history }) => {
             setRolesLoading(false);
           }
         })
-        .catch((e) => {
-          console.error(e.message);
+        .catch(() => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
     })();
@@ -69,43 +67,39 @@ const MyInfoFormContainer = ({ history }) => {
   }
 
   const onSubmit = ({ name, password, passwordCheck, email, phoneNumber, introduction, profileImageURL }) => {
-    try {
-      const response = authAPI.updateUser({
-        name,
-        password,
-        passwordCheck,
-        email,
-        phoneNumber,
-        introduction,
-        profileImageURL,
-      });
-      response
-        .then((res) => {
-          if (res.status === SUCCESS.OK) {
-            setMessage('성공적으로 회원정보를 수정했습니다.');
-            handleModalOpen();
-            // history.push('/');
-          }
-        })
-        .catch((e) => {
-          if (e.response.status === 409) {
-            setMessage('이미 가입된 정보입니다.');
-            handleModalOpen();
-            return;
-          }
-
-          if (e.response.status === 400) {
-            setMessage('모든 값을 올바르게 입력해주세요.');
-            handleModalOpen();
-            return;
-          }
-
-          setMessage('정보 수정 실패');
+    const response = authAPI.updateUser({
+      name,
+      password,
+      passwordCheck,
+      email,
+      phoneNumber,
+      introduction,
+      profileImageURL,
+    });
+    response
+      .then((res) => {
+        if (res.status === SUCCESS.OK) {
+          setMessage('성공적으로 회원정보를 수정했습니다.');
           handleModalOpen();
-        });
-    } catch (e) {
-      console.error(e);
-    }
+          // history.push('/');
+        }
+      })
+      .catch(() => {
+        if (e.response.status === 409) {
+          setMessage('이미 가입된 정보입니다.');
+          handleModalOpen();
+          return;
+        }
+
+        if (e.response.status === 400) {
+          setMessage('모든 값을 올바르게 입력해주세요.');
+          handleModalOpen();
+          return;
+        }
+
+        setMessage('정보 수정 실패');
+        handleModalOpen();
+      });
   };
 
   const onUpdateMemberRoleBySelf = ({ role }) => {
@@ -117,8 +111,7 @@ const MyInfoFormContainer = ({ history }) => {
           handleModalOpen();
         }
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
         setMessage('회원 상태 수정 실패');
         handleModalOpen();
       });
@@ -136,8 +129,7 @@ const MyInfoFormContainer = ({ history }) => {
           }, 1500);
         }
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
         setMessage('회원 탈퇴 실패');
         handleModalOpen();
       });

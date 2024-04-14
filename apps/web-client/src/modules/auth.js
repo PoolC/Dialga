@@ -47,7 +47,6 @@ function* loadUserSaga(_action) {
       data: result.data,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: LOAD_USER_FAILURE,
       error: err.response.data,
@@ -63,7 +62,6 @@ function* setTokenSaga(action) {
       type: SET_TOKEN_SUCCESS,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: SET_TOKEN_FAILURE,
       error: err,
@@ -81,8 +79,6 @@ function* loginSaga(action) {
       data: result.data.accessToken,
     });
   } catch (err) {
-    console.error('*****');
-    console.error(err);
     yield put({
       type: LOGIN_FAILURE,
       error: err,
@@ -97,18 +93,10 @@ function logoutRequest() {
 }
 
 function* handleExpiredAccessTokenRequest() {
-  try {
-    yield localStorage.removeItem('accessToken');
-    yield (client.defaults.headers.common.Authorization = '');
-    yield removeApiAccessToken();
-    yield (window.location.href = '/login');
-  } catch (err) {
-    console.error('*****');
-    console.error(err);
-    // yield put({
-    //   type: LOAD_USER_FAILURE,
-    // });
-  }
+  yield localStorage.removeItem('accessToken');
+  yield (client.defaults.headers.common.Authorization = '');
+  yield removeApiAccessToken();
+  yield (window.location.href = '/login');
 }
 
 export function* authSaga() {

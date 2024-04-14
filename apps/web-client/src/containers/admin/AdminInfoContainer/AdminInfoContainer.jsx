@@ -51,8 +51,7 @@ const AdminInfoContainer = ({ history }) => {
           onShowErrorModal();
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

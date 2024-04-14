@@ -165,7 +165,7 @@ export default function BoardDetailPage() {
   //       onSuccess() {
   //         queryClient
   //           .invalidateQueries(queryKey.post.post(postId))
-  //           .catch(console.log);
+  //           ;
   //       },
   //     },
   //   );
@@ -183,11 +183,9 @@ export default function BoardDetailPage() {
       },
       {
         onSuccess() {
-          queryClient
-            .invalidateQueries({
-              queryKey: queryKey.post.post(postId),
-            })
-            .catch(console.log);
+          queryClient.invalidateQueries({
+            queryKey: queryKey.post.post(postId),
+          });
         },
       },
     );

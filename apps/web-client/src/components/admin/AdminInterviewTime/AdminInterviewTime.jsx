@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
@@ -58,9 +59,9 @@ const DateTimeForm = ({ id, date, startTime, endTime, capacity, currentInterview
     <StyledDateTimeForm>
       {id && (
         <TimeBlockId>
-            <p>슬롯 ID</p>
-            <p className="admin-interview-slot-id">{id}</p>
-          </TimeBlockId>
+          <p>슬롯 ID</p>
+          <p className="admin-interview-slot-id">{id}</p>
+        </TimeBlockId>
       )}
       <StyledTimeForm>
         <StyledLabel htmlFor="interview-start-time">시작 시간</StyledLabel>

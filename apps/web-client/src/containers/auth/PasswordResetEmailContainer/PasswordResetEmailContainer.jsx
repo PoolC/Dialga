@@ -22,35 +22,29 @@ const PasswordResetEmailContainer = ({ history }) => {
   };
 
   const onSubmit = ({ email }) => {
-    try {
-      setLoading(true);
-      const response = authAPI.sendPasswordResetEmail({
-        email,
-      });
-      response
-        .then((res) => {
-          if (res.status === SUCCESS.OK) {
-            setLoading(false);
-            setMessage(null);
-            history.push(`/${MENU.PASSWORD}/success`);
-          }
-        })
-        .catch((e) => {
-          console.error(e);
+    setLoading(true);
+    const response = authAPI.sendPasswordResetEmail({
+      email,
+    });
+    response
+      .then((res) => {
+        if (res.status === SUCCESS.OK) {
           setLoading(false);
-          if (e.response.status === 400) {
-            setMessage('가입되지 않은 이메일 주소입니다.');
-            handleModalOpen();
-            return;
-          }
-
-          setMessage('비밀번호 재설정 이메일 전송 실패');
+          setMessage(null);
+          history.push(`/${MENU.PASSWORD}/success`);
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        if (e.response.status === 400) {
+          setMessage('가입되지 않은 이메일 주소입니다.');
           handleModalOpen();
-          
-        });
-    } catch (e) {
-      console.error(e);
-    }
+          return;
+        }
+
+        setMessage('비밀번호 재설정 이메일 전송 실패');
+        handleModalOpen();
+      });
   };
 
   return (

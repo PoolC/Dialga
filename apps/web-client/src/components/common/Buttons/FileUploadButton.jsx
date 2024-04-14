@@ -52,9 +52,9 @@ const FileUploadButton = ({ files, onSubmit, multiple }) => {
           }
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setFile(null);
-        console.error(e.respoense);
+
         setErrorMessage(e.response?.data);
         onShowErrorModal();
       });

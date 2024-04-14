@@ -20,8 +20,7 @@ const MemberDetailContainer = ({ match, history }) => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch(() => {
         history.push(`/${MENU.FORBIDDEN}`);
       });
   }, [memberID, history]);

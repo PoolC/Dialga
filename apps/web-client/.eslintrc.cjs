@@ -35,7 +35,7 @@ module.exports = {
 
         // 아래 내용들은 수정의 범위가 너무 넓어지므로 일단 off로 설정
         'jsx-a11y/label-has-associated-control': 'off',
-        'jsx-a11y/control-has-associated-control': 'off',
+        'jsx-a11y/control-has-associated-label': 'off',
         'no-alert': 'off',
         'no-shadow': 'off',
         'no-use-before-define': 'off',

@@ -7,7 +7,7 @@ import { SUCCESS } from '~/constants/statusCode';
 import { MEMBER_ROLE } from '~/constants/memberRoles';
 
 const ActivityDetailContainer = ({ match }) => {
-  const {activityID} = match.params;
+  const { activityID } = match.params;
 
   const [activityLoading, setActivityLoading] = useState(true);
   const [activityMembersLoading, setActivityMembersLoading] = useState(true);
@@ -75,9 +75,7 @@ const ActivityDetailContainer = ({ match }) => {
           }
         }
       })
-      .catch((e) => {
-        console.log(e);
-        console.error(e.response?.data?.message);
+      .catch(() => {
         alert(e.response?.data?.message);
       });
   };
