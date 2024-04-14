@@ -1,17 +1,17 @@
 import { Avatar, Button, Empty, Pagination, Result, Skeleton, Space, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Link, useHistory } from 'react-router-dom';
-import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
-import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
+import { CommentOutlined, EditOutlined } from '@ant-design/icons';
+import { MENU } from '~/constants/menus';
+import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
-import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
@@ -96,21 +96,21 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
     {
       render: (_, post) => (
         <Link to={`${MENU.BOARD}/${post.postId}`} className={styles.link}>
-          <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
-            <Space className={styles.metaInfoArea} size={'middle'}>
+          <Space direction="vertical" className={styles.fullWidth} size="middle">
+            <Space className={styles.metaInfoArea} size="middle">
               <Space>
                 <Typography.Text>{post.writerName}</Typography.Text>
                 {post.badge && <Avatar src={getFileUrl(post.badge?.imageUrl)} className={styles.badge} />}
               </Space>
-              <Space size={'middle'}>
-                <Typography.Text type={'secondary'}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
+              <Space size="middle">
+                <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
                 <div className={styles.commentWrap}>
                   <CommentOutlined />
                   {post.commentCount ?? 0}
                 </div>
               </Space>
             </Space>
-            <Space direction={'vertical'} size={0}>
+            <Space direction="vertical" size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
               {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromMarkdown(post.body)}</Typography.Text>}
             </Space>
@@ -123,7 +123,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
   const renderWriteButton = () => {
     const button = (
       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-        <Button type={'primary'} icon={<EditOutlined />}>
+        <Button type="primary" icon={<EditOutlined />}>
           글쓰기
         </Button>
       </Link>
@@ -155,7 +155,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
 
           return (
             <>
-              <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
+              <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey="postId" />
               <div className={styles.paginationWrap}>
                 <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
               </div>

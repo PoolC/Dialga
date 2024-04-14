@@ -1,7 +1,8 @@
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Avatar, Button, List, Popover, Progress, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { Link } from 'react-router-dom';
+import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { BadgeControllerService, BaekjoonControllerService, MemberControllerService, queryKey, useAppMutation, useAppQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
@@ -9,7 +10,6 @@ import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useMessage } from '~/hooks/useMessage';
-import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -167,10 +167,10 @@ export default function MyPage() {
   return (
     <Block>
       <WhiteBlock className={styles.whiteBlock}>
-        <Space direction={'vertical'} className={styles.fullWidth} size={40}>
-          <Space className={styles.wrapper} size={'middle'}>
+        <Space direction="vertical" className={styles.fullWidth} size={40}>
+          <Space className={styles.wrapper} size="middle">
             <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
-            <Space direction={'vertical'}>
+            <Space direction="vertical">
               <Space>
                 <Typography.Text className={styles.userName}>{me?.name}님</Typography.Text>
                 {me?.badge && <Avatar src={getFileUrl(me?.badge.imageUrl)} alt={me?.name} size={60} className={styles.badge} />}
@@ -190,16 +190,16 @@ export default function MyPage() {
             <Typography.Title level={5} className={styles.grassTitle}>
               풀씨 잔디
               <Popover
-                title={'풀씨 잔디란?'}
+                title="풀씨 잔디란?"
                 content={
-                  <Space direction={'vertical'}>
+                  <Space direction="vertical">
                     <Typography.Text>
                       풀씨-백준 익스텐션을 설치하고
                       <br />
                       백준문제를 풀면 풀씨 잔디를 심을 수 있습니다.
                     </Typography.Text>
-                    <a href={'https://chrome.google.com/webstore/detail/poolc-baekjoon-hub/doeamknhlolnflkmhbhkagganhjjbefe?hl=ko'} target={'_blank'} rel="noopener noreferrer">
-                      <Button type={'primary'}>익스텐션 설치하러가기 ✨</Button>
+                    <a href="https://chrome.google.com/webstore/detail/poolc-baekjoon-hub/doeamknhlolnflkmhbhkagganhjjbefe?hl=ko" target="_blank" rel="noopener noreferrer">
+                      <Button type="primary">익스텐션 설치하러가기 ✨</Button>
                     </a>
                   </Space>
                 }
@@ -222,7 +222,7 @@ export default function MyPage() {
                   <Button
                     key={el.id}
                     onClick={() => onBadgeButtonClick(el.id!)}
-                    shape={'circle'}
+                    shape="circle"
                     className={cx(styles.badgeButton, {
                       active: me?.badge?.id === el.id,
                     })}
@@ -250,7 +250,7 @@ export default function MyPage() {
                         {item.icon}
                         <Typography.Text>{item.title}</Typography.Text>
                       </div>
-                      <ArrowRightOutlined size={18} color={'#ced4da'} />
+                      <ArrowRightOutlined size={18} color="#ced4da" />
                     </Link>
                   </List.Item>
                 ) : (
@@ -259,7 +259,7 @@ export default function MyPage() {
                       {item.icon}
                       <Typography.Text>{item.title}</Typography.Text>
                     </div>
-                    <ArrowRightOutlined size={18} color={'#ced4da'} />
+                    <ArrowRightOutlined size={18} color="#ced4da" />
                   </List.Item>
                 )
               }

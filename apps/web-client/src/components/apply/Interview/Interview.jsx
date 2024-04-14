@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import Spinner from '../../common/Spinner/Spinner';
 import { DisabledActionButton, InterviewWarningBlock, StyledDateBlock, StyledTimeBlock, StyledTimeList, TimeBlockCapacity, TimeBlockTime } from './Interview.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { useSelector } from 'react-redux';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
 import { getHourMinuteString } from '../../../lib/utils/getDateString';
 import InterviewSelectModal from './InterviewModal/InterviewSelectModal';
@@ -13,8 +13,8 @@ import LinkButton from '../../common/Buttons/LinkButton';
 
 const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
-  const role = member.user.role;
-  const isLogin = member.status.isLogin;
+  const {role} = member.user;
+  const {isLogin} = member.status;
   const loginId = member.user.memberId;
 
   const [selectModalVisible, setSelectModalVisible] = useState(false);
@@ -23,7 +23,7 @@ const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, hand
   const onSelectInterviewTime = (e) => {
     e.preventDefault();
     setSelectModalVisible(true);
-    //handleSelectInterviewTime({ slotId: id });
+    // handleSelectInterviewTime({ slotId: id });
   };
 
   const onConfirmSelect = (e) => {
@@ -40,7 +40,7 @@ const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, hand
   const onCancelInterviewTime = (e) => {
     e.preventDefault();
     setCancelModalVisible(true);
-    //handleCancelInterviewTime({ slotId: id });
+    // handleCancelInterviewTime({ slotId: id });
   };
 
   const onConfirmCancel = (e) => {
@@ -86,13 +86,11 @@ const TimeBlock = ({ date, startTime, endTime, capacity, num, mySlotId, id, hand
   );
 };
 
-const DateBlock = ({ data, loginId, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => {
-  return (
+const DateBlock = ({ data, loginId, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => (
     <>
       <StyledDateBlock>{data?.date}</StyledDateBlock>
       <StyledTimeList>
-        {data?.slots.map((d) => {
-          return (
+        {data?.slots.map((d) => (
             <TimeBlock
               key={d.slotId}
               id={d.slotId}
@@ -107,17 +105,15 @@ const DateBlock = ({ data, loginId, mySlotId, handleSelectInterviewTime, handleC
               handleSelectInterviewTime={handleSelectInterviewTime}
               handleCancelInterviewTime={handleCancelInterviewTime}
             />
-          );
-        })}
+          ))}
       </StyledTimeList>
     </>
   );
-};
 
 const Interview = ({ loading, data, mySlotId, handleSelectInterviewTime, handleCancelInterviewTime }) => {
   const member = useSelector((state) => state.auth);
-  //const role = member.user.role;
-  const isLogin = member.status.isLogin;
+  // const role = member.user.role;
+  const {isLogin} = member.status;
 
   const loginId = member.user.memberId;
 
@@ -139,11 +135,9 @@ const Interview = ({ loading, data, mySlotId, handleSelectInterviewTime, handleC
         )}
         {!loading && (
           <>
-            {data?.map((d) => {
-              return (
+            {data?.map((d) => (
                 <DateBlock key={d.date} data={d} loginId={loginId} mySlotId={mySlotId} handleSelectInterviewTime={handleSelectInterviewTime} handleCancelInterviewTime={handleCancelInterviewTime} />
-              );
-            })}
+              ))}
           </>
         )}
       </WhiteBlock>

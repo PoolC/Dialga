@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { LeftCircleOutlined, LeftOutlined, PushpinTwoTone, RightOutlined } from '@ant-design/icons';
 import ProjectCard from '../projects/ProjectCard/ProjectCard';
 import { NextButton, PrevButton, RecentProjectBlock, RecentProjectList, StyledLink } from './RecentProject.styles';
-import { LeftCircleOutlined, LeftOutlined, PushpinTwoTone, RightOutlined } from '@ant-design/icons';
 import { ProjectResponse } from '~/lib/api-v2';
 
 const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
@@ -18,7 +18,7 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    let options = {
+    const options = {
       root: viewport.current,
       rootMargin: '0px',
       threshold: 0.3,
@@ -90,8 +90,7 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
   };
 
   return (
-    <>
-      <RecentProjectBlock>
+    <RecentProjectBlock>
         <PrevButton onClick={handleClickPrev}>
           <LeftOutlined />
         </PrevButton>
@@ -102,19 +101,16 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
           </StyledLink>
         </h3>
         <RecentProjectList className="project_card_container" ref={viewport}>
-          {projects.map((project, idx) => {
-            return (
+          {projects.map((project, idx) => (
               <div key={project.id} id={`recent-project-card${idx}`} ref={targetRefs[idx]}>
                 <ProjectCard project={project} />
               </div>
-            );
-          })}
+            ))}
         </RecentProjectList>
         <NextButton onClick={handleClickNext}>
           <RightOutlined />
         </NextButton>
       </RecentProjectBlock>
-    </>
   );
 };
 

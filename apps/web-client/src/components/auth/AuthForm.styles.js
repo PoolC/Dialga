@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import colors from '../../lib/styles/colors';
 import { Input, Select } from 'antd';
+import colors from '../../lib/styles/colors';
 
 export const FormListHeader = styled.header`
   display: flex;

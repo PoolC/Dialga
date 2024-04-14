@@ -1,11 +1,10 @@
+import { PushpinTwoTone } from '@ant-design/icons';
 import { MENU } from '~/constants/menus';
 import { MainNoticeContents, NoticeContainerTitle, RecentNoticeBlock, RecentNoticeCardDate, RecentNoticeCardTitle, RecentNoticeItem, RecentNoticeList, StyledLink } from './RecentNotice.styles';
 import { dayjs } from '~/lib/utils/dayjs';
-import { PushpinTwoTone } from '@ant-design/icons';
 import { PostResponse } from '~/lib/api-v2';
 
-const RecentNotice = ({ notices }: { notices: PostResponse[] }) => {
-  return (
+const RecentNotice = ({ notices }: { notices: PostResponse[] }) => (
     <RecentNoticeBlock>
       <NoticeContainerTitle>
         <StyledLink to="/board">
@@ -27,6 +26,5 @@ const RecentNotice = ({ notices }: { notices: PostResponse[] }) => {
       </MainNoticeContents>
     </RecentNoticeBlock>
   );
-};
 
 export default RecentNotice;

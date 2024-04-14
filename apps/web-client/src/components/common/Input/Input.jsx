@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import colors from '../../../lib/styles/colors';
 import { Input as AntdInput } from 'antd';
+import colors from '../../../lib/styles/colors';
 
 const StyledLabel = styled.label`
   margin: 2rem 0 1rem 0;
@@ -16,8 +16,7 @@ const StyledInput = styled(AntdInput)`
   outline: ${colors.gray[1]};
 `;
 
-const Input = ({ valueText, labelText, typeText, nameText, error, onChangeFunc, placeholderText, disabledCondition }) => {
-  return (
+const Input = ({ valueText, labelText, typeText, nameText, error, onChangeFunc, placeholderText, disabledCondition }) => (
     <>
       <StyledLabel htmlFor={nameText}>{labelText}</StyledLabel>
       <StyledInput
@@ -33,6 +32,5 @@ const Input = ({ valueText, labelText, typeText, nameText, error, onChangeFunc, 
       />
     </>
   );
-};
 
 export default Input;

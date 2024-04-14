@@ -1,7 +1,7 @@
-import MemberList from '../../../components/members/MemberList/MemberList';
 import { useEffect, useState } from 'react';
-import * as memberAPI from '../../../lib/api/member';
 import { withRouter } from 'react-router-dom';
+import MemberList from '../../../components/members/MemberList/MemberList';
+import * as memberAPI from '../../../lib/api/member';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
@@ -25,9 +25,7 @@ const MemberListContainer = ({ history }) => {
   }, [history]);
 
   return (
-    <>
-      <MemberList members={members} loading={loading} />
-    </>
+    <MemberList members={members} loading={loading} />
   );
 };
 

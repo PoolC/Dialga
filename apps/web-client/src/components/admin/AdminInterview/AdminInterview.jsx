@@ -8,7 +8,7 @@ import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.sty
 const Interviewee = ({ interviewee, handleCancelInterview }) => {
   const onClickDelete = (e) => {
     e.preventDefault();
-    let result = window.confirm(`[주의] ${interviewee.name}님의 면접 신청을 취소하시겠습니까?`);
+    const result = window.confirm(`[주의] ${interviewee.name}님의 면접 신청을 취소하시겠습니까?`);
     if (result) {
       handleCancelInterview({ loginId: interviewee.loginID });
     }
@@ -35,13 +35,12 @@ const Interviewee = ({ interviewee, handleCancelInterview }) => {
   );
 };
 
-const TimeBlock = ({ id, startTime, endTime, capacity, num, interviewees, handleCancelInterview }) => {
-  return (
+const TimeBlock = ({ id, startTime, endTime, capacity, num, interviewees, handleCancelInterview }) => (
     <StyledTimeBlock>
       <TimeBlockId>
         <p>슬롯 ID </p>
         <p className="admin-interview-slot-id">{id}</p>
-        <p></p>
+        <p />
       </TimeBlockId>
       <TimeBlockTime>
         {getHourMinuteString(startTime)} ~ {getHourMinuteString(endTime)}
@@ -54,10 +53,8 @@ const TimeBlock = ({ id, startTime, endTime, capacity, num, interviewees, handle
       ))}
     </StyledTimeBlock>
   );
-};
 
-const DateBlock = ({ data, handleCancelInterview }) => {
-  return (
+const DateBlock = ({ data, handleCancelInterview }) => (
     <>
       <StyledDateBlock>{data?.date}</StyledDateBlock>
       <StyledTimeList>
@@ -76,10 +73,8 @@ const DateBlock = ({ data, handleCancelInterview }) => {
       </StyledTimeList>
     </>
   );
-};
 
-const AdminInterview = ({ loading, data, handleCancelInterview }) => {
-  return (
+const AdminInterview = ({ loading, data, handleCancelInterview }) => (
     <WhiteNarrowBlock>
       <TitleContainer>면접 신청 조회</TitleContainer>
       {loading && <Spinner />}
@@ -92,6 +87,5 @@ const AdminInterview = ({ loading, data, handleCancelInterview }) => {
       )}
     </WhiteNarrowBlock>
   );
-};
 
 export default AdminInterview;

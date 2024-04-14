@@ -1,6 +1,6 @@
-import BookList from '../../../components/books/BookList/BookList';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import BookList from '../../../components/books/BookList/BookList';
 import * as bookAPI from '../../../lib/api/book';
 import { getFullCurrentDateString } from '../../../lib/utils/getDateString';
 import { SUCCESS } from '../../../constants/statusCode';
@@ -50,9 +50,7 @@ const BookListContainer = () => {
   };
 
   return (
-    <>
-      <BookList loading={loading} member={member} books={books} onBorrowBook={onBorrowBook} onReturnBook={onReturnBook} />
-    </>
+    <BookList loading={loading} member={member} books={books} onBorrowBook={onBorrowBook} onReturnBook={onReturnBook} />
   );
 };
 

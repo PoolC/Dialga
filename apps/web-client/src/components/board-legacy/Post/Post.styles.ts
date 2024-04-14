@@ -4,9 +4,9 @@
  * --------------------------------------------
  * */
 
+import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
-import styled from '@emotion/styled';
 
 export const StyledButton = styled(ActionButton)`
   margin: 0 0 0 15px;

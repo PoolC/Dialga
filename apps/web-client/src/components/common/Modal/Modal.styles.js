@@ -1,6 +1,6 @@
-import colors from '../../../lib/styles/colors';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
+import colors from '../../../lib/styles/colors';
 
 export const fadeIn = keyframes`
   from {

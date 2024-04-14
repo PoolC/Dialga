@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import colors from '../../../lib/styles/colors';
 import styled from '@emotion/styled';
+import colors from '../../../lib/styles/colors';
 
 const StyledLink = styled(Link)`
   font-weight: 700;
@@ -20,8 +20,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const LinkButton = (props) => {
-  return <StyledLink {...props} />;
-};
+const LinkButton = (props) => <StyledLink {...props} />;
 
 export default LinkButton;

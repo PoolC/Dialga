@@ -3,8 +3,7 @@ import Spinner from '../../common/Spinner/Spinner';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import { Project } from './ProjectList.styles';
 
-const ProjectList = ({ projects, loading }) => {
-  return (
+const ProjectList = ({ projects, loading }) => (
     <Block>
       <WhiteBlock>
         <h2 className="block_title">프로젝트</h2>
@@ -19,6 +18,5 @@ const ProjectList = ({ projects, loading }) => {
       </WhiteBlock>
     </Block>
   );
-};
 
 export default ProjectList;

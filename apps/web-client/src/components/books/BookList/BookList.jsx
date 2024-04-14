@@ -10,8 +10,7 @@ const BookList = ({ loading, books, member, onBorrowBook, onReturnBook }) => {
   } = member;
 
   return (
-    <>
-      <Block>
+    <Block>
         <WhiteBlock>
           <h2 className="block_title">보유 도서</h2>
           {loading && <Spinner />}
@@ -24,7 +23,6 @@ const BookList = ({ loading, books, member, onBorrowBook, onReturnBook }) => {
           )}
         </WhiteBlock>
       </Block>
-    </>
   );
 };
 

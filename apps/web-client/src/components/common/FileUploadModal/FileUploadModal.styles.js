@@ -1,7 +1,7 @@
-import colors from '../../../lib/styles/colors';
-import ActionButton from '../Buttons/ActionButton';
 import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
+import colors from '../../../lib/styles/colors';
+import ActionButton from '../Buttons/ActionButton';
 
 export const fadeIn = keyframes`
   from {

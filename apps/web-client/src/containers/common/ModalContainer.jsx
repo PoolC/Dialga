@@ -1,7 +1,5 @@
 import Modal from '../../components/common/Modal/Modal';
 
-const ModalContainer = () => {
-  return <Modal />;
-};
+const ModalContainer = () => <Modal />;
 
 export default ModalContainer;

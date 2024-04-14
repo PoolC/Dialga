@@ -46,7 +46,7 @@ const PasswordResetEmailContainer = ({ history }) => {
 
           setMessage('비밀번호 재설정 이메일 전송 실패');
           handleModalOpen();
-          return;
+          
         });
     } catch (e) {
       console.error(e);

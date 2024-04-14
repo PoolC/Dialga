@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
+import { CheckCircleTwoTone } from '@ant-design/icons';
 import { MENU } from '../../constants/menus';
 import colors from '../../lib/styles/colors';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import ActionButton from '../common/Buttons/ActionButton';
-import { CheckCircleTwoTone } from '@ant-design/icons';
 
 const Contents = styled.div`
   display: flex;
@@ -22,8 +22,7 @@ const Contents = styled.div`
   }
 `;
 
-const PasswordResetSuccess = () => {
-  return (
+const PasswordResetSuccess = () => (
     <Block>
       <WhiteBlock>
         <Contents>
@@ -38,6 +37,5 @@ const PasswordResetSuccess = () => {
       </WhiteBlock>
     </Block>
   );
-};
 
 export default PasswordResetSuccess;

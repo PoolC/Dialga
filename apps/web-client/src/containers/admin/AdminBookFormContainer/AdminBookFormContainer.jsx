@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import * as bookAPI from '../../../lib/api/book';
 import AdminBookForm from '../../../components/admin/AdminBookForm/AdminBookForm';
-import { withRouter } from 'react-router-dom';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const AdminBookFormContainer = ({ match, history }) => {
-  const bookID = match.params.bookID;
+  const {bookID} = match.params;
 
   const [book, setBook] = useState(null);
 

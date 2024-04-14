@@ -15,8 +15,7 @@ const SNSContent = styled.p`
   margin-bottom: 2rem;
 `;
 
-const SNS = () => {
-  return (
+const SNS = () => (
     <WhiteNarrowBlock>
       <Title>SNS</Title>
       <SNSName>카카오톡 채널</SNSName>
@@ -29,6 +28,5 @@ const SNS = () => {
       <SNSContent>poolc.official@gmail.com</SNSContent>
     </WhiteNarrowBlock>
   );
-};
 
 export default SNS;

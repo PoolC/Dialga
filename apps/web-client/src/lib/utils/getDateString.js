@@ -16,6 +16,4 @@ export const getFullCurrentDateTimeString = (time) => {
   return `${currentDate.getFullYear()}-${month}-${date} ${hour}:${minute}:${second}`;
 };
 
-export const getHourMinuteString = (timeString) => {
-  return timeString.substring(0, 5);
-};
+export const getHourMinuteString = (timeString) => timeString.substring(0, 5);

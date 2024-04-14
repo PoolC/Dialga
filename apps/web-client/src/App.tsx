@@ -1,9 +1,9 @@
 import { Route, Switch } from 'react-router-dom';
+import { createStyles } from 'antd-style';
+import { lazy, Suspense } from 'react';
 import { MENU } from './constants/menus';
 import FooterContainer from './containers/footer/FooterContainer';
 import HeaderContainer from './containers/header/HeaderContainer';
-import { createStyles } from 'antd-style';
-import { lazy, Suspense } from 'react';
 
 // toast ui - global
 import '@toast-ui/editor/dist/toastui-editor.css';

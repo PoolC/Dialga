@@ -1,6 +1,6 @@
-import MemberDetail from '../../../components/members/MemberDetail/MemberDetail';
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import MemberDetail from '../../../components/members/MemberDetail/MemberDetail';
 import * as memberAPI from '../../../lib/api/member';
 import { MENU } from '../../../constants/menus';
 import Spinner from '../../../components/common/Spinner/Spinner';

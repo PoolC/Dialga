@@ -1,6 +1,6 @@
-import AuthForm from '../../../components/auth/AuthForm';
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import AuthForm from '../../../components/auth/AuthForm';
 import * as authAPI from '../../../lib/api/auth';
 import { removeHeaderAccessToken } from '../../../lib/utils/axiosUtil';
 import { CLIENT_ERROR, SUCCESS } from '../../../constants/statusCode';
@@ -56,7 +56,7 @@ const RegisterFormContainer = ({ location, history }) => {
 
           setMessage('회원가입 실패');
           handleModalOpen();
-          return;
+          
         });
     } catch (e) {
       console.error(e);

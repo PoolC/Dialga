@@ -73,7 +73,8 @@
     "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
     "postinstall": "yarn codegen",
     "prettier": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "type": "module"
 }

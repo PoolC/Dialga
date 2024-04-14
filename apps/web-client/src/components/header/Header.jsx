@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import poolcIcon from '~/assets/images/poolc-icon.png';
 import { Link } from 'react-router-dom';
-import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
-import Menus from './Menus/Menus';
 import { Avatar, Button, Dropdown } from 'antd';
-import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
 import { MenuOutlined } from '@ant-design/icons';
+import poolcIcon from '~/assets/images/poolc-icon.png';
+import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
+import Menus from './Menus/Menus';
+import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -89,7 +89,7 @@ const Header = ({ member, onLogout }) => {
         <HeaderIconBox>
           {isLogin && (
             <Dropdown menu={{ items: dropDownItems }}>
-              <Button shape={'circle'} className={styles.avatarButton}>
+              <Button shape="circle" className={styles.avatarButton}>
                 <Avatar src={profileImageURL} size={36} />
               </Button>
             </Dropdown>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import AdminProjectForm from '../../../components/admin/AdminProjectForm/AdminProjectForm';
 import * as projectAPI from '../../../lib/api/project';
 import * as memberAPI from '../../../lib/api/member';
-import { withRouter } from 'react-router-dom';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const AdminProjectFormContainer = ({ match, history }) => {
-  const projectID = match.params.projectID;
+  const {projectID} = match.params;
 
   const [members, setMembers] = useState([]);
   const [searchMembers, setSearchMembers] = useState([]);

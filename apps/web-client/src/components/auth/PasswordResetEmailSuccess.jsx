@@ -21,8 +21,7 @@ const Contents = styled.div`
   }
 `;
 
-const PasswordResetEmailSuccess = () => {
-  return (
+const PasswordResetEmailSuccess = () => (
     <Block>
       <WhiteBlock>
         <Contents>
@@ -38,6 +37,5 @@ const PasswordResetEmailSuccess = () => {
       </WhiteBlock>
     </Block>
   );
-};
 
 export default PasswordResetEmailSuccess;

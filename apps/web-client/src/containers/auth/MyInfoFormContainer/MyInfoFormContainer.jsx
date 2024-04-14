@@ -1,7 +1,7 @@
-import AuthForm from '../../../components/auth/AuthForm';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AuthForm from '../../../components/auth/AuthForm';
 import * as authAPI from '../../../lib/api/auth';
 import * as memberAPI from '../../../lib/api/member';
 import { removeHeaderAccessToken, setHeaderAccessToken } from '../../../lib/utils/axiosUtil';
@@ -84,7 +84,7 @@ const MyInfoFormContainer = ({ location, history }) => {
           if (res.status === SUCCESS.OK) {
             setMessage('성공적으로 회원정보를 수정했습니다.');
             handleModalOpen();
-            //history.push('/');
+            // history.push('/');
           }
         })
         .catch((e) => {
@@ -102,7 +102,7 @@ const MyInfoFormContainer = ({ location, history }) => {
 
           setMessage('정보 수정 실패');
           handleModalOpen();
-          return;
+          
         });
     } catch (e) {
       console.error(e);

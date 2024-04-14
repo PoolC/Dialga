@@ -1,3 +1,4 @@
+import { Viewer } from '@toast-ui/react-editor';
 import MemberCard from '../../members/MemberCard/MemberCard';
 import {
   BodyContainer,
@@ -17,7 +18,6 @@ import {
 } from './ProjectDetail.styles';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import getFileUrl from '../../../lib/utils/getFileUrl';
-import { Viewer } from '@toast-ui/react-editor';
 
 const ProjectDetail = ({ project, member }) => {
   const { thumbnailURL, name, genre, duration, body, members } = project;

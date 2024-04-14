@@ -1,9 +1,9 @@
 import { withRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import colors from '../../lib/styles/colors';
 import { Block, WhiteBlock } from '../../styles/common/Block.styles';
 import ActionButton from '../common/Buttons/ActionButton';
-import { ExclamationCircleTwoTone } from '@ant-design/icons';
 
 const Title = styled.h2`
   margin-bottom: 2rem;
@@ -39,8 +39,7 @@ export const Highlighted = styled.span`
   padding: 0px 2px;
 `;
 
-const Apply = ({ isSubscriptionPeriod, applyUri, history }) => {
-  return (
+const Apply = ({ isSubscriptionPeriod, applyUri, history }) => (
     <Block>
       <WhiteBlock>
         {isSubscriptionPeriod && <Title>PoolC 신입 모집 지원 안내</Title>}
@@ -116,6 +115,5 @@ const Apply = ({ isSubscriptionPeriod, applyUri, history }) => {
       </WhiteBlock>
     </Block>
   );
-};
 
 export default withRouter(Apply);

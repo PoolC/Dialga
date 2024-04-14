@@ -14,8 +14,7 @@ const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteA
   } = member;
 
   return (
-    <>
-      <ActivityBlock>
+    <ActivityBlock>
         <WhiteNarrowBlock>
           <ActivityListHeader>
             <ActivityListTitle>세미나&스터디</ActivityListTitle>
@@ -41,7 +40,6 @@ const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteA
           )}
         </WhiteNarrowBlock>
       </ActivityBlock>
-    </>
   );
 };
 

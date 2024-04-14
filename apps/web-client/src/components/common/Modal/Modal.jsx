@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ButtonContainer, ContentContainer, HeaderBar, ModalBlock, ModalContainer } from './Modal.styles.js';
 import { CloseOutlined } from '@ant-design/icons';
+import { ButtonContainer, ContentContainer, HeaderBar, ModalBlock, ModalContainer } from './Modal.styles.js';
 import colors from '~/lib/styles/colors.js';
 
 const Modal = ({ contents, buttons, visible, onConfirm, onCancel }) => {

@@ -1,7 +1,5 @@
 import ProjectDetailContainer from '../../containers/project/ProjectDetailContainer/ProjectDetailContainer';
 
-const ProjectDetailPage = () => {
-  return <ProjectDetailContainer />;
-};
+const ProjectDetailPage = () => <ProjectDetailContainer />;
 
 export default ProjectDetailPage;

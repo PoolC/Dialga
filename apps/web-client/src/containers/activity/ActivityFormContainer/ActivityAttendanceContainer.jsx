@@ -1,16 +1,16 @@
-import ActivityAttendance from '../../../components/activity/ActivityForm/ActivityAttendance';
 import { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import ActivityAttendance from '../../../components/activity/ActivityForm/ActivityAttendance';
 import * as activityAPI from '../../../lib/api/activity';
 import * as authAPI from '../../../lib/api/auth';
-import { withRouter } from 'react-router-dom';
 import { MENU } from '../../../constants/menus';
 import Spinner from '../../../components/common/Spinner/Spinner';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const ActivityAttendanceContainer = ({ match, history }) => {
-  const activityID = match.params.activityID;
-  const sessionID = match.params.sessionID;
+  const {activityID} = match.params;
+  const {sessionID} = match.params;
 
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +36,7 @@ const ActivityAttendanceContainer = ({ match, history }) => {
           }
           if (user.status === SUCCESS.OK && user.data.loginID !== activityResponse.data.data.host.loginID) {
             history.push(`/${MENU.FORBIDDEN}`);
-            return;
+            
           }
         })
         .catch((e) => {

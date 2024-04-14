@@ -45,8 +45,7 @@ const Content = styled.p`
   }
 `;
 
-const FAQ = () => {
-  return (
+const FAQ = () => (
     <WhiteNarrowBlock>
       <Title>자주 묻는 질문</Title>
       <FAQBlock>
@@ -140,6 +139,5 @@ const FAQ = () => {
       </FAQBlock>
     </WhiteNarrowBlock>
   );
-};
 
 export default FAQ;

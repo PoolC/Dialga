@@ -1,7 +1,5 @@
 import ActivityDetailContainer from '../../containers/activity/ActivityDetailContainer/ActivityDetailContainer';
 
-const ActivityDetailPage = () => {
-  return <ActivityDetailContainer />;
-};
+const ActivityDetailPage = () => <ActivityDetailContainer />;
 
 export default ActivityDetailPage;

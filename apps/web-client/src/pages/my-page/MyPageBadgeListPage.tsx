@@ -88,15 +88,13 @@ export default function MyPageBadgeListPage() {
 
   const baekjoonTierBadges = baekjoonBadges.slice(baekjoonBadges.length - 5);
 
-  const renderBadgeTooltipTitle = (badge: Badge) => {
-    return (
+  const renderBadgeTooltipTitle = (badge: Badge) => (
       <div>
         <span className={styles.badgeName}>{badge.name}</span>
         <br />
         <span className={styles.badgeDesc}>{badge.description}</span>
       </div>
     );
-  };
 
   const renderBakejoonTierProgress = (tier: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | 'ruby', count: number) => {
     const title = match(tier)
@@ -129,14 +127,14 @@ export default function MyPageBadgeListPage() {
   return (
     <Block>
       <WhiteBlock className={styles.whiteBlock}>
-        <Space className={styles.wrapper} size={'middle'}>
+        <Space className={styles.wrapper} size="middle">
           <Avatar size={80} src={getProfileImageUrl(me?.profileImageURL)} />
           <Space>
             <Typography.Text className={styles.userName}>{me?.name}님</Typography.Text>
             <Typography.Text>의 뱃지함</Typography.Text>
           </Space>
         </Space>
-        <Space direction="vertical" size={'middle'} className={styles.fullWidth}>
+        <Space direction="vertical" size="middle" className={styles.fullWidth}>
           <div>
             <Typography.Text className={styles.category}>Attendance</Typography.Text>
           </div>
@@ -152,10 +150,10 @@ export default function MyPageBadgeListPage() {
           <Space direction="vertical" size={0} className={styles.wrapper}>
             <Typography.Title level={5}>출석 횟수(누적)</Typography.Title>
             <Typography.Text>{allBadges?.attendance ?? 0}일 / 30일</Typography.Text>
-            <Progress percent={((allBadges?.attendance ?? 0) / 30) * 100} showInfo={false} strokeColor={'#47be9b'} />
+            <Progress percent={((allBadges?.attendance ?? 0) / 30) * 100} showInfo={false} strokeColor="#47be9b" />
           </Space>
         </Space>
-        <Space direction="vertical" size={'middle'} className={styles.fullWidth}>
+        <Space direction="vertical" size="middle" className={styles.fullWidth}>
           <div>
             <Typography.Text className={styles.category}>Baekjoon</Typography.Text>
           </div>
@@ -169,7 +167,7 @@ export default function MyPageBadgeListPage() {
           <Space direction="vertical" size={0} className={styles.wrapper}>
             <Typography.Title level={5}>문제풀이 횟수(연속)</Typography.Title>
             <Typography.Text>{allBadges?.baekjoon ?? 0}일 / 50일</Typography.Text>
-            <Progress percent={(allBadges?.baekjoon ?? 0) / 50} showInfo={false} strokeColor={'#47be9b'} />
+            <Progress percent={(allBadges?.baekjoon ?? 0) / 50} showInfo={false} strokeColor="#47be9b" />
           </Space>
           <div className={styles.badgeWrap}>
             {baekjoonTierBadges.map((badge) => (

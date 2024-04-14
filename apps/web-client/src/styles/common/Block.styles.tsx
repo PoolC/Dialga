@@ -1,5 +1,5 @@
-import colors from '../../lib/styles/colors';
 import { createStyles } from 'antd-style';
+import colors from '../../lib/styles/colors';
 
 type DivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 

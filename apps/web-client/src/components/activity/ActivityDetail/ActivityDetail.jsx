@@ -1,6 +1,6 @@
-import MemberCard from '../../members/MemberCard/MemberCard';
 import { useState } from 'react';
 import { Viewer } from '@toast-ui/react-editor';
+import MemberCard from '../../members/MemberCard/MemberCard';
 import SessionContainer from '../../../containers/activity/SessionContainer/SessionContainer';
 import {
   ButtonContainer,
@@ -27,9 +27,7 @@ import ActivityRegisterModalContainer from '../../../containers/activity/Activit
 import Spinner from '../../common/Spinner/Spinner';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
-const Tag = ({ tag }) => {
-  return <TagCard>#{tag}</TagCard>;
-};
+const Tag = ({ tag }) => <TagCard>#{tag}</TagCard>;
 
 const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs, activitySessions, member, onToggleRegisterActivity }) => {
   const {

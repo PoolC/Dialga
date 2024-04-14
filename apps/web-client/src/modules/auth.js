@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
-import * as authAPI from '../lib/api/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import * as authAPI from '../lib/api/auth';
 import client from '../lib/api/client';
 import { removeApiAccessToken, setApiAccessToken } from '~/lib/api-v2';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
@@ -57,7 +57,7 @@ function* loadUserSaga(action) {
 
 function* setTokenSaga(action) {
   try {
-    yield (client.defaults.headers.common['Authorization'] = `Bearer ${action.data}`);
+    yield (client.defaults.headers.common.Authorization = `Bearer ${action.data}`);
     yield setApiAccessToken(action.data);
     yield put({
       type: SET_TOKEN_SUCCESS,
@@ -92,14 +92,14 @@ function* loginSaga(action) {
 
 function logoutRequest() {
   localStorage.removeItem('accessToken');
-  client.defaults.headers.common['Authorization'] = '';
+  client.defaults.headers.common.Authorization = '';
   removeApiAccessToken();
 }
 
 function* handleExpiredAccessTokenRequest() {
   try {
     yield localStorage.removeItem('accessToken');
-    yield (client.defaults.headers.common['Authorization'] = '');
+    yield (client.defaults.headers.common.Authorization = '');
     yield removeApiAccessToken();
     yield (window.location.href = '/login');
   } catch (err) {
@@ -166,8 +166,7 @@ const auth = handleActions(
       },
       authError: error,
     }),
-    [LOAD_USER_SUCCESS]: (state, { data }) => {
-      return {
+    [LOAD_USER_SUCCESS]: (state, { data }) => ({
         ...state,
         status: {
           isLogin: true,
@@ -180,8 +179,7 @@ const auth = handleActions(
           role: data.role,
           profileImageURL: getProfileImageUrl(data.profileImageURL),
         },
-      };
-    },
+      }),
     [LOAD_USER_FAILURE]: (state, { payload: error }) => ({
       ...state,
       authError: error,

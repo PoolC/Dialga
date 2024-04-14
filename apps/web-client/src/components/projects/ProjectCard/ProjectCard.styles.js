@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import colors from '../../../lib/styles/colors';
 import { Link } from 'react-router-dom';
+import colors from '../../../lib/styles/colors';
 
 export const ProjectCardBlock = styled.li`
   display: flex;

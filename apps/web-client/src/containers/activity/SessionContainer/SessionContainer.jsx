@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import Session from '../../../components/activity/Session/Session';
 import { useSelector } from 'react-redux';
+import Session from '../../../components/activity/Session/Session';
 import * as activityAPI from '../../../lib/api/activity';
 
 const SessionContainer = ({ activityID, session, host }) => {

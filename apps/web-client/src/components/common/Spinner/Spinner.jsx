@@ -28,14 +28,12 @@ const StyledSpinner = styled.i`
   font-size: 4rem;
 `;
 
-const Spinner = ({ small = false }) => {
-  return (
+const Spinner = ({ small = false }) => (
     <SpinnerBlock small={small}>
       <StyledSpinner>
         <LoadingOutlined />
       </StyledSpinner>
     </SpinnerBlock>
   );
-};
 
 export default Spinner;

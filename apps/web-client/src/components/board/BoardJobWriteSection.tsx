@@ -3,19 +3,19 @@ import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Breadcrumb, Button, DatePicker, Divider, Form, Input, Radio, Space, Typography, Upload } from 'antd';
-import { ApiError, CustomApi, PostControllerService, PostCreateRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadChangeParam } from 'antd/es/upload';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory } from 'react-router-dom';
-import { MENU } from '~/constants/menus';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
+import { UploadOutlined } from '@ant-design/icons';
+import { ApiError, CustomApi, PostControllerService, PostCreateRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { MENU } from '~/constants/menus';
 import { dayjs } from '~/lib/utils/dayjs';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { noop } from '~/lib/utils/noop';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { UploadOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -138,13 +138,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
     });
   };
 
-  const getUploadFileList = () => {
-    return form.values.fileList.map((file, i) => ({
+  const getUploadFileList = () => form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
       name: decodeURI(file),
     }));
-  };
 
   const onFormSubmit = (val: typeof form.values) => {
     if (isEdit) {
@@ -217,7 +215,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   return (
     <Block>
       <WhiteBlock>
-        <Space direction={'vertical'} size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
+        <Space direction="vertical" size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
           <Breadcrumb
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
@@ -234,14 +232,14 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
               },
             ]}
           />
-          <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
-            <Space direction={'vertical'} className={styles.titleWrap} size={0}>
+          <Space direction="vertical" className={styles.fullWidth} size="middle">
+            <Space direction="vertical" className={styles.titleWrap} size={0}>
               <Typography.Title level={3}>취업게시판</Typography.Title>
               <Typography>취업 관련 글을 작성해보아요</Typography>
             </Space>
             <Form labelCol={{ span: 2 }} wrapperCol={{ span: 22 }} onSubmitCapture={form.onSubmit(onFormSubmit, noop)}>
               <Form.Item label="제목">
-                <Input placeholder={'제목을 입력해주세요.'} {...form.getInputProps('title')} />
+                <Input placeholder="제목을 입력해주세요." {...form.getInputProps('title')} />
               </Form.Item>
               <Form.Item label="고용형태">
                 <Radio.Group onChange={(e) => form.setFieldValue('position', e.target.value)} value={form.values.position}>
@@ -270,11 +268,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
               <div onInput={onEditorInput}>
                 <Editor initialEditType="wysiwyg" ref={editorRef} />
               </div>
-              <Space direction={'horizontal'} align={'start'} className={styles.buttonWrap}>
+              <Space direction="horizontal" align="start" className={styles.buttonWrap}>
                 <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
                   <Button icon={<UploadOutlined />}>파일 업로드</Button>
                 </Upload>
-                <Button type={'primary'} htmlType={'submit'} className={styles.fullWidth} disabled={!form.isValid()}>
+                <Button type="primary" htmlType="submit" className={styles.fullWidth} disabled={!form.isValid()}>
                   등록
                 </Button>
               </Space>

@@ -1,8 +1,8 @@
 import { Button, List, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
@@ -58,7 +58,7 @@ export default function MyPageMessageListPage() {
   return (
     <Block>
       <WhiteBlock className={styles.whiteBlock}>
-        <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
+        <Space direction="vertical" className={styles.fullWidth} size="large">
           <Space className={styles.topBox}>
             <Space>
               <Button shape="circle" type="text" onClick={() => history.goBack()}>

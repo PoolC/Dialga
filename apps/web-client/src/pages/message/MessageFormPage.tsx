@@ -41,7 +41,7 @@ export default function MyPageMessageFormPage() {
   return (
     <Block>
       <WhiteBlock className={styles.whiteBlock}>
-        <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
+        <Space direction="vertical" className={styles.fullWidth} size="large">
           <Space className={styles.topBox}>
             <Space>
               <Button shape="circle" type="text" onClick={() => history.goBack()}>

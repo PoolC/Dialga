@@ -1,7 +1,7 @@
-import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
 import styled from '@emotion/styled';
-import getFileUrl from '../../lib/utils/getFileUrl';
 import { Viewer } from '@toast-ui/react-editor';
+import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
+import getFileUrl from '../../lib/utils/getFileUrl';
 import colors from '../../lib/styles/colors';
 import { PoolcControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
 

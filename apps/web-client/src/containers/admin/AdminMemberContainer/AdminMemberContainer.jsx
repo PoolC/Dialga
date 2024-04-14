@@ -1,5 +1,5 @@
-import AdminMember from '../../../components/admin/AdminMember/AdminMember';
 import { useEffect, useState } from 'react';
+import AdminMember from '../../../components/admin/AdminMember/AdminMember';
 import * as memberAPI from '../../../lib/api/member';
 import Spinner from '../../../components/common/Spinner/Spinner';
 import { CLIENT_ERROR, SUCCESS } from '../../../constants/statusCode';
@@ -69,8 +69,8 @@ const AdminMemberContainer = ({ history }) => {
     memberAPI.updateMemberRole({ loginID, role }).then((res) => {
       if (res.status === SUCCESS.OK) {
         alert('회원 상태 변경이 완료되었습니다.');
-        setMembers(members.map((member) => (member.loginID === loginID ? { ...member, role: role } : member)));
-        setSearchMembers(searchMembers.map((member) => (member.loginID === loginID ? { ...member, role: role } : member)));
+        setMembers(members.map((member) => (member.loginID === loginID ? { ...member, role } : member)));
+        setSearchMembers(searchMembers.map((member) => (member.loginID === loginID ? { ...member, role } : member)));
       }
     });
   };

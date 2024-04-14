@@ -1,8 +1,8 @@
 import { withRouter } from 'react-router';
 import styled from '@emotion/styled';
+import { ExclamationCircleTwoTone } from '@ant-design/icons';
 import ActionButton from '../../components/common/Buttons/ActionButton';
 import colors from '../../lib/styles/colors';
-import { ExclamationCircleTwoTone } from '@ant-design/icons';
 
 export const PageBlock = styled.div`
   position: relative;
@@ -37,8 +37,7 @@ const ErrorMessage = styled.p`
   margin-bottom: 1rem;
 `;
 
-const AccessDeniedPage = ({ history }) => {
-  return (
+const AccessDeniedPage = ({ history }) => (
     <PageBlock>
       <PageContainer>
         <ExclamationCircleTwoTone twoToneColor="red" style={{ marginBottom: '20px', fontSize: '40px' }} />
@@ -53,6 +52,5 @@ const AccessDeniedPage = ({ history }) => {
       </PageContainer>
     </PageBlock>
   );
-};
 
 export default withRouter(AccessDeniedPage);

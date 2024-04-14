@@ -3,11 +3,10 @@ import { SelectedLinkButton } from './ActivityMenu.styles';
 import { MenuBlock, MenuItem, MenuList } from '~/styles/common/Menu.styles';
 import Spinner from '../../common/Spinner/Spinner';
 
-const ActivityMenu = ({ loading, semesters, currentLocation }) => {
-  return (
+const ActivityMenu = ({ loading, semesters, currentLocation }) => (
     <MenuBlock>
       <MenuList>
-        {loading && <Spinner small={true} />}
+        {loading && <Spinner small />}
         {!loading &&
           semesters.map((semester) =>
             currentLocation === semester ? (
@@ -23,6 +22,5 @@ const ActivityMenu = ({ loading, semesters, currentLocation }) => {
       </MenuList>
     </MenuBlock>
   );
-};
 
 export default ActivityMenu;

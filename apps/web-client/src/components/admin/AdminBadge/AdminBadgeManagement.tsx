@@ -1,14 +1,14 @@
 import { Avatar, Button, Form, Input, Modal, Space, Table, Typography, Upload, UploadFile } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { BadgeControllerService, CustomApi, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { noop } from '~/lib/utils/noop';
-import { queryClient } from '~/lib/utils/queryClient';
 import { UploadChangeParam } from 'antd/es/upload';
 import { createStyles } from 'antd-style';
+import { noop } from '~/lib/utils/noop';
+import { queryClient } from '~/lib/utils/queryClient';
+import { BadgeControllerService, CustomApi, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';
 
@@ -121,11 +121,11 @@ export default function AdminBadgeManagement() {
 
   return (
     <>
-      <Space direction={'vertical'} className={styles.fullWidth}>
-        <Button type={'primary'} onClick={() => setShowGenerateModal(true)}>
+      <Space direction="vertical" className={styles.fullWidth}>
+        <Button type="primary" onClick={() => setShowGenerateModal(true)}>
           뱃지생성하기
         </Button>
-        <Table columns={columns} dataSource={dataSource} pagination={{ position: ['bottomCenter'] }} rowKey={'id'} />
+        <Table columns={columns} dataSource={dataSource} pagination={{ position: ['bottomCenter'] }} rowKey="id" />
       </Space>
       {showGenerateModal && <BadgeGenerateModal onCancel={() => setShowGenerateModal(false)} onOk={onRefecthAllBadges} />}
       {showEditModal && (
@@ -208,8 +208,7 @@ function BadgeGenerateModal({ onOk: _onOk, onCancel }: { onOk: () => void; onCan
     });
   };
 
-  const getUploadFileList = () => {
-    return form.values.imageUrl
+  const getUploadFileList = () => form.values.imageUrl
       ? [
           {
             uid: 'SOME_UID',
@@ -218,22 +217,21 @@ function BadgeGenerateModal({ onOk: _onOk, onCancel }: { onOk: () => void; onCan
           },
         ]
       : [];
-  };
 
   return (
     <Modal open onCancel={onCancel} onOk={onOk}>
       <Typography.Title level={4}>뱃지 생성</Typography.Title>
-      <Form layout={'vertical'} onSubmitCapture={form.onSubmit(onSubmit, noop)}>
-        <Form.Item label={'카테고리'}>
+      <Form layout="vertical" onSubmitCapture={form.onSubmit(onSubmit, noop)}>
+        <Form.Item label="카테고리">
           <Input {...form.getInputProps('category')} />
         </Form.Item>
-        <Form.Item label={'이름'}>
+        <Form.Item label="이름">
           <Input {...form.getInputProps('name')} />
         </Form.Item>
-        <Form.Item label={'설명'}>
+        <Form.Item label="설명">
           <Input.TextArea {...form.getInputProps('description')} />
         </Form.Item>
-        <Form.Item label={'로고'}>
+        <Form.Item label="로고">
           <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
             <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>
@@ -306,8 +304,7 @@ function BadgeEditModal({ onCancel, onOk: _onOk, initialValues }: { onCancel: ()
     });
   };
 
-  const getUploadFileList = () => {
-    return form.values.imageUrl
+  const getUploadFileList = () => form.values.imageUrl
       ? [
           {
             uid: 'SOME_UID',
@@ -316,22 +313,21 @@ function BadgeEditModal({ onCancel, onOk: _onOk, initialValues }: { onCancel: ()
           },
         ]
       : [];
-  };
 
   return (
     <Modal open onCancel={onCancel} onOk={onOk}>
       <Typography.Title level={4}>뱃지 수정</Typography.Title>
-      <Form layout={'vertical'} onSubmitCapture={form.onSubmit(onSubmit, noop)}>
-        <Form.Item label={'카테고리'}>
+      <Form layout="vertical" onSubmitCapture={form.onSubmit(onSubmit, noop)}>
+        <Form.Item label="카테고리">
           <Input {...form.getInputProps('category')} disabled />
         </Form.Item>
-        <Form.Item label={'이름'}>
+        <Form.Item label="이름">
           <Input {...form.getInputProps('name')} />
         </Form.Item>
-        <Form.Item label={'설명'}>
+        <Form.Item label="설명">
           <Input.TextArea {...form.getInputProps('description')} />
         </Form.Item>
-        <Form.Item label={'로고'}>
+        <Form.Item label="로고">
           <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
             <Button icon={<UploadOutlined />}>로고파일 업로드</Button>
           </Upload>

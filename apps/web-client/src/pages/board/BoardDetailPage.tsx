@@ -1,25 +1,25 @@
 import { Avatar, Breadcrumb, Button, Descriptions, Divider, Form, Input, Popconfirm, Result, Skeleton, Space, Tooltip, Typography } from 'antd';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
-import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { stringify } from 'qs';
+import { useSelector } from 'react-redux';
+import { useForm, zodResolver } from '@mantine/form';
+import { z } from 'zod';
+import { Viewer } from '@toast-ui/react-editor';
+import { FolderOpenOutlined, FolderOpenTwoTone } from '@ant-design/icons';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { MENU } from '~/constants/menus';
+import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { CommentControllerService, PostControllerService, PostResponse, ScrapControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
-import { useSelector } from 'react-redux';
 import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { getEmptyArray } from '~/lib/utils/getEmptyArray';
-import { useForm, zodResolver } from '@mantine/form';
-import { z } from 'zod';
 import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { Viewer } from '@toast-ui/react-editor';
 import { queryClient } from '~/lib/utils/queryClient';
-import { FolderOpenOutlined, FolderOpenTwoTone } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -224,7 +224,7 @@ export default function BoardDetailPage() {
     }
 
     return (
-      <Space direction={'vertical'} size={'middle'} className={styles.wrapper} split={<Divider className={styles.divider} />}>
+      <Space direction="vertical" size="middle" className={styles.wrapper} split={<Divider className={styles.divider} />}>
         <Breadcrumb
           items={[
             { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
@@ -241,25 +241,25 @@ export default function BoardDetailPage() {
             },
           ]}
         />
-        <Space direction={'vertical'} size={'middle'} className={styles.fullWidth}>
-          <Space align={'center'}>
+        <Space direction="vertical" size="middle" className={styles.fullWidth}>
+          <Space align="center">
             <Avatar className={styles.writerAvatar} src={getProfileImageUrl(post.postProfileImageUrl)} />
-            <Space direction={'vertical'} size={3}>
+            <Space direction="vertical" size={3}>
               <Space>
                 <Typography.Text>{post.writerName}</Typography.Text>
                 {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
               </Space>
             </Space>
             <Divider type="vertical" className={styles.divider} />
-            <Typography.Text type={'secondary'}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
+            <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
           </Space>
-          <Space direction={'vertical'} size={0}>
+          <Space direction="vertical" size={0}>
             {post.boardType === 'JOB' ? (
               <Descriptions title={post.title}>
-                <Descriptions.Item label={'고용형태'}>{convertPositionToText(post.position)}</Descriptions.Item>
-                <Descriptions.Item label={'지역'}>{post.region}</Descriptions.Item>
-                <Descriptions.Item label={'분야'}>{post.field}</Descriptions.Item>
-                <Descriptions.Item label={'마감일자'}>{dayjs(post.deadline).format('YYYY. MM. DD')}</Descriptions.Item>
+                <Descriptions.Item label="고용형태">{convertPositionToText(post.position)}</Descriptions.Item>
+                <Descriptions.Item label="지역">{post.region}</Descriptions.Item>
+                <Descriptions.Item label="분야">{post.field}</Descriptions.Item>
+                <Descriptions.Item label="마감일자">{dayjs(post.deadline).format('YYYY. MM. DD')}</Descriptions.Item>
               </Descriptions>
             ) : (
               <Typography.Title level={2}>{post.title}</Typography.Title>
@@ -281,17 +281,17 @@ export default function BoardDetailPage() {
             )}
           </Space>
           <Space className={styles.buttonGroup}>
-            {/*  <Tooltip title={'좋아요'}>*/}
-            {/*    <Button*/}
-            {/*      icon={<FcLike />}*/}
-            {/*      className={styles.emotionButton}*/}
-            {/*      onClick={onLikeClick}*/}
-            {/*    >*/}
-            {/*      {post.likeCount ?? 0}*/}
-            {/*    </Button>*/}
-            {/*  </Tooltip>*/}
-            <Tooltip title={'스크랩'}>
-              <Button icon={<FolderOpenTwoTone twoToneColor={'orange'} />} className={styles.emotionButton} onClick={onScrapClick}>
+            {/*  <Tooltip title={'좋아요'}> */}
+            {/*    <Button */}
+            {/*      icon={<FcLike />} */}
+            {/*      className={styles.emotionButton} */}
+            {/*      onClick={onLikeClick} */}
+            {/*    > */}
+            {/*      {post.likeCount ?? 0} */}
+            {/*    </Button> */}
+            {/*  </Tooltip> */}
+            <Tooltip title="스크랩">
+              <Button icon={<FolderOpenTwoTone twoToneColor="orange" />} className={styles.emotionButton} onClick={onScrapClick}>
                 {post.scrapCount ?? 0}
               </Button>
             </Tooltip>
@@ -304,10 +304,10 @@ export default function BoardDetailPage() {
                   postId: post.postId,
                 })}`}
               >
-                <Button type={'primary'}>수정</Button>
+                <Button type="primary">수정</Button>
               </Link>
               <Popconfirm title="게시글 삭제하기" description="게시글을 정말 삭제하시겠어요?" okText="네" cancelText="아니요" onConfirm={onDeleteConfirm}>
-                <Button type={'primary'} danger>
+                <Button type="primary" danger>
                   삭제
                 </Button>
               </Popconfirm>
@@ -334,7 +334,7 @@ function CommentBox({ postId, commentList, onRefetch }: { postId: number; commen
   const { styles } = useStyles();
   const message = useMessage();
   const member = useSelector((state: any) => state.auth);
-  const isLogin = member.status.isLogin;
+  const {isLogin} = member.status;
 
   const form = useForm<z.infer<typeof commentSchema>>({
     initialValues: {
@@ -368,25 +368,25 @@ function CommentBox({ postId, commentList, onRefetch }: { postId: number; commen
   };
 
   return (
-    <Space direction={'vertical'} size={'middle'} className={styles.fullWidth}>
+    <Space direction="vertical" size="middle" className={styles.fullWidth}>
       {commentList?.map((comment) => (
-        <Space align={'start'} key={comment.commentId} className={styles.comment} direction={'vertical'}>
-          <Space direction={'vertical'} size="large">
+        <Space align="start" key={comment.commentId} className={styles.comment} direction="vertical">
+          <Space direction="vertical" size="large">
             <Space>
               <Typography.Text>{comment.writerName}</Typography.Text>
               {comment.badge && <Avatar src={getFileUrl(comment.badge.imageUrl)} className={styles.badge} />}
             </Space>
           </Space>
           <Typography.Paragraph className={styles.commentBody}>{comment.body}</Typography.Paragraph>
-          <Typography.Text type={'secondary'}>{dayjs(comment.createdAt).format('YYYY. MM. DD')}</Typography.Text>
+          <Typography.Text type="secondary">{dayjs(comment.createdAt).format('YYYY. MM. DD')}</Typography.Text>
         </Space>
       ))}
       {isLogin ? (
         <Form onSubmitCapture={form.onSubmit(onSubmit, noop)}>
-          <Space direction={'vertical'} className={styles.fullWidth}>
+          <Space direction="vertical" className={styles.fullWidth}>
             <Input.TextArea className={styles.commentTextArea} placeholder="댓글을 남겨주세요 :)" {...form.getInputProps('body')} />
             <div className={styles.commentButtonWrap}>
-              <Button type={'primary'} disabled={!form.isValid()} htmlType={'submit'}>
+              <Button type="primary" disabled={!form.isValid()} htmlType="submit">
                 댓글 달기
               </Button>
             </div>

@@ -4,8 +4,7 @@ import Spinner from '../../common/Spinner/Spinner';
 import MemberCard from '../MemberCard/MemberCard';
 import { MemberListHeader, StyledMemberList } from './MemberList.styles';
 
-const MemberList = ({ members, loading }) => {
-  return (
+const MemberList = ({ members, loading }) => (
     <Block>
       <WhiteBlock>
         <MemberListHeader>
@@ -24,6 +23,5 @@ const MemberList = ({ members, loading }) => {
       </WhiteBlock>
     </Block>
   );
-};
 
 export default MemberList;

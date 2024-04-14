@@ -8,8 +8,7 @@ import Input from '../../common/Input/Input';
 import { StyledSearchActionButton } from '../AdminProjectForm/AdminProjectForm.styles';
 import { ContentsContainer, MemberListRow, StyledActionButton, Table, TableHead, TitleContainer, StyledSelect, SearchHeader, SearchResult, MemberSearchForm } from './AdminMember.styles';
 
-const MemberTableHead = () => {
-  return (
+const MemberTableHead = () => (
     <thead>
       <TableHead>
         <th className="member_list_head name">이름</th>
@@ -26,7 +25,6 @@ const MemberTableHead = () => {
       </TableHead>
     </thead>
   );
-};
 
 const Member = ({ member, handleAcceptMember, handleWithdrawMember, handleToggleAdmin, handleUpdateMemberRole, roles, history }) => {
   const [role, onChangeRole] = useInput(member.role ? member.role : 'MEMBER', notEmptyValidation);
@@ -107,7 +105,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
 
   const handleDeleteUnacceptedMembers = (e) => {
     e.preventDefault();
-    let result = window.confirm(`[주의] 승인 전 회원들을 모두 탈퇴 처리 하시겠습니까? 정보는 모두 DB에서 삭제되며 복구할 수 없습니다.`);
+    const result = window.confirm(`[주의] 승인 전 회원들을 모두 탈퇴 처리 하시겠습니까? 정보는 모두 DB에서 삭제되며 복구할 수 없습니다.`);
     if (result) {
       onDeleteUnacceptedMembers();
     }
@@ -160,8 +158,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
           <tbody>
             {members
               .filter((m) => m.role === 'UNACCEPTED')
-              .map((member) => {
-                return (
+              .map((member) => (
                   <Member
                     key={member.loginID}
                     member={member}
@@ -172,8 +169,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
                     roles={roles}
                     history={history}
                   />
-                );
-              })}
+                ))}
           </tbody>
         </Table>
         <SearchHeader>일반 회원 목록</SearchHeader>
@@ -182,8 +178,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
           <tbody>
             {members
               .filter((m) => m.role === 'MEMBER')
-              .map((member) => {
-                return (
+              .map((member) => (
                   <Member
                     key={member.loginID}
                     member={member}
@@ -194,8 +189,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
                     roles={roles}
                     history={history}
                   />
-                );
-              })}
+                ))}
           </tbody>
         </Table>
         <SearchHeader>졸업/수료 회원 목록</SearchHeader>
@@ -204,8 +198,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
           <tbody>
             {members
               .filter((m) => m.role === 'GRADUATED' || m.role === 'COMPLETE')
-              .map((member) => {
-                return (
+              .map((member) => (
                   <Member
                     key={member.loginID}
                     member={member}
@@ -216,8 +209,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
                     roles={roles}
                     history={history}
                   />
-                );
-              })}
+                ))}
           </tbody>
         </Table>
         <SearchHeader>활동 회원 목록</SearchHeader>
@@ -226,8 +218,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
           <tbody>
             {members
               .filter((m) => m.isActivated)
-              .map((member) => {
-                return (
+              .map((member) => (
                   <Member
                     key={member.loginID}
                     member={member}
@@ -238,8 +229,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
                     roles={roles}
                     history={history}
                   />
-                );
-              })}
+                ))}
           </tbody>
         </Table>
         <SearchHeader>비활동 회원 목록</SearchHeader>
@@ -248,8 +238,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
           <tbody>
             {members
               .filter((m) => !m.isActivated)
-              .map((member) => {
-                return (
+              .map((member) => (
                   <Member
                     key={member.loginID}
                     member={member}
@@ -260,8 +249,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onToggleAdmin,
                     roles={roles}
                     history={history}
                   />
-                );
-              })}
+                ))}
           </tbody>
         </Table>
         <SearchHeader>전체 회원 목록</SearchHeader>

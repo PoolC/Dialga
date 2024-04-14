@@ -1,6 +1,8 @@
-import ActionButton from '../../common/Buttons/ActionButton';
 import { memo, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
+import { DeleteFilled } from '@ant-design/icons';
+import { Input as AntdInput, Radio } from 'antd';
+import ActionButton from '../../common/Buttons/ActionButton';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import useInput from '../../../hooks/useInput';
 import Input from '../../common/Input/Input';
@@ -27,8 +29,6 @@ import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import Modal from '../../common/Modal/Modal';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import throttle from '../../../lib/utils/throttle';
-import { DeleteFilled } from '@ant-design/icons';
-import { Input as AntdInput, Radio } from 'antd';
 
 const TagItem = memo(({ tag, onDeleteTag }) => {
   const handleDeleteTag = () => {
@@ -37,15 +37,13 @@ const TagItem = memo(({ tag, onDeleteTag }) => {
   return <Tag onClick={handleDeleteTag}>#{tag}</Tag>;
 });
 
-const TagList = ({ tags, onDeleteTag }) => {
-  return (
+const TagList = ({ tags, onDeleteTag }) => (
     <TagListBlock>
       {tags.map((tag) => (
         <TagItem key={tag} tag={tag} onDeleteTag={onDeleteTag} />
       ))}
     </TagListBlock>
   );
-};
 
 const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessage, buttons, errorModalVisible, onCloseErrorModal }) => {
   const editorRef = useRef();
@@ -208,7 +206,7 @@ const ActivityForm = ({ activity, onCreateActivity, onUpdateActivity, errorMessa
                       : '첨부된 파일 없음'}
                   </FileContainer>
                   <ButtonContainer>
-                    <FileUploadButton onSubmit={setFiles} files={files} multiple={true} />
+                    <FileUploadButton onSubmit={setFiles} files={files} multiple />
                   </ButtonContainer>
                 </Plan>
               </Item>

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
+import { useHistory } from 'react-router-dom';
 import { MENU } from '../../constants/menus';
 import colors from '../../lib/styles/colors';
-import { useHistory } from 'react-router-dom';
 
 const BannerBlock = styled.div`
   display: flex;
