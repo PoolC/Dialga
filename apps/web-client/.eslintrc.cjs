@@ -17,6 +17,8 @@ module.exports = {
         'react/jsx-filename-extension': 'off',
         'react/prop-types': 'off',
         'react/jsx-props-no-spreading': 'off',
+        'eslint/no-alert': 'off',
+        'eslint/no-shadow': 'off',
       },
       parser: '@typescript-eslint/parser',
       env: {
