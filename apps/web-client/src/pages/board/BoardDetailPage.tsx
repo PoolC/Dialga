@@ -146,10 +146,47 @@ export default function BoardDetailPage() {
   //
   const { mutate: addScrap } = useAppMutation({
     mutationFn: ScrapControllerService.addScrapUsingPost,
+    onMutate() {
+      const prevData = queryClient.getQueryData(queryKey.post.post(postId)) as PostResponse;
+      const tmp: PostResponse = {
+        ...prevData,
+        isScraped: true,
+        scrapCount: (prevData.scrapCount ?? 0) + 1,
+      };
+      queryClient.setQueryData(queryKey.post.post(postId), tmp);
+
+      return { prevData };
+    },
+    onError(_error, _variables, context) {
+      queryClient.setQueryData(queryKey.post.post(postId), context?.prevData);
+    },
+    onSettled() {
+      queryClient.invalidateQueries({
+        queryKey: queryKey.post.post(postId),
+      });
+    },
   });
 
   const { mutate: deleteScrap } = useAppMutation({
     mutationFn: ScrapControllerService.deleteScrapUsingDelete,
+    onMutate() {
+      const prevData = queryClient.getQueryData(queryKey.post.post(postId)) as PostResponse;
+      const tmp: PostResponse = {
+        ...prevData,
+        isScraped: false,
+        scrapCount: (prevData.scrapCount ?? 0) - 1,
+      };
+      queryClient.setQueryData(queryKey.post.post(postId), tmp);
+      return { prevData };
+    },
+    onError(_error, _variables, context) {
+      queryClient.setQueryData(queryKey.post.post(postId), context?.prevData);
+    },
+    onSettled() {
+      queryClient.invalidateQueries({
+        queryKey: queryKey.post.post(postId),
+      });
+    },
   });
 
   const { mutate: deletePost } = useAppMutation({
@@ -185,31 +222,13 @@ export default function BoardDetailPage() {
     }
 
     if (post?.isScraped) {
-      deleteScrap(
-        {
-          postId,
-        },
-        {
-          onSuccess() {
-            queryClient.invalidateQueries({
-              queryKey: queryKey.post.post(postId),
-            });
-          },
-        },
-      );
+      deleteScrap({
+        postId,
+      });
     } else {
-      addScrap(
-        {
-          postId,
-        },
-        {
-          onSuccess() {
-            queryClient.invalidateQueries({
-              queryKey: queryKey.post.post(postId),
-            });
-          },
-        },
-      );
+      addScrap({
+        postId,
+      });
     }
   };
 
