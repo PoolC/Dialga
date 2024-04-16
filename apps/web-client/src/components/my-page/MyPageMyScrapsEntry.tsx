@@ -7,7 +7,7 @@ import { stringify } from 'qs';
 import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { useSearchParams } from '~/hooks/useSearchParams';
-import { PostControllerService, PostResponse, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
+import { PostResponse, ScrapControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 
@@ -74,7 +74,7 @@ export default function MyPageMyScrapsEntry() {
     data: { posts, maxPage },
   } = useAppSuspenseQuery({
     queryKey: queryKey.post.myPosts(page - 1),
-    queryFn: () => PostControllerService.viewMyPostsUsingGet({ page: page - 1 }),
+    queryFn: () => ScrapControllerService.viewMyScrapsUsingGet({ page: page - 1 }),
   });
 
   const filteredList = (posts ?? []).filter(Boolean);

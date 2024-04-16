@@ -62,6 +62,9 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 4px;
   `,
+  accent: css`
+    color: orange;
+  `,
   fileListBox: css`
     margin-top: 40px;
   `,
@@ -120,7 +123,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardDetailPage() {
-  const { styles } = useStyles();
+  const { styles, cx } = useStyles();
   const message = useMessage();
   const history = useHistory();
 
@@ -143,6 +146,10 @@ export default function BoardDetailPage() {
   //
   const { mutate: addScrap } = useAppMutation({
     mutationFn: ScrapControllerService.addScrapUsingPost,
+  });
+
+  const { mutate: deleteScrap } = useAppMutation({
+    mutationFn: ScrapControllerService.deleteScrapUsingDelete,
   });
 
   const { mutate: deletePost } = useAppMutation({
@@ -177,18 +184,33 @@ export default function BoardDetailPage() {
       return;
     }
 
-    addScrap(
-      {
-        postId,
-      },
-      {
-        onSuccess() {
-          queryClient.invalidateQueries({
-            queryKey: queryKey.post.post(postId),
-          });
+    if (post?.isScraped) {
+      deleteScrap(
+        {
+          postId,
         },
-      },
-    );
+        {
+          onSuccess() {
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.post(postId),
+            });
+          },
+        },
+      );
+    } else {
+      addScrap(
+        {
+          postId,
+        },
+        {
+          onSuccess() {
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.post(postId),
+            });
+          },
+        },
+      );
+    }
   };
 
   const onDeleteConfirm = () => {
@@ -289,7 +311,7 @@ export default function BoardDetailPage() {
             {/*    </Button> */}
             {/*  </Tooltip> */}
             <Tooltip title="스크랩">
-              <Button icon={<FolderOpenTwoTone twoToneColor="orange" />} className={styles.emotionButton} onClick={onScrapClick}>
+              <Button icon={<FolderOpenTwoTone twoToneColor={post.isScraped ? 'orange' : 'gray'} />} className={cx(styles.emotionButton, { [styles.accent]: post.isScraped })} onClick={onScrapClick}>
                 {post.scrapCount ?? 0}
               </Button>
             </Tooltip>
