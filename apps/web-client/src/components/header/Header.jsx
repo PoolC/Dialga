@@ -21,14 +21,6 @@ const useStyles = createStyles(({ css }) => ({
     gap: 5px;
     margin-right: 10px;
   `,
-  badge: css`
-    background-color: #47be9b;
-    padding: 4px 8px;
-    border-radius: 5px;
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
-  `,
 }));
 
 const Header = ({ member, onLogout }) => {
@@ -83,7 +75,6 @@ const Header = ({ member, onLogout }) => {
         <Link to="/">
           <div className={styles.logo}>
             <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
-            <div className={styles.badge}>BETA</div>
           </div>
         </Link>
         <HeaderIconBox>
