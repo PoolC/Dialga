@@ -7,7 +7,7 @@ import uploadableTypes from '../../../constants/uploadableTypes';
 import { SUCCESS } from '../../../constants/statusCode';
 
 const FileUploadButton = ({ files, onSubmit, multiple }) => {
-  let formData = new FormData();
+  const formData = new FormData();
 
   const [file, setFile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -52,9 +52,9 @@ const FileUploadButton = ({ files, onSubmit, multiple }) => {
           }
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setFile(null);
-        console.error(e.respoense);
+
         setErrorMessage(e.response?.data);
         onShowErrorModal();
       });

@@ -1,10 +1,10 @@
-import AdminActivity from '../../../components/admin/AdminActivity/AdminActivity';
 import { useEffect, useState } from 'react';
-import * as activityAPI from '../../../lib/api/activity';
 import { withRouter } from 'react-router-dom';
+import AdminActivity from '../../../components/admin/AdminActivity/AdminActivity';
+import * as activityAPI from '../../../lib/api/activity';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const AdminActivityContainer = ({ history }) => {
+const AdminActivityContainer = () => {
   const [activities, setActivities] = useState(null);
 
   useEffect(() => {

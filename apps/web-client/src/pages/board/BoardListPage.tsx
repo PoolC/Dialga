@@ -1,18 +1,16 @@
 import { Tabs } from 'antd';
+import { createStyles } from 'antd-style';
+import { useHistory } from 'react-router-dom';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import BoardList from '~/components/board/BoardList';
-import { createStyles } from 'antd-style';
 import { useSearchParams } from '~/hooks/useSearchParams';
-import { useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   wrapper: css`
     width: 100%;
@@ -23,7 +21,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function BoardListPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const searchParams = useSearchParams();
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
 
@@ -40,29 +38,29 @@ export default function BoardListPage() {
     {
       key: 'NOTICE',
       label: getBoardTitleByBoardType('NOTICE'),
-      children: <BoardList boardType={'NOTICE'} page={page} />,
+      children: <BoardList boardType="NOTICE" page={page} />,
     },
     ...(isLogin
       ? [
           {
             key: 'FREE' as BoardType,
             label: getBoardTitleByBoardType('FREE'),
-            children: <BoardList boardType={'FREE'} page={page} />,
+            children: <BoardList boardType="FREE" page={page} />,
           },
           {
             key: 'JOB' as BoardType,
             label: getBoardTitleByBoardType('JOB'),
-            children: <BoardList boardType={'JOB'} page={page} />,
+            children: <BoardList boardType="JOB" page={page} />,
           },
           {
             key: 'PROJECT' as BoardType,
             label: getBoardTitleByBoardType('PROJECT'),
-            children: <BoardList boardType={'PROJECT'} page={page} />,
+            children: <BoardList boardType="PROJECT" page={page} />,
           },
           {
             key: 'CS' as BoardType,
             label: getBoardTitleByBoardType('CS'),
-            children: <BoardList boardType={'CS'} page={page} />,
+            children: <BoardList boardType="CS" page={page} />,
           },
         ]
       : []),
@@ -72,7 +70,7 @@ export default function BoardListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+      <WhiteBlock className={styles.whiteBlock}>
         <div className={styles.wrapper}>
           <Tabs items={items} defaultActiveKey={boardType} onChange={onTabChange} />
         </div>

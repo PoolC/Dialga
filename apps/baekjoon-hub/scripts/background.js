@@ -16,8 +16,7 @@ function handleMessage(request, _, sendResponse) {
   if (request.solvedAc) {
     appFetch(request.solvedAc.url, { method: request.solvedAc.method })
       .then((res) => res.json())
-      .then(sendResponse)
-      .catch(console.log);
+      .then(sendResponse);
   }
   // poolc
   else if (request.poolc) {
@@ -30,9 +29,7 @@ function handleMessage(request, _, sendResponse) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      })
-        .then(() => sendResponse({ success: true }))
-        .catch(console.log);
+      }).then(() => sendResponse({ success: true }));
     });
   }
   // login check
@@ -57,8 +54,7 @@ function handleMessage(request, _, sendResponse) {
       })
         .then((res) => res.json())
         .then((res) => chrome.storage.local.set({ key: res.accessToken }))
-        .then(sendResponse)
-        .catch(console.log);
+        .then(sendResponse);
     });
   }
 

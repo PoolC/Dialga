@@ -1,7 +1,7 @@
-import AdminInfo from '../../../components/admin/AdminInfo/AdminInfo';
 import { useEffect, useState } from 'react';
-import * as infoAPI from '../../../lib/api/info';
 import { withRouter } from 'react-router';
+import AdminInfo from '../../../components/admin/AdminInfo/AdminInfo';
+import * as infoAPI from '../../../lib/api/info';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
@@ -28,7 +28,7 @@ const AdminInfoContainer = ({ history }) => {
       !phoneNumber ||
       !location ||
       !introduction
-      //!mainImageUrl ||
+      //! mainImageUrl ||
     ) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
@@ -51,8 +51,7 @@ const AdminInfoContainer = ({ history }) => {
           onShowErrorModal();
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

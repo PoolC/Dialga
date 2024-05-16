@@ -99,7 +99,7 @@ function startLoader() {
   };
 
   loader = setInterval(() => {
-    callback().catch(console.log);
+    callback();
   }, 2000);
 }
 

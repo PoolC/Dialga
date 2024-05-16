@@ -1,10 +1,10 @@
+import { Avatar, Button, Dropdown, MenuProps } from 'antd';
+import { useLocation } from 'react-router-dom';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 import ActionButton from '../../common/Buttons/ActionButton';
 import LinkButton from '../../common/Buttons/LinkButton';
 import { LeftHeaderMenu, MenuBlock, RightHeaderMenu } from './Menus.styles';
-import { Avatar, Button, Dropdown, MenuProps } from 'antd';
 import { MENU } from '~/constants/menus';
-import { useLocation } from 'react-router-dom';
 
 const Menus = ({
   menuVisible,
@@ -16,7 +16,7 @@ const Menus = ({
 }: {
   menuVisible: boolean;
   isLogin: boolean;
-  role: any;
+  role: string | null;
   onToggleMenu: () => void;
   dropDownItems: MenuProps['items'];
   profileImageURL: string;
@@ -103,7 +103,7 @@ const Menus = ({
       <RightHeaderMenu>
         {isLogin && (
           <Dropdown menu={{ items: dropDownItems }}>
-            <Button shape={'circle'} style={{ padding: 0, width: '40px', height: '40px' }}>
+            <Button shape="circle" style={{ padding: 0, width: '40px', height: '40px' }}>
               <Avatar src={profileImageURL} size={36} />
             </Button>
           </Dropdown>

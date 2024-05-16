@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ActivityMenu from '../../../components/activity/ActivityMenu/ActivityMenu';
 import ActivityList from '../../../components/activity/ActivityList/ActivityList';
-import { useSelector } from 'react-redux';
 import * as activityAPI from '../../../lib/api/activity';
 import { TwoColumnsContainerBlock } from '../../../styles/common/Block.styles.tsx';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const ActivityListContainer = ({ location, history, match }) => {
+const ActivityListContainer = ({ location, history }) => {
   const currentLocation = location.search.replace('?semester=', '');
   const member = useSelector((state) => state.auth);
 
@@ -31,7 +31,7 @@ const ActivityListContainer = ({ location, history, match }) => {
             history.push(`/${MENU.ACTIVITIES}?semester=${res.data.data[0]}`);
             return;
           }
-          activityAPI.getActivitiesByYears(currentLocation ? currentLocation : res.data.data[0]).then((activities) => {
+          activityAPI.getActivitiesByYears(currentLocation || res.data.data[0]).then((activities) => {
             setActivities(activities.data.data);
             setLoading(false);
           });
@@ -55,9 +55,7 @@ const ActivityListContainer = ({ location, history, match }) => {
           }
         }
       })
-      .catch((e) => {
-        console.log(e);
-        console.error(e.response?.data?.message);
+      .catch(() => {
         alert(e.response?.data?.message);
       });
   };
@@ -71,12 +69,10 @@ const ActivityListContainer = ({ location, history, match }) => {
   };
 
   return (
-    <>
-      <TwoColumnsContainerBlock>
-        <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
-        <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
-      </TwoColumnsContainerBlock>
-    </>
+    <TwoColumnsContainerBlock>
+      <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
+      <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
+    </TwoColumnsContainerBlock>
   );
 };
 

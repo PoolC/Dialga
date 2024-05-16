@@ -40,19 +40,15 @@ const PasswordResetForm = ({ type, message, onChangeMessage, modalVisible, handl
     handlePasswordCheckError(e.target.value);
   };
 
-  const resetPasswordValidation = () => {
-    return !(passwordError || !password || passwordCheckError || !passwordCheck);
-  };
+  const resetPasswordValidation = () => !(passwordError || !password || passwordCheckError || !passwordCheck);
 
-  const sendEmailValidation = () => {
-    return !(emailError || !email);
-  };
+  const sendEmailValidation = () => !(emailError || !email);
 
   const setInputErrorMessage = () => {
     onChangeMessage('모든 값을 올바르게 입력해주세요.');
   };
 
-  const handleSendEmail = throttle((e) => {
+  const handleSendEmail = throttle(() => {
     if (!sendEmailValidation()) {
       setInputErrorMessage();
       handleModalOpen();
@@ -63,7 +59,7 @@ const PasswordResetForm = ({ type, message, onChangeMessage, modalVisible, handl
     });
   }, 1000);
 
-  const handleResetPassword = throttle((e) => {
+  const handleResetPassword = throttle(() => {
     if (!resetPasswordValidation()) {
       setInputErrorMessage();
       handleModalOpen();

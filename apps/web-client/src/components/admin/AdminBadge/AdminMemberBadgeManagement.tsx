@@ -1,8 +1,8 @@
-import { Badge, BadgeControllerService, MemberControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Avatar, Button, Checkbox, Modal, Space, Table, Tooltip, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { createStyles } from 'antd-style';
+import { Badge, BadgeControllerService, MemberControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';
 
@@ -63,7 +63,7 @@ export default function AdminMemberBadgeManagement() {
       title: '뱃지목록 조회',
       render: (_, { loginId }) => (
         <Button
-          type={'primary'}
+          type="primary"
           onClick={() => {
             setActiveMemberId(loginId);
             setShowMemberBadgeListModal(true);
@@ -77,7 +77,7 @@ export default function AdminMemberBadgeManagement() {
 
   return (
     <>
-      <Table columns={columns} dataSource={dataSource} pagination={false} rowKey={'loginId'} />
+      <Table columns={columns} dataSource={dataSource} pagination={false} rowKey="loginId" />
       {showMemberBadgeListModal && <MemberBadgeListModal onOk={() => setShowMemberBadgeListModal(false)} onCancel={() => setShowMemberBadgeListModal(false)} loginId={activeMemberId} />}
     </>
   );
@@ -161,21 +161,19 @@ function MemberBadgeListModal({ onOk: _onOk, onCancel, loginId }: { onOk: () => 
   }, [memberBadgeList]);
 
   // render
-  const renderBadgeTooltipTitle = (badge: Badge) => {
-    return (
-      <div>
-        <span className={styles.badgeName}>{badge.name}</span>
-        <br />
-        <span className={styles.badgeDesc}>{badge.description}</span>
-      </div>
-    );
-  };
+  const renderBadgeTooltipTitle = (badge: Badge) => (
+    <div>
+      <span className={styles.badgeName}>{badge.name}</span>
+      <br />
+      <span className={styles.badgeDesc}>{badge.description}</span>
+    </div>
+  );
 
   return (
     <Modal open onCancel={onCancel} onOk={onOk}>
-      <Space direction={'vertical'}>
+      <Space direction="vertical">
         <Typography.Title level={4}>뱃지 목록 조회</Typography.Title>
-        <Space direction={'vertical'}>
+        <Space direction="vertical">
           <Typography.Text>{loginId}님의 뱃지목록입니다.</Typography.Text>
           <div className={styles.badgeWrap}>
             {memberBadgeList?.data?.map((badge) => (

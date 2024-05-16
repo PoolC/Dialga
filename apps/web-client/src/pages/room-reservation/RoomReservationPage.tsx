@@ -1,20 +1,18 @@
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { createStyles } from 'antd-style';
 import { Button, Modal, Space } from 'antd';
 import { Calendar, dayjsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
+import { useState } from 'react';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { LocalTimeReq, queryKey, RoomControllerService, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
-import { useState } from 'react';
 
 const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 0;
-    }
+    padding: 30px 0;
   `,
   wrapper: css`
     width: 100%;
@@ -60,7 +58,7 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function RoomReservationPage() {
   // data
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const message = useMessage();
 
   const [startDate, setStartDate] = useState(() => dayjs().startOf('week').format('YYYY-MM-DD'));
@@ -151,9 +149,8 @@ export default function RoomReservationPage() {
     let end: Date;
 
     if (Array.isArray(range)) {
-      const { length: l } = range;
-      start = range[0];
-      end = range[l - 1];
+      [start] = range;
+      end = range[range.length - 1];
     } else {
       start = range.start;
       end = range.end;
@@ -191,7 +188,7 @@ export default function RoomReservationPage() {
   return (
     <>
       <Block>
-        <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
+        <WhiteBlock className={styles.whiteBlock}>
           <div className={styles.wrapper}>
             <Space direction="vertical" size="large" className={styles.fullWidth}>
               <Space direction="vertical" size="middle">

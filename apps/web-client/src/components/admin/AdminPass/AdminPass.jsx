@@ -1,11 +1,11 @@
-import ActionButton from '../../common/Buttons/ActionButton';
 import { useState } from 'react';
+import { withRouter } from 'react-router';
+import ActionButton from '../../common/Buttons/ActionButton';
 import { ContentsContainer, ExpellActionButton, MemberListRow, StyledForm, StyledInput, Table, TableHead, TitleContainer } from './AdminPass.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import useInput from '../../../hooks/useInput';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import { MENU } from '../../../constants/menus';
-import { withRouter } from 'react-router';
 
 const Member = ({ member, minimumLimit, handleChangeExcepted, handleWithdraw, history }) => {
   const [isExpelled, setIsExpelled] = useState(member.member.role === 'EXPELLED');
@@ -139,9 +139,9 @@ const AdminPass = ({ members, onSubmit, onChangeExcepted, onWithdraw, history })
           <tbody>
             {members
               ?.filter((m) => m.member.isActivated)
-              .map((member) => {
-                return <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />;
-              })}
+              .map((member) => (
+                <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
+              ))}
           </tbody>
         </Table>
       </ContentsContainer>

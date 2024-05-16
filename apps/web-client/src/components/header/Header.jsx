@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import poolcIcon from '~/assets/images/poolc-icon.png';
 import { Link } from 'react-router-dom';
-import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
-import Menus from './Menus/Menus';
 import { Avatar, Button, Dropdown } from 'antd';
-import { MENU } from '~/constants/menus';
 import { createStyles } from 'antd-style';
 import { MenuOutlined } from '@ant-design/icons';
+import poolcIcon from '~/assets/images/poolc-icon.png';
+import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
+import Menus from './Menus/Menus';
+import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -20,14 +20,6 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 5px;
     margin-right: 10px;
-  `,
-  badge: css`
-    background-color: #47be9b;
-    padding: 4px 8px;
-    border-radius: 5px;
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
   `,
 }));
 
@@ -83,13 +75,12 @@ const Header = ({ member, onLogout }) => {
         <Link to="/">
           <div className={styles.logo}>
             <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
-            <div className={styles.badge}>BETA</div>
           </div>
         </Link>
         <HeaderIconBox>
           {isLogin && (
             <Dropdown menu={{ items: dropDownItems }}>
-              <Button shape={'circle'} className={styles.avatarButton}>
+              <Button shape="circle" className={styles.avatarButton}>
                 <Avatar src={profileImageURL} size={36} />
               </Button>
             </Dropdown>

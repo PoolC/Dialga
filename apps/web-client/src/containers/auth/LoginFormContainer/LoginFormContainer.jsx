@@ -1,10 +1,10 @@
-import AuthForm from '../../../components/auth/AuthForm';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AuthForm from '../../../components/auth/AuthForm';
 import { initLogin, login } from '../../../modules/auth';
 
-const LoginFormContainer = ({ location, history }) => {
+const LoginFormContainer = ({ history }) => {
   const dispatch = useDispatch();
 
   const [message, setMessage] = useState(null);

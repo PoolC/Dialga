@@ -1,7 +1,5 @@
 import ProjectListContainer from '../../containers/project/ProjectListContainer/ProjectListContainer';
 
-const ProjectListPage = () => {
-  return <ProjectListContainer />;
-};
+const ProjectListPage = () => <ProjectListContainer />;
 
 export default ProjectListPage;

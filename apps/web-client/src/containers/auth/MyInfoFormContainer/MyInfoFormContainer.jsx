@@ -1,7 +1,7 @@
-import AuthForm from '../../../components/auth/AuthForm';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AuthForm from '../../../components/auth/AuthForm';
 import * as authAPI from '../../../lib/api/auth';
 import * as memberAPI from '../../../lib/api/member';
 import { removeHeaderAccessToken, setHeaderAccessToken } from '../../../lib/utils/axiosUtil';
@@ -10,7 +10,7 @@ import Spinner from '../../../components/common/Spinner/Spinner';
 import { logout } from '../../../modules/auth';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const MyInfoFormContainer = ({ location, history }) => {
+const MyInfoFormContainer = ({ history }) => {
   const dispatch = useDispatch();
 
   const [userLoading, setUserLoading] = useState(true);
@@ -40,8 +40,7 @@ const MyInfoFormContainer = ({ location, history }) => {
             setUserLoading(false);
           }
         })
-        .catch((e) => {
-          console.error(e.message);
+        .catch(() => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
     })();
@@ -57,8 +56,7 @@ const MyInfoFormContainer = ({ location, history }) => {
             setRolesLoading(false);
           }
         })
-        .catch((e) => {
-          console.error(e.message);
+        .catch(() => {
           history.push(`/${MENU.FORBIDDEN}`);
         });
     })();
@@ -69,44 +67,39 @@ const MyInfoFormContainer = ({ location, history }) => {
   }
 
   const onSubmit = ({ name, password, passwordCheck, email, phoneNumber, introduction, profileImageURL }) => {
-    try {
-      const response = authAPI.updateUser({
-        name,
-        password,
-        passwordCheck,
-        email,
-        phoneNumber,
-        introduction,
-        profileImageURL,
-      });
-      response
-        .then((res) => {
-          if (res.status === SUCCESS.OK) {
-            setMessage('성공적으로 회원정보를 수정했습니다.');
-            handleModalOpen();
-            //history.push('/');
-          }
-        })
-        .catch((e) => {
-          if (e.response.status === 409) {
-            setMessage('이미 가입된 정보입니다.');
-            handleModalOpen();
-            return;
-          }
-
-          if (e.response.status === 400) {
-            setMessage('모든 값을 올바르게 입력해주세요.');
-            handleModalOpen();
-            return;
-          }
-
-          setMessage('정보 수정 실패');
+    const response = authAPI.updateUser({
+      name,
+      password,
+      passwordCheck,
+      email,
+      phoneNumber,
+      introduction,
+      profileImageURL,
+    });
+    response
+      .then((res) => {
+        if (res.status === SUCCESS.OK) {
+          setMessage('성공적으로 회원정보를 수정했습니다.');
+          handleModalOpen();
+          // history.push('/');
+        }
+      })
+      .catch(() => {
+        if (e.response.status === 409) {
+          setMessage('이미 가입된 정보입니다.');
           handleModalOpen();
           return;
-        });
-    } catch (e) {
-      console.error(e);
-    }
+        }
+
+        if (e.response.status === 400) {
+          setMessage('모든 값을 올바르게 입력해주세요.');
+          handleModalOpen();
+          return;
+        }
+
+        setMessage('정보 수정 실패');
+        handleModalOpen();
+      });
   };
 
   const onUpdateMemberRoleBySelf = ({ role }) => {
@@ -118,8 +111,7 @@ const MyInfoFormContainer = ({ location, history }) => {
           handleModalOpen();
         }
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
         setMessage('회원 상태 수정 실패');
         handleModalOpen();
       });
@@ -137,8 +129,7 @@ const MyInfoFormContainer = ({ location, history }) => {
           }, 1500);
         }
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
         setMessage('회원 탈퇴 실패');
         handleModalOpen();
       });

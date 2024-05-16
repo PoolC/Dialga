@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Input as AntdInput, Select } from 'antd';
 import profileImagePlaceholders from '../../constants/profileImagePlaceholders';
 import RegisterModalContainer from '../../containers/auth/RegisterModalContainer/RegisterModalContainer';
 import useInput from '../../hooks/useInput';
@@ -21,7 +22,6 @@ import {
 } from './AuthForm.styles';
 import { MENU } from '../../constants/menus';
 import throttle from '../../lib/utils/throttle';
-import { Input as AntdInput, Select } from 'antd';
 
 const textMap = {
   login: '로그인',
@@ -42,7 +42,7 @@ export const Input = ({ valueText, labelText, typeText, nameText, error, onChang
   );
 };
 
-const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, userInfo, onUpdateMemberRoleBySelf, roles, onWithdraw }) => {
+const AuthForm = ({ type, onSubmit, message, onChangeMessage, modalVisible, handleModalOpen, handleModalClose, userInfo, onUpdateMemberRoleBySelf, roles, onWithdraw }) => {
   const headerText = textMap[type];
 
   const [id, onChangeId, idError] = useInput(userInfo ? userInfo.loginID : '', idValidation);
@@ -54,6 +54,7 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
   const [studentId, onChangeStudentId, studentIdError] = useInput(userInfo ? userInfo.studentID : '', notEmptyValidation);
   const [introduction, onChangeIntroduction, introductionError] = useInput(userInfo ? userInfo.introduction : '', notEmptyValidation);
 
+  // eslint-disable-next-line no-nested-ternary
   const [profileImageURL, setProfileImageURL] = useState(userInfo ? (userInfo.profileImageURL ? userInfo.profileImageURL : profileImagePlaceholders[0]) : profileImagePlaceholders[0]);
 
   const [role, setRole] = useState(userInfo ? userInfo.role : 'MEMBER');
@@ -76,8 +77,8 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
     handlePasswordCheckError(e.target.value);
   };
 
-  const registerValidation = () => {
-    return !(
+  const registerValidation = () =>
+    !(
       idError ||
       !id ||
       passwordError ||
@@ -97,15 +98,11 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
       introductionError ||
       !introduction
     );
-  };
 
-  const updateValidation = () => {
-    return !(passwordError || !password || passwordCheckError || !passwordCheck || emailError || !email || phoneNumberError || !phoneNumber || introductionError || !introduction);
-  };
+  const updateValidation = () =>
+    !(passwordError || !password || passwordCheckError || !passwordCheck || emailError || !email || phoneNumberError || !phoneNumber || introductionError || !introduction);
 
-  const loginValidation = () => {
-    return !(idError || !id || passwordError || !password);
-  };
+  const loginValidation = () => !(idError || !id || passwordError || !password);
 
   const setInputErrorMessage = () => {
     onChangeMessage('모든 값을 올바르게 입력해주세요.');
@@ -255,7 +252,7 @@ const AuthForm = ({ history, type, onSubmit, message, onChangeMessage, modalVisi
                 <ProfileImageSelectContainer>
                   {[0, 1, 2, 3, 4].map((num) => (
                     <ProfileImageSelect key={num}>
-                      <input type="radio" value={num} onChange={onChangeProfileImageURL} checked={profileImageURL === profileImagePlaceholders[num] ? true : false} />
+                      <input type="radio" value={num} onChange={onChangeProfileImageURL} checked={profileImageURL === profileImagePlaceholders[num]} />
                       <ProfileImage src={getFileUrl(profileImagePlaceholders[num])} />
                     </ProfileImageSelect>
                   ))}

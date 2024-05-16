@@ -1,7 +1,5 @@
 import BookListContainer from '../../containers/book/BookList/BookListContainer';
 
-const BookListPage = () => {
-  return <BookListContainer />;
-};
+const BookListPage = () => <BookListContainer />;
 
 export default BookListPage;

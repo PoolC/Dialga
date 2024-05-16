@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+// eslint-disable-next-line default-param-last
 export default (initialValue = null, condition) => {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState(false);

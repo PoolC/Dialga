@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import { logout } from '../../modules/auth';
-import { withRouter } from 'react-router-dom';
 
 const HeaderContainer = ({ selected, history }) => {
   const dispatch = useDispatch();

@@ -9,9 +9,9 @@ const client = axios.create();
 client.defaults.baseURL = API_BASE_URL;
 
 if (localStorage.getItem('accessToken')) {
-  client.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+  client.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
 } else {
-  client.defaults.headers.common['Authorization'] = ``;
+  client.defaults.headers.common.Authorization = ``;
 }
 
 // client.interceptors.request.use(
@@ -31,10 +31,9 @@ if (localStorage.getItem('accessToken')) {
 // );
 
 client.interceptors.response.use(
-  (response) => {
+  (response) =>
     // 요청 성공 시 특정 작업 수행
-    return response;
-  },
+    response,
   (error) => {
     // 요청 실패 시 특정 작업 수행
     if (error.response.status === 401) {

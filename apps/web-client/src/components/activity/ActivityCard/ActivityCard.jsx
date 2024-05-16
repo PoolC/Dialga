@@ -1,5 +1,5 @@
-import { MENU } from '../../../constants/menus';
 import { useState } from 'react';
+import { MENU } from '../../../constants/menus';
 import {
   ActivityButtons,
   ActivityCapacity,

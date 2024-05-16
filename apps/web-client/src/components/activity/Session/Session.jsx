@@ -1,7 +1,7 @@
+import { Viewer } from '@toast-ui/react-editor';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
 import { Attendance, AttendanceList, Date, Description, SessionCard, SessionDivider, SessionNumber } from './Session.styles';
-import { Viewer } from '@toast-ui/react-editor';
 import { File, FileContainer, FileContainerTitle } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';

@@ -3,19 +3,19 @@ import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Breadcrumb, Button, Divider, Form, Input, Space, Typography, Upload } from 'antd';
-import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { UploadChangeParam } from 'antd/es/upload';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { Link, useHistory } from 'react-router-dom';
-import { MENU } from '~/constants/menus';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
-import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { match } from 'ts-pattern';
+import { UploadOutlined } from '@ant-design/icons';
+import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { MENU } from '~/constants/menus';
+import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { UploadOutlined } from '@ant-design/icons';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -173,13 +173,12 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
     });
   };
 
-  const getUploadFileList = () => {
-    return form.values.fileList.map((file, i) => ({
+  const getUploadFileList = () =>
+    form.values.fileList.map((file, i) => ({
       uid: `UPLOAD_FILE@.${i}`,
       url: getFileUrl(file),
       name: decodeURI(file),
     }));
-  };
 
   // effects
   useEffect(() => {
@@ -191,6 +190,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
       });
       editorRef.current?.getInstance().setHTML(savedPost.body ?? '');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedPost]);
 
   useEffect(() => {
@@ -206,7 +206,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
   return (
     <Block>
       <WhiteBlock>
-        <Space direction={'vertical'} size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
+        <Space direction="vertical" size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
           <Breadcrumb
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
@@ -216,24 +216,24 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
             ]}
           />
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
-            <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
-              <Space direction={'vertical'} className={styles.titleWrap} size={0}>
+            <Space direction="vertical" className={styles.fullWidth} size="middle">
+              <Space direction="vertical" className={styles.titleWrap} size={0}>
                 <Typography.Title level={3}>{getBoardTitleByBoardType(boardType)}</Typography.Title>
                 <Typography>{renderDescription()}</Typography>
               </Space>
               <div className={styles.fullWidth}>
-                <Form.Item label={'제목'}>
-                  <Input placeholder={'제목을 입력해주세요.'} {...form.getInputProps('title')} />
+                <Form.Item label="제목">
+                  <Input placeholder="제목을 입력해주세요." {...form.getInputProps('title')} />
                 </Form.Item>
                 <div onInput={onEditorInput} className={styles.editorWrap}>
                   <Editor initialEditType="wysiwyg" ref={editorRef} />
                 </div>
-                <Space direction={'horizontal'} align={'start'} className={styles.buttonWrap}>
+                <Space direction="horizontal" align="start" className={styles.buttonWrap}>
                   <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
                     <Button icon={<UploadOutlined />}>파일 업로드</Button>
                   </Upload>
                   <Space>
-                    <Button type={'primary'} htmlType={'submit'} className={styles.fullWidth} disabled={!form.isValid()}>
+                    <Button type="primary" htmlType="submit" className={styles.fullWidth} disabled={!form.isValid()}>
                       등록
                     </Button>
                   </Space>

@@ -15,11 +15,13 @@ const SpinnerBlock = styled.div`
     if (props.small !== true) {
       return '40vh';
     }
+    return 'auto';
   }};
   margin-bottom: ${(props) => {
     if (props.small !== true) {
       return '70vh';
     }
+    return 0;
   }};
 `;
 
@@ -28,14 +30,12 @@ const StyledSpinner = styled.i`
   font-size: 4rem;
 `;
 
-const Spinner = ({ small = false }) => {
-  return (
-    <SpinnerBlock small={small}>
-      <StyledSpinner>
-        <LoadingOutlined />
-      </StyledSpinner>
-    </SpinnerBlock>
-  );
-};
+const Spinner = ({ small = false }) => (
+  <SpinnerBlock small={small}>
+    <StyledSpinner>
+      <LoadingOutlined />
+    </StyledSpinner>
+  </SpinnerBlock>
+);
 
 export default Spinner;

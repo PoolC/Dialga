@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
@@ -25,9 +26,9 @@ import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.sty
 import { StyledButton } from '~/components/board-legacy/Post/Post.styles';
 
 const DateTimeForm = ({ id, date, startTime, endTime, capacity, currentIntervieweesCount, onCreateInterviewTime, onDeleteInterviewTime, onUpdateInterviewTime }) => {
-  const [start, onChangeStart] = useInput(startTime ? startTime : '', notEmptyValidation);
-  const [end, onChangeEnd] = useInput(endTime ? endTime : '', notEmptyValidation);
-  const [capa, onChangeCapa] = useInput(capacity ? capacity : '', notEmptyValidation);
+  const [start, onChangeStart] = useInput(startTime || '', notEmptyValidation);
+  const [end, onChangeEnd] = useInput(endTime || '', notEmptyValidation);
+  const [capa, onChangeCapa] = useInput(capacity || '', notEmptyValidation);
 
   const handleCreateInterviewTime = (e) => {
     e.preventDefault();
@@ -57,12 +58,10 @@ const DateTimeForm = ({ id, date, startTime, endTime, capacity, currentInterview
   return (
     <StyledDateTimeForm>
       {id && (
-        <>
-          <TimeBlockId>
-            <p>슬롯 ID</p>
-            <p className="admin-interview-slot-id">{id}</p>
-          </TimeBlockId>
-        </>
+        <TimeBlockId>
+          <p>슬롯 ID</p>
+          <p className="admin-interview-slot-id">{id}</p>
+        </TimeBlockId>
       )}
       <StyledTimeForm>
         <StyledLabel htmlFor="interview-start-time">시작 시간</StyledLabel>
@@ -136,7 +135,7 @@ const AdminInterviewTime = ({ data, loading, setData, onCreateInterviewTime, onD
 
   const onClickDeleteAll = (e) => {
     e.preventDefault();
-    let result = window.confirm('[주의] 모든 면접 시간 슬롯을 삭제하시겠습니까?');
+    const result = window.confirm('[주의] 모든 면접 시간 슬롯을 삭제하시겠습니까?');
     if (result) {
       onDeleteAllInterviewTime();
     }

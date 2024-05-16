@@ -1,7 +1,7 @@
-import MemberList from '../../../components/members/MemberList/MemberList';
 import { useEffect, useState } from 'react';
-import * as memberAPI from '../../../lib/api/member';
 import { withRouter } from 'react-router-dom';
+import MemberList from '../../../components/members/MemberList/MemberList';
+import * as memberAPI from '../../../lib/api/member';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
@@ -18,17 +18,12 @@ const MemberListContainer = ({ history }) => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch(() => {
         history.push(`/${MENU.FORBIDDEN}`);
       });
   }, [history]);
 
-  return (
-    <>
-      <MemberList members={members} loading={loading} />
-    </>
-  );
+  return <MemberList members={members} loading={loading} />;
 };
 
 export default withRouter(MemberListContainer);

@@ -49,9 +49,19 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/redux-actions": "^2.6.5",
     "@types/redux-devtools-extension": "^2.13.2",
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.6.0",
     "@vitejs/plugin-react": "^4.0.4",
     "concurrently": "^8.2.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "openapi-typescript-codegen": "^0.28.0",
+    "typescript": "^5.3.3",
     "vite": "^5.2.7"
   },
   "scripts": {
@@ -59,11 +69,12 @@
     "dev": "yarn start",
     "build": "vite build",
     "sync:type": "yarn dlx typesync",
-    "check:type": "tsc --noEmit",
-    "check:type:watch": "tsc --noEmit --watch",
-    "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c axios --useUnionTypes --useOptions",
+    "check:type": "tsc",
+    "check:type:watch": "yarn check:type --watch",
+    "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c fetch --useUnionTypes --useOptions",
     "postinstall": "yarn codegen",
-    "prettier": "prettier --write ."
+    "lint": "eslint . && prettier . --check --ignore-path .gitignore",
+    "format": "eslint . --fix && prettier . --write --ignore-path .gitignore"
   },
   "type": "module"
 }

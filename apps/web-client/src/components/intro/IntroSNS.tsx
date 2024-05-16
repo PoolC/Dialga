@@ -15,20 +15,18 @@ const SNSContent = styled.p`
   margin-bottom: 2rem;
 `;
 
-const SNS = () => {
-  return (
-    <WhiteNarrowBlock>
-      <Title>SNS</Title>
-      <SNSName>카카오톡 채널</SNSName>
-      <SNSContent>풀씨 PoolC</SNSContent>
-      <SNSName>인스타그램</SNSName>
-      <SNSContent>@poolc.official</SNSContent>
-      <SNSName>페이스북</SNSName>
-      <SNSContent>https://m.facebook.com/poolc.org/</SNSContent>
-      <SNSName>이메일</SNSName>
-      <SNSContent>poolc.official@gmail.com</SNSContent>
-    </WhiteNarrowBlock>
-  );
-};
+const SNS = () => (
+  <WhiteNarrowBlock>
+    <Title>SNS</Title>
+    <SNSName>카카오톡 채널</SNSName>
+    <SNSContent>풀씨 PoolC</SNSContent>
+    <SNSName>인스타그램</SNSName>
+    <SNSContent>@poolc.official</SNSContent>
+    <SNSName>페이스북</SNSName>
+    <SNSContent>https://m.facebook.com/poolc.org/</SNSContent>
+    <SNSName>이메일</SNSName>
+    <SNSContent>poolc.official@gmail.com</SNSContent>
+  </WhiteNarrowBlock>
+);
 
 export default SNS;

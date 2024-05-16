@@ -1,15 +1,13 @@
 import { Button, List, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
+import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
-    &.scope {
-      padding: 30px 20px;
-    }
+    padding: 30px 20px;
   `,
   wrapper: css`
     width: 100%;
@@ -39,7 +37,7 @@ const useStyles = createStyles(({ css }) => ({
 }));
 
 export default function MyPageMessageListPage() {
-  const { styles, cx } = useStyles();
+  const { styles } = useStyles();
   const history = useHistory();
 
   const data = [
@@ -59,8 +57,8 @@ export default function MyPageMessageListPage() {
 
   return (
     <Block>
-      <WhiteBlock className={cx(styles.whiteBlock, 'scope')}>
-        <Space direction={'vertical'} className={styles.fullWidth} size={'large'}>
+      <WhiteBlock className={styles.whiteBlock}>
+        <Space direction="vertical" className={styles.fullWidth} size="large">
           <Space className={styles.topBox}>
             <Space>
               <Button shape="circle" type="text" onClick={() => history.goBack()}>
@@ -75,7 +73,7 @@ export default function MyPageMessageListPage() {
           <List
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item, index) => (
+            renderItem={() => (
               <List.Item>
                 <Space direction="vertical" className={styles.fullWidth}>
                   <Space className={styles.metaInfo}>

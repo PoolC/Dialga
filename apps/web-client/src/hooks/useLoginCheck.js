@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import * as authAPI from '../lib/api/auth';
 import { useSelector } from 'react-redux';
+import * as authAPI from '../lib/api/auth';
 import { MENU } from '../constants/menus';
 import { SUCCESS } from '../constants/statusCode';
 
@@ -12,11 +12,9 @@ export default (history) => {
       .then((res) => {
         if (res.status === SUCCESS.OK && res.data.isActivated === false) {
           history.push(`/${MENU.FORBIDDEN}`);
-          return;
         }
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch(() => {
         history.push(`/${MENU.FORBIDDEN}`);
       });
   }, [member, history]);

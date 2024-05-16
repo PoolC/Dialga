@@ -1,6 +1,6 @@
-import { getEmptyArray } from '~/lib/utils/getEmptyArray';
 import { Skeleton as SkeletonImpl } from 'antd';
 import { createStyles } from 'antd-style';
+import { getEmptyArray } from '~/lib/utils/getEmptyArray';
 
 const useStyles = createStyles(({ css }) => ({
   block: css`

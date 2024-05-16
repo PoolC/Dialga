@@ -1,9 +1,9 @@
 import { Route, Switch } from 'react-router-dom';
+import { createStyles } from 'antd-style';
+import { lazy, Suspense } from 'react';
 import { MENU } from './constants/menus';
 import FooterContainer from './containers/footer/FooterContainer';
 import HeaderContainer from './containers/header/HeaderContainer';
-import { createStyles } from 'antd-style';
-import { lazy, Suspense } from 'react';
 
 // toast ui - global
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -64,6 +64,7 @@ const BoardWritePage = lazy(() => import('~/pages/board/BoardWritePage'));
 const MyPage = lazy(() => import('./pages/my-page/MyPage'));
 const MyPageBadgeListPage = lazy(() => import('./pages/my-page/MyPageBadgeListPage'));
 const MyPageMyPostsPage = lazy(() => import('./pages/my-page/MyPageMyPostsPage'));
+const MyPageMyScrapsPage = lazy(() => import('./pages/my-page/MyPageMyScrapsPage'));
 
 const MessageAllListPage = lazy(() => import('./pages/message/MessageAllListPage'));
 const MessageListPage = lazy(() => import('./pages/message/MessageListPage'));
@@ -108,6 +109,7 @@ function App() {
             <Route component={MyPage} path={`/${MENU.MY_PAGE}`} exact />
             <Route component={MyPageBadgeListPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`} />
             <Route component={MyPageMyPostsPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_POSTS}`} />
+            <Route component={MyPageMyScrapsPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`} />
             <Route component={SpaceReservationPage} path={`/${MENU.ROOM_RESERVATION}`} />
             <Route component={NotFoundPage} path="/" />
           </Switch>

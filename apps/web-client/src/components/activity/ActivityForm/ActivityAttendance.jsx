@@ -1,4 +1,7 @@
 import { useRef, useState } from 'react';
+import { Editor } from '@toast-ui/react-editor';
+import { DeleteFilled } from '@ant-design/icons';
+import { Checkbox } from 'antd';
 import useInput from '../../../hooks/useInput';
 import Input from '../../common/Input/Input';
 import { notEmptyValidation } from '../../../lib/utils/validation';
@@ -21,19 +24,16 @@ import {
 } from './ActivityAttendance.styles';
 import { Block, WhiteBlock } from '../../../styles/common/Block.styles';
 import Modal from '../../common/Modal/Modal';
-import { Editor } from '@toast-ui/react-editor';
 import { File, FileContainer, FileContainerTitle, FileDeleteButton } from '~/components/board-legacy/PostForm/PostForm.styles';
 import getFileUrl, { getDecodedFileUrl } from '../../../lib/utils/getFileUrl';
 import { ButtonContainer } from './ActivityForm.styles';
 import FileUploadButton from '../../common/Buttons/FileUploadButton';
 import throttle from '../../../lib/utils/throttle';
-import { DeleteFilled } from '@ant-design/icons';
-import { Checkbox } from 'antd';
 
 const Member = ({ member, attended, handleCheckAttendance }) => {
-  const [isChecked, setIsChecked] = useState(attended ? attended : false);
+  const [isChecked, setIsChecked] = useState(attended || false);
 
-  const handleCheck = (e) => {
+  const handleCheck = () => {
     setIsChecked((isChecked) => !isChecked);
     handleCheckAttendance(member, isChecked);
   };
@@ -104,7 +104,7 @@ const ActivityAttendance = ({
     });
   }, 1000);
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     onChangeDescription(markdownContent);
@@ -162,7 +162,7 @@ const ActivityAttendance = ({
                     : '첨부된 파일 없음'}
                 </FileContainer>
                 <ButtonContainer>
-                  <FileUploadButton onSubmit={setFileList} files={fileList} multiple={true} />
+                  <FileUploadButton onSubmit={setFileList} files={fileList} multiple />
                 </ButtonContainer>
               </Description>
             </DescriptionContainer>

@@ -92,21 +92,21 @@ export default function MyPageMyPostsEntry() {
     {
       render: (_, post) => (
         <Link to={`/${MENU.BOARD}/${post.postId}`} className={styles.link}>
-          <Space direction={'vertical'} className={styles.fullWidth} size={'middle'}>
-            <Space className={styles.metaInfoArea} size={'middle'}>
+          <Space direction="vertical" className={styles.fullWidth} size="middle">
+            <Space className={styles.metaInfoArea} size="middle">
               <Space>
                 <Typography.Text>{post.writerName}</Typography.Text>
                 {post.badge && <Avatar src={getFileUrl(post.badge?.imageUrl)} className={styles.badge} />}
               </Space>
-              <Space size={'middle'}>
-                <Typography.Text type={'secondary'}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
+              <Space size="middle">
+                <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
                 <div className={styles.commentWrap}>
                   <CommentOutlined />
                   {post.commentCount ?? 0}
                 </div>
               </Space>
             </Space>
-            <Space direction={'vertical'} size={0}>
+            <Space direction="vertical" size={0}>
               <Typography.Title level={5}>{post.title}</Typography.Title>
               {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromMarkdown(post.body)}</Typography.Text>}
             </Space>
@@ -122,7 +122,7 @@ export default function MyPageMyPostsEntry() {
         <Empty />
       ) : (
         <>
-          <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey={'postId'} />
+          <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey="postId" />
           <div className={styles.paginationWrap}>
             <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
           </div>

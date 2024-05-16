@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
-import * as authAPI from '../lib/api/auth';
 import { call, put, takeLatest } from 'redux-saga/effects';
+import * as authAPI from '../lib/api/auth';
 import client from '../lib/api/client';
 import { removeApiAccessToken, setApiAccessToken } from '~/lib/api-v2';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
@@ -39,7 +39,7 @@ export const initLogin = createAction(LOGIN_INIT);
 
 export const handleExpiredAccessToken = createAction(HANDLE_EXPIRED_ACCESS_TOKEN);
 
-function* loadUserSaga(action) {
+function* loadUserSaga(_action) {
   try {
     const result = yield call(authAPI.loadUser);
     yield put({
@@ -47,7 +47,6 @@ function* loadUserSaga(action) {
       data: result.data,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: LOAD_USER_FAILURE,
       error: err.response.data,
@@ -57,13 +56,12 @@ function* loadUserSaga(action) {
 
 function* setTokenSaga(action) {
   try {
-    yield (client.defaults.headers.common['Authorization'] = `Bearer ${action.data}`);
+    yield (client.defaults.headers.common.Authorization = `Bearer ${action.data}`);
     yield setApiAccessToken(action.data);
     yield put({
       type: SET_TOKEN_SUCCESS,
     });
   } catch (err) {
-    console.error(err);
     yield put({
       type: SET_TOKEN_FAILURE,
       error: err,
@@ -81,8 +79,6 @@ function* loginSaga(action) {
       data: result.data.accessToken,
     });
   } catch (err) {
-    console.error('*****');
-    console.error(err);
     yield put({
       type: LOGIN_FAILURE,
       error: err,
@@ -92,23 +88,15 @@ function* loginSaga(action) {
 
 function logoutRequest() {
   localStorage.removeItem('accessToken');
-  client.defaults.headers.common['Authorization'] = '';
+  client.defaults.headers.common.Authorization = '';
   removeApiAccessToken();
 }
 
 function* handleExpiredAccessTokenRequest() {
-  try {
-    yield localStorage.removeItem('accessToken');
-    yield (client.defaults.headers.common['Authorization'] = '');
-    yield removeApiAccessToken();
-    yield (window.location.href = '/login');
-  } catch (err) {
-    console.error('*****');
-    console.error(err);
-    // yield put({
-    //   type: LOAD_USER_FAILURE,
-    // });
-  }
+  yield localStorage.removeItem('accessToken');
+  yield (client.defaults.headers.common.Authorization = '');
+  yield removeApiAccessToken();
+  yield (window.location.href = '/login');
 }
 
 export function* authSaga() {
@@ -148,7 +136,7 @@ const auth = handleActions(
         status: 'INIT',
       },
     }),
-    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
+    [LOGIN_SUCCESS]: (state) => ({
       ...state,
       login: {
         status: 'SUCCESS',
@@ -166,27 +154,25 @@ const auth = handleActions(
       },
       authError: error,
     }),
-    [LOAD_USER_SUCCESS]: (state, { data }) => {
-      return {
-        ...state,
-        status: {
-          isLogin: true,
-          init: false,
-        },
-        user: {
-          memberId: data.loginID,
-          isAdmin: data.isAdmin,
-          name: data.name,
-          role: data.role,
-          profileImageURL: getProfileImageUrl(data.profileImageURL),
-        },
-      };
-    },
+    [LOAD_USER_SUCCESS]: (state, { data }) => ({
+      ...state,
+      status: {
+        isLogin: true,
+        init: false,
+      },
+      user: {
+        memberId: data.loginID,
+        isAdmin: data.isAdmin,
+        name: data.name,
+        role: data.role,
+        profileImageURL: getProfileImageUrl(data.profileImageURL),
+      },
+    }),
     [LOAD_USER_FAILURE]: (state, { payload: error }) => ({
       ...state,
       authError: error,
     }),
-    [LOGOUT]: (state, { payload: error }) => ({
+    [LOGOUT]: (state) => ({
       ...state,
       login: {
         status: 'INIT',

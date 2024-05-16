@@ -1,16 +1,16 @@
-import ActivityForm from '../../../components/activity/ActivityForm/ActivityForm';
 import { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import ActivityForm from '../../../components/activity/ActivityForm/ActivityForm';
 import * as activityAPI from '../../../lib/api/activity';
 import * as authAPI from '../../../lib/api/auth';
-import { withRouter } from 'react-router-dom';
 import { MENU } from '../../../constants/menus';
-import { useSelector } from 'react-redux';
 import Spinner from '../../../components/common/Spinner/Spinner';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { CLIENT_ERROR, SUCCESS } from '../../../constants/statusCode';
 
 const ActivityFormContainer = ({ match, history }) => {
-  const activityID = match.params.activityID;
+  const { activityID } = match.params;
 
   const [loading, setLoading] = useState(true);
 
@@ -37,11 +37,9 @@ const ActivityFormContainer = ({ match, history }) => {
               }
               if (user.status === SUCCESS.OK && user.data.loginID !== res.data.data.host.loginID) {
                 history.push(`/${MENU.FORBIDDEN}`);
-                return;
               }
             })
-            .catch((e) => {
-              console.error(e.message);
+            .catch(() => {
               history.push(`/${MENU.FORBIDDEN}`);
             });
           setActivity(res.data.data);
@@ -76,8 +74,7 @@ const ActivityFormContainer = ({ match, history }) => {
           history.push('/activities');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === CLIENT_ERROR.FORBIDDEN) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
@@ -110,8 +107,7 @@ const ActivityFormContainer = ({ match, history }) => {
           history.push('/activities');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }

@@ -1,8 +1,8 @@
-import ProjectDetail from '../../../components/projects/ProjectDetail/ProjectDetail';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import * as projectAPI from '../../../lib/api/project';
 import { withRouter } from 'react-router-dom';
+import * as projectAPI from '../../../lib/api/project';
+import ProjectDetail from '../../../components/projects/ProjectDetail/ProjectDetail';
 import Spinner from '../../../components/common/Spinner/Spinner';
 import { SUCCESS } from '../../../constants/statusCode';
 
@@ -22,9 +22,7 @@ const ProjectDetailContainer = ({ location }) => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        console.error(e.response);
-      });
+      .catch(() => {});
   }, [projectId]);
 
   if (project === undefined) {

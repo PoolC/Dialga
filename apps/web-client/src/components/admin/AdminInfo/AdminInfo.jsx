@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import useInput from '../../../hooks/useInput';
@@ -39,7 +40,7 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
     setIsSubscriptionPeriod(e.target.value === 'possible');
   };
 
-  const onEditorChange = (e) => {
+  const onEditorChange = () => {
     const editorInstance = editorRef.current.getInstance();
     const markdownContent = editorInstance.getMarkdown();
     setIntroduction(markdownContent);
@@ -84,9 +85,9 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
           <label>가입 기간 설정</label>
           <Description>설정에 따라 상단 apply 메뉴가 열립니다.</Description>
           <div>
-            <input type="radio" value="possible" onChange={onChangeIsSubscriptionPeriod} checked={isSubscriptionPeriod === true ? true : false} />
+            <input type="radio" value="possible" onChange={onChangeIsSubscriptionPeriod} checked={isSubscriptionPeriod === true} />
             <span>가입 가능 기간</span>
-            <input type="radio" value="impossible" onChange={onChangeIsSubscriptionPeriod} checked={isSubscriptionPeriod === true ? false : true} />
+            <input type="radio" value="impossible" onChange={onChangeIsSubscriptionPeriod} checked={isSubscriptionPeriod !== true} />
             <span>가입 불가 기간</span>
           </div>
           <label>지원서 링크</label>

@@ -1,7 +1,5 @@
 import ActivityAttendanceContainer from '../../containers/activity/ActivityFormContainer/ActivityAttendanceContainer';
 
-const ActivityAttendancePage = () => {
-  return <ActivityAttendanceContainer />;
-};
+const ActivityAttendancePage = () => <ActivityAttendanceContainer />;
 
 export default ActivityAttendancePage;

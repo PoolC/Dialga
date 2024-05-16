@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import AdminBoardForm from '../../../components/admin/AdminBoardForm/AdminBoardForm';
 import * as boardAPI from '../../../lib/api/board';
-import { withRouter } from 'react-router-dom';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
-const AdminBoardFormContainer = ({ match, history, location }) => {
-  const boardID = match.params.boardID;
+const AdminBoardFormContainer = ({ match, history }) => {
+  const { boardID } = match.params;
 
   const [board, setBoard] = useState(null);
 
@@ -45,8 +45,7 @@ const AdminBoardFormContainer = ({ match, history, location }) => {
           history.push('/admin/boards');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
@@ -74,8 +73,7 @@ const AdminBoardFormContainer = ({ match, history, location }) => {
           history.push('/admin/boards');
         }
       })
-      .catch((e) => {
-        console.error(e.response.data);
+      .catch(() => {
         if (e.response.data.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
