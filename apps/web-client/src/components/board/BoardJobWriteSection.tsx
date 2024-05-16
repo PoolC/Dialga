@@ -209,7 +209,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         region: savedPost.region,
         position: savedPost.position,
       });
-      editorRef.current?.getInstance().setHTML(savedPost.body ?? '');
+      editorRef.current?.getInstance().setMarkdown(savedPost.body ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [savedPost]);
