@@ -10,6 +10,9 @@ export class CustomApi {
       method: 'POST',
       url: '/files',
       formData: { file },
+      headers: {
+        Accept: 'text/plain;charset=UTF-8',
+      },
     });
   }
 }
