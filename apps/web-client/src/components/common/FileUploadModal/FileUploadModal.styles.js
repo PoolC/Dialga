@@ -213,5 +213,5 @@ export const FileSizeAlert = styled.p`
   font-size: 0.7rem;
   padding: 0;
   color: #666;
-  margin: 0.5rem 0;
+  margin: 0 0 0.5rem 0;
 `;
