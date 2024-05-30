@@ -208,3 +208,10 @@ export const FileLabel = styled.p`
   font-size: 0.7rem;
   padding: 0;
 `;
+
+export const FileSizeAlert = styled.p`
+  font-size: 0.7rem;
+  padding: 0;
+  color: #666;
+  margin: 0.5rem 0;
+`;
