@@ -15,6 +15,7 @@ import {
   StyledFileButton,
   StyledFileInput,
   StyledForm,
+  FileSizeAlert,
 } from './FileUploadModal.styles.js';
 
 const FileUploadModal = ({ visible, file, onUploadFile, onBrowseFile, onCancel }) => {
@@ -44,6 +45,7 @@ const FileUploadModal = ({ visible, file, onUploadFile, onBrowseFile, onCancel }
               <FileLabel>선택된 파일</FileLabel>
               {file ? <FileName>{file?.name}</FileName> : <FileName>선택된 파일이 없습니다</FileName>}
             </FileNameContainer>
+            <FileSizeAlert>* 파일 업로드는 50mb까지 가능합니다.</FileSizeAlert>
             <ButtonContainer>
               <StyledFileButton className="browse-file" htmlFor="my_file" onChange={onBrowseFile}>
                 파일 찾기
