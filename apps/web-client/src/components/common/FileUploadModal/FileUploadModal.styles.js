@@ -75,7 +75,7 @@ export const ModalContainer = styled.div`
   background-color: ${colors.gray[0]};
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 300px;
-  height: 280px;
+  height: 320px;
   border-radius: 20px;
 
   animation-duration: 0.25s;
