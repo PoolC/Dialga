@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
 import { UploadOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, PostCreateRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
@@ -57,6 +58,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   const { styles } = useStyles();
   const message = useMessage();
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const editorRef = useRef<Editor | null>(null);
   const form = useForm<z.infer<typeof schema>>({
@@ -113,8 +115,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   const fields: { value: string }[] = [{ value: '웹' }, { value: '모바일' }, { value: '인공지능' }, { value: '데이터사이언스' }, { value: '블록체인' }, { value: '시스템' }, { value: '기타' }];
 
   // methods
-  // NOTE 에디터에서 값을 직접 가져올 수 없어서 이벤트 버블링 이용
-  const onEditorInput: FormEventHandler = () => {
+  const onEditorChange = () => {
     form.setValues({
       body: editorRef.current?.getInstance().getHTML(),
     });
@@ -165,7 +166,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         {
           onSuccess() {
             message.success('글이 수정되었습니다.');
-            history.push(`/${MENU.BOARD}/${postId}`);
+            queryClient
+              .invalidateQueries({
+                queryKey: queryKey.post.post(postId),
+              })
+              .then(() => history.push(`/${MENU.BOARD}/${postId}`));
           },
         },
       );
@@ -190,7 +195,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         {
           onSuccess() {
             message.success('글이 작성되었습니다.');
-            history.push(`/${MENU.BOARD}?${stringify({ boardType: 'JOB' })}`);
+            queryClient
+              .invalidateQueries({
+                queryKey: queryKey.post.all('JOB', 0),
+              })
+              .then(() => history.push(`/${MENU.BOARD}?${stringify({ boardType: 'JOB' })}`));
           },
         },
       );
@@ -267,8 +276,8 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
               <Form.Item label="마감일자">
                 <DatePicker value={dayjs(form.values.deadline)} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
               </Form.Item>
-              <div onInput={onEditorInput}>
-                <Editor initialEditType="wysiwyg" ref={editorRef} />
+              <div>
+                <Editor initialEditType="wysiwyg" ref={editorRef} onChange={onEditorChange} />
               </div>
               <Space direction="horizontal" align="start" className={styles.buttonWrap}>
                 <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>

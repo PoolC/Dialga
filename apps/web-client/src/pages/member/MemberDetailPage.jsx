@@ -1,5 +1,5 @@
-import MemberDetailContainer from '../../containers/member/MemberDetailContainer/MemberDetailContainer';
+import MemberDetail from '~/components/members/MemberDetail/MemberDetail';
 
-const MemberDetailPage = () => <MemberDetailContainer />;
+const MemberDetailPage = () => <MemberDetail />;
 
 export default MemberDetailPage;

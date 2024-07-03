@@ -5,6 +5,7 @@ export const queryKey = {
     hour: ['member.hour'] as const,
     me: ['member.me'] as const,
     all: ['member.all'] as const,
+    id: (loginId: string) => ['member.id', loginId] as const,
   },
   badge: {
     badge: ['badge.badge'] as const,

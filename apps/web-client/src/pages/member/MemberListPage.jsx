@@ -1,5 +1,5 @@
-import MemberListContainer from '../../containers/member/MemberListContainer/MemberListContainer';
+import MemberList from '~/components/members/MemberList/MemberList';
 
-const MemberListPage = () => <MemberListContainer />;
+const MemberListPage = () => <MemberList />;
 
 export default MemberListPage;

@@ -7,6 +7,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Viewer } from '@toast-ui/react-editor';
 import { FolderOpenTwoTone } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
 import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
@@ -19,7 +20,6 @@ import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { queryClient } from '~/lib/utils/queryClient';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -126,6 +126,7 @@ export default function BoardDetailPage() {
   const { styles, cx } = useStyles();
   const message = useMessage();
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const params = useParams<{ id: string }>();
   const postId = Number(params.id);
@@ -240,7 +241,13 @@ export default function BoardDetailPage() {
       {
         onSuccess() {
           message.success('삭제되었습니다.');
-          history.go(-1);
+          // TODO: assert 이용해서 수정
+          const boardType = post!.boardType!;
+          queryClient
+            .invalidateQueries({
+              queryKey: queryKey.post.all(boardType, 0),
+            })
+            .then(() => history.push(`/${MENU.BOARD}?${stringify({ boardType })}`));
         },
       },
     );
