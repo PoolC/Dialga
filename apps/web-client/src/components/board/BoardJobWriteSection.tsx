@@ -166,10 +166,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         {
           onSuccess() {
             message.success('글이 수정되었습니다.');
-            history.push(`/${MENU.BOARD}/${postId}`);
-            queryClient.invalidateQueries({
-              queryKey: queryKey.post.post(postId),
-            });
+            queryClient
+              .invalidateQueries({
+                queryKey: queryKey.post.post(postId),
+              })
+              .then(() => history.push(`/${MENU.BOARD}/${postId}`));
           },
         },
       );
@@ -194,10 +195,11 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
         {
           onSuccess() {
             message.success('글이 작성되었습니다.');
-            history.push(`/${MENU.BOARD}?${stringify({ boardType: 'JOB' })}`);
-            queryClient.invalidateQueries({
-              queryKey: queryKey.post.all('JOB', 0),
-            });
+            queryClient
+              .invalidateQueries({
+                queryKey: queryKey.post.all('JOB', 0),
+              })
+              .then(() => history.push(`/${MENU.BOARD}?${stringify({ boardType: 'JOB' })}`));
           },
         },
       );
