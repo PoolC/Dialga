@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
@@ -113,8 +113,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   const fields: { value: string }[] = [{ value: '웹' }, { value: '모바일' }, { value: '인공지능' }, { value: '데이터사이언스' }, { value: '블록체인' }, { value: '시스템' }, { value: '기타' }];
 
   // methods
-  // NOTE 에디터에서 값을 직접 가져올 수 없어서 이벤트 버블링 이용
-  const onEditorInput: FormEventHandler = () => {
+  const onEditorChange = () => {
     form.setValues({
       body: editorRef.current?.getInstance().getHTML(),
     });
@@ -267,8 +266,8 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
               <Form.Item label="마감일자">
                 <DatePicker value={dayjs(form.values.deadline)} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
               </Form.Item>
-              <div onInput={onEditorInput}>
-                <Editor initialEditType="wysiwyg" ref={editorRef} />
+              <div>
+                <Editor initialEditType="wysiwyg" ref={editorRef} onChange={onEditorChange} />
               </div>
               <Space direction="horizontal" align="start" className={styles.buttonWrap}>
                 <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>

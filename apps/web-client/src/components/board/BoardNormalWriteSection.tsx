@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
@@ -96,8 +96,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
   });
 
   // methods
-  // NOTE 에디터에서 값을 직접 가져올 수 없어서 이벤트 버블링 이용
-  const onEditorInput: FormEventHandler = () => {
+  const onEditorChange = () => {
     form.setValues({
       body: editorRef.current?.getInstance().getMarkdown(),
     });
@@ -225,8 +224,8 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
                 <Form.Item label="제목">
                   <Input placeholder="제목을 입력해주세요." {...form.getInputProps('title')} />
                 </Form.Item>
-                <div onInput={onEditorInput} className={styles.editorWrap}>
-                  <Editor initialEditType="wysiwyg" ref={editorRef} />
+                <div className={styles.editorWrap}>
+                  <Editor initialEditType="wysiwyg" ref={editorRef} onChange={onEditorChange} />
                 </div>
                 <Space direction="horizontal" align="start" className={styles.buttonWrap}>
                   <Upload beforeUpload={() => false} onChange={onUploadChange} fileList={getUploadFileList()}>
