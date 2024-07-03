@@ -9,6 +9,7 @@ import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
 import { UploadOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
@@ -55,6 +56,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
   const history = useHistory();
   const message = useMessage();
   const loginId = useAppSelector((state) => state.auth.user.memberId);
+  const queryClient = useQueryClient();
 
   const editorRef = useRef<Editor | null>(null);
 
@@ -119,6 +121,9 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
           onSuccess() {
             message.success('글이 수정되었습니다.');
             history.push(`/${MENU.BOARD}/${postId}`);
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.post(postId),
+            });
           },
         },
       );
@@ -140,6 +145,9 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
           onSuccess() {
             message.success('글이 작성되었습니다.');
             history.push(`/${MENU.BOARD}?${stringify({ boardType })}`);
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.all(boardType, 0),
+            });
           },
         },
       );

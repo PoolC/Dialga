@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
 import { UploadOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, PostCreateRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
@@ -57,6 +58,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
   const { styles } = useStyles();
   const message = useMessage();
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const editorRef = useRef<Editor | null>(null);
   const form = useForm<z.infer<typeof schema>>({
@@ -165,6 +167,9 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           onSuccess() {
             message.success('글이 수정되었습니다.');
             history.push(`/${MENU.BOARD}/${postId}`);
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.post(postId),
+            });
           },
         },
       );
@@ -190,6 +195,9 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
           onSuccess() {
             message.success('글이 작성되었습니다.');
             history.push(`/${MENU.BOARD}?${stringify({ boardType: 'JOB' })}`);
+            queryClient.invalidateQueries({
+              queryKey: queryKey.post.all('JOB', 0),
+            });
           },
         },
       );
