@@ -38,6 +38,7 @@ export const TextContainer = styled.div`
 export const NameContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
   @media (max-width: 576px) {
     justify-content: center;
   }
@@ -50,7 +51,6 @@ export const Name = styled.p`
 
 export const Status = styled.span`
   font-weight: 300;
-  margin-left: 5px;
 `;
 
 export const DepartmentContainer = styled.div`
