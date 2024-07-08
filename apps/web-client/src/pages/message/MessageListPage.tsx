@@ -1,7 +1,7 @@
 import { Button, List, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
 
@@ -39,6 +39,7 @@ const useStyles = createStyles(({ css }) => ({
 export default function MyPageMessageListPage() {
   const { styles } = useStyles();
   const history = useHistory();
+  const { conversationId } = useParams<{ conversationId: string }>();
 
   const data = [
     {
@@ -66,7 +67,7 @@ export default function MyPageMessageListPage() {
               </Button>
               <Typography.Text className={styles.topBoxName}>익명</Typography.Text>
             </Space>
-            <Link to={`/${MENU.MY_PAGE}/${MENU.MESSAGE_FORM}`}>
+            <Link to={`/${MENU.MESSAGE}/${conversationId}/${MENU.MESSAGE_FORM}`}>
               <Button>쪽지 보내기</Button>
             </Link>
           </Space>

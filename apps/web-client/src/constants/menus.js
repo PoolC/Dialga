@@ -25,9 +25,7 @@ const MENU = {
   MY_PAGE_MY_POSTS: 'my-posts',
   MY_PAGE_MY_SCRAPS: 'my-scraps',
   MESSAGE: 'message',
-  MESSAGE_LIST: 'list',
   MESSAGE_FORM: 'form',
-  MESSAGE_ALL_LIST: 'all-list',
   ROOM_RESERVATION: 'room-reservation',
 };
 

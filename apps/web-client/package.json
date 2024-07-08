@@ -71,7 +71,7 @@
     "sync:type": "yarn dlx typesync",
     "check:type": "tsc",
     "check:type:watch": "yarn check:type --watch",
-    "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ -c fetch --useUnionTypes --useOptions",
+    "codegen": "openapi -i https://dev.poolc.org/api/v2/api-docs -o src/lib/api-v2/__generated__ --useUnionTypes --useOptions -c axios",
     "postinstall": "yarn codegen",
     "lint": "eslint . && prettier . --check --ignore-path .gitignore",
     "format": "eslint . --fix && prettier . --write --ignore-path .gitignore"

@@ -1,5 +1,6 @@
-import Icon from '@ant-design/icons';
-import { Avatar } from 'antd';
+import Icon, { MessageOutlined } from '@ant-design/icons';
+import { Avatar, Button, Tooltip } from 'antd';
+import { useHistory } from 'react-router';
 import ActivityCard from '~/components/activity/ActivityCard/ActivityCard';
 import ProjectCard from '~/components/projects/ProjectCard/ProjectCard';
 import getFileUrl from '~/lib/utils/getFileUrl';
@@ -19,15 +20,44 @@ import {
   ActivityContainer,
   Activities,
 } from './MemberDetailContent.styles';
-import { MemberControllerService, MemberResponse, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
+import { ConversationControllerService, MemberControllerService, MemberResponse, queryKey, useAppMutation, useAppSuspeneseQueries } from '~/lib/api-v2';
+import { MENU } from '~/constants/menus';
 
 export default function MemberDetailContent({ loginId }: { loginId: string }) {
-  const { data: _member } = useAppSuspenseQuery({
-    queryKey: queryKey.member.id(loginId),
-    queryFn: () => MemberControllerService.getMemberWithProjectAndActivityUsingGet({ loginId }),
+  const history = useHistory();
+  const [{ data: _member }, { data: me }] = useAppSuspeneseQueries({
+    queries: [
+      {
+        queryKey: queryKey.member.id(loginId),
+        queryFn: () => MemberControllerService.getMemberWithProjectAndActivityUsingGet({ loginId }),
+      },
+      {
+        queryKey: queryKey.member.me,
+        queryFn: MemberControllerService.getMeUsingGet,
+      },
+    ],
   });
 
   const member = _member as unknown as Required<MemberResponse>;
+
+  const { mutate } = useAppMutation({
+    mutationFn: () =>
+      ConversationControllerService.createConversationUsingPost({
+        request: {
+          otherLoginID: member.loginID,
+        },
+      }),
+  });
+
+  const onMessageButtonClick = () => {
+    if (confirm(`${member.name}님과의 대화를 시작할까요?`)) {
+      mutate(undefined, {
+        onSuccess: (conversationId) => {
+          history.push(`/${MENU.MESSAGE}/${conversationId}/${MENU.MESSAGE_FORM}`);
+        },
+      });
+    }
+  };
 
   return (
     <>
@@ -40,6 +70,11 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
             <Name>{member.name}</Name>
             {member.isAdmin && <Status>PoolC임원</Status>}
             {member.badge && <Avatar src={getFileUrl(member.badge.imageUrl)} size={60} />}
+            {member.loginID !== me.loginID && (
+              <Tooltip title={`${member.name}님과 대화를 해보아요`}>
+                <Button shape="circle" icon={<MessageOutlined />} type="primary" onClick={onMessageButtonClick} />
+              </Tooltip>
+            )}
           </NameContainer>
           <DepartmentContainer>
             {member.department && (

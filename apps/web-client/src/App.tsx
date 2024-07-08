@@ -103,9 +103,9 @@ function App() {
             <Route component={BoardListPage} path={`/${MENU.BOARD}`} exact />
             <Route component={BoardWritePage} path={`/${MENU.BOARD}/write`} />
             <Route component={BoardDetailPage} path={`/${MENU.BOARD}/:id`} />
-            <Route component={MessageAllListPage} path={`/${MENU.MESSAGE}/${MENU.MESSAGE_ALL_LIST}`} />
-            <Route component={MessageListPage} path={`/${MENU.MESSAGE}/${MENU.MESSAGE_LIST}`} />
-            <Route component={MessageFormPage} path={`/${MENU.MESSAGE}/${MENU.MESSAGE_FORM}`} />
+            <Route component={MessageAllListPage} path={`/${MENU.MESSAGE}`} exact />
+            <Route component={MessageListPage} path={`/${MENU.MESSAGE}/:conversationId`} exact />
+            <Route component={MessageFormPage} path={`/${MENU.MESSAGE}/:conversationId/${MENU.MESSAGE_FORM}`} />
             <Route component={MyPage} path={`/${MENU.MY_PAGE}`} exact />
             <Route component={MyPageBadgeListPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`} />
             <Route component={MyPageMyPostsPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_POSTS}`} />
