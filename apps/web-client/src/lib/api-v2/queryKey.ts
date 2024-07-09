@@ -5,6 +5,7 @@ export const queryKey = {
     hour: ['member.hour'] as const,
     me: ['member.me'] as const,
     all: ['member.all'] as const,
+    id: (loginId: string) => ['member.id', loginId] as const,
   },
   badge: {
     badge: ['badge.badge'] as const,
@@ -27,5 +28,9 @@ export const queryKey = {
   },
   room: {
     range: (start: string, end: string) => ['room.range', start, end] as const,
+  },
+  conversation: {
+    all: ['conversation.all'] as const,
+    conversation: (id: number) => ['conversation.conversation', id] as const,
   },
 };
