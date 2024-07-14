@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Dropdown } from 'antd';
 import { createStyles } from 'antd-style';
@@ -8,6 +8,7 @@ import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './
 import Menus from './Menus/Menus';
 import { MENU } from '~/constants/menus';
 import Notification from './Notification/Notification.tsx';
+import Spinner from '../common/Spinner/Spinner';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -82,7 +83,9 @@ const Header = ({ member, onLogout }) => {
           {isLogin && (
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
               {/** Noti */}
-              <Notification />
+              <Suspense fallback={<Spinner />}>
+                <Notification />
+              </Suspense>
 
               {/** Profile */}
               <Dropdown menu={{ items: dropDownItems }}>

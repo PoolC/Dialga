@@ -1,12 +1,15 @@
-import { MessageFilled, MessageOutlined, MessageTwoTone } from '@ant-design/icons';
+import { MessageOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Button, Dropdown, Space } from 'antd';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-// import { createStyles } from 'antd-style';
+
+import { createStyles } from 'antd-style';
 import { NotificationControllerService, NotificationResponse, useAppQuery } from '~/lib/api-v2';
-// import { createStyles } from 'antd-style';
 
 // const useStyles = createStyles(({ css }) => ({
+//   dropdownMenu:css`
+
+//   `,
 //   avatarButton: css`
 //     width: 40px;
 //     height: 40px;
@@ -28,54 +31,78 @@ import { NotificationControllerService, NotificationResponse, useAppQuery } from
 //     }
 //   `,
 // }));
+// Helper function
 const convertDate = (inputDate: Date | string) => {
   if (!inputDate) return '';
   const date = new Date(inputDate);
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 };
 const Menu = (menu: ReactNode) => <div style={{ minHeight: '0px', maxHeight: '250px', overflowY: 'scroll' }}>{menu}</div>;
-export default function Notification() {
-  //
 
+// Components
+export default function Notification() {
   const { data }: { data?: NotificationResponse[] } = useAppQuery({
     queryKey: ['a'],
-    queryFn: NotificationControllerService.getAllNotificationsUsingGet,
+    queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
+    // queryFn: NotificationControllerService.getAllNotificationsUsingGet,
   });
-  const unreadData = data?.filter((dataOne) => !dataOne.readStatus);
 
-  // const { styles } = useStyles();
-  const dropDownItems = unreadData
-    // data
-    // ?.filter((dataOne) => dataOne.readStatus)
-    ?.map((dataOne) => ({
-      key: 1,
-      label: (
-        <Link to="/notification/1">
-          <div>
-            <p>{convertDate(dataOne.createdAt ?? '')}</p>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>
-              <h4>{dataOne.senderName}</h4> <p>{dataOne.notificationType}</p>
-            </div>
-          </div>
-        </Link>
-      ),
-      createdAt: '2024-07-08T11:34:38.871318',
-      notificationType: '님이 쪽지를 보냈습니다.',
-      parentCommentId: null,
-      postId: null,
-      readStatus: true,
-      senderName: '어드민',
-    }));
-  // for (let i = 1; i < 100; i++) {
-  //   dropDownItems.push({ ...dropDownItems[0], key: i });
-  // }
+  const resultLinkAndDescription = (response: NotificationResponse) => {
+    switch (response.notificationType) {
+      case 'MESSAGE':
+        return {
+          link: `/message`,
+          description: (
+            <>
+              <h4>{response.senderName}</h4>
+              <p>님이 쪽지를 보냈습니다.</p>
+            </>
+          ),
+        };
+      case 'BADGE':
+        return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
+      case 'COMMENT':
+        return {
+          link: `/board/${response.postId}`,
+          description: (
+            <>
+              <h4>{response.senderName}</h4>
+              <p>님이 댓글을 달았습니다.</p>
+            </>
+          ),
+        };
+      case 'RECOMMENT':
+        return {
+          link: `/board/${response.parentCommentId}`,
+          description: (
+            <>
+              <h4>{response.senderName}</h4>
+              <p>님이 대댓글을 달았습니다.</p>
+            </>
+          ),
+        }; // 기능 안 나오긴 함.
+      default:
+        return { link: '/', description: <p>오류가 발생했습니다</p> };
+    }
+  };
+  const dropDownItems = data?.map((dataOne) => ({
+    key: `${dataOne.createdAt}-${dataOne.senderName}-${dataOne.notificationType}`, // 수정해야함.
+    label: (
+      <Link to={resultLinkAndDescription(dataOne).link}>
+        <div>
+          <p>{convertDate(dataOne.createdAt ?? '')}</p>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>{resultLinkAndDescription(dataOne).description}</div>
+        </div>
+      </Link>
+    ),
+  }));
 
   return (
     <div>
       <Dropdown menu={{ items: dropDownItems }} dropdownRender={Menu}>
         <Button shape="circle" style={{ padding: '0', margin: '0', border: '0' }}>
           <Space size="large" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Badge count={unreadData?.length}>
+            <Badge count={data?.length}>
               <Avatar
                 shape="circle"
                 size="default"
@@ -86,7 +113,6 @@ export default function Notification() {
                   justifyContent: 'center',
                   alignItems: 'center',
                   backgroundColor: '#19a47d28',
-                  // border: '1px solid #EEEFEF',
                   color: '#716e6e',
                 }}
               />
