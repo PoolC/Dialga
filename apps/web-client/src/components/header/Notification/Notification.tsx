@@ -3,34 +3,36 @@ import { Avatar, Badge, Button, Dropdown, Space } from 'antd';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-import { createStyles } from 'antd-style';
+// import { createStyles } from 'antd-style';
 import { NotificationControllerService, NotificationResponse, useAppQuery } from '~/lib/api-v2';
 
+// CSS
 // const useStyles = createStyles(({ css }) => ({
-//   dropdownMenu:css`
+//   dropdownItem: css`
+//     display: 'flex';
+//     flex-direction: 'row';
+//     gap: '4px';
+//   `,
+//   dropdownButton: css`
+//     padding: '0';
+//     margin: '0';
+//     border: '0';
+//   `,
+//   dropdownShape: css`
+//     display: 'flex';
+//     justify-content: 'center';
+//     align-items: 'center';
+//   `,
+//   dropdownAvatar: css`
+//     padding: '2px';
+//     display: 'flex';
+//     justify-content: 'center';
+//     align-items: 'center';
+//     background-color: '#19a47d28 !important';
+//     color: '#716e6e';
+//   `,
+// }));
 
-//   `,
-//   avatarButton: css`
-//     width: 40px;
-//     height: 40px;
-//     padding: 0;
-//   `,
-//   logo: css`
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     gap: 5px;
-//     margin-right: 10px;
-//   `,
-// }));
-// const useStyles = createStyles(({ css }) => ({
-//   menu: css`
-//     .ant-dropdown-menu {
-//       height: 250px;
-//       overflow: scroll;
-//     }
-//   `,
-// }));
 // Helper function
 const convertDate = (inputDate: Date | string) => {
   if (!inputDate) return '';
@@ -41,6 +43,7 @@ const Menu = (menu: ReactNode) => <div style={{ minHeight: '0px', maxHeight: '25
 
 // Components
 export default function Notification() {
+  // const { styles } = useStyles();
   const { data }: { data?: NotificationResponse[] } = useAppQuery({
     queryKey: ['a'],
     queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
@@ -91,7 +94,12 @@ export default function Notification() {
       <Link to={resultLinkAndDescription(dataOne).link}>
         <div>
           <p>{convertDate(dataOne.createdAt ?? '')}</p>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}>{resultLinkAndDescription(dataOne).description}</div>
+          <div
+            style={{ display: 'flex', flexDirection: 'row', gap: '4px' }}
+            // className={styles.dropdownItem}
+          >
+            {resultLinkAndDescription(dataOne).description}
+          </div>
         </div>
       </Link>
     ),
@@ -100,13 +108,22 @@ export default function Notification() {
   return (
     <div>
       <Dropdown menu={{ items: dropDownItems }} dropdownRender={Menu}>
-        <Button shape="circle" style={{ padding: '0', margin: '0', border: '0' }}>
-          <Space size="large" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Button
+          shape="circle"
+          style={{ padding: '0', margin: '0', border: '0' }}
+          // className={styles.dropdownButton}
+        >
+          <Space
+            size="large"
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            // className={styles.dropdownShape}
+          >
             <Badge count={data?.length}>
               <Avatar
                 shape="circle"
                 size="default"
                 icon={<MessageOutlined />}
+                // className={styles.dropdownAvatar}
                 style={{
                   padding: '2px',
                   display: 'flex',
