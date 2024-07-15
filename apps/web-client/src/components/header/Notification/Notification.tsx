@@ -46,8 +46,8 @@ export default function Notification() {
   // const { styles } = useStyles();
   const { data }: { data?: NotificationResponse[] } = useAppQuery({
     queryKey: ['a'],
-    // queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
-    queryFn: NotificationControllerService.getAllNotificationsUsingGet,
+    queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
+    // queryFn: NotificationControllerService.getAllNotificationsUsingGet,
   });
 
   const resultLinkAndDescription = (response: NotificationResponse) => {
