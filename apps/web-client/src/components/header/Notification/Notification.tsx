@@ -46,15 +46,15 @@ export default function Notification() {
   // const { styles } = useStyles();
   const { data }: { data?: NotificationResponse[] } = useAppQuery({
     queryKey: ['a'],
-    queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
-    // queryFn: NotificationControllerService.getAllNotificationsUsingGet,
+    // queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
+    queryFn: NotificationControllerService.getAllNotificationsUsingGet,
   });
 
   const resultLinkAndDescription = (response: NotificationResponse) => {
     switch (response.notificationType) {
       case 'MESSAGE':
         return {
-          link: `/message`,
+          link: response?.id ? `/message/${response?.id}` : `/message`,
           description: (
             <>
               <h4>{response.senderName}</h4>
@@ -66,7 +66,7 @@ export default function Notification() {
         return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
       case 'COMMENT':
         return {
-          link: `/board/${response.postId}`,
+          link: response?.id ? `/board/${response?.id}` : `/board/${response.postId}`,
           description: (
             <>
               <h4>{response.senderName}</h4>
@@ -76,7 +76,7 @@ export default function Notification() {
         };
       case 'RECOMMENT':
         return {
-          link: `/board/${response.parentCommentId}`,
+          link: response?.id ? `/board/${response?.id}` : `/board/${response.parentCommentId}`,
           description: (
             <>
               <h4>{response.senderName}</h4>
