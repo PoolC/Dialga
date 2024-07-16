@@ -54,7 +54,7 @@ export default function Notification() {
     switch (response.notificationType) {
       case 'MESSAGE':
         return {
-          link: response?.id ? `/message/${response?.id}` : `/message`,
+          link: response?.causedById ? `/message/${response?.causedById}` : `/message`,
           description: (
             <>
               <h4>{response.senderName}</h4>
@@ -64,9 +64,9 @@ export default function Notification() {
         };
       case 'BADGE':
         return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
-      case 'COMMENT':
+      case 'POST':
         return {
-          link: response?.id ? `/board/${response?.id}` : `/board/${response.postId}`,
+          link: response?.causedById ? `/board/${response?.causedById}` : `/board/${response.postId}`,
           description: (
             <>
               <h4>{response.senderName}</h4>
@@ -76,7 +76,7 @@ export default function Notification() {
         };
       case 'RECOMMENT':
         return {
-          link: response?.id ? `/board/${response?.id}` : `/board/${response.parentCommentId}`,
+          link: response?.causedById ? `/board/${response?.causedById}` : `/board/${response.parentCommentId}`,
           description: (
             <>
               <h4>{response.senderName}</h4>
