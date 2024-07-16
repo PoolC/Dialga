@@ -4,7 +4,8 @@ import path from 'path';
 
 export default defineConfig(({ mode }) => {
   // @see https://stackoverflow.com/a/66389044
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  // process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  process.env = Object.assign(process.env, loadEnv(mode, process.cwd()));
 
   return {
     server: {
