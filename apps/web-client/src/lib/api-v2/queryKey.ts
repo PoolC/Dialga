@@ -33,4 +33,8 @@ export const queryKey = {
     all: ['conversation.all'] as const,
     conversation: (id: number) => ['conversation.conversation', id] as const,
   },
+  notification: {
+    all: ['notification.all'] as const,
+    unread: ['notification.unread'] as const,
+  },
 };

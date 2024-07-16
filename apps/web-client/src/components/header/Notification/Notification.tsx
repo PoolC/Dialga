@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 // import { createStyles } from 'antd-style';
-import { NotificationControllerService, NotificationResponse, useAppQuery } from '~/lib/api-v2';
+import { NotificationControllerService, NotificationResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 
 // CSS
 // const useStyles = createStyles(({ css }) => ({
@@ -45,7 +45,7 @@ const Menu = (menu: ReactNode) => <div style={{ minHeight: '0px', maxHeight: '25
 export default function Notification() {
   // const { styles } = useStyles();
   const { data }: { data?: NotificationResponse[] } = useAppQuery({
-    queryKey: ['a'],
+    queryKey: queryKey.notification.unread,
     queryFn: NotificationControllerService.getUnreadNotificationsUsingGet,
     // queryFn: NotificationControllerService.getAllNotificationsUsingGet,
   });
