@@ -89,7 +89,7 @@ export default function Notification() {
     }
   };
   const dropDownItems = data?.map((dataOne) => ({
-    key: `${dataOne.createdAt}-${dataOne.senderName}-${dataOne.notificationType}`, // 수정해야함.
+    key: `${dataOne.createdAt}-${dataOne?.causedById ?? ''}-${dataOne.notificationType}`,
     label: (
       <Link to={resultLinkAndDescription(dataOne).link}>
         <div>
