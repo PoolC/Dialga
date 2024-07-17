@@ -274,7 +274,7 @@ export default function BoardJobWriteSection({ postId }: { postId: number }) {
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="마감일자">
-                <DatePicker value={dayjs(form.values.deadline)} onChange={(_, date) => date && form.setFieldValue('deadline', date)} />
+                <DatePicker value={dayjs(form.values.deadline)} onChange={(_, date) => date && form.setFieldValue('deadline', Array.isArray(date) ? date[0] : date)} />
               </Form.Item>
               <div>
                 <Editor initialEditType="wysiwyg" ref={editorRef} onChange={onEditorChange} />
