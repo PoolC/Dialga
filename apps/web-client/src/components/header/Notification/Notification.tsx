@@ -1,4 +1,4 @@
-import { MessageOutlined } from '@ant-design/icons';
+import { BellOutlined } from '@ant-design/icons';
 import { Avatar, Badge, Button, Dropdown, Space } from 'antd';
 import { ReactNode, useCallback } from 'react';
 import { Link } from 'react-router-dom';
@@ -61,12 +61,7 @@ export default function Notification() {
       case 'MESSAGE':
         return {
           link: `/message/${response?.causedById}`,
-          description: (
-            <>
-              <h4>{response.senderName}</h4>
-              <p>님이 쪽지를 보냈습니다.</p>
-            </>
-          ),
+          description: <p>새로운 쪽지가 왔습니다.</p>,
         };
       case 'BADGE':
         return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
@@ -75,8 +70,8 @@ export default function Notification() {
           link: `/board/${response?.causedById}`,
           description: (
             <>
-              <h4>{response.senderName}</h4>
-              <p>님이 댓글을 달았습니다.</p>
+              {/* <h4>{response.senderName}</h4> */}
+              <p>게시물에 댓글이 달렸습니다.</p>
             </>
           ),
         };
@@ -112,7 +107,7 @@ export default function Notification() {
         <Button shape="circle" className={styles.dropdownButton}>
           <Space size="large" className={styles.dropdownShape}>
             <Badge count={data?.length}>
-              <Avatar shape="circle" size="default" icon={<MessageOutlined />} className={styles.dropdownAvatar} />
+              <Avatar shape="circle" size="default" icon={<BellOutlined />} className={styles.dropdownAvatar} />
             </Badge>
           </Space>
         </Button>
