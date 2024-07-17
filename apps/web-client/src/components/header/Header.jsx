@@ -83,10 +83,7 @@ const Header = ({ member, onLogout }) => {
           {isLogin && (
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
               {/** Noti */}
-              <Suspense fallback={<Spinner />}>
-                <Notification />
-              </Suspense>
-
+              <Notification />
               {/** Profile */}
               <Dropdown menu={{ items: dropDownItems }}>
                 <Button shape="circle" className={styles.avatarButton}>
