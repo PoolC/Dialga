@@ -10,7 +10,7 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export default function MessageAllListView() {
+export default function MessageListView() {
   const { styles } = useStyles();
 
   return (

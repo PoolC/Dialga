@@ -1,7 +1,10 @@
 import { Button, List, Space, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
+import { ConversationControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
+import { dayjs } from '~/lib/utils/dayjs';
+import { MENU } from '~/constants/menus';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -29,27 +32,20 @@ const useStyles = createStyles(({ css }) => ({
     font-weight: 700;
     font-size: 20px;
   `,
+  listItemLink: css`
+    padding: 12px 0;
+    width: 100%;
+  `,
 }));
 
 export default function MessageAllListContent() {
   const { styles } = useStyles();
   const history = useHistory();
 
-  // TODO: API 호출로 대체
-  const data = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
+  const { data } = useAppSuspenseQuery({
+    queryKey: queryKey.conversation.all,
+    queryFn: ConversationControllerService.getAllConversationsUsingGet,
+  });
 
   return (
     <Space direction="vertical" className={styles.fullWidth} size="large">
@@ -58,21 +54,23 @@ export default function MessageAllListContent() {
           <Button shape="circle" type="text" onClick={() => history.goBack()}>
             <ArrowLeftOutlined />
           </Button>
-          <Typography.Text className={styles.topBoxName}>대화목록</Typography.Text>
+          <Typography.Text className={styles.topBoxName}>대화 목록</Typography.Text>
         </Space>
       </Space>
       <List
         itemLayout="horizontal"
         dataSource={data}
-        renderItem={() => (
+        renderItem={(item) => (
           <List.Item>
-            <Space direction="vertical" className={styles.fullWidth}>
-              <Space className={styles.metaInfo}>
-                <Typography.Text className={styles.messageType}>받은 쪽지</Typography.Text>
-                <Typography.Text>2023.08.15 19:20:50</Typography.Text>
+            <Link to={`/${MENU.MESSAGE}/${item.id}`} className={styles.listItemLink}>
+              <Space direction="vertical" className={styles.fullWidth}>
+                <Space className={styles.metaInfo}>
+                  <Typography.Text className={styles.messageType}>{item.otherLoginID}</Typography.Text>
+                  <Typography.Text>{dayjs(item.lastMessage?.sentAt).format('YYYY-MM-DD HH:mm:ss')}</Typography.Text>
+                </Space>
+                <Typography.Text>{item.lastMessage?.content}</Typography.Text>
               </Space>
-              <Typography.Text>내용내용내용</Typography.Text>
-            </Space>
+            </Link>
           </List.Item>
         )}
       />
