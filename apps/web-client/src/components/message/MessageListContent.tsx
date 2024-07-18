@@ -1,19 +1,12 @@
 import { Button, List, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
+import { useAppSuspenseQuery, queryKey, ConversationControllerService } from '~/lib/api-v2';
+import { dayjs } from '~/lib/utils/dayjs';
 
 const useStyles = createStyles(({ css }) => ({
-  whiteBlock: css`
-    padding: 30px 20px;
-  `,
-  wrapper: css`
-    width: 100%;
-    max-width: 1200px;
-    box-sizing: border-box;
-  `,
   fullWidth: css`
     width: 100%;
   `,
@@ -40,53 +33,41 @@ export default function MessageListContent() {
   const { styles } = useStyles();
   const history = useHistory();
 
-  const data = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
+  const { conversationId } = useParams<{ conversationId: string }>();
+
+  const { data } = useAppSuspenseQuery({
+    queryKey: queryKey.conversation.all,
+    queryFn: () => ConversationControllerService.viewConversationUsingGet({ conversationId }),
+  });
 
   return (
-    <Block>
-      <WhiteBlock className={styles.whiteBlock}>
-        <Space direction="vertical" className={styles.fullWidth} size="large">
-          <Space className={styles.topBox}>
-            <Space>
-              <Button shape="circle" type="text" onClick={() => history.goBack()}>
-                <ArrowLeftOutlined />
-              </Button>
-              <Typography.Text className={styles.topBoxName}>익명</Typography.Text>
-            </Space>
-            <Link to={`/${MENU.MY_PAGE}/${MENU.MESSAGE_FORM}`}>
-              <Button>쪽지 보내기</Button>
-            </Link>
-          </Space>
-          <List
-            itemLayout="horizontal"
-            dataSource={data}
-            renderItem={() => (
-              <List.Item>
-                <Space direction="vertical" className={styles.fullWidth}>
-                  <Space className={styles.metaInfo}>
-                    <Typography.Text className={styles.messageType}>받은 쪽지</Typography.Text>
-                    <Typography.Text>2023.08.15 19:20:50</Typography.Text>
-                  </Space>
-                  <Typography.Text>내용내용내용</Typography.Text>
-                </Space>
-              </List.Item>
-            )}
-          />
+    <Space direction="vertical" className={styles.fullWidth} size="large">
+      <Space className={styles.topBox}>
+        <Space>
+          <Button shape="circle" type="text" onClick={() => history.goBack()}>
+            <ArrowLeftOutlined />
+          </Button>
+          <Typography.Text className={styles.topBoxName}>대화 상세</Typography.Text>
         </Space>
-      </WhiteBlock>
-    </Block>
+        <Link to={`/${MENU.MESSAGE}/${conversationId}/${MENU.MESSAGE_FORM}`}>
+          <Button>쪽지 보내기</Button>
+        </Link>
+      </Space>
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item>
+            <Space direction="vertical" className={styles.fullWidth}>
+              <Space className={styles.metaInfo}>
+                <Typography.Text className={styles.messageType}>{item.sentByStarter ? '보낸 쪽지' : '받은 쪽지'}</Typography.Text>
+                <Typography.Text>{dayjs(item.sentAt).format('YYYY-MM-DD HH:mm:ss')}</Typography.Text>
+              </Space>
+              <Typography.Text>{item.content}</Typography.Text>
+            </Space>
+          </List.Item>
+        )}
+      />
+    </Space>
   );
 }
