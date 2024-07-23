@@ -45,7 +45,7 @@ const ProjectDetail = ({ project, member }) => {
           <IntroductionContainer>
             <Introduction>
               <BodyContainer className="here">
-                <Viewer initialValue={body} />
+                <Viewer initialValue={body} key={body} />
               </BodyContainer>
             </Introduction>
           </IntroductionContainer>
