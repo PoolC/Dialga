@@ -1,7 +1,7 @@
 import { Button, List, Space, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { useAppSuspenseQuery, queryKey, ConversationControllerService } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
@@ -31,12 +31,11 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function MessageListContent() {
   const { styles } = useStyles();
-  const history = useHistory();
 
   const { conversationId } = useParams<{ conversationId: string }>();
 
   const { data } = useAppSuspenseQuery({
-    queryKey: queryKey.conversation.all,
+    queryKey: queryKey.conversation.conversation(conversationId),
     queryFn: () => ConversationControllerService.viewConversationUsingGet({ conversationId }),
   });
 
@@ -44,9 +43,11 @@ export default function MessageListContent() {
     <Space direction="vertical" className={styles.fullWidth} size="large">
       <Space className={styles.topBox}>
         <Space>
-          <Button shape="circle" type="text" onClick={() => history.goBack()}>
-            <ArrowLeftOutlined />
-          </Button>
+          <Link to={`/${MENU.MESSAGE}`}>
+            <Button shape="circle" type="text">
+              <ArrowLeftOutlined />
+            </Button>
+          </Link>
           <Typography.Text className={styles.topBoxName}>대화 상세</Typography.Text>
         </Space>
         <Link to={`/${MENU.MESSAGE}/${conversationId}/${MENU.MESSAGE_FORM}`}>
@@ -55,7 +56,7 @@ export default function MessageListContent() {
       </Space>
       <List
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={data.toReversed()}
         renderItem={(item) => (
           <List.Item>
             <Space direction="vertical" className={styles.fullWidth}>

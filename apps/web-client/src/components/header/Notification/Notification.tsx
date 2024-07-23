@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { NotificationControllerService, NotificationResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { assert } from '~/lib/utils/assert';
+import { MENU } from '~/constants/menus';
 
 // CSS
 const useStyles = createStyles(() => ({
@@ -66,11 +67,11 @@ export default function Notification() {
     switch (response.notificationType) {
       case 'MESSAGE':
         return {
-          link: `/message/${response?.causedById}`,
+          link: `/${MENU.MESSAGE}`,
           description: <p>새로운 쪽지가 왔습니다.</p>,
         };
       case 'BADGE':
-        return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
+        return { link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`, description: <p>새 뱃지를 받았습니다!</p> };
       case 'POST':
         return {
           link: `/board/${response?.causedById}`,
