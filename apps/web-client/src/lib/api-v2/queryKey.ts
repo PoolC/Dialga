@@ -31,7 +31,7 @@ export const queryKey = {
   },
   conversation: {
     all: ['conversation.all'] as const,
-    conversation: (id: number) => ['conversation.conversation', id] as const,
+    conversation: (id: string) => ['conversation.conversation', id] as const,
   },
   notification: {
     all: ['notification.all'] as const,

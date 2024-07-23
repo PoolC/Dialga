@@ -13,7 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
-import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import getFileUrl from '~/lib/utils/getFileUrl';
@@ -220,14 +220,14 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
               {
-                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitleByBoardType(boardType)}</Link>,
+                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitle(boardType)}</Link>,
               },
             ]}
           />
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
             <Space direction="vertical" className={styles.fullWidth} size="middle">
               <Space direction="vertical" className={styles.titleWrap} size={0}>
-                <Typography.Title level={3}>{getBoardTitleByBoardType(boardType)}</Typography.Title>
+                <Typography.Title level={3}>{getBoardTitle(boardType)}</Typography.Title>
                 <Typography>{renderDescription()}</Typography>
               </Space>
               <div className={styles.fullWidth}>

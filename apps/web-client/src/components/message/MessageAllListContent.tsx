@@ -47,6 +47,8 @@ export default function MessageAllListContent() {
     queryFn: ConversationControllerService.getAllConversationsUsingGet,
   });
 
+  console.log(data);
+
   return (
     <Space direction="vertical" className={styles.fullWidth} size="large">
       <Space className={styles.topBox}>
