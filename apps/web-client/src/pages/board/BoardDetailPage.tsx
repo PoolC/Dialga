@@ -243,11 +243,7 @@ export default function BoardDetailPage() {
           message.success('삭제되었습니다.');
           // TODO: assert 이용해서 수정
           const boardType = post!.boardType!;
-          queryClient
-            .invalidateQueries({
-              queryKey: queryKey.post.all(boardType, 0),
-            })
-            .then(() => history.push(`/${MENU.BOARD}?${stringify({ boardType })}`));
+          history.push(`/${MENU.BOARD}?${stringify({ boardType })}`);
         },
       },
     );
@@ -311,7 +307,7 @@ export default function BoardDetailPage() {
               <Typography.Title level={2}>{post.title}</Typography.Title>
             )}
             <div className={styles.content}>
-              <Viewer initialValue={post.body} />
+              <Viewer initialValue={post.body} key={post.body} />
             </div>
             {post.fileList && post.fileList.length > 0 && (
               <div className={styles.fileListBox}>

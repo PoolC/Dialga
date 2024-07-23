@@ -87,7 +87,7 @@ const Intro = () => {
     <WhiteNarrowBlock>
       <Title>PoolC 소개</Title>
       <Body>
-        <Viewer initialValue={info.introduction ?? ''} />
+        <Viewer initialValue={info.introduction ?? ''} key={info.introduction ?? ''} />
       </Body>
       <Title>동아리방 위치</Title>
       <StyledImage src={getFileUrl(info.locationUrl)} />
