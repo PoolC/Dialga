@@ -1,5 +1,5 @@
 {
-  "manifest_version": 4,
+  "manifest_version": 3,
   "name": "PoolC Baekjoon Hub",
   "version": "1.0.4",
   "description": "Yonsei Univ Programming Club PoolC integration with Baekjoon",
