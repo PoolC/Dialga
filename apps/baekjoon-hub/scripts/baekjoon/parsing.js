@@ -122,7 +122,7 @@ async function SolvedApiCall(problemId) {
 }
 
 async function notifyProblemSolved({ language, level, problemId, problemTags, submissionId, title }) {
-  const response = await new Promise((resolve) => {
+  const response = await new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
       {
         poolc: {
@@ -138,7 +138,13 @@ async function notifyProblemSolved({ language, level, problemId, problemTags, su
           },
         },
       },
-      resolve,
+      (res) => {
+        if (res.success) {
+          resolve();
+        } else {
+          reject();
+        }
+      },
     );
   });
   return response;
