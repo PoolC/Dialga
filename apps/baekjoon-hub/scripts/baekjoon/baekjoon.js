@@ -17,7 +17,6 @@ function showToast(message) {
 
   document.body.append(box);
 
-  console.log('toast!');
   setTimeout(() => {
     box.style.opacity = 0;
   }, 2000 - 300);
@@ -34,7 +33,7 @@ function showErrorToast(message) {
   box.style.position = 'fixed';
   box.style.top = '20px';
   box.style.right = '20px';
-  box.style.backgroundColor = '#e03131';
+  box.style.backgroundColor = '#fa5252';
   box.style.boxShadow = '0 2px 7px 0 rgba(0, 0, 0, 0.2)';
   box.style.padding = '20px';
   box.style.zIndex = 9999;
@@ -44,14 +43,13 @@ function showErrorToast(message) {
 
   document.body.append(box);
 
-  console.log('toast!');
   setTimeout(() => {
     box.style.opacity = 0;
-  }, 2000 - 300);
+  }, 4000 - 300);
 
   setTimeout(() => {
     box.remove();
-  }, 2000);
+  }, 4000);
 }
 
 function stopLoader() {
@@ -124,7 +122,7 @@ function startLoader() {
     } catch (error) {
       showErrorToast(`
         인증이 만료되었습니다. 😭<br/>
-        <a href=${`chrome-extension://${chrome.runtime.id}/login.html`}>해당 링크</a>를 통해 다시 로그인해주세요. 🙏
+        <a href=${`chrome-extension://${chrome.runtime.id}/login.html`} style="color: #212529; font-weight: 700;">해당 링크</a>를 통해 다시 로그인해주세요. 🙏
       `);
       console.error(error);
       return;
