@@ -9,7 +9,6 @@ import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { useMessage } from '~/hooks/useMessage';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -86,7 +85,6 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function MyPage() {
   const { styles, cx } = useStyles();
-  const message = useMessage();
 
   const listData: {
     title: string;
@@ -112,7 +110,7 @@ export default function MyPage() {
     {
       title: '쪽지',
       icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
-      onClick: () => message.info('기능 준비중입니다!'),
+      link: `/${MENU.MESSAGE}`,
     },
   ];
 

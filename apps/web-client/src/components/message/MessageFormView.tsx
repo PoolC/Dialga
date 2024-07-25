@@ -4,6 +4,7 @@ import { createStyles } from 'antd-style';
 import { FormEventHandler, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
+import { useMessage } from '~/hooks/useMessage';
 import { MessageControllerService, useAppMutation } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 
@@ -41,6 +42,7 @@ export default function MessageFormView() {
   const [content, setContent] = useState('');
   const history = useHistory();
   const { conversationId } = useParams<{ conversationId: string }>();
+  const message = useMessage();
 
   const { mutate: sendMessage } = useAppMutation({
     mutationFn: () =>
@@ -56,6 +58,7 @@ export default function MessageFormView() {
     e.preventDefault();
     sendMessage(undefined, {
       onSuccess: () => {
+        message.success('메시지를 전송했습니다.');
         history.push(`/${MENU.MESSAGE}/${conversationId}`);
       },
     });

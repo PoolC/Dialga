@@ -4,7 +4,7 @@ import RecentNotice from '~/components/home/RecentNotice';
 import RecentProject from '~/components/home/RecentProject';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
-import { getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import { getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import ApplyBanner from '~/components/home/ApplyBanner';
 
 const useStyles = createStyles(({ css }) => ({
@@ -34,7 +34,7 @@ export default function HomeEntry() {
         queryKey: queryKey.post.all('NOTICE', 0),
         queryFn: () =>
           PostControllerService.viewPostsByBoardUsingGet({
-            boardTitle: getBoardTitleByBoardType('NOTICE'),
+            boardTitle: getBoardTitleForRequest('NOTICE'),
             page: 0,
           }),
       },

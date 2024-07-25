@@ -7,7 +7,7 @@ import { stringify } from 'qs';
 import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 import { MENU } from '~/constants/menus';
 import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
-import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
@@ -75,7 +75,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
     queryKey: queryKey.post.all(boardType, page - 1),
     queryFn: () =>
       PostControllerService.viewPostsByBoardUsingGet({
-        boardTitle: getBoardTitleByBoardType(boardType),
+        boardTitle: getBoardTitleForRequest(boardType),
         page: page - 1,
       }),
   });

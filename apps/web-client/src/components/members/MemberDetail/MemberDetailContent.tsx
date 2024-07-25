@@ -52,8 +52,8 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
   const onMessageButtonClick = () => {
     if (confirm(`${member.name}님과의 대화를 시작할까요?`)) {
       mutate(undefined, {
-        onSuccess: (conversationId) => {
-          history.push(`/${MENU.MESSAGE}/${conversationId}/${MENU.MESSAGE_FORM}`);
+        onSuccess: ({id }) => {
+          history.push(`/${MENU.MESSAGE}/${id}/${MENU.MESSAGE_FORM}`);
         },
       });
     }
