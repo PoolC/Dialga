@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 
 import { createStyles } from 'antd-style';
 import { NotificationControllerService, NotificationResponse, queryKey, useAppQuery } from '~/lib/api-v2';
+import { assert } from '~/lib/utils/assert';
+import { MENU } from '~/constants/menus';
 
 // CSS
 const useStyles = createStyles(() => ({
   dropdownMenu: {
     minHeight: '0px',
     maxHeight: '250px',
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
 
   dropdownItem: {
@@ -47,12 +49,17 @@ const convertDate = (inputDate: Date | string) => {
 // Components
 export default function Notification() {
   const { styles } = useStyles();
-  const { data }: { data?: NotificationResponse[] } = useAppQuery({
+  const { data } = useAppQuery({
     queryKey: queryKey.notification.unread,
-
-    queryFn: () => NotificationControllerService.getUnreadNotificationsUsingGet(),
-    placeholderData: [],
+    queryFn: async () => {
+      const res = await NotificationControllerService.getUnreadNotificationsUsingGet();
+      // NOTE: 204의 경우 아무것도 반환되지 않는다. 해당 케이스를 위한 처리
+      return res ?? [];
+    },
+    initialData: [],
   });
+
+  assert(data, 'data is undefined');
 
   const Menu = useCallback((menu: ReactNode) => <div className={styles.dropdownMenu}>{menu}</div>, [styles.dropdownMenu]);
 
@@ -60,11 +67,11 @@ export default function Notification() {
     switch (response.notificationType) {
       case 'MESSAGE':
         return {
-          link: `/message/${response?.causedById}`,
+          link: `/${MENU.MESSAGE}`, // `/message/${response?.causedById}`,
           description: <p>새로운 쪽지가 왔습니다.</p>,
         };
       case 'BADGE':
-        return { link: `/my-page/badge-list`, description: <p>새 뱃지를 받았습니다!</p> };
+        return { link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`, description: <p>새 뱃지를 받았습니다!</p> };
       case 'POST':
         return {
           link: `/board/${response?.causedById}`,
@@ -89,24 +96,28 @@ export default function Notification() {
         return { link: '/', description: <p>오류가 발생했습니다</p> };
     }
   };
-  const dropDownItems = data?.map((dataOne) => ({
-    key: `${dataOne.createdAt}-${dataOne?.causedById ?? ''}-${dataOne.notificationType}`,
-    label: (
-      <Link to={resultLinkAndDescription(dataOne).link}>
-        <div>
-          <p>{convertDate(dataOne.createdAt ?? '')}</p>
-          <div className={styles.dropdownItem}>{resultLinkAndDescription(dataOne).description}</div>
-        </div>
-      </Link>
-    ),
-  }));
+
+  const dropDownItems =
+    data.length > 0
+      ? data.map((dataOne) => ({
+          key: `${dataOne.createdAt}-${dataOne?.causedById ?? ''}-${dataOne.notificationType}`,
+          label: (
+            <Link to={resultLinkAndDescription(dataOne).link}>
+              <div>
+                <p>{convertDate(dataOne.createdAt ?? '')}</p>
+                <div className={styles.dropdownItem}>{resultLinkAndDescription(dataOne).description}</div>
+              </div>
+            </Link>
+          ),
+        }))
+      : [{ key: 'empty', label: <p>새로운 알림이 없습니다.</p> }];
 
   return (
     <div>
       <Dropdown menu={{ items: dropDownItems }} dropdownRender={Menu}>
         <Button shape="circle" className={styles.dropdownButton}>
           <Space size="large" className={styles.dropdownShape}>
-            <Badge count={data?.length}>
+            <Badge count={data.length}>
               <Avatar shape="circle" size="default" icon={<BellOutlined />} className={styles.dropdownAvatar} />
             </Badge>
           </Space>

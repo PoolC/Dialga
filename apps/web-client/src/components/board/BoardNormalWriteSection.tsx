@@ -13,7 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';
-import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useMessage } from '~/hooks/useMessage';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import getFileUrl from '~/lib/utils/getFileUrl';
@@ -56,7 +56,6 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
   const history = useHistory();
   const message = useMessage();
   const loginId = useAppSelector((state) => state.auth.user.memberId);
-  const queryClient = useQueryClient();
 
   const editorRef = useRef<Editor | null>(null);
 
@@ -120,11 +119,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
         {
           onSuccess() {
             message.success('글이 수정되었습니다.');
-            queryClient
-              .invalidateQueries({
-                queryKey: queryKey.post.post(postId),
-              })
-              .then(() => history.push(`/${MENU.BOARD}/${postId}`));
+            history.push(`/${MENU.BOARD}/${postId}`);
           },
         },
       );
@@ -145,11 +140,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
         {
           onSuccess() {
             message.success('글이 작성되었습니다.');
-            queryClient
-              .invalidateQueries({
-                queryKey: queryKey.post.all(boardType, 0),
-              })
-              .then(() => history.push(`/${MENU.BOARD}?${stringify({ boardType })}`));
+            history.push(`/${MENU.BOARD}?${stringify({ boardType })}`);
           },
         },
       );
@@ -220,14 +211,14 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
             items={[
               { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
               {
-                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitleByBoardType(boardType)}</Link>,
+                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitle(boardType)}</Link>,
               },
             ]}
           />
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
             <Space direction="vertical" className={styles.fullWidth} size="middle">
               <Space direction="vertical" className={styles.titleWrap} size={0}>
-                <Typography.Title level={3}>{getBoardTitleByBoardType(boardType)}</Typography.Title>
+                <Typography.Title level={3}>{getBoardTitle(boardType)}</Typography.Title>
                 <Typography>{renderDescription()}</Typography>
               </Space>
               <div className={styles.fullWidth}>

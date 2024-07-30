@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Dropdown } from 'antd';
 import { createStyles } from 'antd-style';
@@ -7,8 +7,7 @@ import poolcIcon from '~/assets/images/poolc-icon.png';
 import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
 import Menus from './Menus/Menus';
 import { MENU } from '~/constants/menus';
-import Notification from './Notification/Notification.tsx';
-import Spinner from '../common/Spinner/Spinner';
+import Notification from './Notification/Notification';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -22,6 +21,13 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 5px;
     margin-right: 10px;
+  `,
+  menuInner: css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   `,
 }));
 
@@ -81,7 +87,7 @@ const Header = ({ member, onLogout }) => {
         </Link>
         <HeaderIconBox>
           {isLogin && (
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+            <div className={styles.menuInner}>
               {/** Noti */}
               <Notification />
               {/** Profile */}

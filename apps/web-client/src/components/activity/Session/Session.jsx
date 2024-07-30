@@ -21,7 +21,7 @@ const Session = ({ session, memberInfo, activityID, attendance, host }) => {
         <Date>{date}</Date>
         <Date>({hour}시간 진행)</Date>
         <Description>
-          <Viewer initialValue={description} />
+          <Viewer initialValue={description} key={description} />
         </Description>
         {isLogin && (
           <>
