@@ -61,7 +61,7 @@ function MyPageGrassSection({ baekjoonData }: { baekjoonData: BaekjoonResponse[]
         res.push({
           date: formattedDate,
           count: filtered.length,
-          level: filtered.length,
+          level: filtered.length >= 4 ? 4 : filtered.length,
         });
       }
     }
