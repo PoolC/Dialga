@@ -7,6 +7,7 @@ import LinkButton from '../../common/Buttons/LinkButton';
 import { LeftHeaderMenu, MenuBlock, RightHeaderMenu } from './Menus.styles';
 import { MENU } from '~/constants/menus';
 import Notification from '../Notification/Notification';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 const useStyles = createStyles(({ css }) => ({
   menuInner: css`
@@ -118,7 +119,7 @@ const Menus = ({
         {isLogin && (
           <div className={styles.menuInner}>
             {/** Noti */}
-            <Notification />
+            {isDevelopment && <Notification />}
             <Dropdown menu={{ items: dropDownItems }}>
               <Button shape="circle" style={{ padding: 0, width: '40px', height: '40px' }}>
                 <Avatar src={profileImageURL} size={36} />

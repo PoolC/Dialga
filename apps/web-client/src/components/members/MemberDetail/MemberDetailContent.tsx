@@ -22,6 +22,7 @@ import {
 } from './MemberDetailContent.styles';
 import { ConversationControllerService, MemberControllerService, MemberResponse, queryKey, useAppMutation, useAppSuspeneseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 export default function MemberDetailContent({ loginId }: { loginId: string }) {
   const history = useHistory();
@@ -52,7 +53,7 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
   const onMessageButtonClick = () => {
     if (confirm(`${member.name}님과의 대화를 시작할까요?`)) {
       mutate(undefined, {
-        onSuccess: ({id }) => {
+        onSuccess: ({ id }) => {
           history.push(`/${MENU.MESSAGE}/${id}/${MENU.MESSAGE_FORM}`);
         },
       });
@@ -70,7 +71,7 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
             <Name>{member.name}</Name>
             {member.isAdmin && <Status>PoolC임원</Status>}
             {member.badge && <Avatar src={getFileUrl(member.badge.imageUrl)} size={60} />}
-            {member.loginID !== me.loginID && (
+            {isDevelopment && member.loginID !== me.loginID && (
               <Tooltip title={`${member.name}님과 대화를 해보아요`}>
                 <Button shape="circle" icon={<MessageOutlined />} type="primary" onClick={onMessageButtonClick} />
               </Tooltip>
