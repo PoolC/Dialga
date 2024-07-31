@@ -85,7 +85,7 @@ function MyPageGrassSection({ baekjoonData }: { baekjoonData: BaekjoonResponse[]
       <div className={styles.calendarWrap}>
         <ActivityCalendar
           data={getDisplayingDays()}
-          renderBlock={(block, activity) => <Tooltip title={`${activity.count}개 풀이 | ${activity.date}`}>{block}</Tooltip>}
+          renderBlock={(block, activity) => <Tooltip title={`${activity.count >= 4 ? '4개 이상' : `${activity.count}개`} 풀이 | ${activity.date}`}>{block}</Tooltip>}
           theme={{
             light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
           }}
