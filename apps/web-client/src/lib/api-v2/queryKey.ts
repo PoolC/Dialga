@@ -29,4 +29,12 @@ export const queryKey = {
   room: {
     range: (start: string, end: string) => ['room.range', start, end] as const,
   },
+  conversation: {
+    all: ['conversation.all'] as const,
+    conversation: (id: string) => ['conversation.conversation', id] as const,
+  },
+  notification: {
+    all: ['notification.all'] as const,
+    unread: ['notification.unread'] as const,
+  },
 };

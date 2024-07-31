@@ -113,7 +113,7 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
               <PlanContainer>
                 <h2 className="title">계획서</h2>
                 <PlanContents>
-                  <Viewer initialValue={activity.description} />
+                  <Viewer initialValue={activity.description} key={activity.description} />
                 </PlanContents>
                 <FileContainerTitle>첨부된 파일 목록</FileContainerTitle>
                 <FileContainer>

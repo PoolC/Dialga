@@ -5,7 +5,7 @@ import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import BoardList from '~/components/board/BoardList';
 import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
-import { BoardType, getBoardTitleByBoardType } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
@@ -37,29 +37,29 @@ export default function BoardListPage() {
   }[] = [
     {
       key: 'NOTICE',
-      label: getBoardTitleByBoardType('NOTICE'),
+      label: getBoardTitle('NOTICE'),
       children: <BoardList boardType="NOTICE" page={page} />,
     },
     ...(isLogin
       ? [
           {
             key: 'FREE' as BoardType,
-            label: getBoardTitleByBoardType('FREE'),
+            label: getBoardTitle('FREE'),
             children: <BoardList boardType="FREE" page={page} />,
           },
           {
             key: 'JOB' as BoardType,
-            label: getBoardTitleByBoardType('JOB'),
+            label: getBoardTitle('JOB'),
             children: <BoardList boardType="JOB" page={page} />,
           },
           {
             key: 'PROJECT' as BoardType,
-            label: getBoardTitleByBoardType('PROJECT'),
+            label: getBoardTitle('PROJECT'),
             children: <BoardList boardType="PROJECT" page={page} />,
           },
           {
             key: 'CS' as BoardType,
-            label: getBoardTitleByBoardType('CS'),
+            label: getBoardTitle('CS'),
             children: <BoardList boardType="CS" page={page} />,
           },
         ]

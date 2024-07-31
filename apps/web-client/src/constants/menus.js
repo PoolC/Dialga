@@ -24,9 +24,8 @@ const MENU = {
   MY_PAGE_BADGE_LIST: 'badge-list',
   MY_PAGE_MY_POSTS: 'my-posts',
   MY_PAGE_MY_SCRAPS: 'my-scraps',
-  MESSAGE_LIST: 'message-list',
-  MESSAGE_FORM: 'message-form',
-  MESSAGE_ALL_LIST: 'message-all-list',
+  MESSAGE: 'message',
+  MESSAGE_FORM: 'form',
   ROOM_RESERVATION: 'room-reservation',
 };
 

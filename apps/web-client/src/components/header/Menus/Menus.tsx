@@ -1,10 +1,23 @@
 import { Avatar, Button, Dropdown, MenuProps } from 'antd';
 import { useLocation } from 'react-router-dom';
+import { createStyles } from 'antd-style';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 import ActionButton from '../../common/Buttons/ActionButton';
 import LinkButton from '../../common/Buttons/LinkButton';
 import { LeftHeaderMenu, MenuBlock, RightHeaderMenu } from './Menus.styles';
 import { MENU } from '~/constants/menus';
+import Notification from '../Notification/Notification';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
+
+const useStyles = createStyles(({ css }) => ({
+  menuInner: css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  `,
+}));
 
 const Menus = ({
   menuVisible,
@@ -21,6 +34,8 @@ const Menus = ({
   dropDownItems: MenuProps['items'];
   profileImageURL: string;
 }) => {
+  const { styles } = useStyles();
+
   const links: {
     to: string;
     visible: boolean;
@@ -102,11 +117,15 @@ const Menus = ({
       </LeftHeaderMenu>
       <RightHeaderMenu>
         {isLogin && (
-          <Dropdown menu={{ items: dropDownItems }}>
-            <Button shape="circle" style={{ padding: 0, width: '40px', height: '40px' }}>
-              <Avatar src={profileImageURL} size={36} />
-            </Button>
-          </Dropdown>
+          <div className={styles.menuInner}>
+            {/** Noti */}
+            {isDevelopment && <Notification />}
+            <Dropdown menu={{ items: dropDownItems }}>
+              <Button shape="circle" style={{ padding: 0, width: '40px', height: '40px' }}>
+                <Avatar src={profileImageURL} size={36} />
+              </Button>
+            </Dropdown>
+          </div>
         )}
         {!isLogin && (
           <LinkButton onClick={onToggleMenu} to="/register">

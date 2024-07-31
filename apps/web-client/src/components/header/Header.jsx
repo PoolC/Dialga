@@ -7,6 +7,8 @@ import poolcIcon from '~/assets/images/poolc-icon.png';
 import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
 import Menus from './Menus/Menus';
 import { MENU } from '~/constants/menus';
+import Notification from './Notification/Notification';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -20,6 +22,13 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 5px;
     margin-right: 10px;
+  `,
+  menuInner: css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
   `,
 }));
 
@@ -79,11 +88,16 @@ const Header = ({ member, onLogout }) => {
         </Link>
         <HeaderIconBox>
           {isLogin && (
-            <Dropdown menu={{ items: dropDownItems }}>
-              <Button shape="circle" className={styles.avatarButton}>
-                <Avatar src={profileImageURL} size={36} />
-              </Button>
-            </Dropdown>
+            <div className={styles.menuInner}>
+              {/** Noti */}
+              {isDevelopment && <Notification />}
+              {/** Profile */}
+              <Dropdown menu={{ items: dropDownItems }}>
+                <Button shape="circle" className={styles.avatarButton}>
+                  <Avatar src={profileImageURL} size={36} />
+                </Button>
+              </Dropdown>
+            </div>
           )}
           <BarsIcon onClick={onToggleMenu}>
             <MenuOutlined />

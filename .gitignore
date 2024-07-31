@@ -28,3 +28,5 @@ yarn-error.log*
 
 node_modules
 
+# chrome extension zip files
+baekjoon-hub.zip

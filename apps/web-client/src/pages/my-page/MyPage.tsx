@@ -9,7 +9,7 @@ import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { useMessage } from '~/hooks/useMessage';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -86,7 +86,6 @@ const useStyles = createStyles(({ css }) => ({
 
 export default function MyPage() {
   const { styles, cx } = useStyles();
-  const message = useMessage();
 
   const listData: {
     title: string;
@@ -109,11 +108,17 @@ export default function MyPage() {
       icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
       link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`,
     },
-    {
-      title: '쪽지',
-      icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
-      onClick: () => message.info('기능 준비중입니다!'),
-    },
+    isDevelopment
+      ? {
+          title: '쪽지',
+          icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
+          link: `/${MENU.MESSAGE}`,
+        }
+      : {
+          title: '쪽지',
+          icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
+          onClick: () => alert('서비스 준비중입니다.'),
+        },
   ];
 
   const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppQueries({

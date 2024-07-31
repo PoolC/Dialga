@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style';
 import { memo } from 'react';
-import ActivityCalendar, { Activity, Labels, Level } from 'react-activity-calendar';
+import ActivityCalendar, { Activity, Labels } from 'react-activity-calendar';
 import { Tooltip } from 'antd';
 import { BaekjoonResponse } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
@@ -9,6 +9,10 @@ const useStyles = createStyles(({ css }) => ({
   wrapper: css`
     overflow-x: auto;
     padding: 10px 30px;
+    .react-activity-calendar__scroll-container {
+      overflow-x: visible;
+      overflow-y: visible;
+    }
   `,
   calendarWrap: css`
     width: 100%;
@@ -57,7 +61,7 @@ function MyPageGrassSection({ baekjoonData }: { baekjoonData: BaekjoonResponse[]
         res.push({
           date: formattedDate,
           count: filtered.length,
-          level: filtered.length as Level,
+          level: filtered.length >= 4 ? 4 : filtered.length,
         });
       }
     }
@@ -81,7 +85,7 @@ function MyPageGrassSection({ baekjoonData }: { baekjoonData: BaekjoonResponse[]
       <div className={styles.calendarWrap}>
         <ActivityCalendar
           data={getDisplayingDays()}
-          renderBlock={(block, activity) => <Tooltip title={`${activity.count}개 풀이 | ${activity.date}`}>{block}</Tooltip>}
+          renderBlock={(block, activity) => <Tooltip title={`${activity.count >= 4 ? '4개 이상' : `${activity.count}개`} 풀이 | ${activity.date}`}>{block}</Tooltip>}
           theme={{
             light: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
           }}
