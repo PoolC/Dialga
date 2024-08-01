@@ -8,6 +8,7 @@ import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './
 import Menus from './Menus/Menus';
 import { MENU } from '~/constants/menus';
 import Notification from './Notification/Notification';
+import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -89,7 +90,7 @@ const Header = ({ member, onLogout }) => {
           {isLogin && (
             <div className={styles.menuInner}>
               {/** Noti */}
-              <Notification />
+              {isDevelopment && <Notification />}
               {/** Profile */}
               <Dropdown menu={{ items: dropDownItems }}>
                 <Button shape="circle" className={styles.avatarButton}>
