@@ -4,9 +4,10 @@ import { ReactNode, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { createStyles } from 'antd-style';
-import { NotificationControllerService, NotificationResponse, queryKey, useAppQuery } from '~/lib/api-v2';
+import { NotificationControllerService, NotificationResponse, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { assert } from '~/lib/utils/assert';
 import { MENU } from '~/constants/menus';
+import { queryClient } from '~/lib/utils/queryClient';
 
 // CSS
 const useStyles = createStyles(() => ({
@@ -58,6 +59,9 @@ export default function Notification() {
     },
     initialData: [],
   });
+  const { mutate: updateNotiReadStatus } = useAppMutation({
+    mutationFn: NotificationControllerService.viewNotificationUsingPost,
+  });
 
   assert(data, 'data is undefined');
 
@@ -67,7 +71,7 @@ export default function Notification() {
     switch (response.notificationType) {
       case 'MESSAGE':
         return {
-          link: `/${MENU.MESSAGE}`,
+          link: `/${MENU.MESSAGE}`, // `/message/${response?.causedById}`,
           description: <p>새로운 쪽지가 왔습니다.</p>,
         };
       case 'BADGE':
@@ -98,11 +102,23 @@ export default function Notification() {
   };
 
   const dropDownItems =
-    data.length > 0
-      ? data.map((dataOne) => ({
-          key: `${dataOne.createdAt}-${dataOne?.causedById ?? ''}-${dataOne.notificationType}`,
+    (data.unreadCount ?? 0) > 0
+      ? (data.responses ?? []).map((dataOne) => ({
+          key: `${dataOne.createdAt}-${dataOne.causedById ?? ''}-${dataOne.notificationType}`,
           label: (
-            <Link to={resultLinkAndDescription(dataOne).link}>
+            <Link
+              to={resultLinkAndDescription(dataOne).link}
+              onClick={() => {
+                updateNotiReadStatus(
+                  { notificationId: dataOne.notificationId! },
+                  {
+                    onSuccess() {
+                      queryClient.invalidateQueries({ queryKey: queryKey.notification.unread });
+                    },
+                  },
+                );
+              }}
+            >
               <div>
                 <p>{convertDate(dataOne.createdAt ?? '')}</p>
                 <div className={styles.dropdownItem}>{resultLinkAndDescription(dataOne).description}</div>
@@ -117,7 +133,7 @@ export default function Notification() {
       <Dropdown menu={{ items: dropDownItems }} dropdownRender={Menu}>
         <Button shape="circle" className={styles.dropdownButton}>
           <Space size="large" className={styles.dropdownShape}>
-            <Badge count={data.length}>
+            <Badge count={data.unreadCount ?? 0}>
               <Avatar shape="circle" size="default" icon={<BellOutlined />} className={styles.dropdownAvatar} />
             </Badge>
           </Space>
