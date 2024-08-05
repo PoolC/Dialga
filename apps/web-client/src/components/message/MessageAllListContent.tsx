@@ -2,7 +2,7 @@ import { Button, List, Space, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
-import { ConversationControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
+import { ConversationControllerService, MemberControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { MENU } from '~/constants/menus';
 
@@ -33,7 +33,6 @@ const useStyles = createStyles(({ css }) => ({
     font-size: 20px;
   `,
   listItemLink: css`
-    padding: 12px 0;
     width: 100%;
   `,
 }));
@@ -42,18 +41,24 @@ export default function MessageAllListContent() {
   const { styles } = useStyles();
   const history = useHistory();
 
-  const { data } = useAppSuspenseQuery({
-    queryKey: queryKey.conversation.all,
-    queryFn: ConversationControllerService.getAllConversationsUsingGet,
+  const [{ data: conversations }, { data: me }] = useAppSuspeneseQueries({
+    queries: [
+      {
+        queryKey: queryKey.conversation.all,
+        queryFn: ConversationControllerService.getAllConversationsUsingGet,
+      },
+      {
+        queryKey: queryKey.member.me,
+        queryFn: MemberControllerService.getMeUsingGet,
+      },
+    ],
   });
-
-  console.log(data);
 
   return (
     <Space direction="vertical" className={styles.fullWidth} size="large">
       <Space className={styles.topBox}>
         <Space>
-          <Button shape="circle" type="text" onClick={() => history.goBack()}>
+          <Button shape="circle" type="text" onClick={() => history.push(`/${MENU.MY_PAGE}`)}>
             <ArrowLeftOutlined />
           </Button>
           <Typography.Text className={styles.topBoxName}>대화 목록</Typography.Text>
@@ -61,13 +66,13 @@ export default function MessageAllListContent() {
       </Space>
       <List
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={conversations.toReversed()}
         renderItem={(item) => (
           <List.Item>
             <Link to={`/${MENU.MESSAGE}/${item.id}`} className={styles.listItemLink}>
               <Space direction="vertical" className={styles.fullWidth}>
                 <Space className={styles.metaInfo}>
-                  <Typography.Text className={styles.messageType}>{item.otherLoginID}</Typography.Text>
+                  <Typography.Text className={styles.messageType}>{item.otherLoginID === me.loginID ? item.starterLoginID : item.otherLoginID}</Typography.Text>
                   <Typography.Text>{dayjs(item.lastMessage?.sentAt).format('YYYY-MM-DD HH:mm:ss')}</Typography.Text>
                 </Space>
                 <Typography.Text>{item.lastMessage?.content}</Typography.Text>
