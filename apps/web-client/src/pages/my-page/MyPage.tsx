@@ -9,7 +9,6 @@ import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -108,17 +107,11 @@ export default function MyPage() {
       icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
       link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`,
     },
-    isDevelopment
-      ? {
-          title: '쪽지',
-          icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
-          link: `/${MENU.MESSAGE}`,
-        }
-      : {
-          title: '쪽지',
-          icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
-          onClick: () => alert('서비스 준비중입니다.'),
-        },
+    {
+      title: '쪽지',
+      icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
+      link: `/${MENU.MESSAGE}`,
+    },
   ];
 
   const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppQueries({

@@ -1,5 +1,5 @@
 import Icon, { MessageOutlined } from '@ant-design/icons';
-import { Avatar, Button, Tooltip } from 'antd';
+import { Avatar, Button, Popconfirm } from 'antd';
 import { useHistory } from 'react-router';
 import ActivityCard from '~/components/activity/ActivityCard/ActivityCard';
 import ProjectCard from '~/components/projects/ProjectCard/ProjectCard';
@@ -22,7 +22,6 @@ import {
 } from './MemberDetailContent.styles';
 import { ConversationControllerService, MemberControllerService, MemberResponse, queryKey, useAppMutation, useAppSuspeneseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
-import { isDevelopment } from '~/lib/utils/isDevelopment';
 
 export default function MemberDetailContent({ loginId }: { loginId: string }) {
   const history = useHistory();
@@ -50,14 +49,12 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
       }),
   });
 
-  const onMessageButtonClick = () => {
-    if (confirm(`${member.name}님과의 대화를 시작할까요?`)) {
-      mutate(undefined, {
-        onSuccess: ({ id }) => {
-          history.push(`/${MENU.MESSAGE}/${id}/${MENU.MESSAGE_FORM}`);
-        },
-      });
-    }
+  const onStartConversation = () => {
+    mutate(undefined, {
+      onSuccess: ({ id }) => {
+        history.push(`/${MENU.MESSAGE}/${id}/${MENU.MESSAGE_FORM}`);
+      },
+    });
   };
 
   return (
@@ -71,10 +68,10 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
             <Name>{member.name}</Name>
             {member.isAdmin && <Status>PoolC임원</Status>}
             {member.badge && <Avatar src={getFileUrl(member.badge.imageUrl)} size={60} />}
-            {isDevelopment && member.loginID !== me.loginID && (
-              <Tooltip title={`${member.name}님과 대화를 해보아요`}>
-                <Button shape="circle" icon={<MessageOutlined />} type="primary" onClick={onMessageButtonClick} />
-              </Tooltip>
+            {member.loginID !== me.loginID && (
+              <Popconfirm title={`${member.name}님과 대화하기`} description={`${member.name}님과의 대화를 시작할까요?`} okText="네" cancelText="아니요" onConfirm={onStartConversation}>
+                <Button shape="circle" icon={<MessageOutlined />} type="primary" />
+              </Popconfirm>
             )}
           </NameContainer>
           <DepartmentContainer>
