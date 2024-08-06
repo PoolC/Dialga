@@ -120,10 +120,12 @@ function startLoader() {
         title: psData.titles[0].title,
       });
     } catch (error) {
-      showErrorToast(`
+      if (error === 'UNAUTHORIZED') {
+        showErrorToast(`
         인증이 만료되었습니다. 😭<br/>
         <a href=${`chrome-extension://${chrome.runtime.id}/login.html`} style="color: #212529; font-weight: 700;">해당 링크</a>를 통해 다시 로그인해주세요. 🙏
       `);
+      }
       console.error(error);
       return;
     }

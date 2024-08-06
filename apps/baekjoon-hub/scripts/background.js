@@ -3,11 +3,11 @@ const POOLC_BASE_URL = 'https://poolc.org/api';
 const appFetch = (...args) =>
   fetch(...args).then((res) => {
     if (res.status === 401) {
-      throw new Error('unauthorized');
+      throw new Error('UNAUTHORIZED');
     }
 
     if (res.status >= 400) {
-      throw new Error('fetch error. please check network tab');
+      throw new Error('FETCH_ERROR');
     }
     return res;
   });
@@ -35,7 +35,7 @@ function handleMessage(request, _, sendResponse) {
         },
       })
         .then(() => sendResponse({ success: true }))
-        .catch(() => sendResponse({ success: false }));
+        .catch((e) => sendResponse({ success: false, reason: e.message }));
     });
   }
   // login check
