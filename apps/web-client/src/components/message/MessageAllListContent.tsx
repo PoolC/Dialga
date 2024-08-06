@@ -66,13 +66,13 @@ export default function MessageAllListContent() {
       </Space>
       <List
         itemLayout="horizontal"
-        dataSource={conversations.toReversed()}
+        dataSource={conversations}
         renderItem={(item) => (
           <List.Item>
             <Link to={`/${MENU.MESSAGE}/${item.id}`} className={styles.listItemLink}>
               <Space direction="vertical" className={styles.fullWidth}>
                 <Space className={styles.metaInfo}>
-                  <Typography.Text className={styles.messageType}>{item.otherLoginID === me.loginID ? item.starterLoginID : item.otherLoginID}</Typography.Text>
+                  <Typography.Text className={styles.messageType}>{item.otherName === me.name ? item.starterName : item.otherName}</Typography.Text>
                   <Typography.Text>{dayjs(item.lastMessage?.sentAt).format('YYYY-MM-DD HH:mm:ss')}</Typography.Text>
                 </Space>
                 <Typography.Text>{item.lastMessage?.content}</Typography.Text>
