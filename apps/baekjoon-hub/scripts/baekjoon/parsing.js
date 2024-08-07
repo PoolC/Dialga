@@ -142,7 +142,7 @@ async function notifyProblemSolved({ language, level, problemId, problemTags, su
         if (res.success) {
           resolve();
         } else {
-          reject();
+          reject(res.reason);
         }
       },
     );

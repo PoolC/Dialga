@@ -57,7 +57,13 @@ export default function Notification() {
       // NOTE: 204의 경우 아무것도 반환되지 않는다. 해당 케이스를 위한 처리
       return res ?? [];
     },
-    initialData: [],
+    initialData: {
+      responses: [],
+      unreadCount: 0,
+    },
+  });
+  const { mutate: updateNotiReadStatus } = useAppMutation({
+    mutationFn: NotificationControllerService.viewNotificationUsingPost,
   });
   const { mutate: updateNotiReadStatus } = useAppMutation({
     mutationFn: NotificationControllerService.viewNotificationUsingPost,
