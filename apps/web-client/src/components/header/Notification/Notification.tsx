@@ -1,5 +1,5 @@
 import { BellOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Button, Dropdown, Space } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Space, Spin } from 'antd';
 import { ReactNode, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,8 +15,8 @@ const useStyles = createStyles(() => ({
     minHeight: '0px',
     maxHeight: '250px',
     overflowY: 'auto',
+    padding: '5px',
   },
-
   dropdownItem: {
     display: 'flex',
     flexDirection: 'row',
@@ -38,6 +38,47 @@ const useStyles = createStyles(() => ({
     backgroundColor: '#19a47d28',
     color: '#716e6e',
   },
+
+  notificationMenu: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    background: 'rgba(0, 0, 0, 0.06)',
+    borderRadius: '8px',
+  },
+  notificationHeader: {
+    padding: '5px',
+    paddingBottom: '0px',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    lineHeight: '1rem',
+    boxSizing: 'border-box',
+  },
+  notificationTitle: {
+    fontSize: '16px',
+  },
+  notificationSpinnerWrapper: {
+    width: '19px',
+    height: '19px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notificationSpinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notificationClearButton: {
+    color: '#19a47d85',
+    fontSize: '12px',
+    background: '#ffffff',
+    padding: '2px',
+    borderRadius: '8px',
+  },
 }));
 
 // Helper function
@@ -50,7 +91,7 @@ const convertDate = (inputDate: Date | string) => {
 // Components
 export default function Notification() {
   const { styles } = useStyles();
-  const { data } = useAppQuery({
+  const { data, isFetching } = useAppQuery({
     queryKey: queryKey.notification.unread,
     queryFn: async () => {
       const res = await NotificationControllerService.getUnreadNotificationsUsingGet();
@@ -65,13 +106,54 @@ export default function Notification() {
   const { mutate: updateNotiReadStatus } = useAppMutation({
     mutationFn: NotificationControllerService.viewNotificationUsingPost,
   });
-  const { mutate: updateNotiReadStatus } = useAppMutation({
-    mutationFn: NotificationControllerService.viewNotificationUsingPost,
+  const { mutate: updateAllNotiReadStatus, isPending: isPendingAllNotiRead } = useAppMutation({
+    mutationFn: NotificationControllerService.viewAllNotificationsUsingPost,
   });
 
   assert(data, 'data is undefined');
+  // 스피너 용 변수
+  const isSpinning = isFetching || isPendingAllNotiRead;
 
-  const Menu = useCallback((menu: ReactNode) => <div className={styles.dropdownMenu}>{menu}</div>, [styles.dropdownMenu]);
+  const Menu = useCallback(
+    (menu: ReactNode) => (
+      <div className={styles.notificationMenu}>
+        <div className={styles.notificationHeader}>
+          <p className={styles.notificationTitle}>Notification</p>
+          {isSpinning ? (
+            <div className={styles.notificationSpinnerWrapper}>
+              <Spin size="small" className={styles.notificationSpinner} />
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.notificationClearButton}
+              onClick={() => {
+                updateAllNotiReadStatus(undefined, {
+                  onSuccess() {
+                    queryClient.invalidateQueries({ queryKey: queryKey.notification.unread });
+                  },
+                });
+              }}
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+        <div className={styles.dropdownMenu}>{menu}</div>
+      </div>
+    ),
+    [
+      styles.dropdownMenu,
+      updateAllNotiReadStatus,
+      isSpinning,
+      styles.notificationClearButton,
+      styles.notificationHeader,
+      styles.notificationMenu,
+      styles.notificationSpinner,
+      styles.notificationSpinnerWrapper,
+      styles.notificationTitle,
+    ],
+  );
 
   const resultLinkAndDescription = (response: NotificationResponse) => {
     switch (response.notificationType) {
