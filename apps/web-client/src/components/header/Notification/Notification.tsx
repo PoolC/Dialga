@@ -28,8 +28,11 @@ const useStyles = createStyles(() => ({
     margin: '0',
     border: '0',
   },
-  dropdownShape: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
-
+  dropdownShape: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   dropdownAvatar: {
     padding: '2px',
     display: 'flex',
@@ -43,7 +46,7 @@ const useStyles = createStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    background: 'rgba(0, 0, 0, 0.06)',
+    background: '#f1f3f5',
     borderRadius: '8px',
   },
   notificationHeader: {
@@ -124,8 +127,9 @@ export default function Notification() {
               <Spin size="small" className={styles.notificationSpinner} />
             </div>
           ) : (
-            <button
-              type="button"
+            <Button
+              htmlType="button"
+              size="small"
               className={styles.notificationClearButton}
               onClick={() => {
                 updateAllNotiReadStatus(undefined, {
@@ -136,7 +140,7 @@ export default function Notification() {
               }}
             >
               Clear All
-            </button>
+            </Button>
           )}
         </div>
         <div className={styles.dropdownMenu}>{menu}</div>
