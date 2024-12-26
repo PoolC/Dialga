@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { lazy, Suspense } from 'react';
 import { MENU } from './constants/menus';
@@ -42,7 +42,10 @@ const ActivityListPage = lazy(() => import('./pages/activity/ActivityListPage'))
 const ActivityAttendancePage = lazy(() => import('./pages/activity/ActivityAttendancePage'));
 const ActivityDetailPage = lazy(() => import('./pages/activity/ActivityDetailPage'));
 
-const BookListPage = lazy(() => import('./pages/book/BookListPage'));
+// const BookListPage = lazy(() => import('./pages/book/BookListPage'));
+// test
+const BookListPage = lazy(() => import('./pages/book/NextBookListPage'));
+const BookDetailPage = lazy(() => import('./pages/book/BookDetailPage'));
 
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
@@ -90,7 +93,8 @@ function App() {
             <Route component={ActivityListPage} path={`/${MENU.ACTIVITIES}`} />
             <Route component={ActivityAttendancePage} path={[`/${MENU.ACTIVITY}/:activityID/attendance/:sessionID`, `/${MENU.ACTIVITY}/:activityID/attendance`]} />
             <Route component={ActivityDetailPage} path={`/${MENU.ACTIVITY}/:activityID`} exact />
-            <Route component={BookListPage} path={`/${MENU.BOOKS}`} />
+            <Route component={BookListPage} path={`/${MENU.BOOKS}`} exact />
+            <Route component={BookDetailPage} path={`/${MENU.BOOKS}/:bookId`} />
             <Route component={LoginPage} path={`/${MENU.SIGNIN}`} />
             <Route component={RegisterPage} path={`/${MENU.SIGNUP}`} />
             <Route component={ApplyPage} path={`/${MENU.APPLY}`} />

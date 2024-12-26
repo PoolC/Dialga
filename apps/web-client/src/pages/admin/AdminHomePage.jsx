@@ -17,6 +17,9 @@ import AdminPassContainer from '../../containers/admin/AdminPassContainer/AdminP
 import AdminProjectContainer from '../../containers/admin/AdminProjectContainer/AdminProjectContainer';
 import AdminProjectFormContainer from '../../containers/admin/AdminProjectFormContainer/AdminProjectFormContainer';
 import useAdminCheck from '../../hooks/useAdminCheck';
+// 새로 만든거
+import AdminBookFormNew from '../../components/admin/AdminBookFormNew/AdminBookForm';
+import AdminBookNew from '../../components/admin/AdminBookNew/AdminBook';
 
 const AdminContainerBlock = styled.div`
   position: relative;
@@ -61,8 +64,10 @@ const AdminPage = ({ history }) => {
         <Route component={AdminProjectFormContainer} path={[`/${MENU.ADMIN}/projects/edit/:projectID`, `/${MENU.ADMIN}/projects/new`]} exact />
         <Route component={AdminProjectContainer} path={`/${MENU.ADMIN}/projects`} exact />
         <Route component={AdminActivityContainer} path={`/${MENU.ADMIN}/activities`} exact />
-        <Route component={AdminBookFormContainer} path={[`/${MENU.ADMIN}/books/new`, `/${MENU.ADMIN}/books/edit/:bookID`]} exact />
-        <Route component={AdminBookContainer} path={`/${MENU.ADMIN}/books`} exact />
+        {/* <Route component={AdminBookFormContainer} path={[`/${MENU.ADMIN}/books/new`, `/${MENU.ADMIN}/books/edit/:bookID`]} exact /> */}
+        <Route component={AdminBookFormNew} path={[`/${MENU.ADMIN}/books/new`, `/${MENU.ADMIN}/books/edit/:bookID`]} exact />
+        {/* <Route component={AdminBookContainer} path={`/${MENU.ADMIN}/books`} exact /> */}
+        <Route component={AdminBookNew} path={`/${MENU.ADMIN}/books`} exact />
         <Route component={AdminInterviewTimeContainer} path={`/${MENU.ADMIN}/interview-time`} exact />
         <Route component={AdminInterviewContainer} path={`/${MENU.ADMIN}/interview`} exact />
         <Route component={AdminBadgeContainer} path={`/${MENU.ADMIN}/badge`} exact />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import BookList from '../../../components/books/BookList/BookList';
+import BookList from '../../../components/books-legacy/BookList/BookList';
 import * as bookAPI from '../../../lib/api/book';
 import { getFullCurrentDateString } from '../../../lib/utils/getDateString';
 import { SUCCESS } from '../../../constants/statusCode';
