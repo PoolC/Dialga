@@ -14,7 +14,7 @@ export const queryKey = {
   },
   book: {
     book: (id: number) => ['book.book', id] as const,
-    all: (page?: number) => (page ? (['book.all', page] as const) : (['book.all'] as const)),
+    all: (sorting: string, page?: number) => (page ? (['book.all', page, sorting] as const) : (['book.all', sorting] as const)),
     borrowed: ['book.borrowed'] as const,
   },
   post: {
