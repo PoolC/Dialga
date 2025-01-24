@@ -1,12 +1,12 @@
 import { Button, Flex, Modal, Result, Skeleton, Table, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState, Dispatch } from 'react';
 import { match } from 'ts-pattern';
 import { useHistory } from 'react-router';
-import { BookControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { BookApiResponse, BookControllerService, BookResponse, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import AdminBookFormNew, { FormType } from '../AdminBookFormNew/AdminBookForm';
-import AdminBookForm from '../AdminBookForm/AdminBookForm';
+import getFileUrl from '~/lib/utils/getFileUrl';
 
 // Antd의 Table사용하면 됨.
 
@@ -28,12 +28,12 @@ const useStyles = createStyles(({ css }) => ({
     gap: 1rem;
   `,
 }));
-const makecolumns = (onEdit, onDelete) =>
+const makecolumns = (onEdit: (data: FormType) => void, onDelete: (id: number) => void) =>
   [
     {
       title: '표지',
       key: 'image',
-      render: (_, record) => <img height="100px" src={record.image} alt={record.title} />,
+      render: (_: unknown, record: FormType) => <img height="100px" src={getFileUrl(record.image)} alt={record.title} />,
     },
     {
       title: '제목',
@@ -54,30 +54,57 @@ const makecolumns = (onEdit, onDelete) =>
     {
       title: '동작',
       key: 'action',
-      render: (_, record) => (
+      render: (_: unknown, record: FormType) => (
         <div style={{ display: 'flex', gap: '5px' }}>
           <Button type="default" style={{ borderColor: 'gray', color: 'gray' }} onClick={() => onEdit(record)}>
             편집
           </Button>
-          <Button type="default" danger onClick={() => onDelete(record.id)}>
+          <Button type="default" danger onClick={() => onDelete(record.id!)}>
             삭제
           </Button>
         </div>
       ),
     },
   ].map((colInfo) => ({ ...colInfo, onCell: () => ({ style: { verticalAlign: 'middle' } }) }));
+
+type ModalInfo = { isOpen: boolean; data?: FormType };
+
+const AdminBookLayout =
+  // React.memo(
+  ({ setModal, children }: { setModal: Dispatch<React.SetStateAction<ModalInfo>>; children: ReactNode }) => {
+    const { styles } = useStyles();
+    // const [modal, setModal] = useState<{ isOpen: boolean; data?: FormType }>({ isOpen: false });
+
+    return (
+      <Block>
+        <WhiteBlock className={styles.whiteBlock}>
+          <Typography.Title level={3}>도서 관리</Typography.Title>
+          <Flex vertical className={styles.body}>
+            <Flex justify="end" align="center">
+              <Button type="primary" onClick={() => setModal((prev) => ({ isOpen: !prev.isOpen }))}>
+                도서 생성
+              </Button>
+            </Flex>
+            <div>{children}</div>
+          </Flex>
+        </WhiteBlock>
+      </Block>
+    );
+  };
+// )
 export default function AdminBook() {
   const { styles } = useStyles();
-  const [modal, setModal] = useState<{ isOpen: boolean; data?: FormType }>({ isOpen: false });
+  // const [modal, setModal] = useState<{ isOpen: boolean; data?: FormType }>({ isOpen: false });
+  const [modal, setModal] = useState<ModalInfo>({ isOpen: false });
   const bookListQuery = useAppQuery({
-    queryKey: queryKey.book.all(), // 전체 불러오기
-    queryFn: () => BookControllerService.getAllBooksUsingGet({}),
+    queryKey: queryKey.book.all('TITLE'), // 전체 불러오기
+    queryFn: () => BookControllerService.getAllBooksUsingGet({ sort: 'TITLE' }), // 일단 이름 순으로
   });
   const history = useHistory();
 
   const { mutate: bookDeleteMutatoin } = useAppMutation({ mutationFn: BookControllerService.deleteBookUsingDelete });
 
-  const onEdit = (data) => {
+  const onEdit = (data: FormType) => {
     setModal({ isOpen: true, data });
   };
   const onDelete = (id: number) => {
@@ -91,36 +118,39 @@ export default function AdminBook() {
   };
 
   const columns = makecolumns(onEdit, onDelete);
-  // test
-  console.log('modalta: ', modal.data);
 
   return (
-    <Block>
-      <WhiteBlock className={styles.whiteBlock}>
-        <Typography.Title level={3}>도서 관리</Typography.Title>
-        <Flex vertical className={styles.body}>
-          <Flex justify="end" align="center">
-            <Button type="primary" onClick={() => setModal({ isOpen: !modal.isOpen })}>
-              도서 생성
-            </Button>
-          </Flex>
-          <div>
-            {match(bookListQuery)
-              .with({ status: 'pending' }, () => <Skeleton />)
-              .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
-              .with({ status: 'success' }, ({ data: { content, totalPages } } /* { posts: postList, maxPage } */) => {
-                const tableResource = content?.map((value) => ({ ...value, key: value.id, id: value.id, image: value.imageURL, title: value.title, author: value.author, status: value.status }));
-                return <Table dataSource={tableResource} scroll={{ x: 'max-content' }} columns={columns} pagination={{ total: totalPages }} />;
-              })
-              .exhaustive()}
-          </div>
-        </Flex>
-      </WhiteBlock>
+    <>
+      <AdminBookLayout setModal={setModal}>
+        {match(bookListQuery)
+          .with({ status: 'pending' }, () => <Skeleton />)
+          .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
+          .with({ status: 'success' }, ({ data: { content, totalPages } }) => {
+            // { posts: postList, maxPage }
+            const tableResource = content?.map((value) => ({
+              key: value.id,
+              id: value.id!,
+              image: value.imageURL || '',
+              title: value.title || '',
+              author: value.author || '',
+              status: value.status || '',
+              link: value.link || '',
+              discount: value.discount || 0,
+              publisher: value.publisher || '',
+              isbn: value.isbn || '',
+              description: value.description || '',
+              donor: value.donor || '',
+              pubdate: value.publishedDate || '',
+            }));
+            return <Table dataSource={tableResource} scroll={{ x: 'max-content' }} columns={columns} pagination={{ total: totalPages }} />;
+          })
+          .exhaustive()}
+      </AdminBookLayout>
       {modal.isOpen && (
         <Modal centered open={modal.isOpen} onCancel={onModalCancel} footer={null} width={1000}>
-          <AdminBookFormNew initValues={modal?.data} />
+          <AdminBookFormNew initValues={modal?.data} onModalCancel={onModalCancel} />
         </Modal>
       )}
-    </Block>
+    </>
   );
 }
