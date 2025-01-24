@@ -45,6 +45,8 @@ module.exports = {
         'no-plusplus': 'off',
         // @typescript-eslint/no-explicit-any와 중복되므로
         'no-unused-vars': 'off',
+        // @typescript optional한 props 정의와 충돌하므로..
+        'react/require-default-props': 'warn',
       },
       parser: '@typescript-eslint/parser',
       env: {
