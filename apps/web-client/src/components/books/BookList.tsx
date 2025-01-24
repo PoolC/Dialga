@@ -1,19 +1,13 @@
-import { Avatar, Button, Empty, Input, Pagination, Result, Select, Skeleton, Space, Table, Typography, Form } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import { Link, useHistory } from 'react-router-dom';
+import { Empty, Pagination, Result, Select, Skeleton } from 'antd';
+import { useHistory } from 'react-router-dom';
 // import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
-import { CommentOutlined, EditOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { createStyles } from 'antd-style';
 import { MENU } from '~/constants/menus';
-import { BookControllerService, PostControllerService, BookResponse, queryKey, useAppQuery } from '~/lib/api-v2';
-import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
-import { dayjs } from '~/lib/utils/dayjs';
-import getFileUrl from '~/lib/utils/getFileUrl';
-import { useAppSelector } from '~/hooks/useAppSelector';
-import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
+import { BookControllerService, queryKey, useAppQuery } from '~/lib/api-v2';
+
 import BookCard from './BookCard';
 
 const useStyles = createStyles(({ css }) => ({
@@ -29,23 +23,10 @@ const useStyles = createStyles(({ css }) => ({
   flexList: css`
     width: 100%;
     max-width: 930px;
-    /* width: 930px; */
-    /* grid-auto-rows: 100px; */
-    /* max-width: 940px; */
     display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(218px, 1fr)); */
     grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
     grid-gap: 138px;
     justify-items: center;
-
-    /* display: flex; */
-    /* flex-wrap: wrap; */
-    /* flex-direction: row; */
-    /* padding: 10%; */
-    /* gap: 130px; */
-    /* gap: 150px; */
-    /* justify-content: flex-start; */
-    /* align-items: center; */
   `,
   option: css`
     display: flex;
@@ -142,60 +123,55 @@ const useStyles = createStyles(({ css }) => ({
     width: 55px;
   `,
 }));
-const initSearchForm = { type: 'title', query: '' };
-function BookListSearch({ setSearch }) {
-  const { styles } = useStyles();
-  const [formInfo, setFormInfo] = useState(initSearchForm);
-  return (
-    <Form
-      initialValues={initSearchForm}
-      className={styles.search}
-      onFinish={(values) => {
-        setSearch(values);
-      }}
-      onFinishFailed={(error) => {
-        console.error('Error: ', error);
-      }}
-    >
-      <Form.Item name="type">
-        <Select
-          getPopupContainer={(trigger) => trigger.parentNode}
-          className={styles.searchSelect}
-          defaultValue={initSearchForm.type}
-          options={[
-            { value: 'title', label: '제목' },
-            { value: 'author', label: '저자' },
-            { value: 'tag', label: '태그' },
-          ]}
-          onChange={(data) => setFormInfo({ ...formInfo, type: data })}
-        />
-      </Form.Item>
-      <Form.Item name="query">
-        <Input className={styles.searchInput} value={formInfo.query} onChange={(e) => setFormInfo({ ...formInfo, query: e.target.value })} />
-      </Form.Item>
-      <Form.Item label={null}>
-        <Button className={styles.searchBtn} type="primary" htmlType="submit">
-          검색
-        </Button>
-      </Form.Item>
-      {/* // </form> */}
-    </Form>
-  );
-}
+// const initSearchForm = { type: 'title', query: '' };
+// export function BookListSearch({ setSearch }) {
+//   const { styles } = useStyles();
+//   const [formInfo, setFormInfo] = useState(initSearchForm);
+//   return (
+//     <Form
+//       initialValues={initSearchForm}
+//       className={styles.search}
+//       onFinish={(values) => {
+//         setSearch(values);
+//       }}
+//       onFinishFailed={(error) => {
+//         console.error('Error: ', error);
+//       }}
+//     >
+//       <Form.Item name="type">
+//         <Select
+//           getPopupContainer={(trigger) => trigger.parentNode}
+//           className={styles.searchSelect}
+//           // defaultValue={initSearchForm.type}
+//           options={[
+//             { value: 'title', label: '제목' },
+//             { value: 'author', label: '저자' },
+//             { value: 'tag', label: '태그' },
+//           ]}
+//           onChange={(data) => setFormInfo({ ...formInfo, type: data })}
+//         />
+//       </Form.Item>
+//       <Form.Item name="query">
+//         <Input className={styles.searchInput} value={formInfo.query} onChange={(e) => setFormInfo({ ...formInfo, query: e.target.value })} />
+//       </Form.Item>
+//       <Form.Item label={null}>
+//         <Button className={styles.searchBtn} type="primary" htmlType="submit">
+//           검색
+//         </Button>
+//       </Form.Item>
+//     </Form>
+//   );
+// }
 
 export default function BookList({ page }: { page: number }) {
-  // data
   const { styles } = useStyles();
-  // const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
   type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
   const [sorting, setSorting] = useState<sortingType>('CREATED_AT');
-  const [search, setSearch] = useState({ type: '', query: '' });
+  // const [search, setSearch] = useState({ type: '', query: '' });
 
   const bookListQuery = useAppQuery({
     queryKey: queryKey.book.all(sorting, page),
     queryFn: () => BookControllerService.getAllBooksUsingGet({ page: 0, sort: sorting }),
-
-    //   BookControllerService.findBooksUsingGet({query:검색어, page:페이지인덱스})
   });
 
   const history = useHistory();
@@ -207,22 +183,6 @@ export default function BookList({ page }: { page: number }) {
         page,
       })}`,
     );
-
-  //   const renderWriteButton = () => {
-  //     const button = (
-  //       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-  //         <Button type="primary" icon={<EditOutlined />}>
-  //           글쓰기
-  //         </Button>
-  //       </Link>
-  //     );
-
-  //     if (boardType !== 'NOTICE') {
-  //       return button;
-  //     }
-
-  //     return isAdmin ? button : null;
-  //   };
 
   return (
     <div className={styles.wrapper}>
@@ -241,43 +201,13 @@ export default function BookList({ page }: { page: number }) {
             { value: 'RENT_TIME', label: '최근반납순' },
           ]}
         />
-        <BookListSearch setSearch={setSearch} />
-        {/* <form
-          className={styles.search}
-          onSubmit={(e) => {
-            // e.preventDefault();
-            console.log('SUBMIT: ', e);
-          }}
-        >
-          <Select
-            getPopupContainer={(trigger) => trigger.parentNode}
-            className={styles.searchSelect}
-            defaultValue="title"
-            options={[
-              { value: 'title', label: '제목' },
-              { value: 'author', label: '저자' },
-              { value: 'tag', label: '태그' },
-            ]}
-            onChange={(data) => setSearch({ ...search, type: data })}
-          />
-          <Input className={styles.searchInput} value={search.query} onChange={(e) => setSearch({ ...search, query: e.target.value })} />
-          <Button className={styles.searchBtn} type="primary" htmlType="submit">
-            검색
-          </Button>
-        </form> */}
+        {/* <BookListSearch setSearch={setSearch} /> */}
       </div>
-      {/* <div 
-      className={styles.topArea}>{renderWriteButton()}</div> */}
+
       {match(bookListQuery)
         .with({ status: 'pending' }, () => <Skeleton style={{ width: '100%' }} />)
         .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
         .with({ status: 'success' }, ({ data: { content, totalPages } } /* { posts: postList, maxPage } */) => {
-          //   if (!postList) {
-          //     return <Empty />;
-          //   }
-
-          // const content = content; // filter(Boolean);
-
           if (!content || content.length! === 0) {
             return <Empty />;
           }
@@ -285,15 +215,12 @@ export default function BookList({ page }: { page: number }) {
           return (
             <>
               <div className={styles.flexList}>
-                {content.map((bookData: { id: number; title: string; imageURL: string; status: string }) => (
+                {content.map((bookData) => (
                   <BookCard key={bookData.id} data={bookData} />
                 ))}
               </div>
 
-              {/* <Table dataSource={filteredList.content} columns={columns} showHeader={false} pagination={false} rowKey="postId" /> */}
-              {/* <div className={styles.paginationWrap}> */}
               <Pagination current={page} total={totalPages} showSizeChanger={false} onChange={onPageChange} />
-              {/* </div> */}
             </>
           );
         })
