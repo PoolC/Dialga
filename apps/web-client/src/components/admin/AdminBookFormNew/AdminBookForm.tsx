@@ -6,6 +6,7 @@ import { Modal, Form, Input, Typography, Upload, Button, Space, UploadFile, Inpu
 import { UploadChangeParam } from 'antd/es/upload';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import TextArea from 'antd/es/input/TextArea';
 import { BookControllerService, CreateBookRequest, CustomApi, UpdateBookRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import getFileUrl from '~/lib/utils/getFileUrl';
 
@@ -135,6 +136,12 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
       <Form name="request" onSubmitCapture={form.onSubmit(onSubmit)}>
         {InputInfo.map((info) => {
           switch (info.name) {
+            case 'description':
+              return (
+                <Form.Item label={info.label} name={info.name} key={info.name}>
+                  <TextArea {...form.getInputProps(info.name)} placeholder="소개를 입력하세요" style={{ height: 120, resize: 'none' }} />
+                </Form.Item>
+              );
             case 'upload':
               return (
                 <Form.Item key={info.name} name="upload" label="표지 이미지">

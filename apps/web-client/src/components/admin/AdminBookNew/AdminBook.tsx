@@ -1,14 +1,12 @@
 import { Button, Flex, Modal, Result, Skeleton, Table, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import React, { ReactNode, useEffect, useState, Dispatch } from 'react';
+import React, { ReactNode, useState, Dispatch } from 'react';
 import { match } from 'ts-pattern';
 import { useHistory } from 'react-router';
-import { BookApiResponse, BookControllerService, BookResponse, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { BookControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import AdminBookFormNew, { FormType } from '../AdminBookFormNew/AdminBookForm';
 import getFileUrl from '~/lib/utils/getFileUrl';
-
-// Antd의 Table사용하면 됨.
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -92,14 +90,18 @@ const AdminBookLayout =
     );
   };
 // )
+
 export default function AdminBook() {
-  const { styles } = useStyles();
   // const [modal, setModal] = useState<{ isOpen: boolean; data?: FormType }>({ isOpen: false });
   const [modal, setModal] = useState<ModalInfo>({ isOpen: false });
+
+  const [page, setPage] = useState<number>(0);
+
   const bookListQuery = useAppQuery({
-    queryKey: queryKey.book.all('TITLE'), // 전체 불러오기
-    queryFn: () => BookControllerService.getAllBooksUsingGet({ sort: 'TITLE' }), // 일단 이름 순으로
+    queryKey: queryKey.book.all('TITLE', page), // 전체 불러오기
+    queryFn: () => BookControllerService.getAllBooksUsingGet({ sort: 'TITLE', page }), // 일단 이름 순으로
   });
+
   const history = useHistory();
 
   const { mutate: bookDeleteMutatoin } = useAppMutation({ mutationFn: BookControllerService.deleteBookUsingDelete });
@@ -125,8 +127,9 @@ export default function AdminBook() {
         {match(bookListQuery)
           .with({ status: 'pending' }, () => <Skeleton />)
           .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
-          .with({ status: 'success' }, ({ data: { content, totalPages } }) => {
+          .with({ status: 'success' }, ({ data: { content, totalElements } }) => {
             // { posts: postList, maxPage }
+
             const tableResource = content?.map((value) => ({
               key: value.id,
               id: value.id!,
@@ -142,7 +145,21 @@ export default function AdminBook() {
               donor: value.donor || '',
               pubdate: value.publishedDate || '',
             }));
-            return <Table dataSource={tableResource} scroll={{ x: 'max-content' }} columns={columns} pagination={{ total: totalPages }} />;
+
+            return (
+              <Table
+                dataSource={tableResource}
+                scroll={{ x: 'max-content' }}
+                columns={columns}
+                pagination={{
+                  onChange: (page) => {
+                    setPage(page - 1);
+                  },
+                  total: totalElements,
+                  // pageSize: totalElements,
+                }}
+              />
+            );
           })
           .exhaustive()}
       </AdminBookLayout>
