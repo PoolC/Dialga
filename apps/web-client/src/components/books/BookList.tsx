@@ -1,12 +1,8 @@
-import { Empty, Pagination, Result, Select, Skeleton } from 'antd';
-import { useHistory } from 'react-router-dom';
-// import { createStyles } from 'antd-style';
+import { Empty, Result, Select, Skeleton } from 'antd';
 import { match } from 'ts-pattern';
-import { stringify } from 'qs';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createStyles } from 'antd-style';
-import { MENU } from '~/constants/menus';
-import { BookControllerService, queryKey, useAppQuery } from '~/lib/api-v2';
+import { BookControllerService, BookResponse, queryKey, useAppInfiniteQuery } from '~/lib/api-v2';
 
 import BookCard from './BookCard';
 
@@ -123,6 +119,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 55px;
   `,
 }));
+
 // const initSearchForm = { type: 'title', query: '' };
 // export function BookListSearch({ setSearch }) {
 //   const { styles } = useStyles();
@@ -163,26 +160,60 @@ const useStyles = createStyles(({ css }) => ({
 //   );
 // }
 
-export default function BookList({ page }: { page: number }) {
+const useInView = () => {
+  const bottomRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  const { data, fetchNextPage, isLoading, isError, isSuccess, isFetchingNextPage } = useAppInfiniteQuery({
+    queryKey: queryKey.book.all('TITLE'),
+    queryFn: ({ pageParam }) => BookControllerService.getAllBooksUsingGet({ page: pageParam, sort: 'TITLE' }),
+    initialPageParam: 0,
+    getNextPageParam: (lastData) => (lastData.number || 0) + 1,
+  });
+  const totalPages = data?.pages[0].totalPages || 0;
+  const curPage = data?.pages.length || 0;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+
+        if (entry.isIntersecting) {
+          if (totalPages > curPage) {
+            fetchNextPage();
+          }
+        }
+      },
+      {
+        /* threshold같은거 */
+      },
+    );
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current);
+    }
+
+    const LastElementReturnFunc = () => {
+      if (bottomRef.current) {
+        observer.unobserve(bottomRef.current);
+      }
+    };
+    return LastElementReturnFunc;
+  }, [bottomRef, curPage, totalPages, fetchNextPage]);
+
+  const products = useMemo(() => {
+    const allContents = data ? data.pages.reduce((acc, cur) => [...acc, ...(cur.content || [])], [] as BookResponse[]) : [];
+    return allContents;
+  }, [data]);
+
+  return { products, bottomRef, inView, fetchNextPage, isError, isLoading, isSuccess, isFetchingNextPage };
+};
+
+export default function BookList() {
   const { styles } = useStyles();
   type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
   const [sorting, setSorting] = useState<sortingType>('CREATED_AT');
-  // const [search, setSearch] = useState({ type: '', query: '' });
 
-  const bookListQuery = useAppQuery({
-    queryKey: queryKey.book.all(sorting, page),
-    queryFn: () => BookControllerService.getAllBooksUsingGet({ page: 0, sort: sorting }),
-  });
-
-  const history = useHistory();
-
-  // methods
-  const onPageChange = (page: number) =>
-    history.push(
-      `/${MENU.BOOK}?${stringify({
-        page,
-      })}`,
-    );
+  const bookListInfiniteQuery = useInView();
 
   return (
     <div className={styles.wrapper}>
@@ -203,28 +234,21 @@ export default function BookList({ page }: { page: number }) {
         />
         {/* <BookListSearch setSearch={setSearch} /> */}
       </div>
-
-      {match(bookListQuery)
-        .with({ status: 'pending' }, () => <Skeleton style={{ width: '100%' }} />)
-        .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
-        .with({ status: 'success' }, ({ data: { content, totalPages } } /* { posts: postList, maxPage } */) => {
-          if (!content || content.length! === 0) {
-            return <Empty />;
-          }
-
-          return (
-            <>
-              <div className={styles.flexList}>
-                {content.map((bookData) => (
-                  <BookCard key={bookData.id} data={bookData} />
-                ))}
-              </div>
-
-              <Pagination current={page} total={totalPages} showSizeChanger={false} onChange={onPageChange} />
-            </>
-          );
-        })
-        .exhaustive()}
+      {}
+      {match(bookListInfiniteQuery)
+        .with({ isLoading: true }, () => <Skeleton style={{ width: '100%' }} />)
+        .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
+        .with({ isSuccess: true }, ({ products }) => (
+          <>
+            {products.map((bookData) => (
+              <BookCard key={bookData.id} data={bookData} />
+            ))}
+          </>
+        ))
+        .otherwise(() => (
+          <Empty description="데이터가 없습니다" />
+        ))}
+      {bookListInfiniteQuery.isFetchingNextPage ? <Skeleton /> : <div ref={bookListInfiniteQuery.bottomRef} />}
     </div>
   );
 }
