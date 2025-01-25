@@ -2,18 +2,17 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Modal, Form, Input, Typography, Upload, Button, Space, UploadFile, InputNumber } from 'antd';
+import { Form, Input, Typography, Upload, Button, Space, UploadFile, InputNumber } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
-import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import TextArea from 'antd/es/input/TextArea';
-import { BookControllerService, CreateBookRequest, CustomApi, UpdateBookRequest, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
+import { BookControllerService, CreateBookRequest, CustomApi, queryKey, useAppMutation } from '~/lib/api-v2';
 import getFileUrl from '~/lib/utils/getFileUrl';
 
-// export type FormType = {
 interface dynamic {
-  [prop: string]: any;
+  [prop: string]: number | string | undefined;
 }
+
 export interface FormType extends dynamic {
   id: number;
   title: string;
@@ -46,18 +45,6 @@ const editSchema = z.object({
   // donor: z.string(),
 });
 
-const emptyValues = {
-  title: '',
-  link: '',
-  image: '',
-  author: '',
-  discount: 0,
-  publisher: '',
-  isbn: '',
-  description: '',
-  pubdate: '',
-  donor: '',
-};
 interface AdminBookFormProp {
   initValues?: FormType;
   onModalCancel: () => void;
@@ -166,7 +153,7 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
             default:
               return (
                 <Form.Item label={info.label} name={info.name} key={info.name}>
-                  <Input {...form.getInputProps(info.name)} status={form?.errors?.[info.name] ? 'error' : ''} defaultValue={initValues?.[info.name] || ''} />
+                  <Input {...form.getInputProps(info.name)} status={form?.errors?.[info.name] ? 'error' : ''} defaultValue={initValues?.[info.name]} />
                 </Form.Item>
               );
           }
