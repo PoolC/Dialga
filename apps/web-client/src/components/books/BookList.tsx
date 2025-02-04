@@ -234,7 +234,6 @@ export default function BookList() {
         />
         {/* <BookListSearch setSearch={setSearch} /> */}
       </div>
-      {}
       {match(bookListInfiniteQuery)
         .with({ isLoading: true }, () => <Skeleton style={{ width: '100%' }} />)
         .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)

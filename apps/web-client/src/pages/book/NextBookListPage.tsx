@@ -17,7 +17,7 @@ const BookListPage = () => {
   return (
     <Block>
       <WhiteBlock className={styles.whiteBlock}>
-        <BookList />;
+        <BookList />
       </WhiteBlock>
     </Block>
   );
