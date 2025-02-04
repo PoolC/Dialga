@@ -19,6 +19,7 @@ const useStyles = createStyles(({ css }) => ({
   flexList: css`
     width: 100%;
     max-width: 930px;
+    /* max-width: 1050px; */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
     grid-gap: 138px;
@@ -238,11 +239,11 @@ export default function BookList() {
         .with({ isLoading: true }, () => <Skeleton style={{ width: '100%' }} />)
         .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
         .with({ isSuccess: true }, ({ products }) => (
-          <>
+          <div className={styles.flexList}>
             {products.map((bookData) => (
               <BookCard key={bookData.id} data={bookData} />
             ))}
-          </>
+          </div>
         ))
         .otherwise(() => (
           <Empty description="데이터가 없습니다" />
