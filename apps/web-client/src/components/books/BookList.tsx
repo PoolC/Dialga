@@ -1,6 +1,6 @@
-import { Empty, Result, Select, Skeleton } from 'antd';
+import { Button, Empty, Form, Input, Result, Select, Skeleton } from 'antd';
 import { match } from 'ts-pattern';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import { createStyles } from 'antd-style';
 import { BookControllerService, BookResponse, queryKey, useAppInfiniteQuery } from '~/lib/api-v2';
 
@@ -121,56 +121,69 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-// const initSearchForm = { type: 'title', query: '' };
-// export function BookListSearch({ setSearch }) {
-//   const { styles } = useStyles();
-//   const [formInfo, setFormInfo] = useState(initSearchForm);
-//   return (
-//     <Form
-//       initialValues={initSearchForm}
-//       className={styles.search}
-//       onFinish={(values) => {
-//         setSearch(values);
-//       }}
-//       onFinishFailed={(error) => {
-//         console.error('Error: ', error);
-//       }}
-//     >
-//       <Form.Item name="type">
-//         <Select
-//           getPopupContainer={(trigger) => trigger.parentNode}
-//           className={styles.searchSelect}
-//           // defaultValue={initSearchForm.type}
-//           options={[
-//             { value: 'title', label: '제목' },
-//             { value: 'author', label: '저자' },
-//             { value: 'tag', label: '태그' },
-//           ]}
-//           onChange={(data) => setFormInfo({ ...formInfo, type: data })}
-//         />
-//       </Form.Item>
-//       <Form.Item name="query">
-//         <Input className={styles.searchInput} value={formInfo.query} onChange={(e) => setFormInfo({ ...formInfo, query: e.target.value })} />
-//       </Form.Item>
-//       <Form.Item label={null}>
-//         <Button className={styles.searchBtn} type="primary" htmlType="submit">
-//           검색
-//         </Button>
-//       </Form.Item>
-//     </Form>
-//   );
-// }
+const initSearchForm = { type: 'TITLE', keyword: '' };
+type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
+type searchType = 'TITLE' | 'AUTHOR' | 'TAG';
 
-const useInView = () => {
+export function BookListSearch({ setSearchInfo }: { setSearchInfo: Dispatch<SetStateAction<{ type: searchType; keyword: string }>> }) {
+  const { styles } = useStyles();
+  const [formInfo, setFormInfo] = useState(initSearchForm);
+
+  return (
+    <Form
+      initialValues={initSearchForm}
+      className={styles.search}
+      onFinish={(values) => {
+        setSearchInfo(values);
+      }}
+      onFinishFailed={(error) => {
+        console.error('Error: ', error);
+      }}
+    >
+      <Form.Item name="type">
+        <Select
+          getPopupContainer={(trigger) => trigger.parentNode}
+          className={styles.searchSelect}
+          // defaultValue={initSearchForm.type}
+          options={[
+            { value: 'TITLE', label: '제목' },
+            { value: 'AUTHOR', label: '저자' },
+            { value: 'TAG', label: '태그' },
+          ]}
+          onChange={(data) => setFormInfo({ ...formInfo, type: data })}
+        />
+      </Form.Item>
+      <Form.Item name="keyword">
+        <Input className={styles.searchInput} value={formInfo.keyword} onChange={(e) => setFormInfo({ ...formInfo, keyword: e.target.value })} />
+      </Form.Item>
+      <Form.Item label={null}>
+        <Button className={styles.searchBtn} type="primary" htmlType="submit">
+          검색
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+}
+
+const useInView = (sorting: sortingType, keyword: string, search: searchType) => {
   const bottomRef = useRef(null);
   const [inView, setInView] = useState(false);
 
   const { data, fetchNextPage, isLoading, isError, isSuccess, isFetchingNextPage } = useAppInfiniteQuery({
-    queryKey: queryKey.book.all('TITLE'),
-    queryFn: ({ pageParam }) => BookControllerService.getAllBooksUsingGet({ page: pageParam, sort: 'TITLE' }),
+    queryKey: keyword ? queryKey.book.search(sorting, keyword, search) : queryKey.book.all(sorting),
+    queryFn: ({ pageParam }) =>
+      keyword
+        ? BookControllerService.searchBooksUsingGet({
+            keyword,
+            sort: sorting,
+            search,
+            page: pageParam,
+          })
+        : BookControllerService.getAllBooksUsingGet({ page: pageParam, sort: sorting }),
     initialPageParam: 0,
     getNextPageParam: (lastData) => (lastData.number || 0) + 1,
   });
+
   const totalPages = data?.pages[0].totalPages || 0;
   const curPage = data?.pages.length || 0;
 
@@ -211,10 +224,11 @@ const useInView = () => {
 
 export default function BookList() {
   const { styles } = useStyles();
-  type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
+
   const [sorting, setSorting] = useState<sortingType>('CREATED_AT');
 
-  const bookListInfiniteQuery = useInView();
+  const [searchInfo, setSearchInfo] = useState<{ type: searchType; keyword: string }>({ type: 'TITLE', keyword: '' });
+  const bookListInfiniteQuery = useInView(sorting, searchInfo.keyword, searchInfo.type);
 
   return (
     <div className={styles.wrapper}>
@@ -233,7 +247,7 @@ export default function BookList() {
             { value: 'RENT_TIME', label: '최근반납순' },
           ]}
         />
-        {/* <BookListSearch setSearch={setSearch} /> */}
+        <BookListSearch setSearchInfo={setSearchInfo} />
       </div>
       {match(bookListInfiniteQuery)
         .with({ isLoading: true }, () => <Skeleton style={{ width: '100%' }} />)
