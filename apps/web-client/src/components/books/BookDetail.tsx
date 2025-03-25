@@ -16,18 +16,22 @@ const useStyles = createStyles(({ css }) => ({
     gap: 82px;
   `,
   content: css`
+    width: 100%;
     max-width: 627px;
     display: flex;
     flex-direction: column;
     gap: 84px;
   `,
   bookInfo: css`
-    display: grid;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 51px;
+    /* display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 51px;
-    /* height: 300px; */
-    /* display: flex;
-    gap: 51px; */
+    grid-gap: 51px; */
   `,
   bookCover: css`
     display: flex;
@@ -43,6 +47,7 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     /* gap: 23px; */
     width: 310px;
+    gap: 5px;
   `,
   bookMeta: css`
     display: flex;
@@ -96,7 +101,8 @@ const useStyles = createStyles(({ css }) => ({
     color: rgba(130, 121, 113, 1);
   `,
   descripticInfo: css`
-    width: 627px;
+    /* width: 627px; */
+    width: auto;
     border: 1px solid rgba(217, 217, 217, 1);
     border-radius: 10px;
     padding: 30px 34px;
@@ -209,8 +215,9 @@ export default function BookDetail({ bookId }: { bookId: number }) {
                     <p>{description}</p>
                   </div> */}
                   <div style={{ display: 'flex', flexDirection: 'row', gap: '21px', justifyContent: 'space-between' }}>
-                    <span
+                    <p
                       style={{
+                        width: '70px ',
                         height: '25px',
                         display: 'flex',
                         justifyContent: 'center',
@@ -223,8 +230,9 @@ export default function BookDetail({ bookId }: { bookId: number }) {
                       }}
                     >
                       책 소개:
-                    </span>
-                    <p style={{ width: '503px', fontWeight: '600', lineHeight: '1.3', whiteSpace: 'pre-wrap' }}>{`${description}`}</p>
+                    </p>
+                    <p style={{ paddingTop: '5px', width: '100%', fontWeight: '600', lineHeight: '1.3', whiteSpace: 'pre-wrap' }}>{`${description}`}</p>
+                    {/* <p style={{ width: '503px', fontWeight: '600', lineHeight: '1.3', whiteSpace: 'pre-wrap' }}>{`${description}`}</p> */}
                   </div>
                   {/* <div>
                     <h4>작가 소개:</h4>

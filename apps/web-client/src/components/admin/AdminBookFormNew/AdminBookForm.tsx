@@ -158,7 +158,6 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
               );
           }
         })}
-        ;
         {/* <StyledInput valueText={title} labelText="책 제목" typeText="text" nameText="title" onChangeFunc={onChangeTitle} placeholderText="ex) 클린 코드" />
         <StyledInput valueText={author} labelText="저자" typeText="text" nameText="author" onChangeFunc={onChangeAuthor} placeholderText="ex) 로버트 C. 마틴" />
         <label>표지 이미지 첨부</label>
