@@ -18,11 +18,11 @@ jobs:
 
       - name: build
         run: |
-          rm ./apps/web-client/.env && mv ./apps/web-client/.env.dev ./apps/web-client/.env
+          rm ./apps/web/.env && mv ./apps/web/.env.dev ./apps/web/.env
           yarn set version 3.8.1
           yarn install --immutable --immutable-cache
-          yarn web-client codegen
-          yarn web-client build
+          yarn web codegen
+          yarn web build
 
       - name: scp
         uses: appleboy/scp-action@v0.1.7
@@ -31,6 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ./apps/web-client/build/*
-          target: ~/k8s/dialga/build
+          source: ./apps/web/build/*
+          # TODO: 패키지 구조 변경에 따라 target 디렉토리도 변경해야함
+          target: ~/dialga/apps/web-client/build
           strip_components: 3
