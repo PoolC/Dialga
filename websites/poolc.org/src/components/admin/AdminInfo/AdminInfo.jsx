@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useRef, useState } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import { Editor } from '@dialga/react-editor';
 import useInput from '../../../hooks/useInput';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import { Description, EditorWrap, ImageContainer, ImageContainerHeader, StyledActionButton, StyledForm, StyledImage, StyledInput, TitleContainer } from './AdminInfo.styles';

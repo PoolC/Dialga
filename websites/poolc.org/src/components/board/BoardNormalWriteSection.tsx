@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import { Editor } from '@dialga/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Breadcrumb, Button, Divider, Form, Input, Space, Typography, Upload } from 'antd';
@@ -9,7 +9,6 @@ import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
 import { UploadOutlined } from '@ant-design/icons';
-import { useQueryClient } from '@tanstack/react-query';
 import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { MENU } from '~/constants/menus';

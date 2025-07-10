@@ -1,12 +1,9 @@
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { lazy, Suspense } from 'react';
 import { MENU } from './constants/menus';
 import FooterContainer from './containers/footer/FooterContainer';
 import HeaderContainer from './containers/header/HeaderContainer';
-
-// toast ui - global
-import '@toast-ui/editor/dist/toastui-editor.css';
 
 const useStyles = createStyles(({ css }) => ({
   appContainer: css`

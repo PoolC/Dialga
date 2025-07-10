@@ -1,4 +1,4 @@
-import { Viewer } from '@toast-ui/react-editor';
+import { Viewer } from '@dialga/react-editor';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
 import { Attendance, AttendanceList, Date, Description, SessionCard, SessionDivider, SessionNumber } from './Session.styles';

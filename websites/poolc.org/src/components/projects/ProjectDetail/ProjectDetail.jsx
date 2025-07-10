@@ -1,4 +1,4 @@
-import { Viewer } from '@toast-ui/react-editor';
+import { Viewer } from '@dialga/react-editor';
 import MemberCard from '../../members/MemberCard/MemberCard';
 import {
   BodyContainer,

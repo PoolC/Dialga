@@ -5,7 +5,7 @@ import { stringify } from 'qs';
 import { useSelector } from 'react-redux';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Viewer } from '@toast-ui/react-editor';
+import { Viewer } from '@dialga/react-editor';
 import { FolderOpenTwoTone } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';

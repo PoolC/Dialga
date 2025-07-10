@@ -1695,11 +1695,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@dialga/poolc.org@workspace:websites/poolc.org"
   dependencies:
+    "@dialga/react-editor": "workspace:^"
     "@types/node": "npm:^18.15.3"
     eslint: "npm:^8.57.0"
+    openapi-typescript-codegen: "npm:^0.28.0"
     prettier: "npm:^3.1.1"
     typescript: "npm:^5.3.3"
     vite: "npm:^5.2.7"
+  languageName: unknown
+  linkType: soft
+
+"@dialga/react-editor@workspace:^, @dialga/react-editor@workspace:packages/react-editor":
+  version: 0.0.0-use.local
+  resolution: "@dialga/react-editor@workspace:packages/react-editor"
+  dependencies:
+    "@toast-ui/editor": "npm:^3.2.2"
   languageName: unknown
   linkType: soft
 
@@ -2929,31 +2939,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@toast-ui/editor-plugin-code-syntax-highlight@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@toast-ui/editor-plugin-code-syntax-highlight@npm:3.1.0"
-  dependencies:
-    prismjs: "npm:^1.23.0"
-  checksum: 10c0/3cc75815f608039b7b8a928c0e104f7e41774e0f2c022a56c90aebc01f69b49eb84bbacbdbb77040ff2a69745f2628414afbaa312506af66b7dca59fb128f71f
-  languageName: node
-  linkType: hard
-
-"@toast-ui/editor-plugin-color-syntax@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@toast-ui/editor-plugin-color-syntax@npm:3.1.0"
-  dependencies:
-    tui-color-picker: "npm:^2.2.6"
-  checksum: 10c0/3187308ed6dbd45e4de532b25dba7900b8ccde0bb5eabca4f7c7ac8a2d59b06d258aa4a1dd6f1585867b0dfb322a6c8e429e4cb76ecc92948e94fb106f31e2f7
-  languageName: node
-  linkType: hard
-
-"@toast-ui/editor-plugin-table-merged-cell@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@toast-ui/editor-plugin-table-merged-cell@npm:3.1.0"
-  checksum: 10c0/1d9a9f5017b3784486138492b4478a55736eea18673693c89614e723bab4f39b6f23cd78de48b7a89c2addd2b4796865c6ac2753f9b9f65284f7369d20b8b908
-  languageName: node
-  linkType: hard
-
 "@toast-ui/editor@npm:^3.2.2":
   version: 3.2.2
   resolution: "@toast-ui/editor@npm:3.2.2"
@@ -2967,17 +2952,6 @@ __metadata:
     prosemirror-state: "npm:^1.3.4"
     prosemirror-view: "npm:^1.18.7"
   checksum: 10c0/f7b2be4d49e85bd9f6ef08e6a66a73ddbfecd5d3a4ca9f441635fc90c621360b1c69966bac9d34cd315879f387e925a2a33da485f473b8820944c5f9fd2503af
-  languageName: node
-  linkType: hard
-
-"@toast-ui/react-editor@npm:^3.2.3":
-  version: 3.2.3
-  resolution: "@toast-ui/react-editor@npm:3.2.3"
-  dependencies:
-    "@toast-ui/editor": "npm:^3.2.2"
-  peerDependencies:
-    react: ^17.0.1
-  checksum: 10c0/9850ee4b858247d1df4448ae56e800adf06f8622d179bd896e29932a398ddc0b719c7e7b90a4c17be012faa0c30341c3973126c7220cd5eae86e31bc195bd5be
   languageName: node
   linkType: hard
 
@@ -4776,11 +4750,6 @@ __metadata:
     "@emotion/styled": "npm:^11.11.0"
     "@mantine/form": "npm:^6.0.19"
     "@tanstack/react-query": "npm:^5.17.0"
-    "@toast-ui/editor": "npm:^3.2.2"
-    "@toast-ui/editor-plugin-code-syntax-highlight": "npm:^3.1.0"
-    "@toast-ui/editor-plugin-color-syntax": "npm:^3.1.0"
-    "@toast-ui/editor-plugin-table-merged-cell": "npm:^3.1.0"
-    "@toast-ui/react-editor": "npm:^3.2.3"
     "@types/markdown-it": "npm:^13.0.7"
     "@types/node": "npm:^18.15.3"
     "@types/qs": "npm:^6.9.7"
@@ -8854,13 +8823,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.23.0":
-  version: 1.30.0
-  resolution: "prismjs@npm:1.30.0"
-  checksum: 10c0/f56205bfd58ef71ccfcbcb691fd0eb84adc96c6ff21b0b69fc6fdcf02be42d6ef972ba4aed60466310de3d67733f6a746f89f2fb79c00bf217406d465b3e8f23
-  languageName: node
-  linkType: hard
-
 "proc-log@npm:^3.0.0":
   version: 3.0.0
   resolution: "proc-log@npm:3.0.0"
@@ -10997,13 +10959,6 @@ __metadata:
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
-  languageName: node
-  linkType: hard
-
-"tui-color-picker@npm:^2.2.6":
-  version: 2.2.8
-  resolution: "tui-color-picker@npm:2.2.8"
-  checksum: 10c0/041f648df16e03528f3214edde660b0228dd5e376db074cf7675254903a57152be5564d8efa33622f00c0cf7db9712050702f29bfdb43bf18ba26786f6817c26
   languageName: node
   linkType: hard
 

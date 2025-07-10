@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import { Editor } from '@dialga/react-editor';
 import { DeleteOutlined } from '@ant-design/icons';
 import useInput from '../../../hooks/useInput';
 import ActionButton from '../../common/Buttons/ActionButton';

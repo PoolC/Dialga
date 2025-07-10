@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Viewer } from '@toast-ui/react-editor';
+import { Viewer } from '@dialga/react-editor';
 import MemberCard from '../../members/MemberCard/MemberCard';
 import SessionContainer from '../../../containers/activity/SessionContainer/SessionContainer';
 import {

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Viewer } from '@toast-ui/react-editor';
+import { Viewer } from '@dialga/react-editor';
 import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
 import getFileUrl from '../../lib/utils/getFileUrl';
 import colors from '../../lib/styles/colors';

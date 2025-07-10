@@ -1,0 +1,14 @@
+{
+  "name": "@dialga/react-editor",
+  "description": "react editor for dialga project",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@toast-ui/editor": "^3.2.2"
+  },
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

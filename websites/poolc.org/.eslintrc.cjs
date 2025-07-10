@@ -47,6 +47,12 @@ module.exports = {
         'no-unused-vars': 'off',
         // @typescript optional한 props 정의와 충돌하므로..
         'react/require-default-props': 'warn',
+        'import/no-extraneous-dependencies': [
+          'error',
+          {
+            packageDir: ['.', '../..'],
+          },
+        ],
       },
       parser: '@typescript-eslint/parser',
       env: {

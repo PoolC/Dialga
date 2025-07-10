@@ -1,5 +1,5 @@
 import { memo, useRef, useState } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import { Editor } from '@dialga/react-editor';
 import { DeleteFilled } from '@ant-design/icons';
 import { Radio } from 'antd';
 import ActionButton from '../../common/Buttons/ActionButton';

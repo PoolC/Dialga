@@ -6,8 +6,6 @@ import { MENU } from '../../constants/menus';
 import AdminActivityContainer from '../../containers/admin/AdminActivityContainer/AdminActivityContainer';
 import AdminBoardContainer from '../../containers/admin/AdminBoardContainer/AdminBoardContainer';
 import AdminBoardFormContainer from '../../containers/admin/AdminBoardFormContainer/AdminBoardFormContainer';
-import AdminBookContainer from '../../containers/admin/AdminBookContainer/AdminBookContainer';
-import AdminBookFormContainer from '../../containers/admin/AdminBookFormContainer/AdminBookFormContainer';
 import AdminHomeContainer from '../../containers/admin/AdminHomeContainer/AdminHomeContainer';
 import AdminInfoContainer from '../../containers/admin/AdminInfoContainer/AdminInfoContainer';
 import AdminInterviewContainer from '../../containers/admin/AdminInterviewContainer/AdminInterviewContainer';

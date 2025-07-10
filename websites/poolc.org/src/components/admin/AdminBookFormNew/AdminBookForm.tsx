@@ -48,6 +48,7 @@ const editSchema = z.object({
 interface AdminBookFormProp {
   initValues?: FormType;
   onModalCancel: () => void;
+  aaa: number;
 }
 export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFormProp) {
   const queryClient = useQueryClient();

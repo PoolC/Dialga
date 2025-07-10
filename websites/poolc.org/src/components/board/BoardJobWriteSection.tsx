@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Editor } from '@toast-ui/react-editor';
+import { Editor } from '@dialga/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { Breadcrumb, Button, DatePicker, Divider, Form, Input, Radio, Space, Typography, Upload } from 'antd';
