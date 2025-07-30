@@ -1,0 +1,30 @@
+{
+  "name": "@dialga/poolc.org",
+  "description": "poolc.org website",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "vite",
+    "dev": "yarn start",
+    "build": "vite build",
+    "sync:type": "yarn dlx typesync",
+    "check:type": "tsc",
+    "check:type:watch": "yarn check:type --watch",
+    "codegen": "openapi -i https://api.poolc.org/v2/api-docs -o src/lib/api-v2/__generated__ --useUnionTypes --useOptions -c axios",
+    "postinstall": "yarn codegen",
+    "lint": "eslint . && prettier . --check --ignore-path .gitignore",
+    "format": "eslint . --fix && prettier . --write --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@dialga/react-editor": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "eslint": "^8.57.0",
+    "openapi-typescript-codegen": "^0.28.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.2.7"
+  },
+  "type": "module"
+}
