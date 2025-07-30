@@ -1,3 +1,5 @@
+// FIXME: eslint issue 수정 필요. 터미널에서는 에러가 나지 않으나, 에디터에서만 에러가 나고 있음
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Viewer } from '@dialga/react-editor';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
