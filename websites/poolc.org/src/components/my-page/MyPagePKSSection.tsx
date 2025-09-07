@@ -24,7 +24,7 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
       <div className={styles.codeBlock}>
         <div className={styles.codeHeader}>
           <span className={styles.codeLabel}>Command</span>
-          <Button size="small" icon={isCopied ? <CheckOutlined /> : <CopyOutlined />} onClick={() => copy(code)} className={styles.copyButton} />
+          <Button size="small" icon={isCopied ? <CheckOutlined /> : <CopyOutlined />} onClick={() => copy(code)} />
         </div>
         <pre className={styles.code}>{code}</pre>
       </div>
@@ -61,13 +61,6 @@ const useStyles = createStyles(({ css }) => ({
     fontWeight: '500',
     color: 'rgba(0, 0, 0, 0.7)',
     letterSpacing: '0.5px',
-  }),
-  copyButton: css({
-    border: 'none',
-    boxShadow: 'none',
-    '&:hover': {
-      background: 'rgba(0, 0, 0, 0.1)',
-    },
   }),
   code: css({
     whiteSpace: 'pre !important',
