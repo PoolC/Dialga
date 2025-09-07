@@ -43,4 +43,7 @@ export const queryKey = {
     all: ['notification.all'] as const,
     unread: ['notification.unread'] as const,
   },
+  kubernetes: {
+    me: ['kubernetes.me'] as const,
+  },
 };

@@ -3,12 +3,13 @@ import { createStyles } from 'antd-style';
 import { Link } from 'react-router-dom';
 import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
-import { BadgeControllerService, BaekjoonControllerService, MemberControllerService, queryKey, useAppMutation, useAppQueries } from '~/lib/api-v2';
+import { BadgeControllerService, BaekjoonControllerService, KubernetesControllerService, MemberControllerService, queryKey, useAppMutation, useAppQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import getFileUrl from '~/lib/utils/getFileUrl';
+import MyPagePKSSection from '~/components/my-page/MyPagePKSSection';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -114,7 +115,7 @@ export default function MyPage() {
     },
   ];
 
-  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppQueries({
+  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }, { data: kubernetes }] = useAppQueries({
     queries: [
       {
         queryKey: queryKey.member.hour,
@@ -131,6 +132,10 @@ export default function MyPage() {
       {
         queryKey: queryKey.baekjoon.baekjoon,
         queryFn: BaekjoonControllerService.getMyBaekjoonUsingGet,
+      },
+      {
+        queryKey: queryKey.kubernetes.me,
+        queryFn: KubernetesControllerService.getMyKeyUsingGet,
       },
     ],
   });
@@ -212,9 +217,9 @@ export default function MyPage() {
             </Typography.Title>
             {badge?.data && badge.data.length > 0 ? (
               <Space size={[8, 16]} wrap>
-                {badge.data.map((el) => (
+                {badge.data.map((el, idx) => (
                   <Button
-                    key={el.id}
+                    key={`${el.id}-${idx}`}
                     onClick={() => onBadgeButtonClick(el.id!)}
                     shape="circle"
                     className={cx(styles.badgeButton, {
@@ -258,6 +263,10 @@ export default function MyPage() {
                 )
               }
             />
+          </Space>
+          <Space direction="vertical" size={0} className={styles.wrapper}>
+            <Typography.Title level={5}>PKS</Typography.Title>
+            <MyPagePKSSection jwtToken={kubernetes?.key ?? ''} />
           </Space>
         </Space>
       </WhiteBlock>
