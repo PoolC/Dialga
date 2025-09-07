@@ -217,9 +217,9 @@ export default function MyPage() {
             </Typography.Title>
             {badge?.data && badge.data.length > 0 ? (
               <Space size={[8, 16]} wrap>
-                {badge.data.map((el) => (
+                {badge.data.map((el, idx) => (
                   <Button
-                    key={el.id}
+                    key={`${el.id}-${idx}`}
                     onClick={() => onBadgeButtonClick(el.id!)}
                     shape="circle"
                     className={cx(styles.badgeButton, {
