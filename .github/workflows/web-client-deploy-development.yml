@@ -17,9 +17,16 @@ jobs:
           node-version: '20'
           cache: 'yarn'
 
+      # - name: build
+      #   run: |
+      #     rm ./apps/web/.env && mv ./apps/web/.env.dev ./apps/web/.env
+      #     yarn set version 3.8.1
+      #     yarn install --immutable --immutable-cache
+      #     yarn web codegen
+      #     yarn web build
       - name: build
         run: |
-          rm ./apps/web/.env && mv ./apps/web/.env.dev ./apps/web/.env
+          mv ./apps/web/.env.dev ./apps/web/.env
           yarn set version 3.8.1
           yarn install --immutable --immutable-cache
           yarn web codegen
