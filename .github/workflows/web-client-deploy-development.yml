@@ -12,27 +12,27 @@ jobs:
       - uses: actions/checkout@v4
 
       # TODO: 패키지 구조 변경 및 s3 배포에 따라 변경해야함
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      #     cache: 'yarn'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
 
-      # - name: build
-      #   run: |
-      #     rm ./apps/web/.env && mv ./apps/web/.env.dev ./apps/web/.env
-      #     yarn set version 3.8.1
-      #     yarn install --immutable --immutable-cache
-      #     yarn web codegen
-      #     yarn web build
+      - name: build
+        run: |
+          rm ./apps/web/.env && mv ./apps/web/.env.dev ./apps/web/.env
+          yarn set version 3.8.1
+          yarn install --immutable --immutable-cache
+          yarn web codegen
+          yarn web build
 
-      # - name: scp
-      #   uses: appleboy/scp-action@v0.1.7
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     key: ${{ secrets.SSH_PEM_KEY }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     source: ./apps/web/build/*
-      #     # TODO: 패키지 구조 변경에 따라 target 디렉토리도 변경해야함
-      #     target: ~/dialga/apps/web-client/build
-      #     strip_components: 3
+      - name: scp
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PEM_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ./apps/web/build/*
+          # TODO: 패키지 구조 변경에 따라 target 디렉토리도 변경해야함
+          target: ~/k8s/dialga/build
+          strip_components: 3
