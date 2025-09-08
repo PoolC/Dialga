@@ -15,7 +15,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
+          # cache: 'yarn'
+
+      # fix from here
+      - name: Cache Yarn
+        uses: actions/cache@v4
+        with:
+          path: |
+            .yarn/cache
+            .yarn/releases
+            .yarn/plugins
+            .pnp.*
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: build
+        run: |
+          yarn set version 3.8.1
+          yarn install --immutable --immutable-cache
+          yarn web codegen
+          yarn web build
+      # fix to here
 
       # - name: build
       #   run: |
@@ -24,12 +45,8 @@ jobs:
       #     yarn install --immutable --immutable-cache
       #     yarn web codegen
       #     yarn web build
-      - name: build
-        run: |
-          yarn set version 3.8.1
-          yarn install --immutable --immutable-cache
-          yarn web codegen
-          yarn web build
+      
+
 
       - name: scp
         uses: appleboy/scp-action@v0.1.7
