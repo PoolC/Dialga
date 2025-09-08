@@ -26,7 +26,6 @@ jobs:
       #     yarn web build
       - name: build
         run: |
-          mv ./apps/web/.env.dev ./apps/web/.env
           yarn set version 3.8.1
           yarn install --immutable --immutable-cache
           yarn web codegen
