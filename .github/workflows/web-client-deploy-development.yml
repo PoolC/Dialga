@@ -22,7 +22,7 @@ jobs:
         run: |
           rm ./websites/poolc.org/.env && mv ./websites/poolc.org/.env.dev ./websites/poolc.org/.env
           yarn set version 4.9.2
-          yarn install --immutable --immutable-cache
+          yarn install --immutable
           yarn workspace @dialga/poolc.org build
 
       - name: scp
