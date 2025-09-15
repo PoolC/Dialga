@@ -1,3 +1,3 @@
 import { useSuspenseQueries } from '@tanstack/react-query';
 
-export const useAppSuspeneseQueries = useSuspenseQueries;
+export const useAppSuspenseQueries = useSuspenseQueries;
