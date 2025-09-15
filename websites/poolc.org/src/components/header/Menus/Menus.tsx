@@ -76,6 +76,11 @@ const Menus = ({
       content: 'Room',
     },
     {
+      to: `/${MENU.MY_PAGE}#pks`,
+      visible: isLogin,
+      content: 'K8s',
+    },
+    {
       to: `/${MENU.APPLY}`,
       visible: !isLogin || (isLogin && !isAuthorizedRole(role)),
       content: 'Apply',
