@@ -3,7 +3,7 @@ import Carousel from '~/components/home/Carousel';
 import RecentNotice from '~/components/home/RecentNotice';
 import RecentProject from '~/components/home/RecentProject';
 import { useAppSelector } from '~/hooks/useAppSelector';
-import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
+import { PoolcControllerService, PostControllerService, ProjectControllerService, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
 import { getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import ApplyBanner from '~/components/home/ApplyBanner';
 
@@ -20,7 +20,7 @@ const useStyles = createStyles(({ css }) => ({
 export default function HomeEntry() {
   const { styles } = useStyles();
 
-  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] = useAppSuspeneseQueries({
+  const [{ data: poolcInfo }, { data: projectInfo }, { data: noticeInfo }] = useAppSuspenseQueries({
     queries: [
       {
         queryKey: queryKey.poolc.poolc,
