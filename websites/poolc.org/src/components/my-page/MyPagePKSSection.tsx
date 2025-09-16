@@ -18,7 +18,7 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
     <Space direction="vertical" size="middle" className={styles.container}>
       <Paragraph className={styles.title}>
         <Link href="https://github.com/PoolC/PKS-docs/tree/user-guide" target="_blank">
-          <span className={styles.docs}>Docs</span> [https://github.com/PoolC/PKS-docs/tree/user-guide]
+          <span className={styles.docs}>Docs</span> [https://github.com/PoolC/PKS-docs/tree/main]
         </Link>
       </Paragraph>
       <div className={styles.codeBlock}>
