@@ -1,13 +1,28 @@
-import { CopyOutlined, CheckOutlined } from '@ant-design/icons';
-import { Typography, Space, Button } from 'antd';
+import { CopyOutlined, CheckOutlined, ArrowRightOutlined, SettingTwoTone, BookTwoTone } from '@ant-design/icons';
+import { Typography, Space, Button, List } from 'antd';
 import { createStyles } from 'antd-style';
 import useCopy from '../../hooks/useCopy';
-
-const { Link, Paragraph } = Typography;
 
 export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
   const { styles } = useStyles();
   const { isCopied, copy } = useCopy();
+
+  const linkList: {
+    title: string;
+    icon: JSX.Element;
+    link: string;
+  }[] = [
+    {
+      title: 'kubectl 빠른 설정',
+      icon: <SettingTwoTone size={24} twoToneColor="#4dabf7" />,
+      link: 'https://github.com/PoolC/PKS-docs/tree/main/docs/user-guides',
+    },
+    {
+      title: '전체 문서',
+      icon: <BookTwoTone size={24} twoToneColor="#4dabf7" />,
+      link: 'https://github.com/PoolC/PKS-docs/tree/main',
+    },
+  ];
 
   const code = dedent`kubectl config set-credentials pks --token=${jwtToken}
                 kubectl config set-cluster pks --server="https://165.132.131.121:6443" --insecure-skip-tls-verify=true
@@ -16,11 +31,23 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
 
   return (
     <Space direction="vertical" size="middle" className={styles.container}>
-      <Paragraph className={styles.title}>
-        <Link href="https://github.com/PoolC/PKS-docs/tree/user-guide" target="_blank">
-          <span className={styles.docs}>Docs</span> [https://github.com/PoolC/PKS-docs/tree/main]
-        </Link>
-      </Paragraph>
+      <List
+        size="large"
+        className={styles.fullWidth}
+        bordered
+        dataSource={linkList}
+        renderItem={(item) => (
+          <List.Item>
+            <a href={item.link} className={styles.link} target="_blank" rel="noreferrer">
+              <div className={styles.linkInner}>
+                {item.icon}
+                <Typography.Text>{item.title}</Typography.Text>
+              </div>
+              <ArrowRightOutlined size={18} />
+            </a>
+          </List.Item>
+        )}
+      />
       <div className={styles.codeBlock}>
         <div className={styles.codeHeader}>
           <span className={styles.codeLabel}>Command</span>
@@ -36,11 +63,19 @@ const useStyles = createStyles(({ css }) => ({
   container: css({
     width: '100%',
   }),
-  title: css({
-    margin: '0 !important',
+  fullWidth: css({
+    width: '100%',
   }),
-  docs: css({
-    color: '#000',
+  link: css({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  }),
+  linkInner: css({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
   }),
   codeBlock: css({
     width: '100%',
