@@ -25,12 +25,12 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
     {
       title: 'Argo CD',
       icon: <DeploymentUnitOutlined size={24} />,
-      link: 'https://argocd.dev.poolc.org',
+      link: 'http://argocd.dev.poolc.org',
     },
     {
       title: '모니터링',
       icon: <EyeTwoTone size={24} twoToneColor="#4dabf7" />,
-      link: 'https://mon.dev.poolc.org',
+      link: 'http://mon.dev.poolc.org',
     },
   ];
 
