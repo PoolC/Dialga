@@ -1,14 +1,16 @@
-import { CopyOutlined, CheckOutlined, ArrowRightOutlined, SettingTwoTone, BookTwoTone, DeploymentUnitOutlined, EyeTwoTone } from '@ant-design/icons';
-import { Typography, Space, Button, List } from 'antd';
+import { CopyOutlined, CheckOutlined, ArrowRightOutlined, SettingTwoTone, BookTwoTone, DeploymentUnitOutlined, EyeTwoTone, QuestionCircleFilled } from '@ant-design/icons';
+import { Button, Popover, Space, Typography, List } from 'antd';
 import { createStyles } from 'antd-style';
-import useCopy from '../../hooks/useCopy';
+import { ReactNode } from 'react';
+import useCopy from '~/hooks/useCopy';
+import MyPageArgoCDForm from './MyPageArgoCDForm';
 
 export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
   const { styles } = useStyles();
   const { isCopied, copy } = useCopy();
 
   const linkList: {
-    title: string;
+    title: ReactNode;
     icon: JSX.Element;
     link: string;
   }[] = [
@@ -23,7 +25,14 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
       link: 'https://github.com/PoolC/PKS-docs/tree/main',
     },
     {
-      title: 'Argo CD',
+      title: (
+        <Space size={4}>
+          Argo CD
+          <Popover title="계정정보" content={<MyPageArgoCDForm />}>
+            <QuestionCircleFilled />
+          </Popover>
+        </Space>
+      ),
       icon: <DeploymentUnitOutlined size={24} />,
       link: 'http://argocd.dev.poolc.org',
     },
