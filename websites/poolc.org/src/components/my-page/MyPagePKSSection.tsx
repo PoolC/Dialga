@@ -1,4 +1,4 @@
-import { CopyOutlined, CheckOutlined, ArrowRightOutlined, SettingTwoTone, BookTwoTone } from '@ant-design/icons';
+import { CopyOutlined, CheckOutlined, ArrowRightOutlined, SettingTwoTone, BookTwoTone, DeploymentUnitOutlined, EyeTwoTone } from '@ant-design/icons';
 import { Typography, Space, Button, List } from 'antd';
 import { createStyles } from 'antd-style';
 import useCopy from '../../hooks/useCopy';
@@ -14,13 +14,23 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
   }[] = [
     {
       title: 'kubectl 빠른 설정',
-      icon: <SettingTwoTone size={24} twoToneColor="#4dabf7" />,
+      icon: <SettingTwoTone size={24} twoToneColor="#adb5bd" />,
       link: 'https://github.com/PoolC/PKS-docs/tree/main/docs/user-guides',
     },
     {
       title: '전체 문서',
-      icon: <BookTwoTone size={24} twoToneColor="#4dabf7" />,
+      icon: <BookTwoTone size={24} twoToneColor="#ffa94d" />,
       link: 'https://github.com/PoolC/PKS-docs/tree/main',
+    },
+    {
+      title: 'Argo CD',
+      icon: <DeploymentUnitOutlined size={24} />,
+      link: 'https://argocd.dev.poolc.org',
+    },
+    {
+      title: '모니터링',
+      icon: <EyeTwoTone size={24} twoToneColor="#4dabf7" />,
+      link: 'https://mon.dev.poolc.org',
     },
   ];
 
