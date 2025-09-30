@@ -10,7 +10,7 @@
     "sync:type": "yarn dlx typesync",
     "check:type": "tsc",
     "check:type:watch": "yarn check:type --watch",
-    "codegen": "openapi -i https://api.poolc.org/v2/api-docs -o src/lib/api-v2/__generated__ --useUnionTypes --useOptions -c axios",
+    "codegen": "dotenv -e ./.env -- bash -c 'openapi -i $VITE_API_BASE_URL/v2/api-docs -o src/lib/api-v2/__generated__ --useUnionTypes --useOptions -c axios'",
     "postinstall": "yarn codegen",
     "lint": "eslint . && prettier . --check --ignore-path .gitignore",
     "format": "eslint . --fix && prettier . --write --ignore-path .gitignore"
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.15.3",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^8.57.0",
     "openapi-typescript-codegen": "^0.28.0",
     "prettier": "^3.1.1",

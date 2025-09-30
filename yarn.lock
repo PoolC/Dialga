@@ -1697,6 +1697,7 @@ __metadata:
   dependencies:
     "@dialga/react-editor": "workspace:^"
     "@types/node": "npm:^18.15.3"
+    dotenv-cli: "npm:^10.0.0"
     eslint: "npm:^8.57.0"
     openapi-typescript-codegen: "npm:^0.28.0"
     prettier: "npm:^3.1.1"
@@ -4515,6 +4516,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-spawn@npm:^7.0.6":
+  version: 7.0.6
+  resolution: "cross-spawn@npm:7.0.6"
+  dependencies:
+    path-key: "npm:^3.1.0"
+    shebang-command: "npm:^2.0.0"
+    which: "npm:^2.0.1"
+  checksum: 10c0/053ea8b2135caff68a9e81470e845613e374e7309a47731e81639de3eaeb90c3d01af0e0b44d2ab9d50b43467223b88567dfeb3262db942dc063b9976718ffc1
+  languageName: node
+  linkType: hard
+
 "csstype@npm:^3.0.2, csstype@npm:^3.1.3":
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
@@ -4848,6 +4860,43 @@ __metadata:
   version: 2.5.8
   resolution: "dompurify@npm:2.5.8"
   checksum: 10c0/4101708d190b67be00350369d72619266a2e0ebb7dcab12628cf07711329b1df12239baea613df41b65cba571128e8ea4c29c442f4e2c98670a9bb5563521f03
+  languageName: node
+  linkType: hard
+
+"dotenv-cli@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv-cli@npm:10.0.0"
+  dependencies:
+    cross-spawn: "npm:^7.0.6"
+    dotenv: "npm:^17.1.0"
+    dotenv-expand: "npm:^11.0.0"
+    minimist: "npm:^1.2.6"
+  bin:
+    dotenv: cli.js
+  checksum: 10c0/c469e65167fc3d1ef7bc6f90c8b7a0accd245ad1cdb73da8c72b32ddb308550dc4d5bfcdae964ab1f8a247957d756afc7b050d0f88fa5868c05ff6d3dfb4c1ba
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^11.0.0":
+  version: 11.0.7
+  resolution: "dotenv-expand@npm:11.0.7"
+  dependencies:
+    dotenv: "npm:^16.4.5"
+  checksum: 10c0/d80b8a7be085edf351270b96ac0e794bc3ddd7f36157912939577cb4d33ba6492ebee349d59798b71b90e36f498d24a2a564fb4aa00073b2ef4c2a3a49c467b1
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.6.1
+  resolution: "dotenv@npm:16.6.1"
+  checksum: 10c0/15ce56608326ea0d1d9414a5c8ee6dcf0fffc79d2c16422b4ac2268e7e2d76ff5a572d37ffe747c377de12005f14b3cc22361e79fc7f1061cce81f77d2c973dc
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^17.1.0":
+  version: 17.2.2
+  resolution: "dotenv@npm:17.2.2"
+  checksum: 10c0/be66513504590aff6eccb14167625aed9bd42ce80547f4fe5d195860211971a7060949b57108dfaeaf90658f79e40edccd3f233f0a978bff507b5b1565ae162b
   languageName: node
   linkType: hard
 

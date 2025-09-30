@@ -222,7 +222,7 @@ export default function Notification() {
 
   return (
     <div>
-      <Dropdown menu={{ items: dropDownItems }} dropdownRender={Menu}>
+      <Dropdown menu={{ items: dropDownItems }} popupRender={Menu}>
         <Button shape="circle" className={styles.dropdownButton}>
           <Space size="large" className={styles.dropdownShape}>
             <Badge count={data.unreadCount ?? 0}>

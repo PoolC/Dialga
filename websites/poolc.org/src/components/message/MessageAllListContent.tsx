@@ -2,7 +2,7 @@ import { Button, List, Space, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
-import { ConversationControllerService, MemberControllerService, queryKey, useAppSuspeneseQueries } from '~/lib/api-v2';
+import { ConversationControllerService, MemberControllerService, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { MENU } from '~/constants/menus';
 
@@ -41,7 +41,7 @@ export default function MessageAllListContent() {
   const { styles } = useStyles();
   const history = useHistory();
 
-  const [{ data: conversations }, { data: me }] = useAppSuspeneseQueries({
+  const [{ data: conversations }, { data: me }] = useAppSuspenseQueries({
     queries: [
       {
         queryKey: queryKey.conversation.all,
