@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, QuestionCircleFilled, StarTwoTone, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 import { useEffect, useRef } from 'react';
-import { BadgeControllerService, BaekjoonControllerService, KubernetesControllerService, MemberControllerService, queryKey, useAppMutation, useAppSuspenseQueries } from '~/lib/api-v2';
+import { BadgeControllerService, BaekjoonControllerService, KubernetesControllerService, MemberControllerService, queryKey, useAppMutation, useAppQuery, useAppSuspenseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import MyPageGrassSection from '~/components/my-page/MyPageGrassSection';
 import { queryClient } from '~/lib/utils/queryClient';
@@ -42,7 +42,7 @@ export default function MyPageContainer({ locationHash }: { locationHash: string
     },
   ];
 
-  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }, { data: kubernetes }] = useAppSuspenseQueries({
+  const [{ data: myHour }, { data: me }, { data: badge }, { data: baekjoon }] = useAppSuspenseQueries({
     queries: [
       {
         queryKey: queryKey.member.hour,
@@ -60,11 +60,13 @@ export default function MyPageContainer({ locationHash }: { locationHash: string
         queryKey: queryKey.baekjoon.baekjoon,
         queryFn: BaekjoonControllerService.getMyBaekjoonUsingGet,
       },
-      {
-        queryKey: queryKey.kubernetes.me,
-        queryFn: KubernetesControllerService.getMyKeyUsingGet,
-      },
     ],
+  });
+
+  const { data: kubernetes, isError: isKubernetesError } = useAppQuery({
+    queryKey: queryKey.kubernetes.me,
+    queryFn: KubernetesControllerService.getMyKeyUsingGet,
+    retry: false,
   });
 
   const { mutate: selectBadge } = useAppMutation({
@@ -199,7 +201,11 @@ export default function MyPageContainer({ locationHash }: { locationHash: string
       </Space>
       <Space direction="vertical" size={0} className={styles.wrapper} ref={pksRef}>
         <Typography.Title level={5}>PKS (PoolC Kubernetes Service)</Typography.Title>
-        <MyPagePKSSection jwtToken={kubernetes.key ?? ''} />
+        {isKubernetesError ? (
+          <Typography.Text type="secondary">쿠버네티스 키가 아직 발급되지 않았습니다. 관리자에게 문의해주세요.</Typography.Text>
+        ) : kubernetes?.key ? (
+          <MyPagePKSSection jwtToken={kubernetes.key} />
+        ) : null}
       </Space>
     </Space>
   );
