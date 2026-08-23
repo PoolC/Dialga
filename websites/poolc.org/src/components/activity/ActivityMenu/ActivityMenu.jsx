@@ -1,26 +1,16 @@
-import LinkButton from '../../common/Buttons/LinkButton';
-import { SelectedLinkButton } from './ActivityMenu.styles';
-import { MenuBlock, MenuItem, MenuList } from '~/styles/common/Menu.styles';
+import { SectionMenu } from '../../common/SectionMenu/SectionMenu';
 import Spinner from '../../common/Spinner/Spinner';
 
 const ActivityMenu = ({ loading, semesters, currentLocation }) => (
-  <MenuBlock>
-    <MenuList>
-      {loading && <Spinner small />}
-      {!loading &&
-        semesters.map((semester) =>
-          currentLocation === semester ? (
-            <MenuItem key={semester}>
-              <SelectedLinkButton to={`/activities?semester=${semester}`}>{semester}</SelectedLinkButton>
-            </MenuItem>
-          ) : (
-            <MenuItem key={semester}>
-              <LinkButton to={`/activities?semester=${semester}`}>{semester}</LinkButton>
-            </MenuItem>
-          ),
-        )}
-    </MenuList>
-  </MenuBlock>
+  <SectionMenu
+    loading={loading}
+    loadingFallback={<Spinner small />}
+    items={(semesters ?? []).map((semester) => ({
+      label: semester,
+      to: `/activities?semester=${semester}`,
+      active: currentLocation === semester,
+    }))}
+  />
 );
 
 export default ActivityMenu;

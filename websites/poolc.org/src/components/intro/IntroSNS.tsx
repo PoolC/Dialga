@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
+import { PagePanel } from '~/components/common/PageLayout/PageLayout';
+import { PageTitle } from '~/components/common/PageHeader/PageHeader';
 
-const Title = styled.h2`
+const Title = styled(PageTitle)`
   margin-bottom: 4rem;
 `;
 
@@ -16,7 +17,7 @@ const SNSContent = styled.p`
 `;
 
 const SNS = () => (
-  <WhiteNarrowBlock>
+  <PagePanel narrow>
     <Title>SNS</Title>
     <SNSName>카카오톡 채널</SNSName>
     <SNSContent>풀씨 PoolC</SNSContent>
@@ -26,7 +27,7 @@ const SNS = () => (
     <SNSContent>https://m.facebook.com/poolc.org/</SNSContent>
     <SNSName>이메일</SNSName>
     <SNSContent>poolc.official@gmail.com</SNSContent>
-  </WhiteNarrowBlock>
+  </PagePanel>
 );
 
 export default SNS;

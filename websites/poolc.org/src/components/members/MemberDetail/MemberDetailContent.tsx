@@ -96,9 +96,7 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
       <ActivityContainer>
         <h2>참여 활동</h2>
         <Activities>
-          {member.projects?.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          {member.projects?.map((project) => <ProjectCard key={project.id} project={project} />)}
           {/* TODO: fill undefined props */}
           {member.hostActivities?.map((activity) => (
             <ActivityCard key={activity.id} activity={activity} onToggleRegisterActivity={undefined} onDeleteActivity={undefined} isLogin={undefined} memberId={undefined} role={undefined} />

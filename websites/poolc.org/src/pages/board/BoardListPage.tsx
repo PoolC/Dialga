@@ -1,7 +1,7 @@
 import { Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import { useHistory } from 'react-router-dom';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import BoardList from '~/components/board/BoardList';
 import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
@@ -69,12 +69,12 @@ export default function BoardListPage() {
   const onTabChange = (key: string) => history.push(`/${MENU.BOARD}?boardType=${key}&page=1`);
 
   return (
-    <Block>
-      <WhiteBlock className={styles.whiteBlock}>
+    <PageShell>
+      <PagePanel className={styles.whiteBlock}>
         <div className={styles.wrapper}>
           <Tabs items={items} defaultActiveKey={boardType} onChange={onTabChange} />
         </div>
-      </WhiteBlock>
-    </Block>
+      </PagePanel>
+    </PageShell>
   );
 }

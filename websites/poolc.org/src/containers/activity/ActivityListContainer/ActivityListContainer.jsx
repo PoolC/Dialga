@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ActivityMenu from '../../../components/activity/ActivityMenu/ActivityMenu';
 import ActivityList from '../../../components/activity/ActivityList/ActivityList';
 import * as activityAPI from '../../../lib/api/activity';
-import { TwoColumnsContainerBlock } from '../../../styles/common/Block.styles.tsx';
+import { TwoColumnPageShell } from '../../../components/common/PageLayout/PageLayout';
 import { MENU } from '../../../constants/menus';
 import { SUCCESS } from '../../../constants/statusCode';
 
@@ -69,10 +69,10 @@ const ActivityListContainer = ({ location, history }) => {
   };
 
   return (
-    <TwoColumnsContainerBlock>
+    <TwoColumnPageShell>
       <ActivityMenu loading={loading} semesters={semesters} currentLocation={currentLocation} />
       <ActivityList loading={loading} activities={activities} onToggleRegisterActivity={onToggleRegisterActivity} onDeleteActivity={onDeleteActivity} member={member} />
-    </TwoColumnsContainerBlock>
+    </TwoColumnPageShell>
   );
 };
 

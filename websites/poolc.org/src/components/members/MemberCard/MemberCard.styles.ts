@@ -17,6 +17,7 @@ export const MemberItem = styled.div`
   padding: 0px 10px;
   cursor: pointer;
   transition: 0.3s;
+
   &:hover {
     opacity: 80%;
     transition: 0.3s;
@@ -60,6 +61,7 @@ export const MemberCardStatus = styled.span`
 export const StyledLink = styled(Link)`
   color: ${colors.brown[1]};
   text-decoration: none;
+
   &:hover {
     text-decoration: none;
   }

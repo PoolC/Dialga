@@ -2,12 +2,13 @@ import styled from '@emotion/styled';
 // FIXME: eslint issue 수정 필요. 터미널에서는 에러가 나지 않으나, 에디터에서만 에러가 나고 있음
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Viewer } from '@dialga/react-editor';
-import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
+import { PagePanel } from '~/components/common/PageLayout/PageLayout';
+import { PageTitle } from '~/components/common/PageHeader/PageHeader';
 import getFileUrl from '../../lib/utils/getFileUrl';
 import colors from '../../lib/styles/colors';
 import { PoolcControllerService, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
 
-const Title = styled.h2`
+const Title = styled(PageTitle)`
   margin-bottom: 2rem;
 `;
 
@@ -86,14 +87,14 @@ const Intro = () => {
   });
 
   return (
-    <WhiteNarrowBlock>
+    <PagePanel narrow>
       <Title>PoolC 소개</Title>
       <Body>
         <Viewer initialValue={info.introduction ?? ''} key={info.introduction ?? ''} />
       </Body>
       <Title>동아리방 위치</Title>
       <StyledImage src={getFileUrl(info.locationUrl)} />
-    </WhiteNarrowBlock>
+    </PagePanel>
   );
 };
 

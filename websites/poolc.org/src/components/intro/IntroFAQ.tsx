@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
-import { WhiteNarrowBlock } from '../../styles/common/Block.styles';
+import { PagePanel } from '~/components/common/PageLayout/PageLayout';
+import { PageTitle } from '~/components/common/PageHeader/PageHeader';
 
-const Title = styled.h2`
+const Title = styled(PageTitle)`
   margin-bottom: 4rem;
 `;
 
@@ -46,7 +47,7 @@ const Content = styled.p`
 `;
 
 const FAQ = () => (
-  <WhiteNarrowBlock>
+  <PagePanel narrow>
     <Title>자주 묻는 질문</Title>
     <FAQBlock>
       <Content>
@@ -137,7 +138,7 @@ const FAQ = () => (
         해당 연락처로 문의를 주시면, 최대한 빠르게 답변드리도록 하겠습니다. :)
       </Content>
     </FAQBlock>
-  </WhiteNarrowBlock>
+  </PagePanel>
 );
 
 export default FAQ;

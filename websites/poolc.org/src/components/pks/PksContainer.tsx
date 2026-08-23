@@ -54,6 +54,13 @@ export default function PksContainer() {
     queryFn: KubernetesControllerService.getMyKeyUsingGet,
     retry: false,
   });
+  let kubectlContent = null;
+
+  if (isKubernetesError) {
+    kubectlContent = <Typography.Text type="secondary">쿠버네티스 키가 아직 발급되지 않았습니다. 관리자에게 문의해주세요.</Typography.Text>;
+  } else if (kubernetes?.key) {
+    kubectlContent = <PksKubectlSection jwtToken={kubernetes.key} showLinks={false} />;
+  }
 
   return (
     <Space direction="vertical" size={32} className={styles.container}>
@@ -96,11 +103,7 @@ export default function PksContainer() {
         <Typography.Title level={5} className={styles.sectionTitle}>
           kubectl
         </Typography.Title>
-        {isKubernetesError ? (
-          <Typography.Text type="secondary">쿠버네티스 키가 아직 발급되지 않았습니다. 관리자에게 문의해주세요.</Typography.Text>
-        ) : kubernetes?.key ? (
-          <PksKubectlSection jwtToken={kubernetes.key} showLinks={false} />
-        ) : null}
+        {kubectlContent}
       </Space>
     </Space>
   );

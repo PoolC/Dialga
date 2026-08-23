@@ -6,6 +6,8 @@ import { MENU } from './constants/menus';
 import FooterContainer from './containers/footer/FooterContainer';
 import HeaderContainer from './containers/header/HeaderContainer';
 
+type LazyPageModule = { default: ComponentType<Record<string, never>> };
+
 const useStyles = createStyles(({ css }) => ({
   appContainer: css`
     display: flex;
@@ -53,16 +55,10 @@ const PasswordResetEmailPage = lazy(() => import('./pages/auth/PasswordResetEmai
 const ApplyPage = lazy(() => import('./pages/apply/ApplyPage'));
 const InterviewPage = lazy(() => import('./pages/apply/InterviewPage'));
 
-const AdminHomePage = lazy(
-  () => import('./pages/admin/AdminHomePage') as unknown as Promise<{ default: ComponentType<any> }>,
-);
+const AdminHomePage = lazy(() => import('./pages/admin/AdminHomePage') as unknown as Promise<LazyPageModule>);
 
-const AccessDeniedPage = lazy(
-  () => import('./pages/error/AccessDeniedPage') as unknown as Promise<{ default: ComponentType<any> }>,
-);
-const NotFoundPage = lazy(
-  () => import('./pages/error/NotFoundPage') as unknown as Promise<{ default: ComponentType<any> }>,
-);
+const AccessDeniedPage = lazy(() => import('./pages/error/AccessDeniedPage') as unknown as Promise<LazyPageModule>);
+const NotFoundPage = lazy(() => import('./pages/error/NotFoundPage') as unknown as Promise<LazyPageModule>);
 
 const BoardListPage = lazy(() => import('~/pages/board/BoardListPage'));
 const BoardDetailPage = lazy(() => import('~/pages/board/BoardDetailPage'));

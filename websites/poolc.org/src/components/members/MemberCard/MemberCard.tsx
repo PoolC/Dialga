@@ -1,9 +1,13 @@
 import colors from '~/lib/styles/colors';
-import { randomNumber } from '~/lib/utils/random';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 
 import { MemberCardBlock, MemberCardMajor, MemberCardName, MemberCardStatus, MemberCardText, MemberCardThumbnail, MemberItem, StyledLink } from './MemberCard.styles';
 import { MENU } from '~/constants/menus';
+
+const getStableCardColor = (loginID: string) => {
+  const index = loginID.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0) % colors.mint.length;
+  return colors.mint[index];
+};
 
 const MemberCard = ({
   member: { loginID, name, department, isAdmin, profileImageURL },
@@ -20,7 +24,7 @@ const MemberCard = ({
     <MemberCardBlock>
       <MemberItem
         style={{
-          background: colors.mint[randomNumber(colors.mint.length)],
+          background: getStableCardColor(loginID),
         }}
       >
         <MemberCardThumbnail src={getProfileImageUrl(profileImageURL)} alt="member_thumbnail" />

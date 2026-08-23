@@ -1,9 +1,12 @@
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
+import { CardGrid } from '../../common/CardGrid/CardGrid';
+import { EmptyState } from '../../common/EmptyState/EmptyState';
+import { PageHeader } from '../../common/PageHeader/PageHeader';
+import { PagePanel, PageShell } from '../../common/PageLayout/PageLayout';
 import ActivityCard from '../ActivityCard/ActivityCard';
 
-import { ActivityBlock, ActivityListHeader, ActivityListTitle, Description, List, NoResult } from './ActivityList.styles';
-import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
+import { Description } from './ActivityList.styles';
 import Spinner from '../../common/Spinner/Spinner';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
@@ -14,17 +17,14 @@ const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteA
   } = member;
 
   return (
-    <ActivityBlock>
-      <WhiteNarrowBlock>
-        <ActivityListHeader>
-          <ActivityListTitle>세미나&스터디</ActivityListTitle>
-          {isLogin && isAuthorizedRole(role) && <ActionButton to={`/${MENU.ACTIVITY}/new`}>개설</ActionButton>}
-        </ActivityListHeader>
+    <PageShell>
+      <PagePanel narrow>
+        <PageHeader title="세미나&스터디" actions={isLogin && isAuthorizedRole(role) && <ActionButton to={`/${MENU.ACTIVITY}/new`}>개설</ActionButton>} />
         <Description>상세 내용을 보려면 각 제목을 클릭해주세요.</Description>
         {loading && <Spinner />}
         {!loading && (
-          <List>
-            {activities.length === 0 && <NoResult>해당 학기의 세미나 및 스터디가 존재하지 않습니다.</NoResult>}
+          <CardGrid>
+            {activities.length === 0 && <EmptyState>해당 학기의 세미나 및 스터디가 존재하지 않습니다.</EmptyState>}
             {activities.map((activity) => (
               <ActivityCard
                 onToggleRegisterActivity={onToggleRegisterActivity}
@@ -36,10 +36,10 @@ const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteA
                 role={role}
               />
             ))}
-          </List>
+          </CardGrid>
         )}
-      </WhiteNarrowBlock>
-    </ActivityBlock>
+      </PagePanel>
+    </PageShell>
   );
 };
 
