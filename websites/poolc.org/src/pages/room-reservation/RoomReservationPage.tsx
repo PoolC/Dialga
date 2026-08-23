@@ -1,60 +1,355 @@
 import { createStyles } from 'antd-style';
-import { Button, Modal, Space } from 'antd';
+import { Button, Modal } from 'antd';
 import { Calendar, dayjsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
 import { useState } from 'react';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { LocalTimeReq, queryKey, RoomControllerService, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
+import { PageContent, PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
+import colors from '~/lib/styles/colors';
 
 const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
-  whiteBlock: css`
-    padding: 30px 0;
-  `,
-  wrapper: css`
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 20px;
-    box-sizing: border-box;
-  `,
-  heading: css`
-    font-size: 18px;
-  `,
-  paragraph: css`
-    font-size: 14px;
-    color: #666;
-  `,
   calendarWrap: css`
+    width: 100%;
+    overflow: hidden;
+    margin-top: 4px;
+
+    .rbc-calendar {
+      width: 100%;
+      color: ${colors.brown[1]};
+      font-family: inherit;
+    }
+
+    .rbc-toolbar {
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .rbc-toolbar-label {
+      color: ${colors.brown[1]};
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .rbc-btn-group {
+      display: inline-flex;
+      overflow: hidden;
+      border: 1px solid #d8d0c3;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .rbc-toolbar .rbc-btn-group:first-of-type {
+      background: #fbfaf8;
+    }
+
+    .rbc-toolbar .rbc-btn-group:last-of-type {
+      background: #ffffff;
+    }
+
+    .rbc-btn-group button {
+      height: 36px;
+      min-width: 56px;
+      border: 0;
+      border-left: 1px solid #d8d0c3;
+      background: #ffffff;
+      color: ${colors.brown[1]};
+      font-size: 0.82rem;
+      font-weight: 700;
+      box-shadow: none;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .rbc-btn-group button:first-of-type {
+      border-left: 0;
+    }
+
+    .rbc-btn-group button:hover,
+    .rbc-btn-group button:focus {
+      background: ${colors.mint[0]};
+      color: ${colors.mint[3]};
+    }
+
+    .rbc-btn-group button.rbc-active {
+      background: ${colors.mint[0]};
+      color: ${colors.brown[1]};
+      box-shadow: inset 0 0 0 1px rgba(71, 190, 155, 0.2);
+    }
+
+    .rbc-toolbar .rbc-btn-group:first-of-type button.rbc-active {
+      background: #ffffff;
+      color: ${colors.brown[1]};
+      box-shadow: none;
+    }
+
+    .rbc-time-view,
+    .rbc-month-view {
+      overflow: hidden;
+      border: 1px solid #e6dfd4;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .rbc-time-header {
+      border-bottom: 1px solid #e6dfd4;
+    }
+
+    .rbc-time-header-content {
+      border-left: 1px solid #e6dfd4;
+    }
+
+    .rbc-header {
+      min-height: 32px;
+      padding: 8px 4px;
+      border-bottom: 0;
+      color: ${colors.brown[1]};
+      font-size: 0.8rem;
+      font-weight: 800;
+      background: #fbfaf8;
+    }
+
+    .rbc-header.rbc-today {
+      background: rgba(71, 190, 155, 0.08);
+      color: ${colors.mint[3]};
+    }
+
+    .rbc-time-content {
+      border-top: 0;
+      overflow-y: hidden;
+    }
+
+    .rbc-time-content > * + * > * {
+      border-left: 1px solid #ebe6de;
+    }
+
+    .rbc-timeslot-group {
+      min-height: 72px;
+      border-bottom: 1px solid #ebe6de;
+    }
+
+    .rbc-time-gutter,
+    .rbc-time-header-gutter {
+      background: #fbfaf8;
+    }
+
+    .rbc-time-gutter .rbc-timeslot-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .rbc-time-gutter .rbc-time-slot {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .rbc-time-gutter .rbc-time-slot:not(:first-of-type) {
+      display: none;
+    }
+
+    .rbc-label {
+      padding: 0 10px;
+      color: ${colors.brown[1]};
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .rbc-day-slot .rbc-time-slot {
+      border-top: 1px solid #f4f1ed;
+    }
+
     .rbc-today {
-      background-color: rgb(250, 250, 250);
+      background-color: rgba(71, 190, 155, 0.05);
     }
+
     .rbc-event {
-      background-color: #47be9b;
-      border: 1px solid #47be9b !important;
+      overflow: hidden;
+      border: 0 !important;
+      border-radius: 6px;
+      background-color: ${colors.mint[2]};
+      box-shadow: 0 6px 14px rgba(71, 190, 155, 0.18);
+      padding: 0;
     }
+
+    .rbc-event-label {
+      display: none;
+    }
+
+    .rbc-event-content {
+      height: 100%;
+    }
+
+    .rbc-event:focus {
+      outline: 2px solid rgba(71, 190, 155, 0.32);
+      outline-offset: 2px;
+    }
+
     .rbc-allday-cell {
       display: none;
     }
-    .rbc-header {
-      border-bottom: none;
+
+    @media (max-width: 768px) {
+      .rbc-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .rbc-toolbar-label {
+        order: -1;
+        text-align: center;
+      }
+
+      .rbc-btn-group {
+        width: 100%;
+      }
+
+      .rbc-btn-group button {
+        flex: 1;
+        min-width: 0;
+        padding: 0 6px;
+      }
+
+      .rbc-header {
+        padding: 6px 2px;
+        font-size: 0.68rem;
+      }
+
+      .rbc-label {
+        padding: 0 4px;
+        font-size: 0.72rem;
+      }
+
+      .rbc-time-gutter,
+      .rbc-time-header-gutter {
+        width: 48px;
+        min-width: 48px;
+      }
+
+      .rbc-timeslot-group {
+        min-height: 60px;
+      }
     }
-    overflow-x: auto;
-  `,
-  fullWidth: css`
-    width: 100%;
   `,
   eventTitle: css`
-    font-weight: 500;
+    margin: 0;
+    color: ${colors.brown[1]};
+    font-weight: 800;
   `,
   eventTime: css`
-    font-size: 14px;
-    color: #666;
+    color: ${colors.brown[0]};
+    font-size: 0.9rem;
+    font-weight: 500;
     margin-top: 10px;
   `,
+  reservationEvent: css`
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    gap: 6px;
+    padding: 9px 10px;
+    color: #ffffff;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+      gap: 2px;
+      padding: 5px;
+    }
+
+    &[data-compact='true'] {
+      gap: 2px;
+      padding: 5px 8px;
+    }
+
+    &[data-tiny='true'] {
+      display: block;
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
+  `,
+  reservationTime: css`
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.15;
+    opacity: 0.92;
+
+    @media (max-width: 768px) {
+      font-size: 0.6rem;
+    }
+
+    [data-compact='true'] & {
+      font-size: 0.66rem;
+      line-height: 1.1;
+    }
+
+    [data-tiny='true'] & {
+      font-size: 0.68rem;
+      line-height: 1.15;
+    }
+  `,
+  reservationPurpose: css`
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.88rem;
+    font-weight: 800;
+    line-height: 1.24;
+    word-break: keep-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    @media (max-width: 768px) {
+      font-size: 0.68rem;
+    }
+
+    [data-compact='true'] & {
+      font-size: 0.76rem;
+      line-height: 1.15;
+      -webkit-line-clamp: 1;
+    }
+
+    [data-tiny='true'] & {
+      display: inline;
+      font-size: 0.68rem;
+      line-height: 1.15;
+      white-space: nowrap;
+      -webkit-line-clamp: unset;
+    }
+  `,
+  reservationHost: css`
+    margin-top: auto;
+    overflow: hidden;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    opacity: 0.9;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+      font-size: 0.6rem;
+    }
+  `,
 }));
+
+type RoomEventResource = {
+  id?: number | string;
+  purpose?: string;
+  host?: string;
+};
+
+type RoomCalendarEvent = Event & {
+  resource?: RoomEventResource;
+};
 
 export default function RoomReservationPage() {
   // data
@@ -64,7 +359,7 @@ export default function RoomReservationPage() {
   const [startDate, setStartDate] = useState(() => dayjs().startOf('week').format('YYYY-MM-DD'));
   const [endDate, setEndDate] = useState(dayjs().endOf('week').format('YYYY-MM-DD'));
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<Event | undefined>();
+  const [currentEvent, setCurrentEvent] = useState<RoomCalendarEvent | undefined>();
 
   const { data: eventResponse, refetch: refetchEvent } = useAppQuery({
     queryKey: [queryKey.room.range(startDate, endDate)],
@@ -83,12 +378,16 @@ export default function RoomReservationPage() {
     mutationFn: RoomControllerService.deleteRoomReservationUsingDelete,
   });
 
-  const eventList: Event[] =
+  const eventList: RoomCalendarEvent[] =
     eventResponse?.data?.map((el) => ({
       title: `${el.purpose} - ${el.host}`,
       start: dayjs(`${el.date} ${el.start}`).toDate(),
       end: dayjs(`${el.date} ${el.end}`).toDate(),
-      resource: el.id,
+      resource: {
+        id: el.id,
+        purpose: el.purpose,
+        host: el.host,
+      },
     })) ?? [];
 
   // methods
@@ -139,7 +438,7 @@ export default function RoomReservationPage() {
     );
   };
 
-  const onSelectEvent = (e: Event) => {
+  const onSelectEvent = (e: RoomCalendarEvent) => {
     setIsModalOpen(true);
     setCurrentEvent(e);
   };
@@ -171,7 +470,7 @@ export default function RoomReservationPage() {
 
     deleteReservation(
       {
-        reservationId: currentEvent?.resource,
+        reservationId: currentEvent?.resource?.id,
       },
       {
         onSuccess() {
@@ -184,45 +483,79 @@ export default function RoomReservationPage() {
     );
   };
 
+  const ReservationEvent = ({ event }: { event: RoomCalendarEvent }) => {
+    const durationMinutes = dayjs(event.end).diff(dayjs(event.start), 'minute');
+    const isTiny = durationMinutes <= 30;
+    const isCompact = durationMinutes < 60;
+    const shouldHideHost = isTiny;
+    const start = dayjs(event.start);
+    const end = dayjs(event.end);
+    const startMeridiem = start.format('A');
+    const endMeridiem = end.format('A');
+    const timeText = startMeridiem === endMeridiem ? `${start.format('A h:mm')} - ${end.format('h:mm')}` : `${start.format('A h:mm')} - ${end.format('A h:mm')}`;
+    const purpose = event.resource?.purpose || event.title;
+
+    if (isTiny) {
+      return (
+        <div className={styles.reservationEvent} data-compact data-tiny>
+          <span className={styles.reservationTime}>{timeText}</span>
+          <span className={styles.reservationPurpose}> · {purpose}</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.reservationEvent} data-compact={isCompact}>
+        <span className={styles.reservationTime}>{timeText}</span>
+        <span className={styles.reservationPurpose}>{purpose}</span>
+        {!shouldHideHost && event.resource?.host && <span className={styles.reservationHost}>{event.resource.host}</span>}
+      </div>
+    );
+  };
+
   // template
   return (
     <>
-      <Block>
-        <WhiteBlock className={styles.whiteBlock}>
-          <div className={styles.wrapper}>
-            <Space direction="vertical" size="large" className={styles.fullWidth}>
-              <Space direction="vertical" size="middle">
-                <h2 className={styles.heading}>동아리방 예약하기</h2>
-                <p className={styles.paragraph}>원하는 시간대에 동아리방을 예약해요.</p>
-              </Space>
-              <div className={styles.calendarWrap}>
-                <Calendar
-                  localizer={localizer}
-                  selectable
-                  style={{
-                    width: '100%',
-                    height: 1000,
-                    minWidth: '600px',
-                  }}
-                  culture="ko"
-                  defaultView={Views.WEEK}
-                  views={{
-                    week: true,
-                    day: true,
-                  }}
-                  events={eventList}
-                  onSelectSlot={onSelectSlot}
-                  onSelectEvent={onSelectEvent}
-                  onRangeChange={onRangeChange}
-                  min={new Date(0, 0, 0, 7, 0, 0)}
-                  max={new Date(0, 0, 0, 23, 0, 0)}
-                  scrollToTime={new Date(0, 0, 0, 7, 0, 0)}
-                />
-              </div>
-            </Space>
-          </div>
-        </WhiteBlock>
-      </Block>
+      <PageShell>
+        <PagePanel>
+          <PageContent>
+            <PageHeader title="동아리방 예약" />
+            <div className={styles.calendarWrap}>
+              <Calendar
+                localizer={localizer}
+                selectable
+                style={{
+                  width: '100%',
+                  height: 1260,
+                }}
+                culture="ko"
+                defaultView={Views.WEEK}
+                views={{
+                  week: true,
+                  day: true,
+                }}
+                messages={{
+                  today: '이번 주',
+                  previous: '이전',
+                  next: '다음',
+                  week: '주간',
+                  day: '일간',
+                }}
+                components={{
+                  event: ReservationEvent,
+                }}
+                events={eventList}
+                onSelectSlot={onSelectSlot}
+                onSelectEvent={onSelectEvent}
+                onRangeChange={onRangeChange}
+                min={new Date(0, 0, 0, 7, 0, 0)}
+                max={new Date(0, 0, 0, 23, 0, 0)}
+                scrollToTime={new Date(0, 0, 0, 7, 0, 0)}
+              />
+            </div>
+          </PageContent>
+        </PagePanel>
+      </PageShell>
       <Modal
         title="동방 예약행사"
         open={isModalOpen}
@@ -237,7 +570,8 @@ export default function RoomReservationPage() {
           </Button>,
         ]}
       >
-        <p className={styles.eventTitle}>{currentEvent?.title}</p>
+        <p className={styles.eventTitle}>{currentEvent?.resource?.purpose || currentEvent?.title}</p>
+        {currentEvent?.resource?.host && <p className={styles.eventTime}>예약자: {currentEvent.resource.host}</p>}
         <p className={styles.eventTime}>
           시작: {dayjs(currentEvent?.start).format('MM월 DD일 HH시 mm분')}
           <br />
