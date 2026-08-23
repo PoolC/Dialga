@@ -1,24 +1,17 @@
-import { Avatar, Button, Empty, Pagination, Result, Skeleton, Typography } from 'antd';
+import { Avatar, Empty, Pagination, Result, Skeleton, Typography } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
 import { stringify } from 'qs';
-import { CommentOutlined, EditOutlined } from '@ant-design/icons';
+import { CommentOutlined } from '@ant-design/icons';
 import { MENU } from '~/constants/menus';
 import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
-import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 
 const useStyles = createStyles(({ css }) => ({
-  topArea: css`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    min-height: 48px;
-  `,
   wrapper: css`
     display: flex;
     align-items: stretch;
@@ -130,7 +123,6 @@ const useStyles = createStyles(({ css }) => ({
 export default function BoardList({ boardType, page }: { boardType: BoardType; page: number }) {
   // data
   const { styles } = useStyles();
-  const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
 
   const boardListQuery = useAppQuery({
     queryKey: queryKey.post.all(boardType, page - 1),
@@ -151,22 +143,6 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
         page,
       })}`,
     );
-
-  const renderWriteButton = () => {
-    const button = (
-      <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
-        <Button type="primary" icon={<EditOutlined />}>
-          글쓰기
-        </Button>
-      </Link>
-    );
-
-    if (boardType !== 'NOTICE') {
-      return button;
-    }
-
-    return isAdmin ? button : null;
-  };
 
   const renderPostItem = (post: PostResponse) => (
     <li className={styles.postItem} key={post.postId}>
@@ -194,7 +170,6 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.topArea}>{renderWriteButton()}</div>
       {match(boardListQuery)
         .with({ status: 'pending' }, () => <Skeleton />)
         .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)

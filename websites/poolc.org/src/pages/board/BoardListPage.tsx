@@ -1,6 +1,8 @@
-import { Tabs } from 'antd';
+import { Button, Tabs } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { stringify } from 'qs';
 import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import BoardList from '~/components/board/BoardList';
 import { useSearchParams } from '~/hooks/useSearchParams';
@@ -27,6 +29,9 @@ const useStyles = createStyles(({ css }) => ({
     .ant-tabs-tab {
       padding: 12px 0 14px;
     }
+  `,
+  writeButton: css`
+    margin-bottom: 8px;
   `,
 }));
 
@@ -89,11 +94,25 @@ export default function BoardListPage() {
 
   const onTabChange = (key: string) => history.push(`/${MENU.BOARD}?boardType=${key}&page=1`);
 
+  const renderWriteButton = () => {
+    if (boardType === 'NOTICE' && !isAdmin) {
+      return null;
+    }
+
+    return (
+      <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`} className={styles.writeButton}>
+        <Button type="primary" icon={<EditOutlined />}>
+          글쓰기
+        </Button>
+      </Link>
+    );
+  };
+
   return (
     <PageShell>
       <PagePanel className={styles.whiteBlock}>
         <div className={styles.wrapper}>
-          <Tabs items={items} activeKey={boardType} onChange={onTabChange} />
+          <Tabs items={items} activeKey={boardType} onChange={onTabChange} tabBarExtraContent={renderWriteButton()} />
         </div>
       </PagePanel>
     </PageShell>
