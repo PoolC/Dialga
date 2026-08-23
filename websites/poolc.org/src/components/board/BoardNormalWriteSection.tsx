@@ -52,7 +52,7 @@ const schema = z.object({
   fileList: z.array(z.string()),
 });
 
-export default function BoardNormalWriteSection({ boardType, postId }: { boardType: Exclude<BoardType, 'JOB'>; postId: number }) {
+export default function BoardNormalWriteSection({ boardType, postId }: { boardType: BoardType; postId: number }) {
   const { styles } = useStyles();
   const history = useHistory();
   const message = useMessage();
@@ -153,7 +153,9 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
       .with('FREE', () => '자유롭게 글을 작성해보아요')
       .with('NOTICE', () => '공지사항을 올릴 수 있어요')
       .with('PROJECT', () => '프로젝트 팀원을 구해요')
-      .with('CS', () => 'CS 전공지식을 공유해요')
+      .with('EXTERNAL', () => '행사, 공모전, 해커톤, 외부 활동을 공유해요')
+      .with('CAREER', () => '채용, 인턴, 커리어 정보를 공유해요')
+      .with('STAFF', () => '운영진 내부 자료와 공지를 정리해요')
       .exhaustive();
 
   const onUploadChange = (info: UploadChangeParam) => {

@@ -1,4 +1,4 @@
-import { Avatar, Breadcrumb, Button, Descriptions, Divider, Form, Input, Popconfirm, Result, Skeleton, Space, Tooltip, Typography } from 'antd';
+import { Avatar, Breadcrumb, Button, Form, Input, Popconfirm, Result, Skeleton, Space, Tooltip, Typography } from 'antd';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { stringify } from 'qs';
@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { Viewer } from '@dialga/react-editor';
 import { FolderOpenTwoTone } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import { MENU } from '~/constants/menus';
 import { getBoardTitle } from '~/lib/utils/boardUtil';
 import { CommentControllerService, PostControllerService, PostResponse, ScrapControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
@@ -20,30 +20,29 @@ import getFileUrl from '~/lib/utils/getFileUrl';
 import { getEmptyArray } from '~/lib/utils/getEmptyArray';
 import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
-import { convertPositionToText } from '~/lib/utils/positionUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
     width: 100%;
-    padding: 0 20px;
+    max-width: 1200px;
+    padding: 0 12px;
     box-sizing: border-box;
   `,
   fullWidth: css`
     width: 100%;
   `,
   writerAvatar: css`
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
   `,
   commentTextArea: css`
     min-width: 120px;
     resize: none;
   `,
   buttonGroup: css`
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    width: 100%;
   `,
   commentButtonWrap: css`
     display: flex;
@@ -52,12 +51,13 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
   `,
   whiteBlock: css`
-    padding: 30px 0;
+    && {
+      padding: 30px 0;
+    }
   `,
   actionButtonGroup: css`
     justify-content: flex-end;
     align-items: center;
-    width: 100%;
   `,
   emotionButton: css`
     display: flex;
@@ -68,10 +68,14 @@ const useStyles = createStyles(({ css }) => ({
     color: orange;
   `,
   fileListBox: css`
-    margin-top: 40px;
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(76, 55, 34, 0.08);
   `,
   fileListTitle: css`
-    font-weight: 500;
+    color: #4c3722;
+    font-size: 0.9rem;
+    font-weight: 700;
   `,
   fileList: css`
     margin-top: 8px;
@@ -94,33 +98,149 @@ const useStyles = createStyles(({ css }) => ({
   `,
   loginDescription: css`
     text-align: center;
-    color: #666;
-    margin-top: 20px;
-  `,
-  commentAvatar: css`
-    width: 40px;
-    height: 40px;
+    color: rgba(76, 55, 34, 0.55);
+    margin: 16px 0 0;
   `,
   comment: css`
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
     width: 100%;
-    padding-bottom: 16px;
+    padding: 16px 0;
   `,
-  divider: css`
-    margin: 0;
+  detailLayout: css`
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 22px;
+  `,
+  breadcrumb: css`
+    color: rgba(76, 55, 34, 0.48);
+
+    a {
+      color: rgba(76, 55, 34, 0.62);
+    }
+  `,
+  headerSection: css`
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+  `,
+  metaRow: css`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  `,
+  writerName: css`
+    color: #4c3722;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+  `,
+  postDate: css`
+    color: rgba(76, 55, 34, 0.46);
+    font-size: 0.88rem;
+    line-height: 1.35;
+  `,
+  titleBlock: css`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  `,
+  titleRow: css`
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+  `,
+  postTitle: css`
+    margin: 0 !important;
+    color: #1f1a16 !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    line-height: 1.32 !important;
+    word-break: keep-all;
+  `,
+  bodySection: css`
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
   `,
   content: css`
-    padding-bottom: 40px;
-    line-height: 1.5;
+    color: #302820;
+    line-height: 1.65;
   `,
   badge: css`
-    width: 35px;
-    height: 35px;
+    width: 24px;
+    height: 24px;
     border: 1px solid #47be9b;
+  `,
+  postFooter: css`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+
+    @media (max-width: 768px) {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  `,
+  commentSection: css`
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  `,
+  commentHeader: css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  `,
+  commentTitle: css`
+    margin: 0;
+    color: #4c3722;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+  `,
+  commentList: css`
+    display: flex;
+    flex-direction: column;
+  `,
+  commentWriter: css`
+    color: #4c3722;
+    font-size: 0.9rem;
+    font-weight: 600;
+  `,
+  commentDate: css`
+    color: rgba(76, 55, 34, 0.46);
+    font-size: 0.84rem;
   `,
   commentBody: css`
     white-space: pre-line;
     margin-bottom: 0px !important;
+    color: #302820;
+    line-height: 1.55;
+  `,
+  commentForm: css`
+    margin-top: 4px;
+
+    textarea {
+      border-color: rgba(76, 55, 34, 0.18);
+      border-radius: 6px;
+    }
+
+    textarea:focus,
+    textarea:focus-within {
+      border-color: #47be9b;
+      box-shadow: 0 0 0 3px rgba(71, 190, 155, 0.14);
+    }
   `,
 }));
 
@@ -268,105 +388,93 @@ export default function BoardDetailPage() {
     }
 
     return (
-      <Space direction="vertical" size="middle" className={styles.wrapper} split={<Divider className={styles.divider} />}>
-        <Breadcrumb
-          items={[
-            { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
-            {
-              title: (
+      <div className={`${styles.wrapper} ${styles.detailLayout}`}>
+        <section className={styles.headerSection}>
+          <Breadcrumb
+            className={styles.breadcrumb}
+            items={[
+              { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
+              {
+                title: (
+                  <Link
+                    to={`/${MENU.BOARD}?${stringify({
+                      boardType: post.boardType,
+                    })}`}
+                  >
+                    {getBoardTitle(post.boardType ?? 'FREE')}
+                  </Link>
+                ),
+              },
+            ]}
+          />
+          <div className={styles.metaRow}>
+            <Avatar className={styles.writerAvatar} src={getProfileImageUrl(post.postProfileImageUrl)} />
+            <span className={styles.writerName}>{post.writerName}</span>
+            {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
+            <span className={styles.postDate}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</span>
+          </div>
+          <div className={styles.titleRow}>
+            <div className={styles.titleBlock}>
+              <Typography.Title level={2} className={styles.postTitle}>
+                {post.title}
+              </Typography.Title>
+            </div>
+            <Space className={styles.buttonGroup}>
+              <Tooltip title="스크랩">
+                <Button icon={<FolderOpenTwoTone twoToneColor={post.isScraped ? 'orange' : 'gray'} />} className={cx(styles.emotionButton, { [styles.accent]: post.isScraped })} onClick={onScrapClick}>
+                  스크랩 {post.scrapCount ?? 0}
+                </Button>
+              </Tooltip>
+            </Space>
+          </div>
+        </section>
+
+        <section className={styles.bodySection}>
+          <div className={styles.content}>
+            <Viewer initialValue={post.body} key={post.body} />
+          </div>
+          {post.fileList && post.fileList.length > 0 && (
+            <div className={styles.fileListBox}>
+              <Typography.Text className={styles.fileListTitle}>첨부파일</Typography.Text>
+              <div className={styles.fileList}>
+                {post.fileList.map((file, i) => (
+                  <a href={getFileUrl(file)} key={i} download={file} className={styles.fileItem}>
+                    {decodeURI(file)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          <div className={styles.postFooter}>
+            {isWriter && (
+              <Space className={styles.actionButtonGroup}>
                 <Link
-                  to={`/${MENU.BOARD}?${stringify({
+                  to={`/${MENU.BOARD}/write?${stringify({
                     boardType: post.boardType,
+                    postId: post.postId,
                   })}`}
                 >
-                  {getBoardTitle(post.boardType ?? 'FREE')}
+                  <Button type="primary">수정</Button>
                 </Link>
-              ),
-            },
-          ]}
-        />
-        <Space direction="vertical" size="middle" className={styles.fullWidth}>
-          <Space align="center">
-            <Avatar className={styles.writerAvatar} src={getProfileImageUrl(post.postProfileImageUrl)} />
-            <Space direction="vertical" size={3}>
-              <Space>
-                <Typography.Text>{post.writerName}</Typography.Text>
-                {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
+                <Popconfirm title="게시글 삭제하기" description="게시글을 정말 삭제하시겠어요?" okText="네" cancelText="아니요" onConfirm={onDeleteConfirm}>
+                  <Button type="primary" danger>
+                    삭제
+                  </Button>
+                </Popconfirm>
               </Space>
-            </Space>
-            <Divider type="vertical" className={styles.divider} />
-            <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
-          </Space>
-          <Space direction="vertical" size={0}>
-            {post.boardType === 'JOB' ? (
-              <Descriptions title={post.title}>
-                <Descriptions.Item label="고용형태">{convertPositionToText(post.position)}</Descriptions.Item>
-                <Descriptions.Item label="지역">{post.region}</Descriptions.Item>
-                <Descriptions.Item label="분야">{post.field}</Descriptions.Item>
-                <Descriptions.Item label="마감일자">{dayjs(post.deadline).format('YYYY. MM. DD')}</Descriptions.Item>
-              </Descriptions>
-            ) : (
-              <Typography.Title level={2}>{post.title}</Typography.Title>
             )}
-            <div className={styles.content}>
-              <Viewer initialValue={post.body} key={post.body} />
-            </div>
-            {post.fileList && post.fileList.length > 0 && (
-              <div className={styles.fileListBox}>
-                <Typography.Text className={styles.fileListTitle}>첨부파일</Typography.Text>
-                <div className={styles.fileList}>
-                  {post.fileList.map((file, i) => (
-                    <a href={getFileUrl(file)} key={i} download={file} className={styles.fileItem}>
-                      {decodeURI(file)}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-          </Space>
-          <Space className={styles.buttonGroup}>
-            {/*  <Tooltip title={'좋아요'}> */}
-            {/*    <Button */}
-            {/*      icon={<FcLike />} */}
-            {/*      className={styles.emotionButton} */}
-            {/*      onClick={onLikeClick} */}
-            {/*    > */}
-            {/*      {post.likeCount ?? 0} */}
-            {/*    </Button> */}
-            {/*  </Tooltip> */}
-            <Tooltip title="스크랩">
-              <Button icon={<FolderOpenTwoTone twoToneColor={post.isScraped ? 'orange' : 'gray'} />} className={cx(styles.emotionButton, { [styles.accent]: post.isScraped })} onClick={onScrapClick}>
-                {post.scrapCount ?? 0}
-              </Button>
-            </Tooltip>
-          </Space>
-          {isWriter && (
-            <Space className={styles.actionButtonGroup}>
-              <Link
-                to={`/${MENU.BOARD}/write?${stringify({
-                  boardType: post.boardType,
-                  postId: post.postId,
-                })}`}
-              >
-                <Button type="primary">수정</Button>
-              </Link>
-              <Popconfirm title="게시글 삭제하기" description="게시글을 정말 삭제하시겠어요?" okText="네" cancelText="아니요" onConfirm={onDeleteConfirm}>
-                <Button type="primary" danger>
-                  삭제
-                </Button>
-              </Popconfirm>
-            </Space>
-          )}
-        </Space>
+          </div>
+        </section>
+
         <CommentBox postId={postId} commentList={post.commentList} onRefetch={() => refetchPost()} />
-      </Space>
+      </div>
     );
   };
 
   return (
-    <Block>
-      <WhiteBlock className={styles.whiteBlock}>{renderContent()}</WhiteBlock>
-    </Block>
+    <PageShell>
+      <PagePanel className={styles.whiteBlock}>{renderContent()}</PagePanel>
+    </PageShell>
   );
 }
 
@@ -412,21 +520,26 @@ function CommentBox({ postId, commentList, onRefetch }: { postId: number; commen
   };
 
   return (
-    <Space direction="vertical" size="middle" className={styles.fullWidth}>
-      {commentList?.map((comment) => (
-        <Space align="start" key={comment.commentId} className={styles.comment} direction="vertical">
-          <Space direction="vertical" size="large">
-            <Space>
-              <Typography.Text>{comment.writerName}</Typography.Text>
-              {comment.badge && <Avatar src={getFileUrl(comment.badge.imageUrl)} className={styles.badge} />}
+    <section className={styles.commentSection}>
+      <div className={styles.commentHeader}>
+        <h3 className={styles.commentTitle}>댓글 {commentList?.length ?? 0}개</h3>
+      </div>
+      <div className={styles.commentList}>
+        {commentList?.map((comment) => (
+          <div key={comment.commentId} className={styles.comment}>
+            <Space direction="vertical" size={8} className={styles.fullWidth}>
+              <Space align="center">
+                <span className={styles.commentWriter}>{comment.writerName}</span>
+                {comment.badge && <Avatar src={getFileUrl(comment.badge.imageUrl)} className={styles.badge} />}
+                <span className={styles.commentDate}>{dayjs(comment.createdAt).format('YYYY. MM. DD')}</span>
+              </Space>
+              <Typography.Paragraph className={styles.commentBody}>{comment.body}</Typography.Paragraph>
             </Space>
-          </Space>
-          <Typography.Paragraph className={styles.commentBody}>{comment.body}</Typography.Paragraph>
-          <Typography.Text type="secondary">{dayjs(comment.createdAt).format('YYYY. MM. DD')}</Typography.Text>
-        </Space>
-      ))}
+          </div>
+        ))}
+      </div>
       {isLogin ? (
-        <Form onSubmitCapture={form.onSubmit(onSubmit, noop)}>
+        <Form className={styles.commentForm} onSubmitCapture={form.onSubmit(onSubmit, noop)}>
           <Space direction="vertical" className={styles.fullWidth}>
             <Input.TextArea className={styles.commentTextArea} placeholder="댓글을 남겨주세요 :)" {...form.getInputProps('body')} />
             <div className={styles.commentButtonWrap}>
@@ -439,6 +552,6 @@ function CommentBox({ postId, commentList, onRefetch }: { postId: number; commen
       ) : (
         <Typography.Paragraph className={styles.loginDescription}>로그인하고 댓글을 남겨보세요.</Typography.Paragraph>
       )}
-    </Space>
+    </section>
   );
 }

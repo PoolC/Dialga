@@ -1,5 +1,4 @@
-import { Avatar, Button, Empty, Pagination, Result, Skeleton, Space, Table, Typography } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import { Avatar, Button, Empty, Pagination, Result, Skeleton, Typography } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
@@ -14,48 +13,110 @@ import { useAppSelector } from '~/hooks/useAppSelector';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 
 const useStyles = createStyles(({ css }) => ({
-  fullWidth: css`
-    width: 100%;
-  `,
-  metaInfoArea: css`
-    width: 100%;
-    justify-content: space-between;
-  `,
-  search: css`
-    max-width: 300px;
-  `,
-  link: css`
-    display: block;
-    width: 100%;
-  `,
   topArea: css`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    min-height: 48px;
   `,
   wrapper: css`
     display: flex;
     align-items: stretch;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+  `,
+  list: css`
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgba(76, 55, 34, 0.08);
   `,
   paginationWrap: css`
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 12px;
+  `,
+  postItem: css`
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+  `,
+  postLink: css`
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    width: 100%;
+    padding: 16px;
+    color: inherit;
+    text-decoration: none;
+    transition: 0.2s;
+
+    &:hover {
+      color: inherit;
+      text-decoration: none;
+      background-color: rgba(229, 240, 237, 0.55);
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px 10px;
+    }
+  `,
+  postMain: css`
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 9px;
+  `,
+  writerArea: css`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4c3722;
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.35;
+  `,
+  postTitle: css`
+    margin: 0 0 6px;
+    color: #1f1a16;
+    font-size: 1.04rem;
+    font-weight: 700;
+    line-height: 1.35;
+    word-break: keep-all;
+  `,
+  postExcerpt: css`
+    margin: 0;
+    color: #302820;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+    word-break: keep-all;
+  `,
+  postMeta: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: rgba(76, 55, 34, 0.48);
+    font-size: 0.88rem;
+    line-height: 1.4;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+      justify-content: flex-start;
+    }
   `,
   commentWrap: css`
     display: flex;
     align-items: center;
-    gap: 8px;
-  `,
-  avatar: css`
-    width: 40px;
-    height: 40px;
+    gap: 6px;
+    color: #47be9b;
   `,
   badge: css`
-    width: 35px;
-    height: 35px;
+    width: 24px;
+    height: 24px;
     border: 1px solid #47be9b;
   `,
   clamp: css`
@@ -91,35 +152,6 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
       })}`,
     );
 
-  // template
-  const columns: ColumnsType<PostResponse> = [
-    {
-      render: (_, post) => (
-        <Link to={`${MENU.BOARD}/${post.postId}`} className={styles.link}>
-          <Space direction="vertical" className={styles.fullWidth} size="middle">
-            <Space className={styles.metaInfoArea} size="middle">
-              <Space>
-                <Typography.Text>{post.writerName}</Typography.Text>
-                {post.badge && <Avatar src={getFileUrl(post.badge?.imageUrl)} className={styles.badge} />}
-              </Space>
-              <Space size="middle">
-                <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
-                <div className={styles.commentWrap}>
-                  <CommentOutlined />
-                  {post.commentCount ?? 0}
-                </div>
-              </Space>
-            </Space>
-            <Space direction="vertical" size={0}>
-              <Typography.Title level={5}>{post.title}</Typography.Title>
-              {post?.body && <Typography.Text className={styles.clamp}>{getInnerTextFromMarkdown(post.body)}</Typography.Text>}
-            </Space>
-          </Space>
-        </Link>
-      ),
-    },
-  ];
-
   const renderWriteButton = () => {
     const button = (
       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
@@ -135,6 +167,30 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
 
     return isAdmin ? button : null;
   };
+
+  const renderPostItem = (post: PostResponse) => (
+    <li className={styles.postItem} key={post.postId}>
+      <Link to={`/${MENU.BOARD}/${post.postId}`} className={styles.postLink}>
+        <div className={styles.postMain}>
+          <div className={styles.writerArea}>
+            <span>{post.writerName}</span>
+            {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
+          </div>
+          <div>
+            <h3 className={styles.postTitle}>{post.title}</h3>
+            {post.body && <p className={`${styles.postExcerpt} ${styles.clamp}`}>{getInnerTextFromMarkdown(post.body)}</p>}
+          </div>
+        </div>
+        <div className={styles.postMeta}>
+          <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>
+          <span className={styles.commentWrap}>
+            <CommentOutlined />
+            {post.commentCount ?? 0}
+          </span>
+        </div>
+      </Link>
+    </li>
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -155,7 +211,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
 
           return (
             <>
-              <Table dataSource={filteredList} columns={columns} showHeader={false} pagination={false} rowKey="postId" />
+              <ul className={styles.list}>{filteredList.map(renderPostItem)}</ul>
               <div className={styles.paginationWrap}>
                 <Pagination current={page} total={maxPage ? maxPage * 10 : 0} showSizeChanger={false} onChange={onPageChange} />
               </div>
