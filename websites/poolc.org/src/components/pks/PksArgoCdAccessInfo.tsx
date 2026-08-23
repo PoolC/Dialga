@@ -1,13 +1,13 @@
 import { Form, Input } from 'antd';
 import { CopyOutlined, CheckOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import useCopy from '../../hooks/useCopy';
+import useCopy from '~/hooks/useCopy';
 
 const USER_NAME = 'poolini';
 
 const PASSWORD = 'rgbc0ffee';
 
-export default function MyPageArgoCDForm() {
+export default function PksArgoCdAccessInfo() {
   const { styles } = useStyles();
 
   const { isCopied: isUserNameCopied, copy: copyUserName } = useCopy();

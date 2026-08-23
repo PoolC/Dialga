@@ -20,6 +20,7 @@ const MENU = {
   NOT_FOUND: 'not-found',
   INTERVIEW_TIME: 'interview-time',
   BOARD: 'board',
+  PKS: 'pks',
   MY_PAGE: 'my-page',
   MY_PAGE_BADGE_LIST: 'badge-list',
   MY_PAGE_MY_POSTS: 'my-posts',

@@ -76,9 +76,9 @@ const Menus = ({
       content: 'Room',
     },
     {
-      to: `/${MENU.MY_PAGE}#pks`,
+      to: `/${MENU.PKS}`,
       visible: isLogin,
-      content: 'K8s',
+      content: 'PKS',
     },
     {
       to: `/${MENU.APPLY}`,

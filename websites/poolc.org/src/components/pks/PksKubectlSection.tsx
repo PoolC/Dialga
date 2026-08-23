@@ -3,9 +3,10 @@ import { Button, Popover, Space, Typography, List } from 'antd';
 import { createStyles } from 'antd-style';
 import { ReactNode } from 'react';
 import useCopy from '~/hooks/useCopy';
-import MyPageArgoCDForm from './MyPageArgoCDForm';
+import PksArgoCdAccessInfo from './PksArgoCdAccessInfo';
+import { publicConfig } from '~/lib/config/publicConfig';
 
-export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
+export default function PksKubectlSection({ jwtToken, showLinks = true }: { jwtToken: string; showLinks?: boolean }) {
   const { styles } = useStyles();
   const { isCopied, copy } = useCopy();
 
@@ -17,56 +18,58 @@ export default function MyPagePKSSection({ jwtToken }: { jwtToken: string }) {
     {
       title: 'kubectl 빠른 설정',
       icon: <SettingTwoTone size={24} twoToneColor="#adb5bd" />,
-      link: 'https://github.com/PoolC/PKS-docs/tree/main/docs/user-guides',
+      link: publicConfig.pks.userGuide.url,
     },
     {
       title: '전체 문서',
       icon: <BookTwoTone size={24} twoToneColor="#ffa94d" />,
-      link: 'https://github.com/PoolC/PKS-docs/tree/main',
+      link: publicConfig.pks.docs.url,
     },
     {
       title: (
         <Space size={4}>
           Argo CD
-          <Popover title="계정정보" content={<MyPageArgoCDForm />}>
+          <Popover title="계정정보" content={<PksArgoCdAccessInfo />}>
             <QuestionCircleFilled />
           </Popover>
         </Space>
       ),
       icon: <DeploymentUnitOutlined size={24} />,
-      link: 'http://argocd.dev.poolc.org',
+      link: publicConfig.pks.argoCd.url,
     },
     {
       title: '모니터링',
       icon: <EyeTwoTone size={24} twoToneColor="#4dabf7" />,
-      link: 'http://mon.dev.poolc.org',
+      link: publicConfig.pks.grafana.url,
     },
   ];
 
   const code = dedent`kubectl config set-credentials pks --token=${jwtToken}
-                kubectl config set-cluster pks --server="https://165.132.131.121:6443" --insecure-skip-tls-verify=true
+                kubectl config set-cluster pks --server="${publicConfig.pks.clusterServer}" --insecure-skip-tls-verify=true
                 kubectl config set-context pks --cluster=pks --user=pks
                 kubectl config use-context pks`;
 
   return (
     <Space direction="vertical" size="middle" className={styles.container}>
-      <List
-        size="large"
-        className={styles.fullWidth}
-        bordered
-        dataSource={linkList}
-        renderItem={(item) => (
-          <List.Item>
-            <a href={item.link} className={styles.link} target="_blank" rel="noreferrer">
-              <div className={styles.linkInner}>
-                {item.icon}
-                <Typography.Text>{item.title}</Typography.Text>
-              </div>
-              <ArrowRightOutlined size={18} />
-            </a>
-          </List.Item>
-        )}
-      />
+      {showLinks ? (
+        <List
+          size="large"
+          className={styles.fullWidth}
+          bordered
+          dataSource={linkList}
+          renderItem={(item) => (
+            <List.Item>
+              <a href={item.link} className={styles.link} target="_blank" rel="noreferrer">
+                <div className={styles.linkInner}>
+                  {item.icon}
+                  <Typography.Text>{item.title}</Typography.Text>
+                </div>
+                <ArrowRightOutlined size={18} />
+              </a>
+            </List.Item>
+          )}
+        />
+      ) : null}
       <div className={styles.codeBlock}>
         <div className={styles.codeHeader}>
           <span className={styles.codeLabel}>Command</span>
