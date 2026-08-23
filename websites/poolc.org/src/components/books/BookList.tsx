@@ -1,35 +1,107 @@
-import { Empty, Result, Skeleton } from 'antd';
+import { Button, Input, Result, Select, Skeleton } from 'antd';
 import { match } from 'ts-pattern';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { createStyles } from 'antd-style';
 import { BookControllerService, BookResponse, queryKey, useAppInfiniteQuery } from '~/lib/api-v2';
-import { FilterSearchToolbar } from '~/components/common/FilterSearchToolbar/FilterSearchToolbar';
+import { EmptyState } from '~/components/common/EmptyState/EmptyState';
+import { CardGrid } from '~/components/common/CardGrid/CardGrid';
+import { PageContent } from '~/components/common/PageLayout/PageLayout';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
+import colors from '~/lib/styles/colors';
 
 import BookCard from './BookCard';
 
 const useStyles = createStyles(({ css }) => ({
-  wrapper: css`
+  content: css`
     width: 100%;
+    max-width: 1210px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    padding: 0px 10%;
+    align-items: stretch;
     box-sizing: border-box;
   `,
-  flexList: css`
-    width: 100%;
-    max-width: 930px;
-    /* max-width: 1050px; */
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
-    grid-gap: 138px;
-    justify-items: center;
-  `,
-  option: css`
+  listBody: css`
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  `,
+  flexList: css`
+    max-width: 1210px;
+    align-items: stretch;
+    justify-content: flex-start !important;
+    gap: 42px 80px;
+    margin: 0;
+    padding: 0;
+  `,
+  toolbar: css`
+    display: flex;
+    width: 300px;
+    gap: 8px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  `,
+  searchSelect: css`
+    width: 72px;
+
+    .ant-select-selector {
+      height: 36px !important;
+      border: none !important;
+      border-radius: 6px !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background-color: rgba(245, 245, 245, 1) !important;
+      align-items: center;
+    }
+
+    .ant-select-selection-item {
+      color: rgba(130, 121, 113, 1);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 36px !important;
+    }
+  `,
+  searchInput: css`
+    flex: 1;
+    min-width: 0;
+
+    &.ant-input {
+      height: 36px;
+      border: 1px solid #d8d0c3;
+      border-radius: 6px;
+      color: ${colors.brown[1]};
+      font-size: 14px;
+      box-shadow: none;
+    }
+
+    &.ant-input::placeholder {
+      color: #9b8d7b;
+    }
+
+    &.ant-input:focus {
+      border-color: ${colors.mint[3]};
+      box-shadow: 0 0 0 3px rgb(0 168 137 / 16%);
+    }
+  `,
+  searchButton: css`
+    width: 52px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    background: ${colors.mint[3]};
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      background: ${colors.mint[3]} !important;
+      opacity: 0.88;
+    }
+  `,
+  skeleton: css`
     width: 100%;
   `,
 }));
@@ -97,51 +169,61 @@ const useInView = (sorting: sortingType, keyword: string, search: searchType) =>
 export default function BookList() {
   const { styles } = useStyles();
 
-  const [sorting, setSorting] = useState<sortingType>('CREATED_AT');
-
+  const sorting: sortingType = 'CREATED_AT';
+  const [searchType, setSearchType] = useState<searchType>('TITLE');
+  const [keyword, setKeyword] = useState('');
   const [searchInfo, setSearchInfo] = useState<{ type: searchType; keyword: string }>({ type: 'TITLE', keyword: '' });
   const bookListInfiniteQuery = useInView(sorting, searchInfo.keyword, searchInfo.type);
 
+  const onSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSearchInfo({ type: searchType, keyword });
+  };
+
   return (
-    <div className={styles.wrapper}>
-      <h2>보유 도서</h2>
-      <div className={styles.option}>
-        <FilterSearchToolbar
-          filter={{
-            value: sorting,
-            onChange: setSorting,
-            options: [
-              { value: 'CREATED_AT', label: '등록순' },
-              { value: 'TITLE', label: '가나다순' },
-              { value: 'RENT_TIME', label: '최근반납순' },
-            ],
-          }}
-          search={{
-            type: searchInfo.type,
-            keyword: searchInfo.keyword,
-            onSubmit: setSearchInfo,
-            options: [
-              { value: 'TITLE', label: '제목' },
-              { value: 'AUTHOR', label: '저자' },
-              { value: 'TAG', label: '태그' },
-            ],
-          }}
-        />
+    <PageContent className={styles.content}>
+      <PageHeader
+        title="보유 도서"
+        actions={
+          <form className={styles.toolbar} onSubmit={onSubmitSearch}>
+            <Select
+              getPopupContainer={(trigger) => trigger.parentNode}
+              className={styles.searchSelect}
+              value={searchType}
+              onChange={(value) => setSearchType(value)}
+              options={[
+                { value: 'TITLE', label: '제목' },
+                { value: 'AUTHOR', label: '저자' },
+                { value: 'TAG', label: '태그' },
+              ]}
+            />
+            <Input className={styles.searchInput} placeholder="도서 검색" value={keyword} onChange={(event) => setKeyword(event.target.value)} />
+            <Button className={styles.searchButton} type="primary" htmlType="submit">
+              검색
+            </Button>
+          </form>
+        }
+      />
+      <div className={styles.listBody}>
+        {match(bookListInfiniteQuery)
+          .with({ isLoading: true }, () => <Skeleton className={styles.skeleton} />)
+          .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
+          .with({ isSuccess: true }, ({ products }) => (
+            <CardGrid className={styles.flexList}>
+              {products.length > 0 ? (
+                products.map((bookData) => <BookCard key={bookData.id} data={bookData} />)
+              ) : (
+                <EmptyState>등록된 도서가 없습니다.</EmptyState>
+              )}
+            </CardGrid>
+          ))
+          .otherwise(() => (
+            <CardGrid className={styles.flexList}>
+              <EmptyState>등록된 도서가 없습니다.</EmptyState>
+            </CardGrid>
+          ))}
       </div>
-      {match(bookListInfiniteQuery)
-        .with({ isLoading: true }, () => <Skeleton style={{ width: '100%' }} />)
-        .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
-        .with({ isSuccess: true }, ({ products }) => (
-          <div className={styles.flexList}>
-            {products.map((bookData) => (
-              <BookCard key={bookData.id} data={bookData} />
-            ))}
-          </div>
-        ))
-        .otherwise(() => (
-          <Empty description="데이터가 없습니다" />
-        ))}
-      {bookListInfiniteQuery.isFetchingNextPage ? <Skeleton /> : <div ref={bookListInfiniteQuery.bottomRef} />}
-    </div>
+      {bookListInfiniteQuery.isFetchingNextPage ? <Skeleton className={styles.skeleton} /> : <div ref={bookListInfiniteQuery.bottomRef} />}
+    </PageContent>
   );
 }

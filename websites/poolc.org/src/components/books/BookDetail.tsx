@@ -4,73 +4,149 @@ import { createStyles } from 'antd-style';
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { BookControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
-import { Block, WhiteBlock } from '~/styles/common/Block.styles';
-// import { BookListSearch } from './BookList';
 import { useAppSelector } from '~/hooks/useAppSelector';
 import getFileUrl from '~/lib/utils/getFileUrl';
+import { PageContent, PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
+import colors from '~/lib/styles/colors';
+
+const FALLBACK_BOOK_IMAGE = '/main-banner.png';
 
 const useStyles = createStyles(({ css }) => ({
-  wrapper: css`
-    display: flex;
-    flex-direction: column;
-    gap: 82px;
-  `,
   content: css`
     width: 100%;
-    max-width: 627px;
+    max-width: 1210px;
     display: flex;
     flex-direction: column;
-    gap: 84px;
+    align-items: stretch;
+    box-sizing: border-box;
   `,
-  bookInfo: css`
+  header: css`
+    && {
+      justify-content: center;
+      text-align: center;
+    }
+
+    && > div:first-of-type {
+      width: 100%;
+      align-items: center;
+      text-align: center;
+    }
+
+    && h2 {
+      justify-content: center;
+    }
+  `,
+  skeletonWrap: css`
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  `,
+  detailBody: css`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    margin-top: 20px;
+  `,
+  hero: css`
+    display: grid;
+    width: 100%;
+    max-width: 900px;
+    grid-template-columns: 300px minmax(0, 1fr);
     align-items: center;
-    gap: 51px;
-    /* display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 51px; */
+    gap: 56px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 28px;
+    }
   `,
   bookCover: css`
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    /* width: 100px; */
-    width: auto;
   `,
-  bookhandler: css`
+  coverImage: css`
+    box-shadow: 2px 2px 21.7px rgba(115, 115, 115, 0.25);
+
+    .ant-image-img {
+      object-fit: cover;
+    }
+  `,
+  bookInfo: css`
     display: flex;
+    min-width: 0;
     flex-direction: column;
-    justify-content: space-between;
-    /* gap: 23px; */
-    width: 310px;
-    gap: 5px;
+    align-items: flex-start;
+    gap: 16px;
+
+    @media (max-width: 768px) {
+      align-items: center;
+      text-align: center;
+    }
   `,
   bookMeta: css`
     display: flex;
+    width: 100%;
     flex-direction: column;
-    /* width: 310px; */
-    gap: 12px;
+    gap: 10px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
   `,
   bookTitle: css`
-    font-weight: 700;
-    font-size: 28px;
-    overflow-wrap: break-word;
+    margin: 0;
+    color: ${colors.brown[1]};
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
   `,
+  metaText: css`
+    margin: 0;
+    color: ${colors.brown[0]};
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.45;
+  `,
+  donorText: css`
+    margin: 0;
+    color: ${colors.mint[3]};
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.45;
+  `,
+  actionArea: css`
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  `,
+  buttonsWrapper: css`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
+  `,
   buttonCommon: css`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
-    width: 63px;
-    height: 30px;
+    height: 34px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 8px;
     color: white;
-    border-radius: 11px;
+    font-size: 0.875rem;
+    font-weight: 700;
     text-decoration: none;
+    box-shadow: none;
   `,
   buttonDisabled: css`
     background-color: rgba(217, 217, 217, 1);
@@ -80,34 +156,58 @@ const useStyles = createStyles(({ css }) => ({
     }
   `,
   buttonAbled: css`
-    background-color: rgba(72, 189, 155, 1);
+    background-color: ${colors.mint[3]};
+    &:hover,
+    &:focus {
+      background-color: ${colors.mint[3]} !important;
+      opacity: 0.88;
+    }
   `,
-
-  buttonsWrapper: css`
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    align-items: center;
-    justify-content: start;
-  `,
-  borrowingPart: css`
+  borrowingInfo: css`
     display: flex;
     flex-direction: column;
-    gap: 23px;
+    gap: 8px;
   `,
   borrowingText: css`
+    margin: 0;
+    color: ${colors.brown[0]};
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  `,
+  descriptionInfo: css`
+    display: flex;
+    width: min(100%, 860px);
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(76, 55, 34, 0.08);
+  `,
+  sectionLabel: css`
+    margin: 0;
+    color: ${colors.brown[1]};
+    font-size: 1rem;
     font-weight: 700;
-    font-size: 15px;
-    color: rgba(130, 121, 113, 1);
+    line-height: 1.4;
   `,
-  descripticInfo: css`
-    /* width: 627px; */
-    width: auto;
-    border: 1px solid rgba(217, 217, 217, 1);
-    border-radius: 10px;
-    padding: 30px 34px;
+  descriptionText: css`
+    margin: 0;
+    color: ${colors.brown[1]};
+    font-size: 0.96rem;
+    font-weight: 300;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    word-break: keep-all;
   `,
-  descripticLabel: css``,
+  emptyDescription: css`
+    color: ${colors.brown[0]};
+  `,
+  panel: css`
+    && {
+      padding: 60px 0;
+    }
+  `,
 }));
 
 export default function BookDetail({ bookId }: { bookId: number }) {
@@ -119,6 +219,7 @@ export default function BookDetail({ bookId }: { bookId: number }) {
   });
 
   const loginId = useAppSelector((state) => state.auth.user.memberId);
+  const isLoggedIn = Boolean(loginId);
 
   const { mutate: borrowBook, isPending: isPendingBorrowing } = useAppMutation({
     mutationFn: BookControllerService.borrowBookUsingPost,
@@ -128,124 +229,97 @@ export default function BookDetail({ bookId }: { bookId: number }) {
   });
 
   return (
-    <Block>
-      <WhiteBlock className={styles.wrapper}>
-        <h2>도서 정보</h2>
-
-        {match(bookDetailQuery)
-          .with({ status: 'pending' }, () => <Skeleton />)
-          .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
-          .with({ status: 'success' }, ({ data } /* { posts: postList, maxPage } */) => {
-            const bookStatus = data.status;
-            const { author, borrowDate, borrower, description, donor, imageURL, publishedDate, publisher, title } = data;
-            return (
-              <div className={styles.content}>
-                <div className={styles.bookInfo}>
-                  <div className={styles.bookCover}>
-                    {/* <img src={imageURL} alt={`${title} 이미지`} style={{ height: '300px' }} /> */}
-                    <Image src={getFileUrl(imageURL)} alt={`${title} 이미지`} height="300px" />
-                  </div>
-                  <div className={styles.bookhandler}>
-                    <div className={styles.bookMeta}>
-                      <h3 className={styles.bookTitle}>{title}</h3>
-
-                      <p style={{ fontSize: '15px', fontWeight: '700', color: 'rgba(130, 121, 113, 1)' }}>{`${author} | ${publisher} | ${publishedDate?.slice(0, 4)}`}</p>
-                      <p style={{ fontSize: '15px', fontWeight: '700', color: 'rgba(72, 189, 155, 1)' }}>{`기증자: ${donor}`}</p>
-                    </div>
-                    {isPendingBorrowing || isPendingReturning ? (
-                      <Skeleton />
-                    ) : (
-                      <div className={styles.borrowingPart}>
-                        <div style={{ width: '310px', height: '1px', background: 'rgba(238, 238, 238, 1)' }} />
-                        {loginId ? (
-                          <div className={styles.buttonsWrapper}>
-                            <Button
-                              type="primary"
-                              disabled={bookStatus !== 'AVAILABLE'}
-                              className={`${styles.buttonCommon} ${bookStatus === 'AVAILABLE' ? styles.buttonAbled : styles.buttonDisabled} `}
-                              onClick={() => {
-                                borrowBook(
-                                  { id: bookId },
-                                  {
-                                    onSuccess: () => {
-                                      queryClient.invalidateQueries({ queryKey: queryKey.book.book(bookId) });
-                                    },
-                                  },
-                                );
-                              }}
-                            >
-                              대출하기
-                            </Button>
-                            <Button
-                              type="primary"
-                              disabled={bookStatus === 'AVAILABLE'}
-                              className={`${styles.buttonCommon} ${bookStatus !== 'AVAILABLE' ? styles.buttonAbled : styles.buttonDisabled} `}
-                              onClick={() => {
-                                returnBook(
-                                  { id: bookId },
-                                  {
-                                    onSuccess: () => {
-                                      queryClient.invalidateQueries({ queryKey: queryKey.book.book(bookId) });
-                                    },
-                                  },
-                                );
-                              }}
-                            >
-                              반납하기
-                            </Button>
-                            {/* <Button type="primary" className={`${styles.buttonCommon} ${styles.buttonDisabled}`}>
-                            예약하기
-                          </Button> */}
-                          </div>
-                        ) : (
-                          false
-                        )}
-
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                          <p className={styles.borrowingText}>{`대출자: ${borrower?.name || ''}`}</p>
-                          <p className={styles.borrowingText}>{`대출일: ${borrowDate || ''}`}</p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.descripticInfo}>
-                  {/* <div>
-                    <h4>책 리뷰:</h4>
-                    <p>{description}</p>
-                  </div> */}
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: '21px', justifyContent: 'space-between' }}>
-                    <p
-                      style={{
-                        width: '70px ',
-                        height: '25px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: '9px',
-                        background: 'rgba(245, 245, 245, 1)',
-                        color: 'rgba(130, 121, 113, 1)',
-                        fontWeight: '700',
-                        padding: '3px 5px',
-                      }}
-                    >
-                      책 소개:
-                    </p>
-                    <p style={{ paddingTop: '5px', width: '100%', fontWeight: '600', lineHeight: '1.3', whiteSpace: 'pre-wrap' }}>{`${description}`}</p>
-                    {/* <p style={{ width: '503px', fontWeight: '600', lineHeight: '1.3', whiteSpace: 'pre-wrap' }}>{`${description}`}</p> */}
-                  </div>
-                  {/* <div>
-                    <h4>작가 소개:</h4>
-                    <p>{description}</p>
-                  </div> */}
-                </div>
-                {/* <div>대충 페이지네이션?</div> */}
+    <PageShell>
+      <PagePanel className={styles.panel}>
+        <PageContent className={styles.content}>
+          <PageHeader title="도서 정보" className={styles.header} />
+          {match(bookDetailQuery)
+            .with({ status: 'pending' }, () => (
+              <div className={styles.skeletonWrap}>
+                <Skeleton active />
+                <Skeleton active />
               </div>
-            );
-          })
-          .exhaustive()}
-        {/* <BookListSearch setSearch={(data) => console.log('dadta: ', data)} /> */}
-      </WhiteBlock>
-    </Block>
+            ))
+            .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
+            .with({ status: 'success' }, ({ data }) => {
+              const bookStatus = data.status;
+              const { author, borrowDate, borrower, description, donor, imageURL, publishedDate, publisher, title } = data;
+              const imageSrc = imageURL ? getFileUrl(imageURL) : FALLBACK_BOOK_IMAGE;
+
+              return (
+                <div className={styles.detailBody}>
+                  <section className={styles.hero}>
+                    <div className={styles.bookCover}>
+                      <Image className={styles.coverImage} src={imageSrc} fallback={FALLBACK_BOOK_IMAGE} preview={false} alt={`${title} 이미지`} width="300px" height="394px" />
+                    </div>
+                    <div className={styles.bookInfo}>
+                      <div className={styles.bookMeta}>
+                        <h3 className={styles.bookTitle}>{title}</h3>
+                        <p className={styles.metaText}>{[author, publisher, publishedDate?.slice(0, 4)].filter(Boolean).join(' | ')}</p>
+                        <p className={styles.donorText}>{`기증자: ${donor || 'PoolC'}`}</p>
+                      </div>
+                      {isPendingBorrowing || isPendingReturning ? (
+                        <Skeleton />
+                      ) : (
+                        <div className={styles.actionArea}>
+                          {isLoggedIn && (
+                            <div className={styles.buttonsWrapper}>
+                              <Button
+                                type="primary"
+                                disabled={bookStatus !== 'AVAILABLE'}
+                                className={`${styles.buttonCommon} ${bookStatus === 'AVAILABLE' ? styles.buttonAbled : styles.buttonDisabled} `}
+                                onClick={() => {
+                                  borrowBook(
+                                    { id: bookId },
+                                    {
+                                      onSuccess: () => {
+                                        queryClient.invalidateQueries({ queryKey: queryKey.book.book(bookId) });
+                                      },
+                                    },
+                                  );
+                                }}
+                              >
+                                대출하기
+                              </Button>
+                              <Button
+                                type="primary"
+                                disabled={bookStatus === 'AVAILABLE'}
+                                className={`${styles.buttonCommon} ${bookStatus !== 'AVAILABLE' ? styles.buttonAbled : styles.buttonDisabled} `}
+                                onClick={() => {
+                                  returnBook(
+                                    { id: bookId },
+                                    {
+                                      onSuccess: () => {
+                                        queryClient.invalidateQueries({ queryKey: queryKey.book.book(bookId) });
+                                      },
+                                    },
+                                  );
+                                }}
+                              >
+                                반납하기
+                              </Button>
+                            </div>
+                          )}
+                          {bookStatus !== 'AVAILABLE' && (
+                            <div className={styles.borrowingInfo}>
+                              <p className={styles.borrowingText}>{`대출자: ${borrower?.name || '-'}`}</p>
+                              <p className={styles.borrowingText}>{`대출일: ${borrowDate || '-'}`}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                  <section className={styles.descriptionInfo}>
+                    <h4 className={styles.sectionLabel}>책 소개</h4>
+                    <p className={`${styles.descriptionText} ${description ? '' : styles.emptyDescription}`}>{description || '등록된 책 소개가 없습니다.'}</p>
+                  </section>
+                </div>
+              );
+            })
+            .exhaustive()}
+        </PageContent>
+      </PagePanel>
+    </PageShell>
   );
 }
