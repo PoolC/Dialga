@@ -23,6 +23,7 @@ export const NoticeContainerTitle = styled.h3`
   padding-left: 20px;
   width: 90%;
   margin-bottom: 30px;
+  font-size: 1.17em;
   font-weight: 700;
 `;
 

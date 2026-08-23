@@ -18,8 +18,7 @@ export const MenuList = styled.ul`
   flex-direction: column;
   gap: 4px;
   background-color: white;
-  border: 1px solid rgba(71, 190, 155, 0.18);
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 8px 24px rgba(32, 49, 43, 0.05);
   padding: 8px;
   margin: 0;
@@ -29,6 +28,7 @@ export const MenuList = styled.ul`
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    border-radius: 16px;
 
     &::-webkit-scrollbar {
       display: none;

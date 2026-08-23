@@ -5,7 +5,7 @@ import { CardGrid } from '~/components/common/CardGrid/CardGrid';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { SearchInput } from '~/components/common/SearchInput/SearchInput';
 import { SegmentFilter } from '~/components/common/SegmentFilter/SegmentFilter';
-import { MemberListCount, MemberListEmpty } from './MemberListContent.styles';
+import { MemberListBody, MemberListEmpty } from './MemberListContent.styles';
 import { UNAUTHORIZED_MEMBER_ROLES } from '~/constants/memberRoles';
 import MemberCard from '../MemberCard/MemberCard';
 
@@ -60,20 +60,19 @@ export default function MemberListContent() {
           </>
         }
       />
-      <MemberListCount>
-        {filteredMembers.length} / {visibleMembers.length}명
-      </MemberListCount>
-      {filteredMembers.length === 0 ? (
-        <MemberListEmpty>
-          <Empty description="조건에 맞는 회원이 없습니다." />
-        </MemberListEmpty>
-      ) : (
-        <CardGrid>
-          {filteredMembers.map((member) => (
-            <MemberCard key={member.loginID} member={member} />
-          ))}
-        </CardGrid>
-      )}
+      <MemberListBody>
+        {filteredMembers.length === 0 ? (
+          <MemberListEmpty>
+            <Empty description="조건에 맞는 회원이 없습니다." />
+          </MemberListEmpty>
+        ) : (
+          <CardGrid>
+            {filteredMembers.map((member) => (
+              <MemberCard key={member.loginID} member={member} />
+            ))}
+          </CardGrid>
+        )}
+      </MemberListBody>
     </>
   );
 }

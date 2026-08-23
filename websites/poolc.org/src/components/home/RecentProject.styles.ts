@@ -14,6 +14,7 @@ export const RecentProjectBlock = styled.div`
   & > .project_container_title {
     padding-left: 20px;
     width: 90%;
+    font-size: 1.17em;
     font-weight: 700;
     margin-bottom: 30px;
     color: ${colors.brown[1]};

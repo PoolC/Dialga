@@ -52,7 +52,7 @@ const Panel = styled.div`
   min-height: 50vh;
   margin: 0 5%;
   padding: 60px 0;
-  border-radius: 50px;
+  border-radius: 20px;
   background-color: #ffffff;
   box-shadow: 0 0 20px ${colors.gray[1]};
   box-sizing: border-box;
@@ -66,6 +66,6 @@ const Panel = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     margin: 0;
-    border-radius: 32px;
+    border-radius: 16px;
   }
 `;
