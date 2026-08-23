@@ -112,12 +112,13 @@ export const ActivityContainer = styled.div`
 `;
 
 export const Activities = styled.ul`
-  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
   flex-wrap: wrap;
-  overflow: scroll;
+  align-items: stretch;
+  justify-content: center;
+  gap: 16px;
+  overflow: visible;
   scrollbar-color: none;
   margin: 0;
   padding: 0;

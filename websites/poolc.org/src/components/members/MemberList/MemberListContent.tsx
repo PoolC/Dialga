@@ -13,38 +13,44 @@ type MemberFilter = 'ALL' | 'ADMIN' | string;
 type MemberSearchType = 'ALL' | 'NAME' | 'LOGIN_ID' | 'DEPARTMENT';
 
 const ROLE_LABELS: Record<string, string> = {
-  MEMBER: '회원',
-  ADMIN: '관리자',
+  ALL: '전체',
+  MEMBER: '일반회원',
+  ADMIN: '임원진',
   SUPER_ADMIN: '최고 관리자',
-  GRADUATED: '졸업생',
-  COMPLETE: '수료생',
-  INACTIVE: '휴학생',
+  GRADUATED: '졸업회원',
+  COMPLETE: '수료회원',
+  INACTIVE: '비활동',
 };
 
 const FALLBACK_ROLE_OPTIONS: FilterSearchToolbarOption<MemberFilter>[] = [
   { label: '전체', value: 'ALL' },
-  { label: '임원', value: 'ADMIN' },
-  { label: '회원', value: 'MEMBER' },
-  { label: '졸업생', value: 'GRADUATED' },
-  { label: '수료생', value: 'COMPLETE' },
-  { label: '휴학생', value: 'INACTIVE' },
+  { label: '임원진', value: 'ADMIN' },
+  { label: '일반회원', value: 'MEMBER' },
+  { label: '수료회원', value: 'COMPLETE' },
+  { label: '졸업회원', value: 'GRADUATED' },
+  { label: '비활동', value: 'INACTIVE' },
 ];
+
+const ROLE_ORDER: MemberFilter[] = ['ALL', 'ADMIN', 'MEMBER', 'COMPLETE', 'GRADUATED', 'INACTIVE'];
 
 const getRoleOptions = (roles?: MemberRolesResponse[]) => {
   if (!roles || roles.length === 0) {
     return FALLBACK_ROLE_OPTIONS;
   }
 
-  const visibleRoles = roles
+  const roleByName = roles
     .filter((role): role is Required<MemberRolesResponse> => Boolean(role.name))
     .filter((role) => !UNAUTHORIZED_MEMBER_ROLES.includes(role.name))
-    .filter((role) => !ADMIN_MEMBER_ROLES.includes(role.name))
-    .map((role) => ({
-      label: role.description || ROLE_LABELS[role.name] || role.name,
-      value: role.name,
-    }));
+    .filter((role) => !ADMIN_MEMBER_ROLES.includes(role.name));
 
-  return [{ label: '전체', value: 'ALL' }, { label: '임원', value: 'ADMIN' }, ...visibleRoles];
+  return ROLE_ORDER.map((roleName) => {
+    const role = roleByName.find((item) => item.name === roleName);
+
+    return {
+      label: ROLE_LABELS[roleName] || role?.description || roleName,
+      value: roleName,
+    };
+  });
 };
 
 export default function MemberListContent() {
