@@ -33,7 +33,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     background-color: white;
     box-shadow: 0 0 20px ${colors.gray[1]};
-    border-radius: 50px;
+    border-radius: 20px;
     padding: 60px 0;
     min-height: 50vh;
     max-width: 1366px;
@@ -48,7 +48,7 @@ const useStyles = createStyles(({ css }) => ({
     background-color: white;
     box-shadow: 0 0 20px ${colors.gray[1]};
     flex: 1;
-    border-radius: 50px;
+    border-radius: 20px;
     padding: 40px 20px;
     min-height: 50vh;
   `,

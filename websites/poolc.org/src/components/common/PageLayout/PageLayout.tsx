@@ -12,6 +12,7 @@ type PagePanelProps = PageShellProps & {
 };
 
 export const PageShell = ({ children, className }: PageShellProps) => <Shell className={className}>{children}</Shell>;
+export const PageContent = ({ children, className }: PageShellProps) => <Content className={className}>{children}</Content>;
 
 export const TwoColumnPageShell = ({ children, className }: PageShellProps) => <TwoColumnShell className={className}>{children}</TwoColumnShell>;
 
@@ -68,4 +69,13 @@ const Panel = styled.div`
     margin: 0;
     border-radius: 16px;
   }
+`;
+
+const Content = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 1210px;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
 `;

@@ -4,13 +4,17 @@ import colors from '~/lib/styles/colors';
 
 type PageHeaderProps = {
   title: ReactNode;
+  subtitle?: ReactNode;
   actions?: ReactNode;
   className?: string;
 };
 
-export const PageHeader = ({ title, actions, className }: PageHeaderProps) => (
+export const PageHeader = ({ title, subtitle, actions, className }: PageHeaderProps) => (
   <Header className={className} data-has-actions={Boolean(actions)}>
-    <PageTitle>{title}</PageTitle>
+    <TitleGroup>
+      <PageTitle>{title}</PageTitle>
+      {subtitle && <PageSubtitle>{subtitle}</PageSubtitle>}
+    </TitleGroup>
     {actions && <Actions>{actions}</Actions>}
   </Header>
 );
@@ -25,37 +29,45 @@ export const PageTitle = styled.h2`
   line-height: 1.25;
 `;
 
+export const PageSubtitle = styled.p`
+  margin: 0;
+  color: ${colors.brown[0]};
+  font-size: 0.85rem;
+  font-weight: 500;
+`;
+
 const Header = styled.header`
   display: flex;
   width: 100%;
-  max-width: 1200px;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 24px;
   margin-bottom: 24px;
-
-  &[data-has-actions='false'] {
-    justify-content: center;
-    text-align: center;
-  }
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
     gap: 16px;
-    &[data-has-actions='false'] {
-      align-items: center;
-    }
   }
+`;
+
+const TitleGroup = styled.div`
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
 `;
 
 const Actions = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 10px;
 
   @media (max-width: 768px) {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 `;

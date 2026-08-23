@@ -27,7 +27,7 @@ export const ActivityDetailContainer = styled.div`
   align-items: center;
   background-color: white;
   box-shadow: 0px 0px 20px ${colors.gray[1]};
-  border-radius: 50px;
+  border-radius: 20px;
   padding: 80px 0px;
   & > .project_container_title {
     font-weight: 700;
@@ -86,7 +86,7 @@ export const TagContainer = styled.div`
 
 export const PlanContents = styled.div`
   border: 1px solid ${colors.gray[2]};
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 2rem 1rem;
   word-break: break-all;
   line-height: 1.5rem;
@@ -197,7 +197,7 @@ export const TagCard = styled.li`
   cursor: default;
   background-color: ${colors.gray[0]};
   border: 1px solid ${colors.mint[1]};
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 0.9rem;
   font-weight: 300;
   padding: 2px;

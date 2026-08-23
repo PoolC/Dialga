@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Button, Input, Select } from 'antd';
 import { createStyles } from 'antd-style';
+import colors from '~/lib/styles/colors';
 
 export type FilterSearchToolbarOption<T extends string> = {
   label: string;
@@ -85,38 +86,64 @@ const useStyles = createStyles(({ css }) => ({
     width: 72px;
 
     .ant-select-selector {
+      height: 36px !important;
       border: none !important;
+      border-radius: 6px !important;
       outline: none !important;
       box-shadow: none !important;
       background-color: rgba(245, 245, 245, 1) !important;
+      align-items: center;
     }
 
     .ant-select-selection-item {
       color: rgba(130, 121, 113, 1);
       font-weight: 700;
       font-size: 14px;
+      line-height: 36px !important;
     }
   `,
   searchFilterSelect: css`
     width: 110px;
 
     .ant-select-selector {
+      height: 36px !important;
       border: none !important;
+      border-radius: 6px !important;
       outline: none !important;
       box-shadow: none !important;
       background-color: rgba(245, 245, 245, 1) !important;
+      align-items: center;
     }
 
     .ant-select-selection-item {
       color: rgba(130, 121, 113, 1);
       font-weight: 700;
       font-size: 14px;
+      line-height: 36px !important;
     }
   `,
   searchInput: css`
     flex: 1;
     min-width: 0;
     max-width: 197px;
+
+    &.ant-input {
+      height: 36px;
+      border: 1px solid #d8d0c3;
+      border-radius: 6px;
+      color: ${colors.brown[1]};
+      font-size: 14px;
+      box-shadow: none;
+    }
+
+    &.ant-input::placeholder {
+      color: #9b8d7b;
+    }
+
+    &.ant-input:focus {
+      border-color: ${colors.mint[3]};
+      box-shadow: 0 0 0 3px rgb(0 168 137 / 16%);
+    }
 
     @media (max-width: 768px) {
       max-width: none;
@@ -127,6 +154,18 @@ const useStyles = createStyles(({ css }) => ({
   `,
   searchButton: css`
     width: 55px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    background: ${colors.mint[3]};
+    font-weight: 700;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      background: ${colors.mint[3]} !important;
+      opacity: 0.88;
+    }
   `,
 }));
 
