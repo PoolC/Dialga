@@ -7,6 +7,7 @@ import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 import { CardGrid } from '~/components/common/CardGrid/CardGrid';
 import { PageContent } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
+import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
 import colors from '~/lib/styles/colors';
 
 import BookCard from './BookCard';
@@ -24,7 +25,7 @@ const useStyles = createStyles(({ css }) => ({
     display: flex;
     width: 100%;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 0;
   `,
   flexList: css`
     max-width: 1210px;
@@ -108,6 +109,16 @@ const useStyles = createStyles(({ css }) => ({
 
 type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
 type searchType = 'TITLE' | 'AUTHOR' | 'TAG';
+type BookCategory = 'ALL' | 'PROGRAMMING' | 'ALGORITHM' | 'SYSTEM' | 'DATA' | 'DESIGN';
+
+const BOOK_CATEGORY_ITEMS: { key: BookCategory; label: string }[] = [
+  { key: 'ALL', label: '전체' },
+  { key: 'PROGRAMMING', label: '프로그래밍' },
+  { key: 'ALGORITHM', label: '알고리즘' },
+  { key: 'SYSTEM', label: '시스템' },
+  { key: 'DATA', label: '데이터' },
+  { key: 'DESIGN', label: '설계' },
+];
 
 const useInView = (sorting: sortingType, keyword: string, search: searchType) => {
   const bottomRef = useRef(null);
@@ -170,6 +181,7 @@ export default function BookList() {
   const { styles } = useStyles();
 
   const sorting: sortingType = 'CREATED_AT';
+  const [category, setCategory] = useState<BookCategory>('ALL');
   const [searchType, setSearchType] = useState<searchType>('TITLE');
   const [keyword, setKeyword] = useState('');
   const [searchInfo, setSearchInfo] = useState<{ type: searchType; keyword: string }>({ type: 'TITLE', keyword: '' });
@@ -204,6 +216,7 @@ export default function BookList() {
           </form>
         }
       />
+      <SectionTabs items={BOOK_CATEGORY_ITEMS} activeKey={category} onChange={(key) => setCategory(key as BookCategory)} />
       <div className={styles.listBody}>
         {match(bookListInfiniteQuery)
           .with({ isLoading: true }, () => <Skeleton className={styles.skeleton} />)

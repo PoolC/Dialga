@@ -24,7 +24,6 @@ const ActivityList = ({ loading, activities, semesters, currentLocation, onChang
         <ActivityContent>
           <PageHeader
             title="세미나&스터디"
-            subtitle={!loading && `${activities.length}개 진행 중`}
             actions={
               <HeaderControls>
                 <SemesterSelectArea>
