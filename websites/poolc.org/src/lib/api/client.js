@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { handleExpiredAccessToken } from '~/modules/auth';
 import { store } from '~';
-
-const API_BASE_URL = import.meta.env.DEV ? '/api/mincho' : import.meta.env.VITE_API_BASE_URL;
+import { publicConfig } from '~/lib/config/publicConfig';
 
 const client = axios.create();
 
-client.defaults.baseURL = API_BASE_URL;
+client.defaults.baseURL = publicConfig.apiBaseUrl;
 
 if (localStorage.getItem('accessToken')) {
   client.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;

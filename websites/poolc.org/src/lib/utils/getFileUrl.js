@@ -1,6 +1,6 @@
-const FILE_URL = import.meta.env.VITE_FILE_URL;
+import { publicConfig } from '~/lib/config/publicConfig';
 
-const getFileUrl = (url) => (url?.includes('http://') || url?.includes('https://') || url?.includes(FILE_URL) ? url : FILE_URL + url);
+const getFileUrl = (url) => (url?.includes('http://') || url?.includes('https://') || url?.includes(publicConfig.fileUrl) ? url : publicConfig.fileUrl + url);
 
 export const getDecodedFileUrl = (url) => decodeURI(url);
 

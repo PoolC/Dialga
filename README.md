@@ -31,6 +31,21 @@ yarn web-client codegen # generate types
 yarn web-client dev # load dev server
 ```
 
+### local backend
+
+로컬 백엔드는 Palkia 저장소에서 `docker-compose.local.yml`로 띄운 뒤,
+프론트엔드 개발 서버를 로컬 API로 연결합니다.
+
+```sh
+VITE_API_BASE_URL=http://localhost:8080 VITE_FILE_URL=http://localhost:8080 yarn install
+VITE_API_BASE_URL=http://localhost:8080 VITE_FILE_URL=http://localhost:8080 yarn workspace @dialga/poolc.org dev --host 0.0.0.0
+```
+
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 열고 `admin / poolc1234`로 로그인합니다.
+
+`VITE_*` 값은 브라우저에 노출되는 공개 설정입니다. 기본값은 `src/lib/config/publicConfig.ts`에 커밋되어 있고,
+필요한 경우 `.env.local`로 개인 환경에서만 override합니다.
+
 ### vscode setting
 
 1. install [ZipFS extension](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)

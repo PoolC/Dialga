@@ -5,6 +5,7 @@ import FileUploadModal from '../FileUploadModal/FileUploadModal';
 import Modal from '../Modal/Modal';
 import uploadableTypes from '../../../constants/uploadableTypes';
 import { SUCCESS } from '../../../constants/statusCode';
+import { publicConfig } from '../../../lib/config/publicConfig';
 
 const FileUploadButton = ({ files, onSubmit, multiple }) => {
   const formData = new FormData();
@@ -16,7 +17,7 @@ const FileUploadButton = ({ files, onSubmit, multiple }) => {
 
   const onBrowseFile = (e) => {
     e.preventDefault();
-    if (e.target.files[0].size > +process.env.VITE_MAX_FILE_SIZE) {
+    if (e.target.files[0].size > publicConfig.maxFileSize) {
       setErrorMessage('첨부 가능한 최대 크기를 초과하였습니다.');
       onShowErrorModal();
       return;
