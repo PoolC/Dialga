@@ -1,11 +1,12 @@
 import { Avatar, Button, Dropdown, MenuProps } from 'antd';
-import { useLocation } from 'react-router-dom';
 import { createStyles } from 'antd-style';
+import { useLocation } from 'react-router-dom';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 import ActionButton from '../../common/Buttons/ActionButton';
 import LinkButton from '../../common/Buttons/LinkButton';
 import { LeftHeaderMenu, MenuBlock, RightHeaderMenu } from './Menus.styles';
 import { MENU } from '~/constants/menus';
+import colors from '~/lib/styles/colors';
 import Notification from '../Notification/Notification';
 
 const useStyles = createStyles(({ css }) => ({
@@ -34,6 +35,7 @@ const Menus = ({
   profileImageURL: string;
 }) => {
   const { styles } = useStyles();
+  const location = useLocation();
 
   const links: {
     to: string;
@@ -86,8 +88,7 @@ const Menus = ({
       content: 'Apply',
     },
   ];
-
-  const location = useLocation();
+  const isActiveLink = (to: string) => location.pathname === to || location.pathname.startsWith(`${to}/`);
 
   return (
     <MenuBlock className={menuVisible ? 'menus open' : 'menus'}>
@@ -100,8 +101,7 @@ const Menus = ({
                 key={i}
                 onClick={onToggleMenu}
                 style={{
-                  color: location.pathname.startsWith(link.to) && '#47be9b',
-                  fontWeight: location.pathname.startsWith(link.to) && 800,
+                  color: isActiveLink(link.to) ? colors.mint[2] : undefined,
                 }}
               >
                 {link.content}

@@ -80,7 +80,7 @@ const Header = ({ member, onLogout }) => {
   return (
     <HeaderBlock>
       <HeaderIcons>
-        <Link to="/">
+        <Link to="/" aria-label="PoolC home">
           <div className={styles.logo}>
             <LogoImage src={poolcIcon} alt="logo" onClick={onCloseMenu} />
           </div>

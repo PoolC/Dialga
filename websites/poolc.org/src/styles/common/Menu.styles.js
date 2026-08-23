@@ -5,27 +5,56 @@ export const MenuBlock = styled.div`
   width: 15rem;
   margin: 0 20px 20px 0;
   padding: 0;
+
   @media (max-width: 768px) {
+    min-width: 0;
     width: 100%;
+    margin: 0 0 16px;
   }
 `;
 
 export const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
+  gap: 4px;
   background-color: white;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.035);
-  border-radius: 50px;
-  padding: 30px 30px;
+  border: 1px solid rgba(71, 190, 155, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(32, 49, 43, 0.05);
+  padding: 8px;
   margin: 0;
+
   @media (max-width: 768px) {
-    align-items: center;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
 export const MenuItem = styled.li`
-  height: 2.5rem;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
+
+  & > a {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 10px 12px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+
+    & > a {
+      width: auto;
+      justify-content: center;
+    }
+  }
 `;
