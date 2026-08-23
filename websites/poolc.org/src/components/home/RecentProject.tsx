@@ -103,7 +103,7 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
       <RecentProjectList className="project_card_container" ref={viewport}>
         {projects.map((project, idx) => (
           <div key={project.id} id={`recent-project-card${idx}`} ref={targetRefs[idx]}>
-            <ProjectCard project={project} />
+            <ProjectCard project={project} variant="home" />
           </div>
         ))}
       </RecentProjectList>

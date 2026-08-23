@@ -24,7 +24,9 @@ export const MainCarousel = styled.div`
 `;
 
 export const MainCarouselImage = styled.img`
+  width: auto;
   height: 50vh;
+  max-width: none;
   max-height: 400px;
   border-radius: 50px;
 `;

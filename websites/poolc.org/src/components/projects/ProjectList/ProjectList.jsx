@@ -22,6 +22,7 @@ const ProjectList = ({ projects, loading }) => (
 );
 
 const ProjectGrid = styled(CardGrid)`
+  margin-top: 18px;
   gap: 16px;
   align-items: stretch;
 `;

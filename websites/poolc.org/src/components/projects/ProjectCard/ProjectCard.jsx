@@ -29,33 +29,35 @@ const splitProjectName = (name) => {
 
 const getProjectPlaceholder = (id) => `https://picsum.photos/seed/poolc-project-${id}/480/270`;
 
-const getProjectThumbnail = ({ id, thumbnailURL }) => {
+const getProjectThumbnail = ({ id, thumbnailURL, variant }) => {
   if (!thumbnailURL) {
     return getProjectPlaceholder(id);
   }
 
+  const size = variant === 'home' ? { width: 240, height: 120 } : { width: 480, height: 270 };
+
   return (
     getFileUrl(thumbnailURL) +
     getParametersForUnsplash({
-      width: 480,
-      height: 270,
+      width: size.width,
+      height: size.height,
       quality: 80,
       format: 'jpg',
     })
   );
 };
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, variant = 'default' }) => {
   const { id, thumbnailURL, name, genre, description } = project;
   const { title, track } = splitProjectName(name);
 
   return (
     <StyledLink to={`/${MENU.PROJECT}/${id}`}>
-      <ProjectCardBlock>
-        <Card>
+      <ProjectCardBlock data-variant={variant}>
+        <Card data-variant={variant}>
           <ThumbnailContainer>
             <ProjectThumbnail
-              src={getProjectThumbnail({ id, thumbnailURL })}
+              src={getProjectThumbnail({ id, thumbnailURL, variant })}
               alt={title}
               onError={(event) => {
                 event.currentTarget.onerror = null;

@@ -9,6 +9,16 @@ export const ProjectCardBlock = styled.li`
   width: 260px;
   min-height: 286px;
   margin: 0;
+
+  &[data-variant='home'] {
+    height: 260px;
+    min-height: 260px;
+    margin: 10px;
+  }
+
+  &[data-variant='home']:first-of-type {
+    margin-left: 0;
+  }
 `;
 
 export const Card = styled.div`
@@ -29,6 +39,19 @@ export const Card = styled.div`
     transform: translateY(-2px);
     transition: 0.3s;
   }
+
+  &[data-variant='home'] {
+    align-items: center;
+    height: 250px;
+    padding: 10px 0;
+    border-radius: 20px;
+  }
+
+  &[data-variant='home']:hover {
+    opacity: 80%;
+    box-shadow: 0px 0px 10px ${colors.gray[1]};
+    transform: none;
+  }
 `;
 
 export const ThumbnailContainer = styled.div`
@@ -37,12 +60,23 @@ export const ThumbnailContainer = styled.div`
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
+
+  [data-variant='home'] & {
+    height: 120px;
+    aspect-ratio: auto;
+    border-radius: 10px;
+  }
 `;
 
 export const ProjectThumbnail = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  [data-variant='home'] & {
+    width: 240px;
+    height: 120px;
+  }
 `;
 
 export const TextContent = styled.div`
@@ -51,6 +85,13 @@ export const TextContent = styled.div`
   flex: 1;
   flex-direction: column;
   padding-top: 10px;
+
+  [data-variant='home'] & {
+    width: 230px;
+    height: 110px;
+    flex: 0 0 auto;
+    padding-top: 8px;
+  }
 `;
 
 export const ProjectTitle = styled.p`
@@ -65,6 +106,17 @@ export const ProjectTitle = styled.p`
   word-break: keep-all;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+
+  [data-variant='home'] & {
+    display: block;
+    min-height: 24px;
+    margin: 0 0 4px;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+  }
 `;
 
 export const ProjectGenre = styled.p`
@@ -83,6 +135,13 @@ export const ProjectGenre = styled.p`
   & > span:last-child {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  [data-variant='home'] & {
+    width: 230px;
+    min-height: 18px;
+    margin: 0 0 4px;
+    font-size: 0.8rem;
   }
 `;
 
@@ -115,6 +174,14 @@ export const ProjectDescription = styled.p`
 
   @media (max-width: 768px) {
     display: none;
+  }
+
+  [data-variant='home'] & {
+    width: 230px;
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    -webkit-line-clamp: 2;
   }
 `;
 
