@@ -43,10 +43,18 @@ export const MemberCardText = styled.div`
   min-width: 0;
 `;
 
+export const MemberCardNameRow = styled.div`
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.35rem;
+`;
+
 export const MemberCardName = styled.p`
   display: block;
   overflow: hidden;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.2;
@@ -63,8 +71,7 @@ export const MemberCardMajor = styled.p`
 `;
 
 export const MemberCardStatus = styled.span`
-  width: fit-content;
-  margin-bottom: 0.35rem;
+  flex: 0 0 auto;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.55);
   color: ${colors.brown[1]};

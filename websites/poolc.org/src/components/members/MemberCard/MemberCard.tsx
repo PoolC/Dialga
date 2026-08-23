@@ -1,6 +1,6 @@
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 
-import { MemberCardBlock, MemberCardMajor, MemberCardName, MemberCardStatus, MemberCardText, MemberCardThumbnail, MemberItem, StyledLink } from './MemberCard.styles';
+import { MemberCardBlock, MemberCardMajor, MemberCardName, MemberCardNameRow, MemberCardStatus, MemberCardText, MemberCardThumbnail, MemberItem, StyledLink } from './MemberCard.styles';
 import { MENU } from '~/constants/menus';
 
 const MemberCard = ({
@@ -19,8 +19,10 @@ const MemberCard = ({
       <MemberItem data-admin={isAdmin}>
         <MemberCardThumbnail src={getProfileImageUrl(profileImageURL)} alt="member_thumbnail" />
         <MemberCardText>
-          <MemberCardName>{name}</MemberCardName>
-          {isAdmin && <MemberCardStatus>PoolC 임원</MemberCardStatus>}
+          <MemberCardNameRow>
+            <MemberCardName>{name}</MemberCardName>
+            {isAdmin && <MemberCardStatus>임원진</MemberCardStatus>}
+          </MemberCardNameRow>
           <MemberCardMajor>{department}</MemberCardMajor>
         </MemberCardText>
       </MemberItem>

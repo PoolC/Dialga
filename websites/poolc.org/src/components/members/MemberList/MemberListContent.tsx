@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
+import { Button, Input } from 'antd';
 import { MemberControllerService, MemberResponse, MemberRolesResponse, queryKey, useAppQuery, useAppSuspenseQuery } from '~/lib/api-v2';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
-import { FilterSearchToolbar, FilterSearchToolbarOption } from '~/components/common/FilterSearchToolbar/FilterSearchToolbar';
+import { FilterSearchToolbarOption } from '~/components/common/FilterSearchToolbar/FilterSearchToolbar';
 import { EmptyState } from '~/components/common/EmptyState/EmptyState';
-import { MemberCardGrid, MemberContent, MemberListBody, MemberListToolbar } from './MemberListContent.styles';
+import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
+import { MemberCardGrid, MemberContent, MemberListBody, MemberListToolbar, MemberSearchForm } from './MemberListContent.styles';
 import { ADMIN_MEMBER_ROLES, UNAUTHORIZED_MEMBER_ROLES } from '~/constants/memberRoles';
 import MemberCard from '../MemberCard/MemberCard';
 
@@ -28,13 +30,6 @@ const FALLBACK_ROLE_OPTIONS: FilterSearchToolbarOption<MemberFilter>[] = [
   { label: '휴학생', value: 'INACTIVE' },
 ];
 
-const MEMBER_SEARCH_OPTIONS: FilterSearchToolbarOption<MemberSearchType>[] = [
-  { label: '전체', value: 'ALL' },
-  { label: '이름', value: 'NAME' },
-  { label: 'ID', value: 'LOGIN_ID' },
-  { label: '학과', value: 'DEPARTMENT' },
-];
-
 const getRoleOptions = (roles?: MemberRolesResponse[]) => {
   if (!roles || roles.length === 0) {
     return FALLBACK_ROLE_OPTIONS;
@@ -54,6 +49,7 @@ const getRoleOptions = (roles?: MemberRolesResponse[]) => {
 
 export default function MemberListContent() {
   const [searchInfo, setSearchInfo] = useState<{ type: MemberSearchType; keyword: string }>({ type: 'ALL', keyword: '' });
+  const [keyword, setKeyword] = useState('');
   const [filter, setFilter] = useState<MemberFilter>('ALL');
 
   const {
@@ -69,6 +65,7 @@ export default function MemberListContent() {
 
   const members = _members as unknown as Required<MemberResponse>[];
   const roleOptions = useMemo(() => getRoleOptions((memberRolesQuery.data?.data ?? undefined) as MemberRolesResponse[] | undefined), [memberRolesQuery.data]);
+  const roleTabItems = useMemo(() => roleOptions.map((role) => ({ key: role.value, label: role.label })), [roleOptions]);
   const visibleMembers = useMemo(() => members.filter((member) => !UNAUTHORIZED_MEMBER_ROLES.includes(member.role)), [members]);
   const filteredMembers = useMemo(() => {
     const normalizedSearchValue = searchInfo.keyword.trim().toLowerCase();
@@ -95,22 +92,27 @@ export default function MemberListContent() {
     });
   }, [filter, searchInfo, visibleMembers]);
 
+  const onSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSearchInfo({ type: 'ALL', keyword });
+  };
+
   return (
     <MemberContent>
       <PageHeader
         title="회원 목록"
         actions={
           <MemberListToolbar>
-            <FilterSearchToolbar
-              layout="cluster"
-              filterPlacement="search"
-              showSearchType={false}
-              filter={{ value: filter, onChange: setFilter, options: roleOptions }}
-              search={{ ...searchInfo, type: 'ALL', onSubmit: setSearchInfo, options: MEMBER_SEARCH_OPTIONS, placeholder: '이름, ID, 학과 검색' }}
-            />
+            <MemberSearchForm onSubmit={onSearchSubmit}>
+              <Input placeholder="이름, ID, 학과 검색" value={keyword} onChange={(event) => setKeyword(event.target.value)} />
+              <Button type="primary" htmlType="submit">
+                검색
+              </Button>
+            </MemberSearchForm>
           </MemberListToolbar>
         }
       />
+      <SectionTabs items={roleTabItems} activeKey={filter} onChange={(key) => setFilter(key)} />
       <MemberListBody>
         <MemberCardGrid>
           {filteredMembers.length === 0 ? (
