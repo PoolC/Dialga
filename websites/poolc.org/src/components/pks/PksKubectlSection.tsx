@@ -101,8 +101,8 @@ const useStyles = createStyles(({ css }) => ({
   }),
   codeBlock: css({
     width: '100%',
-    border: '1px solid rgba(100, 100, 100, 0.2)',
-    borderRadius: '6px',
+    border: '1px solid rgba(76, 55, 34, 0.1)',
+    borderRadius: '8px',
     overflow: 'hidden',
   }),
   codeHeader: css({
@@ -110,21 +110,20 @@ const useStyles = createStyles(({ css }) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '8px 12px',
-    background: 'rgba(150, 150, 150, 0.1)',
-    borderBottom: '1px solid rgba(100, 100, 100, 0.2)',
+    background: 'rgba(229, 240, 237, 0.45)',
+    borderBottom: '1px solid rgba(76, 55, 34, 0.08)',
   }),
   codeLabel: css({
     fontSize: '12px',
     fontWeight: '500',
-    color: 'rgba(0, 0, 0, 0.7)',
-    letterSpacing: '0.5px',
+    color: 'rgba(76, 55, 34, 0.72)',
   }),
   code: css({
     whiteSpace: 'pre !important',
     margin: '0 !important',
     padding: '12px',
     fontFamily: 'SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace',
-    background: 'rgba(250, 250, 250, 0.5)',
+    background: '#ffffff',
     overflowX: 'auto',
   }),
 }));
