@@ -12,7 +12,7 @@ import { FolderOpenTwoTone } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import { MENU } from '~/constants/menus';
-import { getBoardTitle } from '~/lib/utils/boardUtil';
+import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { CommentControllerService, PostControllerService, PostResponse, ScrapControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { dayjs } from '~/lib/utils/dayjs';
 import { useMessage } from '~/hooks/useMessage';
@@ -401,7 +401,7 @@ export default function BoardDetailPage() {
                       boardType: post.boardType,
                     })}`}
                   >
-                    {getBoardTitle(post.boardType ?? 'FREE')}
+                    {getBoardTitle((post.boardType ?? 'FREE') as BoardType)}
                   </Link>
                 ),
               },

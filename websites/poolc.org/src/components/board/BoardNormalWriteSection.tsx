@@ -130,7 +130,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
           request: {
             body: val.body,
             title: val.title,
-            boardType,
+            boardType: boardType as never,
             fileList: val.fileList,
             postType: 'GENERAL_POST',
             /* always false */
