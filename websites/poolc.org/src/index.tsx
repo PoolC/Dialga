@@ -17,6 +17,7 @@ import { globalStyles } from '~/styles/globalStyles';
 import { theme } from '~/styles/theme';
 import BusinessShowProgressOnRouteChange from './components/@business/BusinessShowProgressOnRouteChange';
 import BusinessErrorBoundary from './components/@business/BusinessErrorBoundary';
+import './styles/shadcn.css';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = process.env.NODE_ENV === 'production' ? createStore(rootReducer, applyMiddleware(sagaMiddleware)) : createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));

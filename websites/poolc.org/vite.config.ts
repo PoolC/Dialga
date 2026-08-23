@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 const DEFAULT_DEV_API_BASE_URL = 'https://dev.poolc.org/api';
@@ -26,7 +27,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
     },
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     define: {
       'process.env': {},
     },
