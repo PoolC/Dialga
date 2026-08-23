@@ -1,29 +1,41 @@
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { CardGrid } from '../../common/CardGrid/CardGrid';
 import { EmptyState } from '../../common/EmptyState/EmptyState';
-import { PageHeader } from '../../common/PageHeader/PageHeader';
-import { PagePanel, PageShell } from '../../common/PageLayout/PageLayout';
+import { PagePanel } from '../../common/PageLayout/PageLayout';
 import ActivityCard from '../ActivityCard/ActivityCard';
+import { FilterSelect } from '../../common/FilterSearchToolbar/FilterSearchToolbar';
 
-import { Description } from './ActivityList.styles';
+import { ActivityGrid, HeaderActionArea, HeaderControls, HeaderMeta, HeaderTitle, SeminarHeader, SeminarPageShell, SemesterSelectArea, TitleGroup } from './ActivityList.styles';
 import Spinner from '../../common/Spinner/Spinner';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
-const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteActivity, member }) => {
+const ActivityList = ({ loading, activities, semesters, currentLocation, onChangeSemester, onToggleRegisterActivity, onDeleteActivity, member }) => {
   const {
     status: { isLogin },
     user: { memberId, role },
   } = member;
+  const canManageActivity = isLogin && isAuthorizedRole(role);
+  const semesterOptions = (semesters ?? []).map((semester) => ({ label: semester, value: semester }));
 
   return (
-    <PageShell>
-      <PagePanel narrow>
-        <PageHeader title="세미나&스터디" actions={isLogin && isAuthorizedRole(role) && <ActionButton to={`/${MENU.ACTIVITY}/new`}>개설</ActionButton>} />
-        <Description>상세 내용을 보려면 각 제목을 클릭해주세요.</Description>
+    <SeminarPageShell>
+      <PagePanel>
+        <SeminarHeader>
+          <TitleGroup>
+            <HeaderTitle>세미나&스터디</HeaderTitle>
+            {!loading && <HeaderMeta>{activities.length}개 진행 중</HeaderMeta>}
+          </TitleGroup>
+          <HeaderControls>
+            <SemesterSelectArea>
+              {loading && <Spinner small />}
+              {!loading && <FilterSelect value={currentLocation} onChange={onChangeSemester} options={semesterOptions} />}
+            </SemesterSelectArea>
+            <HeaderActionArea>{canManageActivity && <ActionButton to={`/${MENU.ACTIVITY}/new`}>세미나 개설</ActionButton>}</HeaderActionArea>
+          </HeaderControls>
+        </SeminarHeader>
         {loading && <Spinner />}
         {!loading && (
-          <CardGrid>
+          <ActivityGrid>
             {activities.length === 0 && <EmptyState>해당 학기의 세미나 및 스터디가 존재하지 않습니다.</EmptyState>}
             {activities.map((activity) => (
               <ActivityCard
@@ -36,10 +48,10 @@ const ActivityList = ({ loading, activities, onToggleRegisterActivity, onDeleteA
                 role={role}
               />
             ))}
-          </CardGrid>
+          </ActivityGrid>
         )}
       </PagePanel>
-    </PageShell>
+    </SeminarPageShell>
   );
 };
 

@@ -26,6 +26,26 @@ type FilterSearchToolbarProps<TFilter extends string, TSearchType extends string
   showSearchType?: boolean;
 };
 
+const useFilterSelectStyles = createStyles(({ css }) => ({
+  filterSelect: css`
+    width: 128px;
+
+    .ant-select-selector {
+      height: 36px !important;
+      border: none !important;
+      box-shadow: none !important;
+      align-items: center;
+    }
+
+    .ant-select-selection-item {
+      color: rgba(76, 55, 34, 1);
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 36px !important;
+    }
+  `,
+}));
+
 const useStyles = createStyles(({ css }) => ({
   toolbar: css`
     display: flex;
@@ -42,20 +62,6 @@ const useStyles = createStyles(({ css }) => ({
   cluster: css`
     justify-content: center;
     gap: 12px;
-  `,
-  filterSelect: css`
-    width: 110px;
-
-    .ant-select-selector {
-      border: none !important;
-      box-shadow: none !important;
-    }
-
-    .ant-select-selection-item {
-      color: rgba(76, 55, 34, 1);
-      font-weight: 500;
-      font-size: 14px;
-    }
   `,
   searchForm: css`
     display: flex;
@@ -124,6 +130,27 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
+type FilterSelectProps<TFilter extends string> = {
+  value: TFilter;
+  options: FilterSearchToolbarOption<TFilter>[];
+  onChange: (value: TFilter) => void;
+  className?: string;
+};
+
+export function FilterSelect<TFilter extends string>({ value, options, onChange, className }: FilterSelectProps<TFilter>) {
+  const { styles, cx } = useFilterSelectStyles();
+
+  return (
+    <Select
+      getPopupContainer={(trigger) => trigger.parentNode}
+      className={cx(styles.filterSelect, className)}
+      value={value}
+      onChange={(nextValue) => onChange(nextValue)}
+      options={options}
+    />
+  );
+}
+
 export function FilterSearchToolbar<TFilter extends string, TSearchType extends string>({
   filter,
   search,
@@ -144,13 +171,7 @@ export function FilterSearchToolbar<TFilter extends string, TSearchType extends 
   return (
     <div className={cx(styles.toolbar, layout === 'cluster' && styles.cluster, className)}>
       {filterPlacement === 'start' && (
-        <Select
-          getPopupContainer={(trigger) => trigger.parentNode}
-          className={styles.filterSelect}
-          value={filter.value}
-          onChange={(value) => filter.onChange(value)}
-          options={filter.options}
-        />
+        <FilterSelect value={filter.value} onChange={filter.onChange} options={filter.options} />
       )}
       <form className={cx(styles.searchForm, !showSearchType && styles.compactSearchForm)} onSubmit={onSubmit}>
         {filterPlacement === 'search' && (

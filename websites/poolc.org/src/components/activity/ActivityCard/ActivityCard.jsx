@@ -5,12 +5,18 @@ import {
   ActivityCapacity,
   ActivityCardBlock,
   ActivityCardContainer,
+  ActivityCardHeader,
   ActivityClassHour,
   ActivityDate,
   ActivityHost,
+  ActivityMetaGroup,
+  ActivityMetaLabel,
+  ActivityMetaValue,
+  ActivityStatus,
   ActivityTag,
   ActivityTags,
   ActivityTitle,
+  ActivityType,
   FullText,
   StyledActionButton,
   StyledDeleteButton,
@@ -53,36 +59,55 @@ const ActivityCard = ({ activity, onToggleRegisterActivity, onDeleteActivity, is
   };
 
   const { id, title, host, startDate, classHour, capacity, available, tags } = activity;
+  const isFull = members.length >= capacity;
+  const isOpen = available && !isFull;
+  const statusText = isFull ? '정원 마감' : '마감';
+
   return (
     <>
       <ActivityRegisterModalContainer visible={registerModalVisible} activityTitle={title} onConfirm={handleConfirm} onCancel={handleRegisterCancel} isRegister={!members.includes(memberId)} />
       <ActivityDeleteModalContainer visible={deleteModalVisible} activityTitle={title} onConfirm={handleDelete} onCancel={handleDeleteCancel} />
       <ActivityCardBlock>
         <ActivityCardContainer>
+          <ActivityCardHeader>
+            <ActivityType>{activity.seminar ? '세미나' : '스터디'}</ActivityType>
+            {!isOpen && <ActivityStatus>{statusText}</ActivityStatus>}
+          </ActivityCardHeader>
           <StyledLink to={`/${MENU.ACTIVITY}/${id}`}>
             <ActivityTitle>{title}</ActivityTitle>
           </StyledLink>
-          <ActivityClassHour>{classHour}</ActivityClassHour>
-          <ActivityDate>{`${startDate} ~ `}</ActivityDate>
-          <ActivityHost>{host.name}</ActivityHost>
-          <ActivityCapacity>
-            {isLogin && `${members.length}명/`}
-            {!isLogin && '정원 '}
-            {capacity}명
-          </ActivityCapacity>
+          <ActivityMetaGroup>
+            <ActivityDate>{`${startDate} 시작`}</ActivityDate>
+            <ActivityClassHour>{classHour}</ActivityClassHour>
+          </ActivityMetaGroup>
+          <ActivityMetaGroup>
+            <ActivityHost>
+              <ActivityMetaLabel>진행</ActivityMetaLabel>
+              <ActivityMetaValue>{host.name}</ActivityMetaValue>
+            </ActivityHost>
+            <ActivityCapacity>
+              <ActivityMetaLabel>정원</ActivityMetaLabel>
+              <ActivityMetaValue>
+                {isLogin && `${members.length} / `}
+                {!isLogin && '정원 '}
+                {capacity}명
+              </ActivityMetaValue>
+            </ActivityCapacity>
+          </ActivityMetaGroup>
           <ActivityTags>
             {tags.map((tag) => (
               <ActivityTag key={tag.name}>#{tag.name}</ActivityTag>
             ))}
           </ActivityTags>
-          {isLogin && isAuthorizedRole(role) && (memberId === host.loginID || available) && (
+          {isLogin && isAuthorizedRole(role) && (
             <ActivityButtons>
               {memberId === host.loginID && <StyledActionButton to={`/${MENU.ACTIVITY}/edit/${id}`}>관리</StyledActionButton>}
               {memberId === host.loginID && <StyledActionButton to={`/${MENU.ACTIVITY}/${id}/attendance`}>출석</StyledActionButton>}
               {memberId === host.loginID && <StyledDeleteButton onClick={handleDeleteModalOpen}>삭제</StyledDeleteButton>}
-              {available && memberId !== host.loginID && !members.includes(memberId) && members.length < capacity && <StyledActionButton onClick={handleRegisterModalOpen}>신청</StyledActionButton>}
-              {available && memberId !== host.loginID && !members.includes(memberId) && members.length >= capacity && <FullText>[정원 마감]</FullText>}
+              {available && memberId !== host.loginID && !members.includes(memberId) && !isFull && <StyledActionButton onClick={handleRegisterModalOpen}>신청</StyledActionButton>}
+              {available && memberId !== host.loginID && !members.includes(memberId) && isFull && <FullText>[정원 마감]</FullText>}
               {available && memberId !== host.loginID && members.includes(memberId) && <StyledActionButton onClick={handleRegisterModalOpen}>신청 취소</StyledActionButton>}
+              {!available && memberId !== host.loginID && <FullText>마감</FullText>}
             </ActivityButtons>
           )}
         </ActivityCardContainer>
