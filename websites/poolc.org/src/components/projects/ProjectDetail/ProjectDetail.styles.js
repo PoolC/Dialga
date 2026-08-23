@@ -1,172 +1,199 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 
+export const Hero = styled.div`
+  display: flex;
+  width: min(90%, 1200px);
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const ImageContainer = styled.div`
-  width: 90%;
-  max-width: 1200px;
-  height: auto;
-  max-height: 500px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 560px;
   overflow: hidden;
-  border-radius: 20px;
-  margin: 0px;
+  border-radius: 16px;
+  background-color: ${colors.mint[0]};
 `;
 
 export const StyledImage = styled.img`
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
+  object-position: center;
 `;
 
 export const TextContainer = styled.div`
   display: flex;
+  width: min(100%, 860px);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 90%;
-  padding: 50px 0px 30px 0px;
-  max-width: 1200px;
+  padding: 34px 0 24px;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 26px 0 20px;
+  }
 `;
 
 export const NameContainer = styled.div`
   display: flex;
-  align-items: flex-end;
+  max-width: 100%;
 `;
 
-export const Name = styled.p`
-  font-weight: 800;
+export const Name = styled.h1`
+  margin: 0;
+  color: ${colors.brown[1]};
   font-size: 2rem;
-`;
+  font-weight: 800;
+  line-height: 1.25;
+  word-break: keep-all;
 
-export const GenreContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  margin: 20px 0;
-  font-weight: 300;
-  h2 {
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin: 10px 0 30px 0;
+  @media (max-width: 768px) {
+    font-size: 1.55rem;
   }
 `;
 
-export const Genre = styled.p``;
-
-export const DurationContainer = styled.div`
+export const Meta = styled.div`
   display: flex;
-  flex-direction: column;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
-  width: 90%;
-  margin: 0px 0;
-  font-weight: 300;
+  gap: 8px;
+  margin-top: 14px;
+  color: ${colors.brown[0]};
+  font-size: 0.96rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    margin-top: 10px;
+    font-size: 0.88rem;
+  }
 `;
 
-export const Duration = styled.p`
+export const MetaGenre = styled.span`
+  color: ${colors.brown[1]};
+  font-weight: 600;
+`;
+
+export const Duration = styled.span`
   color: ${colors.brown[0]};
 `;
 
 export const IntroductionContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: min(90%, 860px);
   justify-content: center;
-  width: 90%;
-  margin: 20px 0;
-  span {
-    font-size: 0.8rem;
-    color: ${colors.brown[0]};
-    margin: 5px;
-  }
 `;
 
 export const Introduction = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 300;
-  text-align: center;
-  word-break: keep-all;
-  font-size: 1rem;
-  line-height: 1.2rem;
-`;
-
-export const MemberContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0px 20px;
-  width: 90%;
-  margin-top: 0px;
-  max-width: 1200px;
-  h2 {
-    padding: 0px 20px;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
-`;
-
-export const Members = styled.ul`
-  display: flex;
-  align-items: center;
-  max-width: 100%;
-  overflow: scroll;
-  scrollbar-color: none;
-  margin: 0;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
+  width: 100%;
+  color: ${colors.brown[1]};
 `;
 
 export const BodyContainer = styled.div`
   width: 100%;
-  padding: 20px 0 20px 0;
   color: ${colors.brown[1]};
-  word-break: break-all;
-  line-height: 1.5rem;
-  max-width: 100%;
-  overflow: auto;
-  color: ${colors.brown[1]};
+  font-size: 0.96rem;
+  font-weight: 300;
+  line-height: 1.75;
+  text-align: center;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+
   p,
   ul,
   ol {
-    font-weight: 300;
-    font-size: 0.9rem;
+    margin: 0.7rem 0;
     color: ${colors.brown[1]};
+    font-size: 0.96rem;
+    font-weight: 300;
+    line-height: 1.75;
   }
+
   ul,
   ol {
-    padding-left: 1.5rem;
+    padding-left: 1.35rem;
   }
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    margin: 1rem 0;
-    line-height: 2.2rem;
+    margin: 1.4rem 0 0.7rem;
+    color: ${colors.brown[1]};
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  hr {
+    margin: 1.25rem 0;
+    border: 0;
+    border-top: 1px solid ${colors.gray[2]};
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    margin: 1rem auto;
+    border-radius: 12px;
+  }
+
+  a {
+    color: ${colors.mint[3]};
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+
+  a:hover {
     color: ${colors.brown[1]};
   }
-  hr {
-    margin: 1rem 0;
+`;
+
+export const MemberContainer = styled.section`
+  display: flex;
+  width: min(90%, 960px);
+  flex-direction: column;
+  margin-top: 46px;
+
+  h2 {
+    margin: 0 0 18px;
+    color: ${colors.brown[1]};
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
   }
-  img {
-    max-width: 90%;
-    margin: 1rem 0;
+
+  h2 span {
+    margin-left: 6px;
+    color: ${colors.brown[0]};
+    font-size: 0.9rem;
+    font-weight: 500;
   }
-  p {
-    margin: 0.5rem 0;
-  }
-  a {
-    max-width: 100%;
-    word-break: break-all;
-  }
+`;
+
+export const Members = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, 250px);
+  justify-content: center;
+  gap: 10px;
 `;

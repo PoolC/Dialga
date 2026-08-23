@@ -6,33 +6,27 @@ export const ProjectCardBlock = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
-  height: 210px;
-
-  &:first-of-type {
-    margin-left: 0;
-  }
-
-  /*&:last-child {
-    margin-right: 100px;
-  } */
+  width: 260px;
+  min-height: 286px;
+  margin: 0;
 `;
 
 export const Card = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: ${colors.mint[0]};
-  border-radius: 20px;
+  border-radius: 16px;
   width: 260px;
-  height: 200px;
+  height: 286px;
   box-shadow: 0px 0px 10px ${colors.gray[1]};
-  padding: 10px 0px;
+  padding: 10px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: 0.3s;
 
   &:hover {
-    opacity: 80%;
+    box-shadow: 0 8px 18px ${colors.gray[2]};
+    transform: translateY(-2px);
     transition: 0.3s;
   }
 `;
@@ -40,44 +34,88 @@ export const Card = styled.div`
 export const ThumbnailContainer = styled.div`
   position: relative;
   width: 240px;
-  height: 120px;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 8px;
 `;
 
 export const ProjectThumbnail = styled.img`
-  width: 240px;
-  height: 120px;
-  flex: 5;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  /* border-top-left-radius: 10px;
-  border-top-right-radius: 10px; */
+`;
+
+export const TextContent = styled.div`
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  padding-top: 10px;
 `;
 
 export const ProjectTitle = styled.p`
-  display: flex;
-  align-items: center;
-  width: 230px;
-  flex: 2;
-  font-size: 1.2rem;
+  display: -webkit-box;
+  min-height: 44px;
+  margin: 0 0 6px;
+  overflow: hidden;
+  color: ${colors.brown[1]};
+  font-size: 1.03rem;
   font-weight: 600;
+  line-height: 1.35;
+  word-break: keep-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 `;
 
 export const ProjectGenre = styled.p`
   display: flex;
-  flex: 1;
-  width: 230px;
-  font-size: 0.8rem;
+  min-height: 18px;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 7px;
+  overflow: hidden;
+  color: ${colors.brown[0]};
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+
+  & > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+export const ProjectTrack = styled.span`
+  flex: 0 0 auto;
+  max-width: 112px;
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: ${colors.mint[3]};
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+  padding: 2px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ProjectDescription = styled.p`
-  display: flex;
-  flex: 2;
-  width: 230px;
-  font-size: 0.7rem;
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: ${colors.brown[1]};
+  font-size: 0.75rem;
   font-weight: 300;
   word-break: keep-all;
-  line-height: 1rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const StyledLink = styled(Link)`
