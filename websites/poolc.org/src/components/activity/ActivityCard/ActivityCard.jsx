@@ -78,7 +78,7 @@ const ActivityCard = ({ activity, onToggleRegisterActivity, onDeleteActivity, is
           </StyledLink>
           <ActivityMetaGroup>
             <ActivityDate>{`${startDate} 시작`}</ActivityDate>
-            <ActivityClassHour>{classHour}</ActivityClassHour>
+            {classHour && <ActivityClassHour>{classHour}</ActivityClassHour>}
           </ActivityMetaGroup>
           <ActivityMetaGroup>
             <ActivityHost>
@@ -89,7 +89,6 @@ const ActivityCard = ({ activity, onToggleRegisterActivity, onDeleteActivity, is
               <ActivityMetaLabel>정원</ActivityMetaLabel>
               <ActivityMetaValue>
                 {isLogin && `${members.length} / `}
-                {!isLogin && '정원 '}
                 {capacity}명
               </ActivityMetaValue>
             </ActivityCapacity>

@@ -12,10 +12,11 @@ export const MemberItem = styled.div`
   align-items: center;
   background: ${colors.mint[1]};
   border-radius: 12px;
-  width: 240px;
-  height: 90px;
+  width: 292px;
+  height: 96px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.085);
   padding: 0px 10px;
+  box-sizing: border-box;
   cursor: pointer;
   transition: 0.3s;
 
@@ -30,10 +31,10 @@ export const MemberItem = styled.div`
 `;
 
 export const MemberCardThumbnail = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  margin: 0 20px 0 10px;
+  margin: 0 22px 0 10px;
 `;
 
 export const MemberCardText = styled.div`

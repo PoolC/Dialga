@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
-import { Empty } from 'antd';
 import { MemberControllerService, MemberResponse, MemberRolesResponse, queryKey, useAppQuery, useAppSuspenseQuery } from '~/lib/api-v2';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { FilterSearchToolbar, FilterSearchToolbarOption } from '~/components/common/FilterSearchToolbar/FilterSearchToolbar';
-import { MemberCardGrid, MemberListBody, MemberListEmpty, MemberListToolbar } from './MemberListContent.styles';
+import { EmptyState } from '~/components/common/EmptyState/EmptyState';
+import { MemberCardGrid, MemberContent, MemberListBody, MemberListToolbar } from './MemberListContent.styles';
 import { ADMIN_MEMBER_ROLES, UNAUTHORIZED_MEMBER_ROLES } from '~/constants/memberRoles';
 import MemberCard from '../MemberCard/MemberCard';
 
@@ -96,30 +96,28 @@ export default function MemberListContent() {
   }, [filter, searchInfo, visibleMembers]);
 
   return (
-    <>
-      <PageHeader title="회원 목록" />
-      <MemberListToolbar>
-        <FilterSearchToolbar
-          layout="cluster"
-          filterPlacement="search"
-          showSearchType={false}
-          filter={{ value: filter, onChange: setFilter, options: roleOptions }}
-          search={{ ...searchInfo, type: 'ALL', onSubmit: setSearchInfo, options: MEMBER_SEARCH_OPTIONS, placeholder: '이름, ID, 학과 검색' }}
-        />
-      </MemberListToolbar>
+    <MemberContent>
+      <PageHeader
+        title="회원 목록"
+        actions={
+          <MemberListToolbar>
+            <FilterSearchToolbar
+              layout="cluster"
+              filterPlacement="search"
+              showSearchType={false}
+              filter={{ value: filter, onChange: setFilter, options: roleOptions }}
+              search={{ ...searchInfo, type: 'ALL', onSubmit: setSearchInfo, options: MEMBER_SEARCH_OPTIONS, placeholder: '이름, ID, 학과 검색' }}
+            />
+          </MemberListToolbar>
+        }
+      />
       <MemberListBody>
-        {filteredMembers.length === 0 ? (
-          <MemberListEmpty>
-            <Empty description="조건에 맞는 회원이 없습니다." />
-          </MemberListEmpty>
-        ) : (
-          <MemberCardGrid>
-            {filteredMembers.map((member) => (
-              <MemberCard key={member.loginID} member={member} />
-            ))}
-          </MemberCardGrid>
-        )}
+        <MemberCardGrid>
+          {filteredMembers.length === 0 ? (
+            <EmptyState>조건에 맞는 회원이 없습니다.</EmptyState>
+          ) : filteredMembers.map((member) => <MemberCard key={member.loginID} member={member} />)}
+        </MemberCardGrid>
       </MemberListBody>
-    </>
+    </MemberContent>
   );
 }

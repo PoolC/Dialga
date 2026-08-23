@@ -1,4 +1,4 @@
-import { Avatar, Empty, Pagination, Result, Skeleton, Typography } from 'antd';
+import { Avatar, Pagination, Result, Skeleton, Typography } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
@@ -10,6 +10,7 @@ import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
+import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -175,13 +176,21 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
         .with({ status: 'error' }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
         .with({ status: 'success' }, ({ data: { posts: postList, maxPage } }) => {
           if (!postList) {
-            return <Empty />;
+            return (
+              <ul className={styles.list}>
+                <EmptyState>게시글이 없습니다.</EmptyState>
+              </ul>
+            );
           }
 
           const filteredList = postList.filter(Boolean);
 
           if (filteredList.length === 0) {
-            return <Empty />;
+            return (
+              <ul className={styles.list}>
+                <EmptyState>게시글이 없습니다.</EmptyState>
+              </ul>
+            );
           }
 
           return (

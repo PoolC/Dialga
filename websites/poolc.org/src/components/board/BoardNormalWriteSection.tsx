@@ -4,15 +4,15 @@ import { useEffect, useRef } from 'react';
 import { Editor } from '@dialga/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Breadcrumb, Button, Divider, Form, Input, Space, Typography, Upload } from 'antd';
+import { Breadcrumb, Button, Divider, Form, Input, Space, Upload } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
 import { Link, useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
-import { match } from 'ts-pattern';
 import { UploadOutlined } from '@ant-design/icons';
 import { ApiError, CustomApi, PostControllerService, queryKey, useAppMutation, useAppQuery } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useMessage } from '~/hooks/useMessage';
@@ -29,8 +29,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 100%;
   `,
   titleWrap: css`
-    border-left: 4px solid #47be9b;
-    padding-left: 16px;
+    width: 100%;
   `,
   buttonWrap: css`
     width: 100%;
@@ -148,16 +147,6 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
     }
   };
 
-  const renderDescription = () =>
-    match(boardType)
-      .with('FREE', () => '자유롭게 글을 작성해보아요')
-      .with('NOTICE', () => '공지사항을 올릴 수 있어요')
-      .with('PROJECT', () => '프로젝트 팀원을 구해요')
-      .with('EXTERNAL', () => '행사, 공모전, 해커톤, 외부 활동을 공유해요')
-      .with('CAREER', () => '채용, 인턴, 커리어 정보를 공유해요')
-      .with('STAFF', () => '운영진 내부 자료와 공지를 정리해요')
-      .exhaustive();
-
   const onUploadChange = (info: UploadChangeParam) => {
     if (info.file.status === 'removed') {
       const getPureName = (name: string) => name.split('/').pop()!;
@@ -220,10 +209,9 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
           />
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
             <Space direction="vertical" className={styles.fullWidth} size="middle">
-              <Space direction="vertical" className={styles.titleWrap} size={0}>
-                <Typography.Title level={3}>{getBoardTitle(boardType)}</Typography.Title>
-                <Typography>{renderDescription()}</Typography>
-              </Space>
+              <div className={styles.titleWrap}>
+                <PageHeader title={getBoardTitle(boardType)} />
+              </div>
               <div className={styles.fullWidth}>
                 <Form.Item label="제목">
                   <Input placeholder="제목을 입력해주세요." {...form.getInputProps('title')} />

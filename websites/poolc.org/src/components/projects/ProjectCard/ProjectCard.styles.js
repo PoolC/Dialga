@@ -6,11 +6,12 @@ export const ProjectCardBlock = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 260px;
-  min-height: 286px;
+  width: 290px;
+  min-height: 300px;
   margin: 0;
 
   &[data-variant='home'] {
+    width: 260px;
     height: 260px;
     min-height: 260px;
     margin: 10px;
@@ -25,9 +26,9 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${colors.mint[0]};
-  border-radius: 16px;
-  width: 260px;
-  height: 286px;
+  border-radius: 12px;
+  width: 290px;
+  height: 300px;
   box-shadow: 0px 0px 10px ${colors.gray[1]};
   padding: 10px;
   cursor: pointer;
@@ -42,9 +43,10 @@ export const Card = styled.div`
 
   &[data-variant='home'] {
     align-items: center;
+    width: 260px;
     height: 250px;
     padding: 10px 0;
-    border-radius: 20px;
+    border-radius: 12px;
   }
 
   &[data-variant='home']:hover {
@@ -56,15 +58,16 @@ export const Card = styled.div`
 
 export const ThumbnailContainer = styled.div`
   position: relative;
-  width: 240px;
+  width: 270px;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
 
   [data-variant='home'] & {
+    width: 240px;
     height: 120px;
     aspect-ratio: auto;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 `;
 

@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
 import { CardGrid } from '~/components/common/CardGrid/CardGrid';
+import { PageContent } from '~/components/common/PageLayout/PageLayout';
+
+export const MemberContent = styled(PageContent)`
+  max-width: 1210px;
+`;
 
 export const MemberListBody = styled.div`
   display: flex;
@@ -9,26 +14,14 @@ export const MemberListBody = styled.div`
 `;
 
 export const MemberListToolbar = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  margin-top: 0;
+  width: 430px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const MemberCardGrid = styled(CardGrid)`
-  max-width: 1000px;
+  max-width: 1210px;
   justify-content: flex-start;
-
-  @media (max-width: 1080px) {
-    max-width: 750px;
-  }
-
-  @media (max-width: 768px) {
-    max-width: 500px;
-  }
-`;
-
-export const MemberListEmpty = styled.div`
-  width: 100%;
-  max-width: 1200px;
-  padding: 48px 0;
 `;

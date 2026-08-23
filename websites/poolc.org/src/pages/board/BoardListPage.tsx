@@ -1,9 +1,11 @@
-import { Button, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 import { Link, useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
+import ActionButton from '~/components/common/Buttons/ActionButton';
 import BoardList from '~/components/board/BoardList';
 import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
@@ -13,25 +15,53 @@ import { useAppSelector } from '~/hooks/useAppSelector';
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
     && {
-      padding: 30px 0;
+      padding: 60px 0;
     }
   `,
   wrapper: css`
     width: 100%;
     max-width: 1200px;
-    padding: 0 12px;
+    padding: 0;
     box-sizing: border-box;
 
     .ant-tabs-nav {
       margin-bottom: 16px;
+      border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+    }
+
+    .ant-tabs-nav::before {
+      border-bottom: 0;
     }
 
     .ant-tabs-tab {
       padding: 12px 0 14px;
+      color: rgba(76, 55, 34, 0.76);
+      font-weight: 600;
+    }
+
+    .ant-tabs-tab + .ant-tabs-tab {
+      margin-left: 28px;
+    }
+
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #47be9b;
+      font-weight: 800;
+    }
+
+    .ant-tabs-ink-bar {
+      height: 2px;
+      border-radius: 999px;
+      background: #47be9b;
     }
   `,
   writeButton: css`
-    margin-bottom: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    button {
+      margin: 0;
+    }
   `,
 }));
 
@@ -101,9 +131,10 @@ export default function BoardListPage() {
 
     return (
       <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`} className={styles.writeButton}>
-        <Button type="primary" icon={<EditOutlined />}>
+        <ActionButton>
+          <EditOutlined />
           글쓰기
-        </Button>
+        </ActionButton>
       </Link>
     );
   };
@@ -112,7 +143,8 @@ export default function BoardListPage() {
     <PageShell>
       <PagePanel className={styles.whiteBlock}>
         <div className={styles.wrapper}>
-          <Tabs items={items} activeKey={boardType} onChange={onTabChange} tabBarExtraContent={renderWriteButton()} />
+          <PageHeader title="게시판" actions={renderWriteButton()} />
+          <Tabs items={items} activeKey={boardType} onChange={onTabChange} />
         </div>
       </PagePanel>
     </PageShell>
