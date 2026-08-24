@@ -4,9 +4,8 @@ import { EmptyState } from '../../common/EmptyState/EmptyState';
 import { PagePanel } from '../../common/PageLayout/PageLayout';
 import { PageHeader } from '../../common/PageHeader/PageHeader';
 import ActivityCard from '../ActivityCard/ActivityCard';
-import { FilterSelect } from '../../common/FilterSearchToolbar/FilterSearchToolbar';
 
-import { ActivityContent, ActivityGrid, HeaderActionArea, HeaderControls, SeminarPageShell, SemesterSelectArea } from './ActivityList.styles';
+import { ActivityContent, ActivityGrid, HeaderActionArea, HeaderControls, SeminarPageShell, SemesterMenuBlock, SemesterMenuButton, SemesterMenuItem, SemesterMenuList } from './ActivityList.styles';
 import Spinner from '../../common/Spinner/Spinner';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
@@ -16,20 +15,29 @@ const ActivityList = ({ loading, activities, semesters, currentLocation, onChang
     user: { memberId, role },
   } = member;
   const canManageActivity = isLogin && isAuthorizedRole(role);
-  const semesterOptions = (semesters ?? []).map((semester) => ({ label: semester, value: semester }));
+  const semesterItems = semesters ?? [];
 
   return (
     <SeminarPageShell>
-      <PagePanel>
+      <SemesterMenuBlock>
+        <SemesterMenuList>
+          {loading && <Spinner small />}
+          {!loading &&
+            semesterItems.map((semester) => (
+              <SemesterMenuItem key={semester}>
+                <SemesterMenuButton type="button" data-selected={currentLocation === semester} onClick={() => onChangeSemester(semester)}>
+                  {semester}
+                </SemesterMenuButton>
+              </SemesterMenuItem>
+            ))}
+        </SemesterMenuList>
+      </SemesterMenuBlock>
+      <PagePanel narrow>
         <ActivityContent>
           <PageHeader
             title="세미나&스터디"
             actions={
               <HeaderControls>
-                <SemesterSelectArea>
-                  {loading && <Spinner small />}
-                  {!loading && <FilterSelect value={currentLocation} onChange={onChangeSemester} options={semesterOptions} />}
-                </SemesterSelectArea>
                 <HeaderActionArea>{canManageActivity && <ActionButton to={`/${MENU.ACTIVITY}/new`}>세미나 개설</ActionButton>}</HeaderActionArea>
               </HeaderControls>
             }

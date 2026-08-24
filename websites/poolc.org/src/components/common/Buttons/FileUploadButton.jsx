@@ -7,7 +7,7 @@ import uploadableTypes from '../../../constants/uploadableTypes';
 import { SUCCESS } from '../../../constants/statusCode';
 import { publicConfig } from '../../../lib/config/publicConfig';
 
-const FileUploadButton = ({ files, onSubmit, multiple }) => {
+const FileUploadButton = ({ files, onSubmit, multiple, buttonStyle }) => {
   const formData = new FormData();
 
   const [file, setFile] = useState(null);
@@ -81,7 +81,7 @@ const FileUploadButton = ({ files, onSubmit, multiple }) => {
     <>
       <FileUploadModal visible={modalVisible} file={file} onUploadFile={onUploadFile} onBrowseFile={onBrowseFile} onCancel={() => setModalVisible(false)} />
       <Modal contents={errorMessage} buttons={buttons} visible={errorModalVisible} onConfirm={onCloseErrorModal} onCancel={onCloseErrorModal} />
-      <ActionButton className="file" onClick={onShowModal} style={{ marginBottom: '1rem' }}>
+      <ActionButton className="file" onClick={onShowModal} style={buttonStyle ?? { marginBottom: '1rem' }}>
         파일 첨부
       </ActionButton>
     </>
