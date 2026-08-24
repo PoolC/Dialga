@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style';
 import { Button, Modal } from 'antd';
-import { Calendar, dayjsLocalizer, Event, SlotInfo, Views } from 'react-big-calendar';
+import { Calendar, dayjsLocalizer, Event, SlotInfo, ToolbarProps, Views } from 'react-big-calendar';
 import { useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { LocalTimeReq, queryKey, RoomControllerService, useAppMutation, useAppQuery } from '~/lib/api-v2';
@@ -13,81 +13,99 @@ import colors from '~/lib/styles/colors';
 const localizer = dayjsLocalizer(dayjs);
 
 const useStyles = createStyles(({ css }) => ({
+  toolbar: css`
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+  `,
+  toolbarNav: css`
+    display: inline-flex;
+    justify-self: start;
+    overflow: hidden;
+    border: 1px solid #d8d0c3;
+    border-radius: 6px;
+    background: #ffffff;
+  `,
+  toolbarView: css`
+    display: inline-flex;
+    justify-self: end;
+    overflow: hidden;
+    border: 1px solid #d8d0c3;
+    border-radius: 6px;
+    background: #ffffff;
+  `,
+  toolbarButton: css`
+    height: 38px;
+    min-width: 64px;
+    padding: 0 14px;
+    border: 0;
+    border-left: 1px solid #d8d0c3;
+    background: #ffffff;
+    color: ${colors.brown[1]};
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    &:first-of-type {
+      border-left: 0;
+    }
+
+    &:hover,
+    &:focus {
+      background: ${colors.mint[0]};
+      color: ${colors.mint[3]};
+    }
+
+    &[data-active='true'] {
+      background: ${colors.mint[0]};
+      color: ${colors.brown[1]};
+    }
+
+    @media (max-width: 768px) {
+      flex: 1;
+      min-width: 0;
+    }
+  `,
+  toolbarRange: css`
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-align: center;
+  `,
+  toolbarMonth: css`
+    color: ${colors.brown[1]};
+    font-size: 1.18rem;
+    font-weight: 800;
+    line-height: 1.2;
+  `,
+  toolbarDates: css`
+    color: ${colors.brown[0]};
+    font-size: 0.83rem;
+    font-weight: 500;
+    line-height: 1.2;
+  `,
   calendarWrap: css`
     width: 100%;
     overflow: hidden;
-    margin-top: 4px;
+    margin-top: 2px;
 
     .rbc-calendar {
       width: 100%;
       color: ${colors.brown[1]};
       font-family: inherit;
-    }
-
-    .rbc-toolbar {
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 12px;
-    }
-
-    .rbc-toolbar-label {
-      color: ${colors.brown[1]};
-      font-size: 1rem;
-      font-weight: 800;
-    }
-
-    .rbc-btn-group {
-      display: inline-flex;
-      overflow: hidden;
-      border: 1px solid #d8d0c3;
-      border-radius: 6px;
-      background: #ffffff;
-    }
-
-    .rbc-toolbar .rbc-btn-group:first-of-type {
-      background: #fbfaf8;
-    }
-
-    .rbc-toolbar .rbc-btn-group:last-of-type {
-      background: #ffffff;
-    }
-
-    .rbc-btn-group button {
-      height: 36px;
-      min-width: 56px;
-      border: 0;
-      border-left: 1px solid #d8d0c3;
-      background: #ffffff;
-      color: ${colors.brown[1]};
-      font-size: 0.82rem;
-      font-weight: 700;
-      box-shadow: none;
-      cursor: pointer;
-      transition:
-        background 0.15s ease,
-        color 0.15s ease;
-    }
-
-    .rbc-btn-group button:first-of-type {
-      border-left: 0;
-    }
-
-    .rbc-btn-group button:hover,
-    .rbc-btn-group button:focus {
-      background: ${colors.mint[0]};
-      color: ${colors.mint[3]};
-    }
-
-    .rbc-btn-group button.rbc-active {
-      background: ${colors.mint[0]};
-      color: ${colors.brown[1]};
-      box-shadow: inset 0 0 0 1px rgba(71, 190, 155, 0.2);
-    }
-
-    .rbc-toolbar .rbc-btn-group:first-of-type button.rbc-active {
-      background: #ffffff;
-      color: ${colors.brown[1]};
-      box-shadow: none;
     }
 
     .rbc-time-view,
@@ -107,8 +125,8 @@ const useStyles = createStyles(({ css }) => ({
     }
 
     .rbc-header {
-      min-height: 32px;
-      padding: 8px 4px;
+      min-height: 36px;
+      padding: 9px 4px;
       border-bottom: 0;
       color: ${colors.brown[1]};
       font-size: 0.8rem;
@@ -131,7 +149,7 @@ const useStyles = createStyles(({ css }) => ({
     }
 
     .rbc-timeslot-group {
-      min-height: 72px;
+      min-height: 64px;
       border-bottom: 1px solid #ebe6de;
     }
 
@@ -159,7 +177,7 @@ const useStyles = createStyles(({ css }) => ({
     .rbc-label {
       padding: 0 10px;
       color: ${colors.brown[1]};
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       font-weight: 600;
     }
 
@@ -176,7 +194,7 @@ const useStyles = createStyles(({ css }) => ({
       border: 0 !important;
       border-radius: 6px;
       background-color: ${colors.mint[2]};
-      box-shadow: 0 6px 14px rgba(71, 190, 155, 0.18);
+      box-shadow: 0 4px 12px rgba(71, 190, 155, 0.14);
       padding: 0;
     }
 
@@ -198,26 +216,6 @@ const useStyles = createStyles(({ css }) => ({
     }
 
     @media (max-width: 768px) {
-      .rbc-toolbar {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .rbc-toolbar-label {
-        order: -1;
-        text-align: center;
-      }
-
-      .rbc-btn-group {
-        width: 100%;
-      }
-
-      .rbc-btn-group button {
-        flex: 1;
-        min-width: 0;
-        padding: 0 6px;
-      }
-
       .rbc-header {
         padding: 6px 2px;
         font-size: 0.68rem;
@@ -255,8 +253,8 @@ const useStyles = createStyles(({ css }) => ({
     height: 100%;
     min-height: 0;
     flex-direction: column;
-    gap: 6px;
-    padding: 9px 10px;
+    gap: 5px;
+    padding: 8px 10px;
     color: #ffffff;
     box-sizing: border-box;
 
@@ -279,9 +277,9 @@ const useStyles = createStyles(({ css }) => ({
   reservationTime: css`
     flex: 0 0 auto;
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.15;
-    opacity: 0.92;
+    opacity: 0.9;
 
     @media (max-width: 768px) {
       font-size: 0.6rem;
@@ -300,7 +298,7 @@ const useStyles = createStyles(({ css }) => ({
   reservationPurpose: css`
     display: -webkit-box;
     overflow: hidden;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 800;
     line-height: 1.24;
     word-break: keep-all;
@@ -329,9 +327,9 @@ const useStyles = createStyles(({ css }) => ({
     margin-top: auto;
     overflow: hidden;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.2;
-    opacity: 0.9;
+    opacity: 0.78;
     text-overflow: ellipsis;
     white-space: nowrap;
 
@@ -350,6 +348,8 @@ type RoomEventResource = {
 type RoomCalendarEvent = Event & {
   resource?: RoomEventResource;
 };
+
+type RoomToolbarProps = ToolbarProps<RoomCalendarEvent>;
 
 export default function RoomReservationPage() {
   // data
@@ -513,6 +513,45 @@ export default function RoomReservationPage() {
     );
   };
 
+  const RoomToolbar = ({ date, view, onNavigate, onView }: RoomToolbarProps) => {
+    const visibleStart = view === Views.DAY ? dayjs(date) : dayjs(date).startOf('week');
+    const visibleEnd = view === Views.DAY ? dayjs(date) : dayjs(date).endOf('week');
+    const isSameMonth = visibleStart.isSame(visibleEnd, 'month');
+    const monthText = isSameMonth ? visibleStart.format('YYYY년 M월') : `${visibleStart.format('YYYY년 M월')} - ${visibleEnd.format('YYYY년 M월')}`;
+    const rangeText =
+      view === Views.DAY
+        ? visibleStart.format('M월 D일')
+        : `${visibleStart.format('M월 D일')} - ${visibleEnd.format('M월 D일')}`;
+
+    return (
+      <div className={styles.toolbar}>
+        <div className={styles.toolbarNav}>
+          <button type="button" className={styles.toolbarButton} onClick={() => onNavigate('TODAY')}>
+            이번 주
+          </button>
+          <button type="button" className={styles.toolbarButton} onClick={() => onNavigate('PREV')}>
+            이전
+          </button>
+          <button type="button" className={styles.toolbarButton} onClick={() => onNavigate('NEXT')}>
+            다음
+          </button>
+        </div>
+        <div className={styles.toolbarRange}>
+          <span className={styles.toolbarMonth}>{monthText}</span>
+          <span className={styles.toolbarDates}>{rangeText}</span>
+        </div>
+        <div className={styles.toolbarView}>
+          <button type="button" className={styles.toolbarButton} data-active={view === Views.WEEK} onClick={() => onView(Views.WEEK)}>
+            주간
+          </button>
+          <button type="button" className={styles.toolbarButton} data-active={view === Views.DAY} onClick={() => onView(Views.DAY)}>
+            일간
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   // template
   return (
     <>
@@ -542,6 +581,7 @@ export default function RoomReservationPage() {
                   day: '일간',
                 }}
                 components={{
+                  toolbar: RoomToolbar,
                   event: ReservationEvent,
                 }}
                 events={eventList}
