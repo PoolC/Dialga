@@ -8,11 +8,12 @@ import {
   GithubOutlined,
   SettingTwoTone,
 } from '@ant-design/icons';
-import { Typography } from 'antd';
+import { message, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import PksKubectlSection from '~/components/pks/PksKubectlSection';
+import { createGiteaLoginTicket } from '~/lib/api/gitea';
 import { KubernetesControllerService, queryKey, useAppQuery } from '~/lib/api-v2';
 import { publicConfig } from '~/lib/config/publicConfig';
 
@@ -65,6 +66,7 @@ const PKS_RESOURCES: PksResource[] = [
 
 export default function PksContainer() {
   const { styles } = useStyles();
+  const [isGiteaLoginLoading, setIsGiteaLoginLoading] = useState(false);
 
   const { data: kubernetes, isError: isKubernetesError } = useAppQuery({
     queryKey: queryKey.kubernetes.me,
@@ -82,6 +84,23 @@ export default function PksContainer() {
     }
 
     return <Typography.Text className={styles.mutedText}>키 정보를 확인하고 있습니다.</Typography.Text>;
+  };
+
+  const handleGiteaClick = async (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    if (isGiteaLoginLoading) {
+      return;
+    }
+
+    try {
+      setIsGiteaLoginLoading(true);
+      const { data } = await createGiteaLoginTicket();
+      window.location.href = data.loginUrl || `${publicConfig.pks.gitea.url}/_poolc_login?ticket=${encodeURIComponent(data.ticket)}`;
+    } catch {
+      message.error('Gitea 로그인에 실패했습니다.');
+      setIsGiteaLoginLoading(false);
+    }
   };
 
   return (
@@ -110,7 +129,14 @@ export default function PksContainer() {
             );
 
             return item.link ? (
-              <a key={item.title} href={item.link} className={styles.resourceCard} target="_blank" rel="noreferrer">
+              <a
+                key={item.title}
+                href={item.link}
+                className={styles.resourceCard}
+                target={item.title === 'Gitea' ? undefined : '_blank'}
+                rel="noreferrer"
+                onClick={item.title === 'Gitea' ? handleGiteaClick : undefined}
+              >
                 {content}
               </a>
             ) : (
