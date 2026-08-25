@@ -16,6 +16,7 @@ const ROLE_LABELS: Record<string, string> = {
   ALL: '전체',
   MEMBER: '일반회원',
   ADMIN: '임원진',
+  TECHNICIAN: '기술자',
   SUPER_ADMIN: '최고 관리자',
   GRADUATED: '졸업회원',
   COMPLETE: '수료회원',
@@ -25,13 +26,14 @@ const ROLE_LABELS: Record<string, string> = {
 const FALLBACK_ROLE_OPTIONS: FilterSearchToolbarOption<MemberFilter>[] = [
   { label: '전체', value: 'ALL' },
   { label: '임원진', value: 'ADMIN' },
+  { label: '기술자', value: 'TECHNICIAN' },
   { label: '일반회원', value: 'MEMBER' },
   { label: '수료회원', value: 'COMPLETE' },
   { label: '졸업회원', value: 'GRADUATED' },
   { label: '비활동', value: 'INACTIVE' },
 ];
 
-const ROLE_ORDER: MemberFilter[] = ['ALL', 'ADMIN', 'MEMBER', 'COMPLETE', 'GRADUATED', 'INACTIVE'];
+const ROLE_ORDER: MemberFilter[] = ['ALL', 'ADMIN', 'TECHNICIAN', 'MEMBER', 'COMPLETE', 'GRADUATED', 'INACTIVE'];
 
 const getRoleOptions = (roles?: MemberRolesResponse[]) => {
   if (!roles || roles.length === 0) {

@@ -1,6 +1,5 @@
 import { Avatar, Progress, Space, Tooltip, Typography } from 'antd';
 import { createStyles } from 'antd-style';
-import { match } from 'ts-pattern';
 import { Badge, BadgeControllerService, MemberControllerService, queryKey, useAppQueries } from '~/lib/api-v2';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
@@ -54,10 +53,6 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 20px;
   `,
-  tierProgressRow: css`
-    display: flex;
-    gap: 24px;
-  `,
   owned: css`
     border: 2px solid #47be9b;
   `,
@@ -82,12 +77,6 @@ export default function MyPageBadgeListPage() {
     ],
   });
 
-  const baekjoonBadges = allBadges?.data?.filter((badge) => badge.category === 'BAEKJOON') ?? [];
-
-  const baekjoonSuccessiveSolveBadges = baekjoonBadges.slice(0, baekjoonBadges.length - 5);
-
-  const baekjoonTierBadges = baekjoonBadges.slice(baekjoonBadges.length - 5);
-
   const renderBadgeTooltipTitle = (badge: Badge) => (
     <div>
       <span className={styles.badgeName}>{badge.name}</span>
@@ -95,34 +84,6 @@ export default function MyPageBadgeListPage() {
       <span className={styles.badgeDesc}>{badge.description}</span>
     </div>
   );
-
-  const renderBakejoonTierProgress = (tier: 'bronze' | 'silver' | 'gold' | 'platinum' | 'diamond' | 'ruby', count: number) => {
-    const title = match(tier)
-      .with('bronze', () => '브론즈')
-      .with('silver', () => '실버')
-      .with('gold', () => '골드')
-      .with('platinum', () => '플래티넘')
-      .with('diamond', () => '다이아몬드')
-      .with('ruby', () => '루비')
-      .exhaustive();
-
-    const strokecolor = match(tier)
-      .with('bronze', () => '#ad5600')
-      .with('silver', () => '#435f7a')
-      .with('gold', () => '#ec9a00')
-      .with('platinum', () => '#27e2a4')
-      .with('diamond', () => '#00b4fc')
-      .with('ruby', () => '#ff0062')
-      .exhaustive();
-
-    return (
-      <Space direction="vertical" size={0} className={styles.wrapper}>
-        <Typography.Title level={5}>{title}</Typography.Title>
-        <Typography.Text>{count}개 / 10개</Typography.Text>
-        <Progress percent={(count / 10) * 100} showInfo={false} strokeColor={strokecolor} />
-      </Space>
-    );
-  };
 
   return (
     <Block>
@@ -152,42 +113,6 @@ export default function MyPageBadgeListPage() {
             <Typography.Text>{allBadges?.attendance ?? 0}일 / 30일</Typography.Text>
             <Progress percent={((allBadges?.attendance ?? 0) / 30) * 100} showInfo={false} strokeColor="#47be9b" />
           </Space>
-        </Space>
-        <Space direction="vertical" size="middle" className={styles.fullWidth}>
-          <div>
-            <Typography.Text className={styles.category}>Baekjoon</Typography.Text>
-          </div>
-          <div className={styles.badgeWrap}>
-            {baekjoonSuccessiveSolveBadges.map((badge) => (
-              <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} size={60} className={cx(badge.own ? styles.owned : styles.notOwned)} />
-              </Tooltip>
-            ))}
-          </div>
-          <Space direction="vertical" size={0} className={styles.wrapper}>
-            <Typography.Title level={5}>문제풀이 횟수(연속)</Typography.Title>
-            <Typography.Text>{allBadges?.baekjoon ?? 0}일 / 50일</Typography.Text>
-            <Progress percent={(allBadges?.baekjoon ?? 0) / 50} showInfo={false} strokeColor="#47be9b" />
-          </Space>
-          <div className={styles.badgeWrap}>
-            {baekjoonTierBadges.map((badge) => (
-              <Tooltip key={badge.id} title={renderBadgeTooltipTitle(badge)}>
-                <Avatar src={getFileUrl(badge.imageUrl)} alt={badge.name} size={60} className={cx(badge.own ? styles.owned : styles.notOwned)} />
-              </Tooltip>
-            ))}
-          </div>
-          <div className={styles.tierProgressRow}>
-            {renderBakejoonTierProgress('bronze', allBadges?.bronze ?? 0)}
-            {renderBakejoonTierProgress('platinum', allBadges?.platinum ?? 0)}
-          </div>
-          <div className={styles.tierProgressRow}>
-            {renderBakejoonTierProgress('silver', allBadges?.silver ?? 0)}
-            {renderBakejoonTierProgress('diamond', allBadges?.diamond ?? 0)}
-          </div>
-          <div className={styles.tierProgressRow}>
-            {renderBakejoonTierProgress('gold', allBadges?.gold ?? 0)}
-            {renderBakejoonTierProgress('ruby', allBadges?.ruby ?? 0)}
-          </div>
         </Space>
       </WhiteBlock>
     </Block>
