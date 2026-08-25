@@ -35,3 +35,10 @@ build
 !.yarn/versions
 
 node_modules
+
+# Docker build context
+.git
+**/node_modules
+**/build
+**/dist
+.env.local

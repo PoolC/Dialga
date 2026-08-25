@@ -1,0 +1,57 @@
+name: Build frontend staging image
+
+on:
+  push:
+    branches:
+      - master
+      - refactor/local-dev-bootstrap
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: git.poolc.org/poolc-web/frontend
+      STAGING_REPOSITORY: https://git.poolc.org/PKS/poolc-staging.git
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and publish latest image
+        env:
+          DEPLOY_TOKEN: ${{ secrets.PKS_DEPLOY_TOKEN }}
+        run: |
+          set -eu
+          docker login git.poolc.org --username poolc-deploy --password "$DEPLOY_TOKEN"
+          docker build --pull --tag "$IMAGE:latest" .
+          docker push "$IMAGE:latest"
+          digest=$(docker image inspect "$IMAGE:latest" --format '{{index .RepoDigests 0}}')
+          printf '%s' "${digest#*@}" > /tmp/image-digest
+
+      - name: Record image digest in GitOps
+        env:
+          DEPLOY_TOKEN: ${{ secrets.PKS_DEPLOY_TOKEN }}
+        run: |
+          set -eu
+          git config --global user.name 'poolc-deploy'
+          git config --global user.email 'poolc-deploy@poolc.org'
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.extraHeader
+          export GIT_CONFIG_VALUE_0="Authorization: token $DEPLOY_TOKEN"
+          git clone "$STAGING_REPOSITORY" /tmp/poolc-staging
+          digest=$(cat /tmp/image-digest)
+          IMAGE="$IMAGE" DIGEST="$digest" python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          path = Path('/tmp/poolc-staging/manifests/kustomization.yaml')
+          content = path.read_text()
+          pattern = rf'(name: {re.escape(os.environ["IMAGE"])}\n\s+newName: .*?\n\s+)(?:newTag|digest): .*'
+          content, count = re.subn(pattern, rf'\1digest: {os.environ["DIGEST"]}', content)
+          if count != 1:
+              raise SystemExit(f'expected one image entry, updated {count}')
+          path.write_text(content)
+          PY
+          cd /tmp/poolc-staging
+          git add manifests/kustomization.yaml
+          git diff --cached --quiet || git commit -m 'DEPLOY(staging): update frontend image'
+          git push origin main
