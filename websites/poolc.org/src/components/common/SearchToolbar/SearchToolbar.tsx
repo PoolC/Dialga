@@ -9,13 +9,14 @@ type SearchOption = {
 };
 
 type SearchToolbarProps = {
-  options: SearchOption[];
-  searchType: string;
+  options?: SearchOption[];
+  searchType?: string;
   keyword: string;
   placeholder: string;
-  onSearchTypeChange: (value: string) => void;
+  onSearchTypeChange?: (value: string) => void;
   onKeywordChange: (value: string) => void;
   onSearch: () => void;
+  showSearchType?: boolean;
 };
 
 const useStyles = createStyles(({ css }) => ({
@@ -88,7 +89,16 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export const SearchToolbar = ({ options, searchType, keyword, placeholder, onSearchTypeChange, onKeywordChange, onSearch }: SearchToolbarProps) => {
+export const SearchToolbar = ({
+  options,
+  searchType,
+  keyword,
+  placeholder,
+  onSearchTypeChange,
+  onKeywordChange,
+  onSearch,
+  showSearchType = true,
+}: SearchToolbarProps) => {
   const { styles } = useStyles();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -98,13 +108,15 @@ export const SearchToolbar = ({ options, searchType, keyword, placeholder, onSea
 
   return (
     <form className={styles.toolbar} onSubmit={handleSubmit}>
-      <Select
-        getPopupContainer={(trigger) => trigger.parentNode}
-        className={styles.searchSelect}
-        value={searchType}
-        onChange={onSearchTypeChange}
-        options={options}
-      />
+      {showSearchType && options && searchType !== undefined && onSearchTypeChange && (
+        <Select
+          getPopupContainer={(trigger) => trigger.parentNode}
+          className={styles.searchSelect}
+          value={searchType}
+          onChange={onSearchTypeChange}
+          options={options}
+        />
+      )}
       <Input className={styles.searchInput} placeholder={placeholder} value={keyword} onChange={(event) => onKeywordChange(event.target.value)} />
       <Button className={styles.searchButton} type="primary" htmlType="submit">
         검색

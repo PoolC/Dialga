@@ -6,8 +6,10 @@ import * as memberAPI from '../../../lib/api/member';
 import { MENU } from '../../../constants/menus';
 import ActionButton from '../../../components/common/Buttons/ActionButton';
 import { SUCCESS } from '../../../constants/statusCode';
+import { useMessage } from '../../../hooks/useMessage';
 
 const AdminProjectFormContainer = ({ match, history }) => {
+  const message = useMessage();
   const { projectID } = match.params;
 
   const [members, setMembers] = useState([]);
@@ -51,11 +53,12 @@ const AdminProjectFormContainer = ({ match, history }) => {
       })
       .then((res) => {
         if (res.status === SUCCESS.OK) {
+          message.success('프로젝트가 생성되었습니다.');
           history.push('/admin/projects');
         }
       })
-      .catch(() => {
-        if (e.response.data.status === 403) {
+      .catch((error) => {
+        if (error.response?.data?.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
         setErrorMessage('오류가 발생했습니다');
@@ -84,11 +87,12 @@ const AdminProjectFormContainer = ({ match, history }) => {
       })
       .then((res) => {
         if (res.status === SUCCESS.OK) {
+          message.success('프로젝트가 수정되었습니다.');
           history.push('/admin/projects');
         }
       })
-      .catch(() => {
-        if (e.response.data.status === 403) {
+      .catch((error) => {
+        if (error.response?.data?.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
         }
         setErrorMessage('오류가 발생했습니다');

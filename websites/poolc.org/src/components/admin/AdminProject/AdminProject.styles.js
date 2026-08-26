@@ -1,86 +1,158 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 
-export const TitleContainer = styled.div`
+export const PageHeader = styled.div`
   display: flex;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin: 1rem;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  width: 90%;
-  justify-content: flex-end;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin: 1rem;
-`;
-
-export const ContentsContainer = styled.div`
-  display: flex;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Table = styled.table`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  margin: 20px 0;
-  border-collapse: collapse;
-  border-radius: 1em;
-  overflow: hidden;
-  & > thead {
-    padding: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+
+  @media (max-width: 768px) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+`;
+
+export const Title = styled.h2`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+`;
+
+export const ToolbarActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+`;
+
+export const TabActionRow = styled.div`
+  position: relative;
+  width: 100%;
+
+  > div {
+    width: 100%;
+  }
+
+  > div .ant-tabs-nav {
+    padding-right: 150px;
+  }
+
+  > button {
+    position: absolute;
+    top: 0;
+    right: 0;
     margin: 0;
   }
-  & > tbody {
-    width: 100%;
+
+  @media (max-width: 768px) {
+    > div .ant-tabs-nav {
+      padding-right: 0;
+    }
+
+    > button {
+      position: static;
+      display: inline-flex;
+      margin: 0 0 16px;
+    }
+  }
+`;
+
+export const ProjectTableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-radius: 8px;
+`;
+
+export const ProjectTable = styled.table`
+  width: 100%;
+  min-width: 880px;
+  border-collapse: collapse;
+  color: ${colors.brown[1]};
+  font-size: 0.84rem;
+
+  th,
+  td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th:nth-of-type(1) { width: 31%; }
+  th:nth-of-type(2) { width: 11%; }
+  th:nth-of-type(3) { width: 22%; }
+  th:nth-of-type(4) { width: 18%; }
+  th:nth-of-type(5) { width: 18%; }
+
+  tbody tr:last-of-type td {
+    border-bottom: 0;
   }
 `;
 
 export const TableHead = styled.tr`
-  cursor: default;
-  display: flex;
-  width: 100%;
-  background-color: ${colors.mint[0]};
-  margin: 0;
-  padding: 0.8rem 0px;
-  font-size: 0.9rem;
-  & > .project_list_head {
-    flex: 1;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: ${colors.mint[0]};
+
+  th {
+    color: ${colors.brown[1]};
+    font-size: 0.8rem;
+    font-weight: 800;
   }
 `;
 
 export const ProjectListRow = styled.tr`
-  cursor: default;
-  display: flex;
-  padding: 0.5rem 0;
-  transition: 0.3s;
-  @media (max-width: 576px) {
-    font-size: 0.8rem;
-  }
-  & > .project-list-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    padding: 0 10px;
-    line-height: 1.5rem;
-    font-size: 0.8rem;
-  }
   &:hover {
-    background-color: ${colors.gray[0]};
-    transition: 0.3s;
+    background: rgba(229, 240, 237, 0.45);
   }
+`;
+
+export const ProjectIdentity = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  strong {
+    font-weight: 800;
+  }
+`;
+
+export const AccountActions = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  > a,
+  > button {
+    margin: 0;
+  }
+`;
+
+export const AccountActionButton = styled.button`
+  min-width: 56px;
+  padding: 7px 10px;
+  border: 1px solid #f2b5b5;
+  border-radius: 5px;
+  background: #fff;
+  color: #d95757;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+`;
+
+export const EmptyResult = styled.p`
+  margin: 0;
+  padding: 42px 20px;
+  color: ${colors.brown[0]};
+  font-size: 0.9rem;
+  text-align: center;
 `;
