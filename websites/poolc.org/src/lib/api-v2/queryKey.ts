@@ -3,6 +3,7 @@ import { BoardType } from '~/lib/utils/boardUtil';
 export const queryKey = {
   member: {
     hour: ['member.hour'] as const,
+    activitySummary: ['member.activitySummary'] as const,
     me: ['member.me'] as const,
     all: ['member.all'] as const,
     roles: ['member.roles'] as const,

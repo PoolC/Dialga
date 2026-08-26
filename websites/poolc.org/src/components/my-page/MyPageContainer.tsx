@@ -1,13 +1,29 @@
-import { Avatar, Button, List, Space, Typography } from 'antd';
+import { Avatar, List, Space, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { ArrowRightOutlined, EditTwoTone, MessageTwoTone, StarTwoTone, UserOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, EditOutlined, MessageOutlined, StarOutlined, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import { BadgeControllerService, MemberControllerService, queryKey, useAppMutation, useAppSuspenseQueries } from '~/lib/api-v2';
+import { MemberControllerService, MyActivityDetailResponse, MyActivitySummaryResponse, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import { MEMBER_ROLE } from '~/constants/memberRoles';
-import { queryClient } from '~/lib/utils/queryClient';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
-import getFileUrl from '~/lib/utils/getFileUrl';
+
+const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
+  try {
+    return await MemberControllerService.getMyActivitySummaryUsingGet();
+  } catch {
+    const legacyHour = await MemberControllerService.getMyActivityTimeUsingGet();
+    const totalHours = legacyHour.hour ?? 0;
+
+    return {
+      totalHours,
+      seminarStudyHours: totalHours,
+      officialActivityHours: 0,
+      projectHours: 0,
+      seminarStudyActivities: [],
+      officialActivities: [],
+    };
+  }
+};
 
 export default function MyPageContainer() {
   const { styles, cx } = useStyles();
@@ -25,43 +41,42 @@ export default function MyPageContainer() {
     },
     {
       title: '내가 쓴 글',
-      icon: <EditTwoTone size={24} twoToneColor="#ffd43b" />,
+      icon: <EditOutlined size={24} />,
       link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_POSTS}`,
     },
     {
       title: '내가 스크랩한 글',
-      icon: <StarTwoTone size={24} twoToneColor="#ffa94d" />,
+      icon: <StarOutlined size={24} />,
       link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`,
     },
     {
       title: '쪽지',
-      icon: <MessageTwoTone size={24} twoToneColor="#4dabf7" />,
+      icon: <MessageOutlined size={24} />,
       link: `/${MENU.MESSAGE}`,
     },
   ];
 
-  const [{ data: myHour }, { data: me }, { data: badge }] = useAppSuspenseQueries({
+  const [{ data: activitySummary }, { data: me }] = useAppSuspenseQueries({
     queries: [
       {
-        queryKey: queryKey.member.hour,
-        queryFn: MemberControllerService.getMyActivityTimeUsingGet,
+        queryKey: queryKey.member.activitySummary,
+        queryFn: getMyActivitySummary,
       },
       {
         queryKey: queryKey.member.me,
         queryFn: MemberControllerService.getMeUsingGet,
       },
-      {
-        queryKey: queryKey.badge.badge,
-        queryFn: BadgeControllerService.getMyBadgeUsingGet,
-      },
     ],
   });
 
   const activityMinimumHour = 10;
-  const recordedActivityHours = myHour.hour ?? 0;
-  const remainingActivityHours = Math.max(activityMinimumHour - recordedActivityHours, 0);
-  const meetsRecordedActivityRequirement = recordedActivityHours >= activityMinimumHour;
-  const activityProgress = Math.min((recordedActivityHours / activityMinimumHour) * 100, 100);
+  const recordedActivityHours = activitySummary.totalHours ?? 0;
+  const activityExemptionLabel =
+    me.role === MEMBER_ROLE.ADMIN ? '임원진 면제' : me.role === MEMBER_ROLE.TECHNICIAN ? '기술적 기여 면제' : null;
+  const displayedActivityHours = recordedActivityHours;
+  const remainingActivityHours = Math.max(activityMinimumHour - displayedActivityHours, 0);
+  const meetsRecordedActivityRequirement = displayedActivityHours >= activityMinimumHour;
+  const activityProgress = Math.min((displayedActivityHours / activityMinimumHour) * 100, 100);
   const activityDecision = (() => {
     switch (me.role) {
       case MEMBER_ROLE.INACTIVE:
@@ -71,9 +86,9 @@ export default function MyPageContainer() {
       case MEMBER_ROLE.COMPLETE:
         return { label: '면제', description: '수료회원은 활동 기준 대상이 아닙니다.', className: styles.activityStatusExempt };
       case MEMBER_ROLE.ADMIN:
-        return { label: '충족', description: '이번 학기 임원진 활동으로 기준을 충족합니다.', className: styles.activityStatusMet };
+        return { label: '면제', description: '임원진 역할로 활동 기준이 면제됩니다.', className: styles.activityStatusExempt };
       case MEMBER_ROLE.TECHNICIAN:
-        return { label: '충족', description: '기술 기여 역할로 기준을 충족합니다.', className: styles.activityStatusMet };
+        return { label: '면제', description: '기술 기여 역할로 활동 기준이 면제됩니다.', className: styles.activityStatusExempt };
       case MEMBER_ROLE.MEMBER:
         return meetsRecordedActivityRequirement
           ? { label: '충족', description: '현재 반영된 인정 활동시간 기준을 충족했습니다.', className: styles.activityStatusMet }
@@ -83,150 +98,122 @@ export default function MyPageContainer() {
     }
   })();
   const activityReasonItems = [
-    { label: '현재 반영 출석시간', value: `${recordedActivityHours}시간`, color: '#47be9b' },
-    { label: '공식 행사', value: '연동 전', color: '#74c0fc' },
-    { label: '프로젝트·주최', value: '연동 전', color: '#ffd43b' },
+    { label: '세미나', hours: activitySummary.seminarStudyHours ?? 0, color: '#47be9b' },
+    { label: '공식 활동', hours: activitySummary.officialActivityHours ?? 0, color: '#ffd43b' },
+    { label: '프로젝트', hours: activitySummary.projectHours ?? 0, color: '#ff922b' },
   ];
-  const alternativeCriteria = [
-    '세미나·스터디 4시간 이상 주최',
-    '활동 5시간 이상과 주최 2시간 이상',
-    '기술 기여 인정',
-    '이번 학기 임원진 활동',
+  const formatHours = (hours: number) => (Number.isInteger(hours) ? `${hours}` : hours.toFixed(1));
+  const toDetailItems = (items: MyActivityDetailResponse[] = []) =>
+    items.map((item) => ({
+      id: item.activityId ?? item.title ?? 'unknown-activity',
+      title: item.title ?? '이름 없는 활동',
+      hours: item.recognizedHours ?? 0,
+      hosted: item.hosted ?? false,
+    }));
+  const activityDetailSections = [
+    {
+      title: '세미나/스터디',
+      items: toDetailItems(activitySummary.seminarStudyActivities),
+    },
+    {
+      title: '공식 활동',
+      items: toDetailItems(activitySummary.officialActivities),
+    },
   ];
-  const deductionCriteria = ['공식 행사 인정 시간은 학기당 최대 5시간', '지각·결석에 따른 활동시간 차감'];
-
-  const { mutate: selectBadge } = useAppMutation({
-    mutationFn: BadgeControllerService.selectBadgeUsingPost,
-  });
-
-  const onBadgeButtonClick = (id: number) => {
-    if (me?.badge?.id === id) {
-      return;
-    }
-
-    selectBadge(
-      {
-        badgeId: id,
-      },
-      {
-        onSuccess() {
-          queryClient.invalidateQueries({
-            queryKey: queryKey.member.me,
-          });
-        },
-      },
-    );
-  };
 
   return (
-    <Space direction="vertical" className={styles.fullWidth} size={40}>
-      <Space className={styles.wrapper} size="middle">
-        <Avatar size={80} src={getProfileImageUrl(me.profileImageURL)} />
-        <Space direction="vertical">
-          <Space>
-            <Typography.Text className={styles.userName}>{me.name}님</Typography.Text>
-            {me.badge && <Avatar src={getFileUrl(me.badge.imageUrl)} alt={me.name} size={60} className={styles.badge} />}
+    <Space direction="vertical" className={cx(styles.fullWidth, styles.pageContent)} size={32}>
+      <section className={styles.profileHeader} aria-labelledby="my-profile-title">
+        <Space className={styles.wrapper} size="middle">
+          <Avatar size={80} src={getProfileImageUrl(me.profileImageURL)} />
+          <Space direction="vertical">
+            <Space>
+              <Typography.Text id="my-profile-title" className={styles.userName}>
+                {me.name}님
+              </Typography.Text>
+            </Space>
+            <Typography.Text>{me.introduction}</Typography.Text>
           </Space>
-          <Typography.Text>{me.introduction}</Typography.Text>
         </Space>
-      </Space>
-      <Space direction="vertical" size={0} className={styles.wrapper}>
-        <div className={styles.activitySummaryHeader}>
-          <Typography.Title level={5}>나의 활동 기준</Typography.Title>
-          <Typography.Text className={styles.activitySemester}>이번 학기</Typography.Text>
-        </div>
-        <Typography.Text className={styles.activitySectionTitle}>시간 기준</Typography.Text>
-        <div className={styles.activityOverview}>
-          <div className={styles.activityOverviewStatus}>
-            <Typography.Text
-              className={cx(styles.activityStatusBadge, {
-                [activityDecision.className]: Boolean(activityDecision.className),
-              })}
-            >
-              {activityDecision.label}
-            </Typography.Text>
-            <Typography.Text className={styles.activityRequirementValue}>
-              {activityDecision.description}
-            </Typography.Text>
-          </div>
-          <div
-            className={styles.activityProgressRing}
-            style={{
-              background: `conic-gradient(#47be9b ${activityProgress}%, #d9f1e9 ${activityProgress}% 100%)`,
-            }}
-          >
-            <div className={styles.activityProgressRingInner}>
-              <Typography.Text className={styles.activityProgressRingValue}>{recordedActivityHours}</Typography.Text>
-              <Typography.Text className={styles.activityProgressRingLabel}>/ {activityMinimumHour}시간</Typography.Text>
-            </div>
-          </div>
-        </div>
-        <div className={styles.activityLegend} aria-label="인정 활동시간 구성">
-          {activityReasonItems.map((item) => (
-            <div className={styles.activityLegendItem} key={item.label}>
-              <span className={styles.activityLegendDot} style={{ backgroundColor: item.color }} />
-              <Typography.Text className={styles.activityLegendLabel}>{item.label}</Typography.Text>
-              <Typography.Text className={styles.activityLegendValue}>{item.value}</Typography.Text>
-            </div>
-          ))}
-        </div>
-        <div className={styles.activityRuleSection}>
-          <Typography.Text className={styles.activitySectionTitle}>대체 충족 조건</Typography.Text>
-          <div className={styles.activityRuleList}>
-            {alternativeCriteria.map((criterion) => (
-              <div className={styles.activityRuleItem} key={criterion}>
-                <span className={styles.activityRuleIndicator} />
-                <Typography.Text>{criterion}</Typography.Text>
-                <Typography.Text className={styles.activityRuleStatus}>미반영</Typography.Text>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className={styles.activityRuleSection}>
-          <Typography.Text className={styles.activitySectionTitle}>감점·제한</Typography.Text>
-          <div className={styles.activityRuleList}>
-            {deductionCriteria.map((criterion) => (
-              <div className={styles.activityRuleItem} key={criterion}>
-                <span className={styles.activityRuleIndicator} />
-                <Typography.Text>{criterion}</Typography.Text>
-                <Typography.Text className={styles.activityRuleStatus}>미반영</Typography.Text>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Space>
-      <Space direction="vertical" size={0} className={styles.wrapper}>
-        <Typography.Title level={5} className={styles.badgeTitle}>
-          얻은 뱃지
-          <Link to={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`} className={styles.badgeLink}>
-            모든 뱃지보기 <span>&gt;</span>
-          </Link>
-        </Typography.Title>
-        {badge?.data && badge.data.length > 0 ? (
-          <Space size={[8, 16]} wrap>
-            {badge.data.map((el, idx) => (
-              <Button
-                key={`${el.id}-${idx}`}
-                onClick={() => onBadgeButtonClick(el.id!)}
-                shape="circle"
-                className={cx(styles.badgeButton, {
-                  active: me.badge?.id === el.id,
+        <div className={styles.activityProgress}>
+          <div className={styles.activityProgressMeta}>
+            <div className={styles.activityStatusGroup}>
+              <Typography.Text className={styles.activityProgressLabel}>활동 기준</Typography.Text>
+              <Typography.Text
+                className={cx(styles.activityStatusBadge, {
+                  [activityDecision.className]: Boolean(activityDecision.className),
                 })}
               >
-                <Avatar src={getFileUrl(el.imageUrl)} alt={el.name} size={50} />
-              </Button>
-            ))}
-          </Space>
-        ) : (
-          <Typography.Text>아직 뱃지가 없습니다.</Typography.Text>
-        )}
-      </Space>
+                {activityDecision.label}
+              </Typography.Text>
+            </div>
+            {activityExemptionLabel ? (
+              <Typography.Text className={styles.activityExemptionValue}>{activityExemptionLabel}</Typography.Text>
+            ) : (
+              <Typography.Text className={styles.activityProgressValue}>
+                {displayedActivityHours}
+                <span> / {activityMinimumHour}시간</span>
+              </Typography.Text>
+            )}
+          </div>
+          <div
+            className={styles.activityProgressTrack}
+            aria-label={activityExemptionLabel ?? `인정 활동시간 ${displayedActivityHours} / ${activityMinimumHour}시간`}
+          >
+            {activityExemptionLabel ? (
+              <span style={{ width: '100%', backgroundColor: activityReasonItems[0].color }} />
+            ) : (
+              activityReasonItems.map((item) => (
+                <Tooltip key={item.label} title={`${item.label} ${item.hours}시간`}>
+                  <span
+                    style={{
+                      width: `${Math.min((item.hours / activityMinimumHour) * 100, 100)}%`,
+                      backgroundColor: item.color,
+                    }}
+                  />
+                </Tooltip>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+      <div className={styles.activityDetailGrid}>
+        {activityDetailSections.map((section) => {
+          const totalHours = section.items.reduce((total, item) => total + item.hours, 0);
+
+          return (
+            <section className={styles.activityDetailSection} key={section.title} aria-labelledby={`activity-detail-${section.title}`}>
+              <div className={styles.activityDetailHeader}>
+                <Typography.Title id={`activity-detail-${section.title}`} level={5} className={styles.activityDetailTitle}>
+                  {section.title}
+                </Typography.Title>
+                <Typography.Text className={styles.activityDetailHours}>{formatHours(totalHours)}시간</Typography.Text>
+              </div>
+              {section.items.length > 0 ? (
+                <div className={styles.activityDetailList}>
+                  {section.items.map((item) => (
+                    <div className={styles.activityDetailItem} key={item.id}>
+                      <Typography.Text>{item.title}</Typography.Text>
+                      <div>
+                        {item.hosted && <Typography.Text className={styles.activityDetailHost}>주최</Typography.Text>}
+                        <Typography.Text className={styles.activityDetailItemHours}>{formatHours(item.hours)}시간</Typography.Text>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Typography.Text className={styles.activityDetailEmpty}>아직 반영된 활동이 없습니다.</Typography.Text>
+              )}
+            </section>
+          );
+        })}
+      </div>
       <Space direction="vertical" size={0} className={styles.wrapper}>
         <Typography.Title level={5}>나의 메뉴</Typography.Title>
         <List
           size="large"
-          className={styles.fullWidth}
-          bordered
+          className={cx(styles.fullWidth, styles.menuList)}
+          bordered={false}
           dataSource={listData}
           renderItem={(item) =>
             item.link ? (
@@ -236,7 +223,7 @@ export default function MyPageContainer() {
                     {item.icon}
                     <Typography.Text>{item.title}</Typography.Text>
                   </div>
-                  <ArrowRightOutlined size={18} color="#ced4da" />
+                  <ArrowRightOutlined className={styles.menuArrow} />
                 </Link>
               </List.Item>
             ) : (
@@ -245,7 +232,7 @@ export default function MyPageContainer() {
                   {item.icon}
                   <Typography.Text>{item.title}</Typography.Text>
                 </div>
-                <ArrowRightOutlined size={18} color="#ced4da" />
+                <ArrowRightOutlined className={styles.menuArrow} />
               </List.Item>
             )
           }
@@ -267,37 +254,49 @@ const useStyles = createStyles(({ css }) => ({
   fullWidth: css`
     width: 100%;
   `,
-  activitySummaryHeader: css`
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
+  pageContent: css`
+    max-width: 1180px;
+    margin: 0 auto;
+  `,
+  profileHeader: css`
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+    align-items: center;
+    gap: 64px;
 
-    .ant-typography {
-      margin-bottom: 12px;
+    @media (max-width: 768px) {
+      align-items: flex-start;
+      grid-template-columns: 1fr;
+      gap: 24px;
     }
   `,
-  activitySemester: css`
-    color: #868e96;
-    font-size: 12px;
+  activitySummaryHeader: css`
+    .ant-typography {
+      margin-bottom: 16px;
+    }
+  `,
+  activityContent: css`
+    margin: 0 auto;
   `,
   activityOverview: css`
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 6px 0 0;
+    gap: 64px;
+    padding: 16px 0 32px;
+    border-bottom: 1px solid #e9ecef;
 
-    @media (max-width: 576px) {
+    @media (max-width: 768px) {
       align-items: flex-start;
-      flex-direction: column;
-      gap: 16px;
+      grid-template-columns: 1fr;
+      gap: 28px;
     }
   `,
   activityOverviewStatus: css`
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0;
   `,
   activityStatusBadge: css`
     width: fit-content;
@@ -322,100 +321,134 @@ const useStyles = createStyles(({ css }) => ({
   `,
   activityRequirementValue: css`
     display: block;
-    color: #495057;
+    color: #343a40;
     font-size: 14px;
+    line-height: 1.6;
   `,
-  activityProgressRing: css`
-    display: grid;
-    flex: none;
-    width: 128px;
-    height: 128px;
-    place-items: center;
-    border-radius: 50%;
-  `,
-  activityProgressRingInner: css`
+  activityProgress: css`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 104px;
-    height: 104px;
-    border-radius: 50%;
-    background: #fff;
+    width: 100%;
+    gap: 8px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   `,
-  activityProgressRingValue: css`
-    color: #2f9d7e;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1;
-  `,
-  activityProgressRingLabel: css`
-    margin-top: 3px;
-    color: #868e96;
-    font-size: 11px;
-  `,
-  activityLegend: css`
+  activityProgressMeta: css`
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-    margin-top: 14px;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
   `,
-  activityLegendItem: css`
+  activityStatusGroup: css`
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
   `,
-  activityLegendDot: css`
-    width: 8px;
+  activityProgressLabel: css`
+    color: #6c757d;
+    font-size: 12px;
+    font-weight: 600;
+  `,
+  activityProgressValue: css`
+    color: #2f9d7e;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+
+    span {
+      color: #868e96;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  `,
+  activityProgressTrack: css`
+    overflow: hidden;
+    display: flex;
+    width: 100%;
     height: 8px;
-    border-radius: 50%;
+    border-radius: 4px;
+    background: #e9f7f2;
+
+    span {
+      display: block;
+      height: 100%;
+      background: #47be9b;
+      border-radius: inherit;
+      transition: width 0.2s ease;
+    }
   `,
-  activityLegendLabel: css`
-    color: #495057;
-    font-size: 12px;
+  activityExemptionValue: css`
+    color: #2f9d7e;
+    font-size: 22px;
+    font-weight: 700;
   `,
-  activityLegendValue: css`
-    color: #868e96;
-    font-size: 12px;
-  `,
-  activityRuleSection: css`
-    margin-top: 24px;
-  `,
-  activityRuleList: css`
+  activityDetailGrid: css`
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 24px;
+    gap: 28px 48px;
+    width: 100%;
 
-    @media (max-width: 576px) {
+    @media (max-width: 768px) {
       grid-template-columns: 1fr;
+      gap: 24px;
     }
   `,
-  activityRuleItem: css`
+  activityDetailSection: css`
+    min-width: 0;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+  `,
+  activityDetailHeader: css`
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  `,
+  activityDetailTitle: css`
+    margin: 0 0 14px !important;
+  `,
+  activityDetailHours: css`
+    color: #2f9d7e;
+    font-size: 14px;
+    font-weight: 700;
+  `,
+  activityDetailList: css`
+    display: flex;
+    flex-direction: column;
+  `,
+  activityDetailItem: css`
     display: flex;
     align-items: center;
-    gap: 8px;
-    min-width: 0;
-    padding: 10px 0;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 40px;
     border-top: 1px solid #f1f3f5;
 
-    .ant-typography:nth-child(2) {
-      flex: 1;
-      min-width: 0;
-      color: #495057;
-      font-size: 13px;
+    > div {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
     }
   `,
-  activityRuleIndicator: css`
-    flex: none;
-    width: 8px;
-    height: 8px;
-    border: 1px solid #adb5bd;
-    border-radius: 50%;
+  activityDetailHost: css`
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #e6fcf5;
+    color: #2f9d7e;
+    font-size: 11px;
+    font-weight: 600;
   `,
-  activityRuleStatus: css`
-    flex: none;
-    color: #868e96;
+  activityDetailItemHours: css`
+    color: #6c757d;
     font-size: 12px;
+    font-weight: 600;
+  `,
+  activityDetailEmpty: css`
+    color: #868e96;
+    font-size: 13px;
   `,
   link: css`
     display: flex;
@@ -428,47 +461,27 @@ const useStyles = createStyles(({ css }) => ({
   linkInner: css`
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
+
+    .anticon {
+      color: #47be9b;
+    }
   `,
   userName: css`
     font-size: 24px;
     font-weight: 700;
-    position: relative;
+  `,
+  menuList: css`
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
 
-    &:before {
-      position: absolute;
-      content: '';
-      width: 100%;
-      height: 7px;
-      background-color: #47be9b;
-      opacity: 0.5;
-      bottom: 0;
-      left: 0;
+    .ant-list-item {
+      min-height: 56px;
+      padding: 0 12px;
     }
   `,
-  badgeTitle: css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `,
-  badgeLink: css`
-    font-size: 12px;
-    color: #9d9893 !important;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  `,
-  badgeButton: css`
-    display: flex;
-    height: auto;
-    min-width: auto;
-    padding: 0;
-    border: 2px solid transparent;
-    &.active {
-      border-color: #47be9b;
-    }
-  `,
-  badge: css`
-    border: 2px solid #47be9b;
+  menuArrow: css`
+    color: #47be9b;
+    font-size: 16px;
   `,
 }));
