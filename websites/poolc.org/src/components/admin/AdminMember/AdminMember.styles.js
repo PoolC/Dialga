@@ -1,203 +1,207 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
-import ActionButton from '../../common/Buttons/ActionButton';
 
-export const TitleContainer = styled.div`
+export const PageHeader = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin: 1rem;
-`;
-
-export const ContentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Table = styled.table`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  margin: 20px 0;
-  border-collapse: collapse;
-  border-radius: 1em;
-  overflow: hidden;
-  & > thead {
-    padding: 0;
-    margin: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+
+  @media (max-width: 768px) {
+    align-items: stretch;
+    flex-direction: column;
   }
-  & > tbody {
+`;
+
+export const Title = styled.h2`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+`;
+
+export const TitleMeta = styled.p`
+  margin: 8px 0 0;
+  color: ${colors.brown[0]};
+  font-size: 0.9rem;
+`;
+
+export const ToolbarActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (max-width: 768px) {
     width: 100%;
+    flex-wrap: wrap;
+  }
+`;
+
+export const FilterControl = styled.select`
+  height: 38px;
+  padding: 0 30px 0 10px;
+  border: 1px solid #d8d0c6;
+  border-radius: 6px;
+  background: #fff;
+  color: ${colors.brown[1]};
+  font-size: 0.875rem;
+`;
+
+export const TabFilterRow = styled.div`
+  position: relative;
+  width: 100%;
+
+  > div {
+    width: 100%;
+
+    .ant-tabs-nav {
+      padding-right: 210px;
+    }
+  }
+
+  > select {
+    position: absolute;
+    top: 6px;
+    right: 0;
+  }
+`;
+
+export const MemberTableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-radius: 8px;
+`;
+
+export const MemberTable = styled.table`
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  color: ${colors.brown[1]};
+  font-size: 0.84rem;
+
+  th,
+  td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th:nth-of-type(1) { width: 20%; }
+  th:nth-of-type(2) { width: 15%; }
+  th:nth-of-type(3) { width: 13%; }
+  th:nth-of-type(4) { width: 18%; }
+  th:nth-of-type(5) { width: 18%; }
+  th:nth-of-type(6) { width: 16%; }
+
+  tbody tr:last-of-type td {
+    border-bottom: 0;
   }
 `;
 
 export const TableHead = styled.tr`
-  cursor: default;
-  display: flex;
-  width: 100%;
-  background-color: ${colors.mint[0]};
-  margin: 0;
-  padding: 0.8rem 0px;
-  font-size: 0.6rem;
-  text-align: center;
-  @media (max-width: 576px) {
-    font-size: 0.5rem;
-  }
-  & > .member_list_head {
-    /* flex: 1; */
-    padding: 0 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    word-break: break-all;
-  }
-  & > .name {
-    width: 3rem;
-  }
-  & > .department {
-    width: 6rem;
-  }
-  & > .studentId {
-    width: 4rem;
-  }
-  & > .loginId {
-    width: 4rem;
-  }
-  & > .email {
-    width: 9rem;
-  }
-  & > .phone {
-    width: 5rem;
-  }
-  & > .isActivated {
-    width: 1.5rem;
-  }
-  & > .small-button {
-    width: 3rem;
-  }
-  & > .isAdmin {
-    width: 2rem;
-  }
-  & > .status {
-    flex: 1;
-    min-width: 7.5rem;
-  }
-  & > .hide {
-    @media (max-width: 1000px) {
-      display: none;
-    }
-  }
-`;
+  background: ${colors.mint[0]};
 
-export const MemberSearchForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & > input {
-    width: 10rem;
+  th {
+    color: ${colors.brown[1]};
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-align: center;
   }
 `;
 
 export const MemberListRow = styled.tr`
   cursor: pointer;
-  display: flex;
-  padding: 0.5rem 0;
-  transition: 0.3s;
-  text-align: center;
-  & > .member-list-row {
-    padding: 0 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    word-break: break-all;
-    line-height: 0.8rem;
-    font-size: 0.6rem;
-    font-weight: 300;
-    @media (max-width: 576px) {
-      font-size: 0.5rem;
-    }
-  }
-  & > .name {
-    width: 3rem;
-    font-weight: 500;
-  }
-  & > .department {
-    width: 6rem;
-  }
-  & > .studentId {
-    width: 4rem;
-  }
-  & > .loginId {
-    width: 4rem;
-  }
-  & > .email {
-    width: 9rem;
-  }
-  & > .phone {
-    width: 5rem;
-  }
-  & > .isActivated {
-    width: 1.5rem;
-  }
-  & > .small-button {
-    width: 3rem;
-  }
-  & > .isAdmin {
-    width: 2rem;
-  }
-  & > .status {
-    min-width: 7.5rem;
-    flex: 1;
-  }
-  & > .hide {
-    @media (max-width: 1000px) {
-      display: none;
-    }
-  }
+
   &:hover {
-    background-color: ${colors.gray[0]};
-    transition: 0.3s;
+    background: rgba(229, 240, 237, 0.45);
+  }
+
+`;
+
+export const MemberIdentity = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  strong {
+    font-weight: 800;
+  }
+
+  span {
+    color: ${colors.brown[0]};
+    font-size: 0.76rem;
   }
 `;
 
-export const StyledActionButton = styled(ActionButton)`
+export const StatusBadge = styled.span`
+  display: inline-flex;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #f3f4f5;
+  color: ${colors.brown[0]};
+  font-size: 0.75rem;
+  font-weight: 800;
+`;
+
+export const RoleSelect = styled.select`
+  min-width: 96px;
+  height: 32px;
+  padding: 0 6px;
+  border: 1px solid #d8d0c6;
+  border-radius: 5px;
+  background: #fff;
+  color: ${colors.brown[1]};
+  font-size: 0.78rem;
+`;
+
+export const RoleActionButton = styled.button`
+  min-height: 32px;
+  padding: 0 9px;
+  border: 1px solid ${({ $active }) => ($active ? colors.mint[2] : '#b7ded1')};
+  border-radius: 5px;
+  background: ${({ $active }) => ($active ? colors.mint[0] : '#fff')};
+  color: ${colors.mint[3]};
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+
+  &:disabled {
+    border-color: #e1e1e1;
+    color: #9b9b9b;
+    cursor: default;
+  }
+`;
+
+export const AccountActionButton = styled.button`
+  min-width: 78px;
+  padding: 7px 10px;
+  border: 1px solid #f2b5b5;
+  border-radius: 5px;
+  background: #fff;
+  color: #d95757;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+`;
+
+export const AccountActions = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+`;
+
+export const EmptyResult = styled.p`
   margin: 0;
-  font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  &.delete {
-    background-color: ${colors.red[1]};
-    transition: 0.3s;
-    &:hover {
-      background-color: ${colors.red[0]};
-      transition: 0.3s;
-    }
-  }
-  @media (max-width: 576px) {
-    padding: 5px;
-    font-size: 0.7rem;
-  }
-`;
-
-export const StyledSelect = styled.select`
-  outline: 0;
-  height: 1.5rem;
-  width: 4.5rem;
-  font-size: 0.4rem;
-  box-sizing: content-box;
-`;
-
-export const SearchHeader = styled.h4`
-  margin: 2rem 0 1rem 0;
-`;
-
-export const SearchResult = styled.p`
-  margin: 1rem 0 2rem 0;
-  font-size: 0.8rem;
-  font-weight: 300;
+  padding: 42px 20px;
+  color: ${colors.brown[0]};
+  font-size: 0.9rem;
+  text-align: center;
 `;
