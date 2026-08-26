@@ -1,4 +1,7 @@
 import styled from '@emotion/styled';
+import { useAppSelector } from '~/hooks/useAppSelector';
+import { MENU } from '~/constants/menus';
+import ActionButton from '../../common/Buttons/ActionButton';
 import { CardGrid } from '../../common/CardGrid/CardGrid';
 import { EmptyState } from '../../common/EmptyState/EmptyState';
 import { PageHeader } from '../../common/PageHeader/PageHeader';
@@ -14,11 +17,16 @@ const PROJECT_CATEGORY_ITEMS = [
 ];
 
 const ProjectList = ({ projects, loading, category, onCategoryChange }) => {
+  const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
+
   return (
     <PageShell>
       <PagePanel>
         <ProjectContent>
-          <PageHeader title="프로젝트" />
+          <PageHeader
+            title="프로젝트"
+            actions={isAdmin ? <ActionButton to={`/${MENU.ADMIN}/projects`}>프로젝트 관리</ActionButton> : null}
+          />
           <SectionTabs items={PROJECT_CATEGORY_ITEMS} activeKey={category} onChange={onCategoryChange} />
           {loading && <Spinner />}
           {!loading && (
