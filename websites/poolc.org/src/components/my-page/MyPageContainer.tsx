@@ -1,11 +1,13 @@
-import { Avatar, List, Space, Tooltip, Typography } from 'antd';
+import { Avatar, Button, List, Space, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { ArrowRightOutlined, EditOutlined, MessageOutlined, StarOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DownOutlined, EditOutlined, MessageOutlined, StarOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
+import { useState } from 'react';
 import { MemberControllerService, MyActivityDetailResponse, MyActivitySummaryResponse, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import { MEMBER_ROLE } from '~/constants/memberRoles';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
+import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 
 const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
   try {
@@ -21,12 +23,14 @@ const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
       projectHours: 0,
       seminarStudyActivities: [],
       officialActivities: [],
+      projectActivities: [],
     };
   }
 };
 
 export default function MyPageContainer() {
   const { styles, cx } = useStyles();
+  const [expandedActivitySections, setExpandedActivitySections] = useState<Record<string, boolean>>({});
 
   const listData: {
     title: string;
@@ -119,6 +123,10 @@ export default function MyPageContainer() {
       title: '공식 활동',
       items: toDetailItems(activitySummary.officialActivities),
     },
+    {
+      title: '프로젝트',
+      items: toDetailItems(activitySummary.projectActivities),
+    },
   ];
 
   return (
@@ -175,11 +183,14 @@ export default function MyPageContainer() {
               ))
             )}
           </div>
+          {activityExemptionLabel && <Typography.Text className={styles.activityExemptionDescription}>활동 시간 계산 제외</Typography.Text>}
         </div>
       </section>
       <div className={styles.activityDetailGrid}>
         {activityDetailSections.map((section) => {
           const totalHours = section.items.reduce((total, item) => total + item.hours, 0);
+          const isExpanded = expandedActivitySections[section.title] ?? false;
+          const visibleItems = isExpanded ? section.items : section.items.slice(0, 5);
 
           return (
             <section className={styles.activityDetailSection} key={section.title} aria-labelledby={`activity-detail-${section.title}`}>
@@ -187,22 +198,40 @@ export default function MyPageContainer() {
                 <Typography.Title id={`activity-detail-${section.title}`} level={5} className={styles.activityDetailTitle}>
                   {section.title}
                 </Typography.Title>
-                <Typography.Text className={styles.activityDetailHours}>{formatHours(totalHours)}시간</Typography.Text>
+                {section.items.length > 0 && <Typography.Text className={styles.activityDetailHours}>누적 {formatHours(totalHours)}시간</Typography.Text>}
               </div>
               {section.items.length > 0 ? (
                 <div className={styles.activityDetailList}>
-                  {section.items.map((item) => (
+                  {visibleItems.map((item) => (
                     <div className={styles.activityDetailItem} key={item.id}>
-                      <Typography.Text>{item.title}</Typography.Text>
-                      <div>
+                      <div className={styles.activityDetailItemContent}>
+                        <Typography.Text className={styles.activityDetailItemTitle}>{item.title}</Typography.Text>
                         {item.hosted && <Typography.Text className={styles.activityDetailHost}>주최</Typography.Text>}
-                        <Typography.Text className={styles.activityDetailItemHours}>{formatHours(item.hours)}시간</Typography.Text>
                       </div>
+                      <Typography.Text className={styles.activityDetailItemHours}>인정 {formatHours(item.hours)}시간</Typography.Text>
                     </div>
                   ))}
                 </div>
               ) : (
-                <Typography.Text className={styles.activityDetailEmpty}>아직 반영된 활동이 없습니다.</Typography.Text>
+                <ul className={styles.activityDetailEmptyList}>
+                  <EmptyState>반영된 활동이 없습니다.</EmptyState>
+                </ul>
+              )}
+              {section.items.length > 5 && (
+                <Button
+                  block
+                  size="small"
+                  className={styles.activityDetailToggle}
+                  icon={isExpanded ? <UpOutlined /> : <DownOutlined />}
+                  onClick={() =>
+                    setExpandedActivitySections((current) => ({
+                      ...current,
+                      [section.title]: !isExpanded,
+                    }))
+                  }
+                >
+                  {isExpanded ? '접기' : `${section.items.length - 5}개 더 보기`}
+                </Button>
               )}
             </section>
           );
@@ -381,24 +410,34 @@ const useStyles = createStyles(({ css }) => ({
   `,
   activityExemptionValue: css`
     color: #2f9d7e;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 700;
+  `,
+  activityExemptionDescription: css`
+    color: #868e96;
+    font-size: 12px;
+    text-align: right;
   `,
   activityDetailGrid: css`
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px 48px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
     width: 100%;
+    align-items: stretch;
 
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
       grid-template-columns: 1fr;
       gap: 24px;
     }
   `,
   activityDetailSection: css`
+    display: flex;
+    flex-direction: column;
     min-width: 0;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background: #fff;
   `,
   activityDetailHeader: css`
     display: flex;
@@ -410,8 +449,8 @@ const useStyles = createStyles(({ css }) => ({
     margin: 0 0 14px !important;
   `,
   activityDetailHours: css`
-    color: #2f9d7e;
-    font-size: 14px;
+    color: #3ba886;
+    font-size: 13px;
     font-weight: 700;
   `,
   activityDetailList: css`
@@ -423,14 +462,31 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    min-height: 40px;
+    min-height: 48px;
     border-top: 1px solid #f1f3f5;
 
-    > div {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      flex: none;
+    @media (max-width: 600px) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 0;
+    }
+  `,
+  activityDetailItemContent: css`
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+  `,
+  activityDetailItemTitle: css`
+    overflow: hidden;
+    color: #343a40;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (max-width: 600px) {
+      white-space: normal;
     }
   `,
   activityDetailHost: css`
@@ -442,13 +498,33 @@ const useStyles = createStyles(({ css }) => ({
     font-weight: 600;
   `,
   activityDetailItemHours: css`
+    flex: none;
     color: #6c757d;
     font-size: 12px;
     font-weight: 600;
   `,
-  activityDetailEmpty: css`
-    color: #868e96;
-    font-size: 13px;
+  activityDetailEmptyList: css`
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #f1f3f5;
+    flex: 1;
+    display: flex;
+
+    li {
+      flex: 1;
+      min-height: 160px;
+    }
+  `,
+  activityDetailToggle: css`
+    margin-top: 10px;
+    border-color: #b7e7d7;
+    color: #2f9d7e;
+    font-weight: 600;
+
+    &:hover {
+      border-color: #47be9b;
+      color: #208469;
+    }
   `,
   link: css`
     display: flex;

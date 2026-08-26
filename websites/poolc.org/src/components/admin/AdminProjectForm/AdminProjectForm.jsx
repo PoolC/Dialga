@@ -86,18 +86,19 @@ const AdminProjectForm = ({
   const [name, onChangeName] = useInput(project ? project.name : '', notEmptyValidation);
   const [thumbnailURL, setThumbnailURL] = useState(project ? project.thumbnailURL : '');
   const [genre, onChangeGenre] = useInput(project ? project.genre : '', notEmptyValidation);
-  const [duration, onChangeDuration] = useInput(project ? project.duration : '', notEmptyValidation);
+  const [startDate, onChangeStartDate] = useInput(project ? project.startDate ?? '' : '', notEmptyValidation);
+  const [endDate, onChangeEndDate] = useInput(project ? project.endDate ?? '' : '', () => true);
   const [description, onChangeDescription] = useInput(project ? project.description : '', notEmptyValidation);
   const [body, setBody] = useState(project ? project.body : '');
 
   const handleCreate = throttle((e) => {
     e.preventDefault();
-    onCreateProject({ name, genre, duration, thumbnailURL, description, body });
+    onCreateProject({ name, genre, startDate, endDate, thumbnailURL, description, body });
   }, 1000);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    onUpdateProject({ name, description, genre, duration, thumbnailURL, body });
+    onUpdateProject({ name, description, genre, startDate, endDate, thumbnailURL, body });
   };
 
   const onClickSearch = (e) => {
@@ -126,7 +127,8 @@ const AdminProjectForm = ({
         <StyledForm>
           <Input valueText={name} labelText="프로젝트 이름" typeText="text" nameText="name" onChangeFunc={onChangeName} placeholderText="프로젝트 이름" />
           <Input valueText={genre} labelText="장르" typeText="text" nameText="genre" onChangeFunc={onChangeGenre} placeholderText="ex) 모바일 게임, 슈팅, 웹, .." />
-          <Input valueText={duration} labelText="활동 기간" typeText="text" nameText="duration" onChangeFunc={onChangeDuration} placeholderText="ex) 2019.10.23 ~ 2020.10.23" />
+          <Input valueText={startDate} labelText="프로젝트 시작일" typeText="date" nameText="startDate" onChangeFunc={onChangeStartDate} />
+          <Input valueText={endDate} labelText="프로젝트 종료일" typeText="date" nameText="endDate" onChangeFunc={onChangeEndDate} />
           <label>썸네일 이미지 첨부</label>
           <FileUploadButton onSubmit={setThumbnailURL} />
           <FileName style={{ marginBottom: '0rem' }}>{thumbnailURL ? getFileUrl(thumbnailURL) : '선택된 파일이 없습니다'}</FileName>
