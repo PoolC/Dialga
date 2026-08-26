@@ -51,9 +51,10 @@ const AdminInfoContainer = ({ history }) => {
           onShowErrorModal();
         }
       })
-      .catch(() => {
-        if (e.response.data.status === 403) {
+      .catch((error) => {
+        if (error.response?.data?.status === 403) {
           history.push(`/${MENU.FORBIDDEN}`);
+          return;
         }
         setErrorMessage('오류가 발생했습니다');
         onShowErrorModal();

@@ -2,74 +2,203 @@ import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
 
+export const FormContent = styled.div`
+  display: flex;
+  width: 100%;
+  max-width: 1210px;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
 export const TitleContainer = styled.div`
   display: flex;
-  width: 90%;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin: 1rem;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 0 28px;
+`;
+
+export const Title = styled.h2`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
 `;
 
 export const StyledInput = styled.input`
-  height: 2rem;
-  width: 15rem;
-  outline: 0;
   border: 1px solid ${colors.brown[0]};
-  height: 2rem;
-  border-radius: 2px;
-  max-width: 320px;
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 6px;
+  box-sizing: border-box;
   outline: ${colors.gray[1]};
 `;
 
 export const StyledForm = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  & > label {
-    margin: 2rem 0 1rem 0;
-    font-weight: 600;
-  }
-  & > input {
-    height: 2rem;
-    width: 15rem;
-    outline: 0;
-  }
+  gap: 28px;
 `;
 
 export const StyledActionButton = styled(ActionButton)`
-  height: 2rem;
-  width: 15rem;
-  margin: 2rem 0;
+  width: 160px;
+  margin: 0;
+`;
+
+export const FormGrid = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const FormSection = styled.section`
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid #eee7de;
+  border-radius: 8px;
+  background: #ffffff;
+  box-sizing: border-box;
+`;
+
+export const WideFormSection = styled(FormSection)`
+  grid-column: 1 / -1;
+`;
+
+export const SectionTitle = styled.h3`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.35;
+`;
+
+export const Item = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > label {
+    margin-bottom: 8px;
+    color: ${colors.brown[1]};
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
 `;
 
 export const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2rem 0;
+  justify-content: center;
+  width: 100%;
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e0d7;
+  border-radius: 6px;
+  background: #faf9f7;
+  color: ${colors.brown[0]};
+  font-size: 0.82rem;
+
+  &[data-image-type='location'] {
+    aspect-ratio: 16 / 9;
+  }
+
+  &[data-image-type='main'] {
+    aspect-ratio: 5 / 1;
+  }
 `;
 
 export const ImageContainerHeader = styled.header`
-  font-weight: 600;
-  margin: 0 0 2rem 0;
+  margin: 0 0 12px;
+  color: ${colors.brown[1]};
+  font-size: 0.9rem;
+  font-weight: 700;
 `;
 
 export const StyledImage = styled.img`
-  max-width: 90%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 export const Description = styled.p`
   color: ${colors.brown[0]};
-  font-size: 0.8rem;
-  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin: 0 0 10px;
+  word-break: keep-all;
+  text-align: left;
+  line-height: 1.45;
 `;
 
 export const EditorWrap = styled.div`
   width: 100%;
+  overflow: hidden;
+  border: 1px solid #e5e0d7;
+  border-radius: 8px;
+
   & > div {
     width: 100%;
   }
+`;
+
+export const ImageGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const FileDisplay = styled.div`
+  color: ${colors.brown[0]};
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+`;
+
+export const UploadControls = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+
+  > button {
+    flex: 0 0 auto;
+  }
+`;
+
+export const ToggleOptions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: ${colors.brown[1]};
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+`;
+
+export const SubmitArea = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;

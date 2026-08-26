@@ -35,7 +35,7 @@ client.interceptors.response.use(
     response,
   (error) => {
     // 요청 실패 시 특정 작업 수행
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       store.dispatch(handleExpiredAccessToken());
     }
     return Promise.reject(error);
