@@ -75,13 +75,25 @@ export default function MyPageContainer() {
 
   const activityMinimumHour = 10;
   const recordedActivityHours = activitySummary.totalHours ?? 0;
+  const hasRoleExemption = me.role === MEMBER_ROLE.ADMIN || me.role === MEMBER_ROLE.TECHNICIAN;
+  const hasManualExemption = Boolean(me.isExcepted) && !hasRoleExemption;
   const activityExemptionLabel =
-    me.role === MEMBER_ROLE.ADMIN ? '임원진 면제' : me.role === MEMBER_ROLE.TECHNICIAN ? '기술적 기여 면제' : null;
+    me.role === MEMBER_ROLE.ADMIN
+      ? '임원진 면제'
+      : me.role === MEMBER_ROLE.TECHNICIAN
+        ? '기술적 기여 면제'
+        : hasManualExemption
+          ? '관리자 면제'
+          : null;
   const displayedActivityHours = recordedActivityHours;
   const remainingActivityHours = Math.max(activityMinimumHour - displayedActivityHours, 0);
   const meetsRecordedActivityRequirement = displayedActivityHours >= activityMinimumHour;
   const activityProgress = Math.min((displayedActivityHours / activityMinimumHour) * 100, 100);
   const activityDecision = (() => {
+    if (hasManualExemption) {
+      return { label: '면제', description: '관리자 승인으로 활동 기준이 면제됩니다.', className: styles.activityStatusExempt };
+    }
+
     switch (me.role) {
       case MEMBER_ROLE.INACTIVE:
         return { label: '면제', description: '이번 학기 비활동 회원입니다.', className: styles.activityStatusExempt };
