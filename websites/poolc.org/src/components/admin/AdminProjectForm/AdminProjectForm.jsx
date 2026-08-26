@@ -86,6 +86,7 @@ const AdminProjectForm = ({
   const [name, onChangeName] = useInput(project ? project.name : '', notEmptyValidation);
   const [thumbnailURL, setThumbnailURL] = useState(project ? project.thumbnailURL : '');
   const [genre, onChangeGenre] = useInput(project ? project.genre : '', notEmptyValidation);
+  const [category, onChangeCategory] = useInput(project ? project.category ?? '' : '', notEmptyValidation);
   const [startDate, onChangeStartDate] = useInput(project ? project.startDate ?? '' : '', notEmptyValidation);
   const [endDate, onChangeEndDate] = useInput(project ? project.endDate ?? '' : '', () => true);
   const [description, onChangeDescription] = useInput(project ? project.description : '', notEmptyValidation);
@@ -93,12 +94,12 @@ const AdminProjectForm = ({
 
   const handleCreate = throttle((e) => {
     e.preventDefault();
-    onCreateProject({ name, genre, startDate, endDate, thumbnailURL, description, body });
+    onCreateProject({ name, genre, category, startDate, endDate, thumbnailURL, description, body });
   }, 1000);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    onUpdateProject({ name, description, genre, startDate, endDate, thumbnailURL, body });
+    onUpdateProject({ name, description, genre, category, startDate, endDate, thumbnailURL, body });
   };
 
   const onClickSearch = (e) => {
@@ -126,6 +127,14 @@ const AdminProjectForm = ({
         <TitleContainer>프로젝트 생성</TitleContainer>
         <StyledForm>
           <Input valueText={name} labelText="프로젝트 이름" typeText="text" nameText="name" onChangeFunc={onChangeName} placeholderText="프로젝트 이름" />
+          <label htmlFor="category">카테고리</label>
+          <select id="category" name="category" value={category} onChange={onChangeCategory}>
+            <option value="" disabled>
+              카테고리를 선택하세요
+            </option>
+            <option value="WEB_APP">웹앱</option>
+            <option value="GAME">게임</option>
+          </select>
           <Input valueText={genre} labelText="장르" typeText="text" nameText="genre" onChangeFunc={onChangeGenre} placeholderText="ex) 모바일 게임, 슈팅, 웹, .." />
           <Input valueText={startDate} labelText="프로젝트 시작일" typeText="date" nameText="startDate" onChangeFunc={onChangeStartDate} />
           <Input valueText={endDate} labelText="프로젝트 종료일" typeText="date" nameText="endDate" onChangeFunc={onChangeEndDate} />

@@ -16,9 +16,11 @@ export const queryKey = {
   },
   book: {
     book: (id: number) => ['book.book', id] as const,
-    all: (sorting: string, page?: number) => (page !== undefined ? (['book.all', page, sorting] as const) : (['book.all', sorting] as const)),
+    all: (sorting: string, page?: number, category?: string) =>
+      page !== undefined ? (['book.all', page, sorting, category] as const) : (['book.all', sorting, category] as const),
     borrowed: ['book.borrowed'] as const,
-    search: (sorting: string, keyword: string, searchType: string, page?: number) => ['book.search', sorting, keyword, searchType, page] as const,
+    search: (sorting: string, keyword: string, searchType: string, page?: number, category?: string) =>
+      ['book.search', sorting, keyword, searchType, page, category] as const,
   },
   post: {
     all: (boardType: BoardType, page: number) => ['post.all', boardType, page] as const,

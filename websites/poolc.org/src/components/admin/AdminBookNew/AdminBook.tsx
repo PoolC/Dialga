@@ -7,6 +7,7 @@ import { BookControllerService, queryKey, useAppMutation, useAppQuery } from '~/
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
 import AdminBookFormNew, { FormType } from '../AdminBookFormNew/AdminBookForm';
 import getFileUrl from '~/lib/utils/getFileUrl';
+import { getBookCategoryLabel } from '~/constants/bookCategories';
 
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`
@@ -43,6 +44,12 @@ const makecolumns = (onEdit: (data: FormType) => void, onDelete: (id: number) =>
       title: '저자',
       dataIndex: 'author',
       key: 'author',
+    },
+    {
+      title: '카테고리',
+      dataIndex: 'category',
+      key: 'category',
+      render: (category: FormType['category']) => getBookCategoryLabel(category),
     },
     {
       title: '상태',
@@ -144,6 +151,7 @@ export default function AdminBook() {
               description: value.description || '',
               donor: value.donor || '',
               pubdate: value.publishedDate || '',
+              category: value.category,
             }));
 
             return (

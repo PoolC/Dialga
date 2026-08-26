@@ -21,6 +21,16 @@ export const StyledForm = styled.div`
     margin: 2rem 0 1rem 0;
     font-weight: 600;
   }
+
+  & > select {
+    width: 15rem;
+    max-width: 320px;
+    height: 2rem;
+    border: 1px solid ${colors.brown[0]};
+    border-radius: 2px;
+    background: white;
+    color: ${colors.brown[1]};
+  }
 `;
 
 export const StyledActionButton = styled(ActionButton)`

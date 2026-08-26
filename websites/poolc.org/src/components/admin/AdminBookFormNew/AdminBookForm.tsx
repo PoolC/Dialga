@@ -2,12 +2,13 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Form, Input, Typography, Upload, Button, Space, UploadFile, InputNumber } from 'antd';
+import { Form, Input, Typography, Upload, Button, Space, UploadFile, InputNumber, Select } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
 import { useQueryClient } from '@tanstack/react-query';
 import TextArea from 'antd/es/input/TextArea';
 import { BookControllerService, CreateBookRequest, CustomApi, queryKey, useAppMutation } from '~/lib/api-v2';
 import getFileUrl from '~/lib/utils/getFileUrl';
+import { BOOK_CATEGORY_OPTIONS, BookCategory } from '~/constants/bookCategories';
 
 interface dynamic {
   [prop: string]: number | string | undefined;
@@ -25,6 +26,7 @@ export interface FormType extends dynamic {
   description: string;
   pubdate: string;
   donor: string;
+  category?: BookCategory;
 }
 type PreviewType = {
   uid: string;
@@ -42,6 +44,7 @@ const editSchema = z.object({
   isbn: z.string().min(1),
   description: z.string(),
   pubdate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  category: z.enum(['PROGRAMMING', 'ALGORITHM', 'SYSTEM', 'DATA', 'DESIGN']),
   // donor: z.string(),
 });
 
@@ -158,6 +161,9 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
               );
           }
         })}
+        <Form.Item label="카테고리" name="category">
+          <Select {...form.getInputProps('category')} options={BOOK_CATEGORY_OPTIONS} placeholder="카테고리를 선택하세요" />
+        </Form.Item>
         {/* <StyledInput valueText={title} labelText="책 제목" typeText="text" nameText="title" onChangeFunc={onChangeTitle} placeholderText="ex) 클린 코드" />
         <StyledInput valueText={author} labelText="저자" typeText="text" nameText="author" onChangeFunc={onChangeAuthor} placeholderText="ex) 로버트 C. 마틴" />
         <label>표지 이미지 첨부</label>

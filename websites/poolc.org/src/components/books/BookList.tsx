@@ -9,6 +9,7 @@ import { PageContent } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
 import colors from '~/lib/styles/colors';
+import { BOOK_CATEGORY_TABS, BookCategoryTab } from '~/constants/bookCategories';
 
 import BookCard from './BookCard';
 
@@ -109,23 +110,12 @@ const useStyles = createStyles(({ css }) => ({
 
 type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
 type searchType = 'TITLE' | 'AUTHOR' | 'TAG';
-type BookCategory = 'ALL' | 'PROGRAMMING' | 'ALGORITHM' | 'SYSTEM' | 'DATA' | 'DESIGN';
-
-const BOOK_CATEGORY_ITEMS: { key: BookCategory; label: string }[] = [
-  { key: 'ALL', label: '전체' },
-  { key: 'PROGRAMMING', label: '프로그래밍' },
-  { key: 'ALGORITHM', label: '알고리즘' },
-  { key: 'SYSTEM', label: '시스템' },
-  { key: 'DATA', label: '데이터' },
-  { key: 'DESIGN', label: '설계' },
-];
-
-const useInView = (sorting: sortingType, keyword: string, search: searchType) => {
+const useInView = (sorting: sortingType, keyword: string, search: searchType, category: BookCategoryTab) => {
   const bottomRef = useRef(null);
   const [inView, setInView] = useState(false);
 
   const { data, fetchNextPage, isLoading, isError, isSuccess, isFetchingNextPage } = useAppInfiniteQuery({
-    queryKey: keyword ? queryKey.book.search(sorting, keyword, search) : queryKey.book.all(sorting),
+    queryKey: keyword ? queryKey.book.search(sorting, keyword, search, undefined, category) : queryKey.book.all(sorting, undefined, category),
     queryFn: ({ pageParam }) =>
       keyword
         ? BookControllerService.searchBooksUsingGet({
@@ -133,8 +123,9 @@ const useInView = (sorting: sortingType, keyword: string, search: searchType) =>
             sort: sorting,
             search,
             page: pageParam,
+            category: category === 'ALL' ? undefined : category,
           })
-        : BookControllerService.getAllBooksUsingGet({ page: pageParam, sort: sorting }),
+        : BookControllerService.getAllBooksUsingGet({ page: pageParam, sort: sorting, category: category === 'ALL' ? undefined : category }),
     initialPageParam: 0,
     getNextPageParam: (lastData) => (lastData.number || 0) + 1,
   });
@@ -181,11 +172,11 @@ export default function BookList() {
   const { styles } = useStyles();
 
   const sorting: sortingType = 'CREATED_AT';
-  const [category, setCategory] = useState<BookCategory>('ALL');
+  const [category, setCategory] = useState<BookCategoryTab>('ALL');
   const [searchType, setSearchType] = useState<searchType>('TITLE');
   const [keyword, setKeyword] = useState('');
   const [searchInfo, setSearchInfo] = useState<{ type: searchType; keyword: string }>({ type: 'TITLE', keyword: '' });
-  const bookListInfiniteQuery = useInView(sorting, searchInfo.keyword, searchInfo.type);
+  const bookListInfiniteQuery = useInView(sorting, searchInfo.keyword, searchInfo.type, category);
 
   const onSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -216,7 +207,7 @@ export default function BookList() {
           </form>
         }
       />
-      <SectionTabs items={BOOK_CATEGORY_ITEMS} activeKey={category} onChange={(key) => setCategory(key as BookCategory)} />
+      <SectionTabs items={BOOK_CATEGORY_TABS} activeKey={category} onChange={(key) => setCategory(key as BookCategoryTab)} />
       <div className={styles.listBody}>
         {match(bookListInfiniteQuery)
           .with({ isLoading: true }, () => <Skeleton className={styles.skeleton} />)

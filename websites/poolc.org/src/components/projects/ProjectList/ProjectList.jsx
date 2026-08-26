@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { CardGrid } from '../../common/CardGrid/CardGrid';
 import { EmptyState } from '../../common/EmptyState/EmptyState';
 import { PageHeader } from '../../common/PageHeader/PageHeader';
@@ -14,15 +13,13 @@ const PROJECT_CATEGORY_ITEMS = [
   { key: 'GAME', label: '게임' },
 ];
 
-const ProjectList = ({ projects, loading }) => {
-  const [category, setCategory] = useState('ALL');
-
+const ProjectList = ({ projects, loading, category, onCategoryChange }) => {
   return (
     <PageShell>
       <PagePanel>
         <ProjectContent>
           <PageHeader title="프로젝트" />
-          <SectionTabs items={PROJECT_CATEGORY_ITEMS} activeKey={category} onChange={setCategory} />
+          <SectionTabs items={PROJECT_CATEGORY_ITEMS} activeKey={category} onChange={onCategoryChange} />
           {loading && <Spinner />}
           {!loading && (
             <ProjectGrid>

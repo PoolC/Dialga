@@ -31,8 +31,8 @@ const AdminProjectFormContainer = ({ match, history }) => {
     return null;
   }
 
-  const onCreateProject = ({ name, thumbnailURL, genre, startDate, endDate, description, body }) => {
-    if (!name || !description || !startDate || !thumbnailURL || !body) {
+  const onCreateProject = ({ name, thumbnailURL, genre, category, startDate, endDate, description, body }) => {
+    if (!name || !category || !description || !startDate || !thumbnailURL || !body) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
       return;
@@ -41,6 +41,7 @@ const AdminProjectFormContainer = ({ match, history }) => {
       .createProject({
         name,
         genre,
+        category,
         startDate,
         endDate,
         thumbnailURL,
@@ -62,8 +63,8 @@ const AdminProjectFormContainer = ({ match, history }) => {
       });
   };
 
-  const onUpdateProject = ({ name, description, genre, startDate, endDate, thumbnailURL, body }) => {
-    if (!name || !description || !startDate || !thumbnailURL || !body) {
+  const onUpdateProject = ({ name, description, genre, category, startDate, endDate, thumbnailURL, body }) => {
+    if (!name || !category || !description || !startDate || !thumbnailURL || !body) {
       setErrorMessage('모든 항목을 입력하세요');
       onShowErrorModal();
       return;
@@ -74,6 +75,7 @@ const AdminProjectFormContainer = ({ match, history }) => {
         name,
         description,
         genre,
+        category,
         startDate,
         endDate,
         thumbnailURL,
