@@ -174,11 +174,6 @@ const useStyles = createStyles(({ css }) => ({
     color: #302820;
     line-height: 1.65;
   `,
-  badge: css`
-    width: 24px;
-    height: 24px;
-    border: 1px solid #47be9b;
-  `,
   postFooter: css`
     display: flex;
     justify-content: flex-end;
@@ -410,7 +405,6 @@ export default function BoardDetailPage() {
           <div className={styles.metaRow}>
             <Avatar className={styles.writerAvatar} src={getProfileImageUrl(post.postProfileImageUrl)} />
             <span className={styles.writerName}>{post.writerName}</span>
-            {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
             <span className={styles.postDate}>{dayjs(post.createdAt).format('YYYY. MM. DD')}</span>
           </div>
           <div className={styles.titleRow}>
@@ -530,7 +524,6 @@ function CommentBox({ postId, commentList, onRefetch }: { postId: number; commen
             <Space direction="vertical" size={8} className={styles.fullWidth}>
               <Space align="center">
                 <span className={styles.commentWriter}>{comment.writerName}</span>
-                {comment.badge && <Avatar src={getFileUrl(comment.badge.imageUrl)} className={styles.badge} />}
                 <span className={styles.commentDate}>{dayjs(comment.createdAt).format('YYYY. MM. DD')}</span>
               </Space>
               <Typography.Paragraph className={styles.commentBody}>{comment.body}</Typography.Paragraph>

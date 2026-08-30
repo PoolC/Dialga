@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import AdminBadgeContainer from '~/containers/admin/AdminBadgeContainer/AdminBadgeContainer';
 import AdminMenu from '../../components/admin/AdminMenu/AdminMenu';
 import { MENU } from '../../constants/menus';
 import AdminActivityContainer from '../../containers/admin/AdminActivityContainer/AdminActivityContainer';
@@ -16,6 +15,7 @@ import useAdminCheck from '../../hooks/useAdminCheck';
 // 새로 만든거
 import AdminBookFormNew from '../../components/admin/AdminBookFormNew/AdminBookForm';
 import AdminBookNew from '../../components/admin/AdminBookNew/AdminBook';
+import AdminGamification from '../../components/admin/AdminGamification/AdminGamification';
 
 const AdminContainerBlock = styled.div`
   position: relative;
@@ -39,9 +39,9 @@ const AdminPage = ({ history }) => {
     { name: '프로젝트 관리', url: '/projects' },
     { name: '활동 관리', url: '/activities' },
     { name: '도서 관리', url: '/books' },
+    { name: '도감 동기화', url: '/gamification' },
     { name: '면접 시간 관리', url: '/interview-time' },
     { name: '면접 신청 조회', url: '/interview' },
-    { name: '뱃지 관리', url: '/badge' },
   ];
 
   useAdminCheck(history);
@@ -61,9 +61,9 @@ const AdminPage = ({ history }) => {
         <Route component={AdminBookFormNew} path={[`/${MENU.ADMIN}/books/new`, `/${MENU.ADMIN}/books/edit/:bookID`]} exact />
         {/* <Route component={AdminBookContainer} path={`/${MENU.ADMIN}/books`} exact /> */}
         <Route component={AdminBookNew} path={`/${MENU.ADMIN}/books`} exact />
+        <Route component={AdminGamification} path={`/${MENU.ADMIN}/gamification`} exact />
         <Route component={AdminInterviewTimeContainer} path={`/${MENU.ADMIN}/interview-time`} exact />
         <Route component={AdminInterviewContainer} path={`/${MENU.ADMIN}/interview`} exact />
-        <Route component={AdminBadgeContainer} path={`/${MENU.ADMIN}/badge`} exact />
         <Route component={AdminHomeContainer} path={`/${MENU.ADMIN}`} exact />
       </Switch>
     </AdminContainerBlock>

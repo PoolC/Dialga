@@ -3,8 +3,10 @@ import { withRouter } from 'react-router-dom';
 import AdminActivity from '../../../components/admin/AdminActivity/AdminActivity';
 import * as activityAPI from '../../../lib/api/activity';
 import { SUCCESS } from '../../../constants/statusCode';
+import { useMessage } from '../../../hooks/useMessage';
 
 const AdminActivityContainer = () => {
+  const message = useMessage();
   const [activities, setActivities] = useState(null);
 
   useEffect(() => {
@@ -21,7 +23,8 @@ const AdminActivityContainer = () => {
   const onOpenActivity = (activityID) => {
     activityAPI.openActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(activities.map((activity) => (activity.id === activityID ? { ...activity, available: true } : activity)));
+        setActivities((currentActivities) => currentActivities.map((activity) => (activity.id === activityID ? { ...activity, available: true } : activity)));
+        message.success('활동 신청을 열었습니다.');
       }
     });
   };
@@ -29,7 +32,8 @@ const AdminActivityContainer = () => {
   const onCloseActivity = (activityID) => {
     activityAPI.closeActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(activities.map((activity) => (activity.id === activityID ? { ...activity, available: false } : activity)));
+        setActivities((currentActivities) => currentActivities.map((activity) => (activity.id === activityID ? { ...activity, available: false } : activity)));
+        message.success('활동 신청을 마감했습니다.');
       }
     });
   };
@@ -37,7 +41,8 @@ const AdminActivityContainer = () => {
   const onDeleteActivity = (activityID) => {
     activityAPI.deleteActivity(activityID).then((res) => {
       if (res.status === SUCCESS.OK) {
-        setActivities(activities.filter((activity) => activity.id !== activityID));
+        setActivities((currentActivities) => currentActivities.filter((activity) => activity.id !== activityID));
+        message.success('활동이 삭제되었습니다.');
       }
     });
   };

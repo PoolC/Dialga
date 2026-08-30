@@ -1,4 +1,4 @@
-import { Avatar, Pagination, Result, Skeleton, Typography } from 'antd';
+import { Pagination, Result, Skeleton, Typography } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
@@ -8,7 +8,6 @@ import { MENU } from '~/constants/menus';
 import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/lib/api-v2';
 import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
-import getFileUrl from '~/lib/utils/getFileUrl';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 
@@ -108,11 +107,6 @@ const useStyles = createStyles(({ css }) => ({
     gap: 6px;
     color: #47be9b;
   `,
-  badge: css`
-    width: 24px;
-    height: 24px;
-    border: 1px solid #47be9b;
-  `,
   clamp: css`
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -151,7 +145,6 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
         <div className={styles.postMain}>
           <div className={styles.writerArea}>
             <span>{post.writerName}</span>
-            {post.badge && <Avatar src={getFileUrl(post.badge.imageUrl)} className={styles.badge} />}
           </div>
           <div>
             <h3 className={styles.postTitle}>{post.title}</h3>

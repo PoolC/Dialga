@@ -1,48 +1,85 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Popconfirm } from 'antd';
 import { withRouter } from 'react-router';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { ContentsContainer, ExpellActionButton, MemberListRow, StyledForm, StyledInput, Table, TableHead, TitleContainer } from './AdminPass.styles';
+import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
+import {
+  ActionCell,
+  EmptyResult,
+  ExpellActionButton,
+  MemberIdentity,
+  MemberListRow,
+  ResultTable,
+  ResultTableContainer,
+  SettingsPanel,
+  SettingsRow,
+  StatusChip,
+  TableHead,
+  Title,
+  TitleRow,
+  Toolbar,
+} from './AdminPass.styles';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import useInput from '../../../hooks/useInput';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import { MENU } from '../../../constants/menus';
 
-const Member = ({ member, minimumLimit, handleChangeExcepted, handleWithdraw, history }) => {
+const TAB = {
+  AT_RISK: 'AT_RISK',
+  MAINTAINED: 'MAINTAINED',
+  ALL: 'ALL',
+};
+
+const getJudgement = (member, minimumLimit) => {
+  if (member.isExcepted) return 'EXEMPTED';
+  return member.hour >= minimumLimit ? 'MAINTAINED' : 'AT_RISK';
+};
+
+const MemberRow = ({ member, minimumLimit, handleChangeExcepted, handleWithdraw, history }) => {
   const [isExpelled, setIsExpelled] = useState(member.member.role === 'EXPELLED');
+  const judgement = getJudgement(member, minimumLimit);
 
   const moveToMemberDetail = () => {
     history.push(`/${MENU.MEMBER}/${member.member.loginID}`);
   };
 
+  const statusLabel = {
+    EXEMPTED: '면제',
+    MAINTAINED: '유지 예정',
+    AT_RISK: '상실 예정',
+  }[judgement];
+
   return (
-    <MemberListRow key={member.member.loginID} onClick={moveToMemberDetail}>
-      <td className="member-list-row name">{member.member.name}</td>
-      <td className="member-list-row hide studentId">{member.member.studentID}</td>
-      <td className="member-list-row hide department">{member.member.department}</td>
-      <td className="member-list-row hour">{member.hour} 시간</td>
-      <td className="member-list-row isExcepted">{member.isExcepted && 'o'}</td>
-      <td className="member-list-row fullfill">{member.hour >= minimumLimit && 'o'}</td>
-      <td className="member-list-row pass">{member.isExcepted || member.hour >= minimumLimit ? 'o' : 'x'}</td>
-      <td className="member-list-row pass-button" onClick={(e) => e.stopPropagation()}>
-        <ActionButton
-          onClick={() => {
-            handleChangeExcepted(member.member.loginID, member.isExcepted);
-          }}
-        >
-          {member.isExcepted ? '해제' : '면제'}
-        </ActionButton>
+    <MemberListRow onClick={moveToMemberDetail}>
+      <td>
+        <MemberIdentity>
+          <strong>{member.member.name}</strong>
+          <span>{member.member.loginID}</span>
+        </MemberIdentity>
       </td>
-      <td className="member-list-row out" onClick={(e) => e.stopPropagation()}>
-        {!isExpelled && (
-          <ExpellActionButton
-            onClick={() => {
-              handleWithdraw(member.member.loginID, setIsExpelled);
-            }}
-          >
-            박탈
-          </ExpellActionButton>
-        )}
-        {isExpelled && <p>자격 박탈됨</p>}
+      <td>{member.member.studentID || '-'}</td>
+      <td>{member.member.department || '-'}</td>
+      <td>{member.hour}시간</td>
+      <td>
+        <StatusChip type={judgement}>{statusLabel}</StatusChip>
+      </td>
+      <td onClick={(event) => event.stopPropagation()}>
+        <ActionCell>
+          <ActionButton onClick={() => handleChangeExcepted(member.member.loginID, member.isExcepted)}>{member.isExcepted ? '면제 해제' : '면제 처리'}</ActionButton>
+          {judgement === 'AT_RISK' && !isExpelled && (
+            <Popconfirm
+              title="회원 자격 박탈"
+              description={`${member.member.name} 회원의 자격을 정말 박탈하시겠습니까?`}
+              okText="박탈"
+              cancelText="취소"
+              okButtonProps={{ danger: true }}
+              onConfirm={() => handleWithdraw(member.member.loginID, setIsExpelled)}
+            >
+              <ExpellActionButton>자격 박탈</ExpellActionButton>
+            </Popconfirm>
+          )}
+          {isExpelled && <span className="expelled">자격 박탈됨</span>}
+        </ActionCell>
       </td>
     </MemberListRow>
   );
@@ -50,101 +87,81 @@ const Member = ({ member, minimumLimit, handleChangeExcepted, handleWithdraw, hi
 
 const AdminPass = ({ members, onSubmit, onChangeExcepted, onWithdraw, history }) => {
   const [minimumLimit, onChangeMinimumLimit] = useInput('', notEmptyValidation);
+  const [activeTab, setActiveTab] = useState(TAB.AT_RISK);
+  const numericMinimumLimit = Number(minimumLimit);
+  const activeMembers = useMemo(() => members?.filter((member) => member.member.isActivated) || [], [members]);
+  const atRiskMembers = useMemo(
+    () => activeMembers.filter((member) => !member.isExcepted && member.hour < numericMinimumLimit),
+    [activeMembers, numericMinimumLimit],
+  );
+  const maintainedMembers = useMemo(
+    () => activeMembers.filter((member) => member.isExcepted || member.hour >= numericMinimumLimit),
+    [activeMembers, numericMinimumLimit],
+  );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const tabItems = [
+    { key: TAB.AT_RISK, label: `상실 예정 ${atRiskMembers.length}` },
+    { key: TAB.MAINTAINED, label: `유지 예정 ${maintainedMembers.length}` },
+    { key: TAB.ALL, label: `전체 ${activeMembers.length}` },
+  ];
+
+  const visibleMembers = {
+    [TAB.AT_RISK]: atRiskMembers,
+    [TAB.MAINTAINED]: maintainedMembers,
+    [TAB.ALL]: activeMembers,
+  }[activeTab];
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
     onSubmit();
   };
 
   return (
     <WhiteNarrowBlock>
-      <TitleContainer>최소활동기준 관리</TitleContainer>
-      <ContentsContainer>
-        <StyledForm style={{ marginBottom: '2rem' }}>
-          <label style={{ marginBottom: '0.5rem' }}>최소 활동 기준</label>
-          <div>
-            <StyledInput value={minimumLimit} onChange={onChangeMinimumLimit} type="number" placeholder="ex) 6" />
+      <TitleRow>
+        <Title>최소 활동 기준 관리</Title>
+        <SettingsPanel onSubmit={handleSubmit}>
+          <label htmlFor="minimum-activity-hours">최소 활동 기준</label>
+          <SettingsRow>
+            <input id="minimum-activity-hours" value={minimumLimit} onChange={onChangeMinimumLimit} type="number" min="0" placeholder="예: 10" />
             <span>시간</span>
-          </div>
-          <ActionButton onClick={handleSubmit}>입력</ActionButton>
-        </StyledForm>
-        <h3>회원 자격 상실 예정자 목록</h3>
-        <Table>
+            <ActionButton type="submit">조회</ActionButton>
+          </SettingsRow>
+        </SettingsPanel>
+      </TitleRow>
+
+      <Toolbar>
+        <SectionTabs items={tabItems} activeKey={activeTab} onChange={setActiveTab} />
+      </Toolbar>
+
+      <ResultTableContainer>
+        <ResultTable>
           <thead>
             <TableHead>
-              <th className="member_list_head name">이름</th>
-              <th className="member_list_head hide studentId">학번</th>
-              <th className="member_list_head hide department">학과</th>
-              <th className="member_list_head hour">총 활동 시간</th>
-              <th className="member_list_head isExcepted">면제</th>
-              <th className="member_list_head fullfill">기준 만족</th>
-              <th className="member_list_head pass">자격 유지</th>
-              <th className="member_list_head pass-button">동작</th>
-              <th className="member_list_head out">자격박탈</th>
+              <th>회원</th>
+              <th>학번</th>
+              <th>학과</th>
+              <th>인정 활동 시간</th>
+              <th>판정</th>
+              <th>조치</th>
             </TableHead>
           </thead>
           <tbody>
-            {members
-              ?.filter((m) => m.member.isActivated)
-              .map(
-                (member) =>
-                  !member.isExcepted &&
-                  member.hour < minimumLimit && (
-                    <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
-                  ),
-              )}
+            {visibleMembers.map((member) => (
+              <MemberRow
+                key={member.member.loginID}
+                member={member}
+                minimumLimit={numericMinimumLimit}
+                handleChangeExcepted={onChangeExcepted}
+                handleWithdraw={onWithdraw}
+                history={history}
+              />
+            ))}
           </tbody>
-        </Table>
-        <h3>회원 자격 유지 예정자 목록</h3>
-        <Table>
-          <thead>
-            <TableHead>
-              <th className="member_list_head name">이름</th>
-              <th className="member_list_head hide studentId">학번</th>
-              <th className="member_list_head hide department">학과</th>
-              <th className="member_list_head hour">총 활동 시간</th>
-              <th className="member_list_head isExcepted">면제</th>
-              <th className="member_list_head fullfill">기준 만족</th>
-              <th className="member_list_head pass">자격 유지</th>
-              <th className="member_list_head pass-button">동작</th>
-              <th className="member_list_head out">자격박탈</th>
-            </TableHead>
-          </thead>
-          <tbody>
-            {members
-              ?.filter((m) => m.member.isActivated)
-              .map(
-                (member) =>
-                  (member.isExcepted || member.hour >= minimumLimit) && (
-                    <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
-                  ),
-              )}
-          </tbody>
-        </Table>
-        <h3>전체 회원 목록</h3>
-        <Table>
-          <thead>
-            <TableHead>
-              <th className="member_list_head">이름</th>
-              <th className="member_list_head hide">학번</th>
-              <th className="member_list_head hide">학과</th>
-              <th className="member_list_head">총 활동 시간</th>
-              <th className="member_list_head">면제</th>
-              <th className="member_list_head">기준 만족</th>
-              <th className="member_list_head">자격 유지</th>
-              <th className="member_list_head">동작</th>
-              <th className="member_list_head out">자격박탈</th>
-            </TableHead>
-          </thead>
-          <tbody>
-            {members
-              ?.filter((m) => m.member.isActivated)
-              .map((member) => (
-                <Member key={member.member.loginID} member={member} minimumLimit={minimumLimit} handleChangeExcepted={onChangeExcepted} handleWithdraw={onWithdraw} history={history} />
-              ))}
-          </tbody>
-        </Table>
-      </ContentsContainer>
+        </ResultTable>
+        {members !== null && visibleMembers.length === 0 && <EmptyResult>해당하는 회원이 없습니다.</EmptyResult>}
+        {members === null && <EmptyResult>기준 시간을 입력하고 조회하면 회원 판정 결과를 확인할 수 있습니다.</EmptyResult>}
+      </ResultTableContainer>
     </WhiteNarrowBlock>
   );
 };

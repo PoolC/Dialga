@@ -68,6 +68,11 @@ const Menus = ({
       content: 'Seminars',
     },
     {
+      to: `/${MENU.POKEMON}/${MENU.POKEMON_ACHIEVEMENTS}`,
+      visible: isLogin,
+      content: 'Quest',
+    },
+    {
       to: `/${MENU.BOOKS}`,
       visible: true,
       content: 'Books',

@@ -1,6 +1,6 @@
 import { Avatar, Button, List, Space, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { ArrowRightOutlined, DownOutlined, EditOutlined, MessageOutlined, StarOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, ArrowRightOutlined, DownOutlined, EditOutlined, MessageOutlined, StarOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 import { useState } from 'react';
 import { MemberControllerService, MyActivityDetailResponse, MyActivitySummaryResponse, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
@@ -57,6 +57,11 @@ export default function MyPageContainer() {
       title: '쪽지',
       icon: <MessageOutlined size={24} />,
       link: `/${MENU.MESSAGE}`,
+    },
+    {
+      title: '포켓몬 도감',
+      icon: <AppstoreOutlined size={24} />,
+      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`,
     },
   ];
 

@@ -7,6 +7,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import { useQueryClient } from '@tanstack/react-query';
 import TextArea from 'antd/es/input/TextArea';
 import { BookControllerService, CreateBookRequest, CustomApi, queryKey, useAppMutation } from '~/lib/api-v2';
+import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { BOOK_CATEGORY_OPTIONS, BookCategory } from '~/constants/bookCategories';
 
@@ -54,6 +55,7 @@ interface AdminBookFormProp {
 }
 export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFormProp) {
   const queryClient = useQueryClient();
+  const message = useMessage();
   const form = useForm<z.infer<typeof editSchema>>(
     initValues
       ? {
@@ -62,8 +64,13 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
         }
       : { validate: zodResolver(editSchema) },
   );
-  const { mutate: createBook } = useAppMutation({ mutationFn: BookControllerService.addBookUsingPost });
-  const { mutate: updateBook } = useAppMutation({ mutationFn: BookControllerService.updateBookUsingPut });
+  const handleSaveSuccess = () => {
+    message.success(initValues ? '도서 정보가 수정되었습니다.' : '도서가 등록되었습니다.');
+    queryClient.invalidateQueries({ queryKey: queryKey.book.all('TITLE') });
+    onModalCancel();
+  };
+  const { mutate: createBook } = useAppMutation({ mutationFn: BookControllerService.addBookUsingPost, onSuccess: handleSaveSuccess });
+  const { mutate: updateBook } = useAppMutation({ mutationFn: BookControllerService.updateBookUsingPut, onSuccess: handleSaveSuccess });
   const { mutate: uploadImage, isPending: isUploadPending } = useAppMutation({ mutationFn: CustomApi.uploadFile });
 
   const handleChangeBookImage = (info: UploadChangeParam<UploadFile>) => {
@@ -103,8 +110,6 @@ export default function AdminBookForm({ initValues, onModalCancel }: AdminBookFo
       createBook({ request: val as CreateBookRequest });
     }
 
-    onModalCancel();
-    queryClient.invalidateQueries({ queryKey: queryKey.book.all('TITLE') });
   };
 
   const InputInfo = [

@@ -166,8 +166,6 @@ export default function Notification() {
           link: `/${MENU.MESSAGE}`, // `/message/${response?.causedById}`,
           description: <p>새로운 쪽지가 왔습니다.</p>,
         };
-      case 'BADGE':
-        return { link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`, description: <p>새 뱃지를 받았습니다!</p> };
       case 'POST':
         return {
           link: `/board/${response?.causedById}`,

@@ -9,11 +9,6 @@ export const queryKey = {
     roles: ['member.roles'] as const,
     id: (loginId: string) => ['member.id', loginId] as const,
   },
-  badge: {
-    badge: ['badge.badge'] as const,
-    all: ['badge.all'] as const,
-    member: (loginId: string) => ['badge.member', loginId] as const,
-  },
   book: {
     book: (id: number) => ['book.book', id] as const,
     all: (sorting: string, page?: number, category?: string) =>

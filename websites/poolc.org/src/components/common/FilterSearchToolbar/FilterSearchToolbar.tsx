@@ -174,9 +174,10 @@ type FilterSelectProps<TFilter extends string> = {
   options: FilterSearchToolbarOption<TFilter>[];
   onChange: (value: TFilter) => void;
   className?: string;
+  'aria-label'?: string;
 };
 
-export function FilterSelect<TFilter extends string>({ value, options, onChange, className }: FilterSelectProps<TFilter>) {
+export function FilterSelect<TFilter extends string>({ value, options, onChange, className, 'aria-label': ariaLabel }: FilterSelectProps<TFilter>) {
   const { styles, cx } = useFilterSelectStyles();
 
   return (
@@ -186,6 +187,7 @@ export function FilterSelect<TFilter extends string>({ value, options, onChange,
       value={value}
       onChange={(nextValue) => onChange(nextValue)}
       options={options}
+      aria-label={ariaLabel}
     />
   );
 }

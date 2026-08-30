@@ -1,106 +1,120 @@
 import styled from '@emotion/styled';
-import ActionButton from '../../common/Buttons/ActionButton';
 import colors from '../../../lib/styles/colors';
 
-export const StyledDateBlock = styled.div`
-  cursor: default;
+export const PageHeader = styled.header`
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid ${colors.gray[2]};
+
+  h1 { margin: 0; font-size: 1.65rem; }
+`;
+
+export const HeaderSummary = styled.p`
+  margin: 0.35rem 0 0;
+  color: ${colors.brown[0]};
+  font-size: 0.9rem;
+`;
+
+export const DateFilterBar = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 6rem;
-  height: 2rem;
-  background-color: ${colors.mint[0]};
-  border-radius: 3px;
-  border: 1px ${colors.mint[2]} solid;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+`;
+
+export const DateFilterButton = styled.button`
+  padding: 0.45rem 0.7rem;
+  border: 1px solid ${({ 'data-active': active }) => active ? colors.mint[2] : colors.gray[2]};
+  border-radius: 4px;
+  background: ${({ 'data-active': active }) => active ? colors.mint[0] : 'white'};
+  color: ${({ 'data-active': active }) => active ? colors.mint[3] : colors.brown[0]};
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: ${({ 'data-active': active }) => active ? 600 : 400};
+`;
+
+export const InterviewTableWrapper = styled.div`
+  overflow-x: auto;
+  border: 1px solid ${colors.gray[2]};
+  border-radius: 6px;
+`;
+
+export const InterviewTable = styled.table`
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid ${colors.gray[2]};
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    background: ${colors.mint[0]};
+    color: ${colors.brown[0]};
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  tbody tr:last-child td { border-bottom: 0; }
+`;
+
+export const StatusBadge = styled.span`
+  display: inline-flex;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  color: ${({ 'data-tone': tone }) => tone === 'open' ? colors.mint[3] : colors.brown[0]};
+  background: ${({ 'data-tone': tone }) => tone === 'open' ? '#e8f8f2' : tone === 'closed' ? '#f5eee7' : colors.gray[1]};
+  font-size: 0.8rem;
+  font-weight: 600;
+`;
+
+export const ExpandButton = styled.button`
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: ${colors.mint[3]};
+  cursor: pointer;
+  font: inherit;
   font-size: 0.9rem;
   font-weight: 600;
-  margin: 10px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 `;
 
-export const StyledTimeList = styled.div`
-  display: flex;
-  flex-flow: wrap;
-  width: 80%;
-  margin-bottom: 1.5rem;
-  @media (max-width: 576px) {
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
+export const ApplicantPanel = styled.div`
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
 `;
 
-export const StyledTimeBlock = styled.div`
-  cursor: default;
+export const ApplicantList = styled.div`
   display: flex;
-  flex-flow: column;
-  justify-content: center;
   align-items: center;
-  background-color: ${colors.mint[0]};
-  border-radius: 3px;
-  border: 1px ${colors.mint[1]} solid;
-  font-size: 0.75rem;
-  font-weight: 300;
-  line-height: 1.4rem;
-  margin: 10px;
-  padding: 0.4rem 0.5rem;
-  box-shadow: 0px 0px 10px ${colors.gray[1]};
-  transition: 0.3s;
-  min-height: 90px;
-  width: 150px;
-  &:hover {
-    //opacity: 0.8;
-    transition: 0.3s;
-    transform: scale(1.02);
-    box-shadow: 0px 0px 10px ${colors.gray[2]};
-  }
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid ${colors.gray[2]};
+  border-radius: 4px;
+
+  button { margin: 0; white-space: nowrap; }
 `;
 
-export const TimeBlockId = styled.div`
-  display: flex;
-  margin-bottom: 5px;
-  .admin-interview-slot-id {
-    margin-left: 5px;
-    font-weight: 500;
-  }
+export const ApplicantName = styled.strong`
+  display: block;
 `;
 
-export const TimeBlockTime = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  background-color: ${colors.gray[0]};
-  border: 1px ${colors.gray[2]} solid;
-  padding: 0 0.4rem;
-  border-radius: 10px;
-  width: 120px;
+export const ApplicantMeta = styled.span`
+  display: block;
+  margin-top: 0.2rem;
+  color: ${colors.brown[0]};
+  font-size: 0.85rem;
 `;
 
-export const TimeBlockCapacity = styled.div`
-  margin-bottom: 0;
-`;
-
-export const DisabledActionButton = styled(ActionButton)`
-  cursor: default;
-  background-color: ${colors.gray[2]};
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-export const IntervieweeList = styled.div`
-  margin: 5px 0;
-  background-color: ${colors.gray[0]};
-  border-radius: 2px;
-  padding: 5px 7px;
-  width: 120px;
-  display: flex;
-  flex-direction: column;
-  & > div > div > .admin-interview-label {
-    font-weight: 500;
-  }
-`;
-
-export const IntervieweeInfo = styled.div`
-  margin-bottom: 10px;
+export const EmptyState = styled.div`
+  padding: 1rem;
+  color: ${colors.brown[0]};
+  text-align: center;
 `;

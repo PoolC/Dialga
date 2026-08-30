@@ -1,9 +1,8 @@
 import Icon, { MessageOutlined } from '@ant-design/icons';
-import { Avatar, Button, Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { useHistory } from 'react-router';
 import ActivityCard from '~/components/activity/ActivityCard/ActivityCard';
 import ProjectCard from '~/components/projects/ProjectCard/ProjectCard';
-import getFileUrl from '~/lib/utils/getFileUrl';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import {
   ContentContainer,
@@ -67,7 +66,6 @@ export default function MemberDetailContent({ loginId }: { loginId: string }) {
           <NameContainer>
             <Name>{member.name}</Name>
             {member.isAdmin && <Status>PoolC임원</Status>}
-            {member.badge && <Avatar src={getFileUrl(member.badge.imageUrl)} size={60} />}
             {member.loginID !== me.loginID && (
               <Popconfirm title={`${member.name}님과 대화하기`} description={`${member.name}님과의 대화를 시작할까요?`} okText="네" cancelText="아니요" onConfirm={onStartConversation}>
                 <Button shape="circle" icon={<MessageOutlined />} type="primary" />

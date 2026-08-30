@@ -17,6 +17,7 @@ type SearchToolbarProps = {
   onKeywordChange: (value: string) => void;
   onSearch: () => void;
   showSearchType?: boolean;
+  searchTypeWidth?: number;
 };
 
 const useStyles = createStyles(({ css }) => ({
@@ -98,6 +99,7 @@ export const SearchToolbar = ({
   onKeywordChange,
   onSearch,
   showSearchType = true,
+  searchTypeWidth,
 }: SearchToolbarProps) => {
   const { styles } = useStyles();
 
@@ -112,6 +114,7 @@ export const SearchToolbar = ({
         <Select
           getPopupContainer={(trigger) => trigger.parentNode}
           className={styles.searchSelect}
+          style={searchTypeWidth ? { width: searchTypeWidth } : undefined}
           value={searchType}
           onChange={onSearchTypeChange}
           options={options}

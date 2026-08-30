@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { lazy, Suspense } from 'react';
 import type { ComponentType } from 'react';
@@ -67,9 +67,10 @@ const BoardWritePage = lazy(() => import('~/pages/board/BoardWritePage'));
 const PksPage = lazy(() => import('~/pages/pks/PksPage'));
 
 const MyPage = lazy(() => import('./pages/my-page/MyPage'));
-const MyPageBadgeListPage = lazy(() => import('./pages/my-page/MyPageBadgeListPage'));
 const MyPageMyPostsPage = lazy(() => import('./pages/my-page/MyPageMyPostsPage'));
 const MyPageMyScrapsPage = lazy(() => import('./pages/my-page/MyPageMyScrapsPage'));
+const MyPageCollectionPage = lazy(() => import('./pages/my-page/MyPageCollectionPage'));
+const PokemonAchievementsPage = lazy(() => import('./pages/pokemon/PokemonAchievementsPage'));
 
 const MessageAllListPage = lazy(() => import('./pages/message/MessageAllListPage'));
 const MessageListPage = lazy(() => import('./pages/message/MessageListPage'));
@@ -110,13 +111,16 @@ function App() {
             <Route component={BoardWritePage} path={`/${MENU.BOARD}/write`} />
             <Route component={BoardDetailPage} path={`/${MENU.BOARD}/:id`} />
             <Route component={PksPage} path={`/${MENU.PKS}`} exact />
+            <Route exact path={`/${MENU.POKEMON}`} render={() => <Redirect to={`/${MENU.POKEMON}/${MENU.POKEMON_COLLECTION}`} />} />
+            <Route component={MyPageCollectionPage} path={`/${MENU.POKEMON}/${MENU.POKEMON_COLLECTION}`} exact />
+            <Route component={PokemonAchievementsPage} path={`/${MENU.POKEMON}/${MENU.POKEMON_ACHIEVEMENTS}`} exact />
             <Route component={MessageAllListPage} path={`/${MENU.MESSAGE}`} exact />
             <Route component={MessageListPage} path={`/${MENU.MESSAGE}/:conversationId`} exact />
             <Route component={MessageFormPage} path={`/${MENU.MESSAGE}/:conversationId/${MENU.MESSAGE_FORM}`} />
             <Route component={MyPage} path={`/${MENU.MY_PAGE}`} exact />
-            <Route component={MyPageBadgeListPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_BADGE_LIST}`} />
             <Route component={MyPageMyPostsPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_POSTS}`} />
             <Route component={MyPageMyScrapsPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_MY_SCRAPS}`} />
+            <Route component={MyPageCollectionPage} path={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`} />
             <Route component={SpaceReservationPage} path={`/${MENU.ROOM_RESERVATION}`} />
             <Route component={NotFoundPage} path="/" />
           </Switch>

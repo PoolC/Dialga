@@ -1,169 +1,121 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useState } from 'react';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
 import Spinner from '../../common/Spinner/Spinner';
-import { TitleContainer } from '../AdminBook/AdminBook.styles';
 import { notEmptyValidation } from '../../../lib/utils/validation';
-import {
-  Form,
-  StyledCapacityForm,
-  StyledCapacityInput,
-  StyledDateForm,
-  StyledDateInput,
-  StyledDateTimeForm,
-  StyledDiv,
-  StyledInterviewForm,
-  StyledLabel,
-  StyledTimeForm,
-  StyledTimeFormList,
-  StyledTimeInput,
-  TimeBlockId,
-  TimeCapacityButtonContainer,
-} from './AdminInterviewTime.styles';
 import useInput from '../../../hooks/useInput';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
 import { StyledButton } from '~/components/board-legacy/Post/Post.styles';
+import {
+  AddSlotButton,
+  DateGroup,
+  DateGroupHeader,
+  DateGroupMeta,
+  DateInput,
+  DateLabel,
+  DateList,
+  DateSection,
+  EmptySlotState,
+  HeaderActions,
+  HeaderSummary,
+  PageHeader,
+  SlotActions,
+  SlotCapacity,
+  SlotInput,
+  SlotTable,
+  SlotTableWrapper,
+  StatusBadge,
+} from './AdminInterviewTime.styles';
 
-const DateTimeForm = ({ id, date, startTime, endTime, capacity, currentIntervieweesCount, onCreateInterviewTime, onDeleteInterviewTime, onUpdateInterviewTime }) => {
+const getSlotStatus = (applicantCount, capacity) => {
+  if (applicantCount === 0) return { label: '비어 있음', tone: 'empty' };
+  if (applicantCount >= Number(capacity)) return { label: '마감', tone: 'closed' };
+  return { label: '모집 중', tone: 'open' };
+};
+
+const SlotRow = ({ id, date, startTime, endTime, capacity, applicantCount, onCreateInterviewTime, onDeleteInterviewTime, onDiscard, onUpdateInterviewTime }) => {
   const [start, onChangeStart] = useInput(startTime || '', notEmptyValidation);
   const [end, onChangeEnd] = useInput(endTime || '', notEmptyValidation);
   const [capa, onChangeCapa] = useInput(capacity || '', notEmptyValidation);
+  const status = getSlotStatus(applicantCount, capa);
 
-  const handleCreateInterviewTime = (e) => {
-    e.preventDefault();
-    onCreateInterviewTime({
-      date,
-      startTime: start,
-      endTime: end,
-      capacity: capa,
-    });
+  const save = (event) => {
+    event.preventDefault();
+    const payload = { date, startTime: start, endTime: end, capacity: capa };
+    if (id) {
+      onUpdateInterviewTime({ slotId: id, ...payload });
+      return;
+    }
+    onCreateInterviewTime(payload);
   };
 
-  const handleUpdateInterviewTime = (e) => {
-    e.preventDefault();
-    onUpdateInterviewTime({
-      slotId: id,
-      startTime: start,
-      endTime: end,
-      capacity: capa,
-    });
-  };
-
-  const handleDeleteInterviewTime = (e) => {
-    e.preventDefault();
-    onDeleteInterviewTime({ slotId: id });
+  const remove = (event) => {
+    event.preventDefault();
+    const message = applicantCount > 0
+      ? `현재 ${applicantCount}명이 신청한 슬롯입니다. 정말 삭제하시겠습니까?`
+      : '이 면접 슬롯을 삭제하시겠습니까?';
+    if (window.confirm(message)) onDeleteInterviewTime({ slotId: id });
   };
 
   return (
-    <StyledDateTimeForm>
-      {id && (
-        <TimeBlockId>
-          <p>슬롯 ID</p>
-          <p className="admin-interview-slot-id">{id}</p>
-        </TimeBlockId>
-      )}
-      <StyledTimeForm>
-        <StyledLabel htmlFor="interview-start-time">시작 시간</StyledLabel>
-        <StyledTimeInput type="time" name="interview-start-time" id="" value={start} onChange={onChangeStart} />
-      </StyledTimeForm>
-      <StyledTimeForm>
-        <StyledLabel htmlFor="interview-end-time">종료 시간</StyledLabel>
-        <StyledTimeInput type="time" name="interview-start-time" id="" value={end} onChange={onChangeEnd} />
-      </StyledTimeForm>
-      <StyledCapacityForm>현재 신청 인원 {currentIntervieweesCount} 명</StyledCapacityForm>
-      <StyledCapacityForm>
-        <StyledLabel htmlFor="interview-capacity">정원</StyledLabel>
-        <StyledCapacityInput type="number" name="interview-capacity" id="" value={capa} onChange={onChangeCapa} />
-        <span>명</span>
-      </StyledCapacityForm>
-      <TimeCapacityButtonContainer>
-        <StyledButton onClick={id ? handleUpdateInterviewTime : handleCreateInterviewTime}>{id ? '수정' : '제출'}</StyledButton>
-        <StyledDeleteButton onClick={handleDeleteInterviewTime}>삭제</StyledDeleteButton>
-      </TimeCapacityButtonContainer>
-    </StyledDateTimeForm>
+    <tr>
+      <td>{id ? `#${id}` : '새 슬롯'}</td>
+      <td><SlotInput type="time" value={start} onChange={onChangeStart} aria-label="시작 시간" /></td>
+      <td><SlotInput type="time" value={end} onChange={onChangeEnd} aria-label="종료 시간" /></td>
+      <td><SlotCapacity><strong>{applicantCount}</strong> / <SlotInput type="number" min="1" value={capa} onChange={onChangeCapa} aria-label="정원" />명</SlotCapacity></td>
+      <td><StatusBadge data-tone={status.tone}>{status.label}</StatusBadge></td>
+      <td>
+        <SlotActions>
+          <StyledButton onClick={save}>{id ? '저장' : '추가'}</StyledButton>
+          {id ? <StyledDeleteButton onClick={remove}>삭제</StyledDeleteButton> : <StyledDeleteButton onClick={onDiscard}>취소</StyledDeleteButton>}
+        </SlotActions>
+      </td>
+    </tr>
   );
 };
 
 const InterviewForm = ({ data, onCreateInterviewTime, onDeleteInterviewTime, onUpdateInterviewTime }) => {
   const [date, onChangeDate] = useInput(data ? data.date : '', notEmptyValidation);
-  const [slots, setSlots] = useState(data ? data.slots : []);
-  const onAddTime = (e) => {
-    e.preventDefault();
-    setSlots([
-      ...slots,
-      {
-        startTime: '',
-        endTime: '',
-        capacity: 0,
-        interviewees: [],
-      },
-    ]);
-  };
+  const [draftSlots, setDraftSlots] = useState([]);
+  const slots = data?.slots || [];
+
   return (
-    <StyledInterviewForm>
-      <StyledDateForm>
-        <StyledLabel htmlFor="interview-date">날짜</StyledLabel>
-        <StyledDateInput type="date" htmlFor="interview-date" value={date} onChange={onChangeDate} />
-      </StyledDateForm>
-      <StyledTimeFormList>
-        {slots.map((s) => (
-          <DateTimeForm
-            date={date}
-            key={s.slotId ? s.slotId : date + s.startTime + s.endTime}
-            id={s.slotId}
-            startTime={s.startTime}
-            endTime={s.endTime}
-            capacity={s.capacity}
-            currentIntervieweesCount={s.interviewees.length}
-            onCreateInterviewTime={onCreateInterviewTime}
-            onDeleteInterviewTime={onDeleteInterviewTime}
-            onUpdateInterviewTime={onUpdateInterviewTime}
-          />
-        ))}
-      </StyledTimeFormList>
-      <ActionButton onClick={onAddTime}>시간 추가</ActionButton>
-    </StyledInterviewForm>
+    <DateGroup>
+      <DateGroupHeader>
+        <DateLabel>날짜 <DateInput type="date" value={date} onChange={onChangeDate} /></DateLabel>
+        <DateGroupMeta>{slots.length}개 슬롯</DateGroupMeta>
+        <AddSlotButton onClick={() => setDraftSlots((current) => [...current, { key: `${Date.now()}-${current.length}` }])}>슬롯 추가</AddSlotButton>
+      </DateGroupHeader>
+      <SlotTableWrapper>
+        <SlotTable>
+          <thead><tr><th>슬롯</th><th>시작</th><th>종료</th><th>신청 / 정원</th><th>상태</th><th>조치</th></tr></thead>
+          <tbody>
+            {slots.map((slot) => <SlotRow key={slot.slotId} id={slot.slotId} date={date} startTime={slot.startTime} endTime={slot.endTime} capacity={slot.capacity} applicantCount={slot.interviewees.length} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />)}
+            {draftSlots.map((slot) => <SlotRow key={slot.key} date={date} startTime="" endTime="" capacity="1" applicantCount={0} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onDiscard={() => setDraftSlots((current) => current.filter((draft) => draft.key !== slot.key))} onUpdateInterviewTime={onUpdateInterviewTime} />)}
+            {slots.length === 0 && draftSlots.length === 0 && <tr><td colSpan="6"><EmptySlotState>등록된 슬롯이 없습니다. 슬롯 추가를 눌러 등록하세요.</EmptySlotState></td></tr>}
+          </tbody>
+        </SlotTable>
+      </SlotTableWrapper>
+    </DateGroup>
   );
 };
 
 const AdminInterviewTime = ({ data, loading, setData, onCreateInterviewTime, onDeleteInterviewTime, onDeleteAllInterviewTime, onUpdateInterviewTime }) => {
-  const onAddDate = (e) => {
-    e.preventDefault();
-    setData([...data, { date: '', slots: [] }]);
-  };
-
-  const onClickDeleteAll = (e) => {
-    e.preventDefault();
-    const result = window.confirm('[주의] 모든 면접 시간 슬롯을 삭제하시겠습니까?');
-    if (result) {
-      onDeleteAllInterviewTime();
-    }
+  const totalSlots = data.reduce((sum, group) => sum + group.slots.length, 0);
+  const totalApplicants = data.reduce((sum, group) => sum + group.slots.reduce((slotSum, slot) => slotSum + slot.interviewees.length, 0), 0);
+  const addDate = () => setData((current) => [...current, { date: '', slots: [] }]);
+  const deleteAll = () => {
+    if (window.confirm('모든 면접 시간 슬롯과 신청 정보를 삭제하시겠습니까?')) onDeleteAllInterviewTime();
   };
 
   return (
     <WhiteNarrowBlock>
-      <TitleContainer>면접 시간 관리</TitleContainer>
-      <StyledDiv>작성 후 '제출' 버튼을 꼭 눌러주세요.</StyledDiv>
+      <PageHeader>
+        <div><h1>면접 슬롯 관리</h1><HeaderSummary>총 {totalSlots}개 슬롯 · 신청 {totalApplicants}명</HeaderSummary></div>
+        <HeaderActions><ActionButton onClick={addDate}>날짜 추가</ActionButton></HeaderActions>
+      </PageHeader>
       {loading && <Spinner />}
-      {!loading && (
-        <>
-          <Form>
-            {data?.map((d) => (
-              <InterviewForm key={d.date} data={d} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />
-            ))}
-          </Form>
-          <ActionButton onClick={onAddDate}>날짜 추가</ActionButton>
-          <StyledDeleteButton
-            onClick={onClickDeleteAll}
-            style={{
-              marginTop: '30px',
-            }}
-          >
-            전체 시간 삭제
-          </StyledDeleteButton>
-        </>
-      )}
+      {!loading && <DateList>{data.map((group, index) => <InterviewForm key={group.date || `new-date-${index}`} data={group} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />)}{data.length === 0 && <DateSection>날짜 추가를 눌러 면접 일정을 등록하세요.</DateSection>}<DateSection><p>모든 면접 슬롯과 신청 정보를 제거합니다.</p><StyledDeleteButton onClick={deleteAll}>전체 삭제</StyledDeleteButton></DateSection></DateList>}
     </WhiteNarrowBlock>
   );
 };

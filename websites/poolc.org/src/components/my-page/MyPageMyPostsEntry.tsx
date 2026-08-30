@@ -1,5 +1,5 @@
 import { CommentOutlined } from '@ant-design/icons';
-import { Space, Typography, Avatar, Empty, Pagination } from 'antd';
+import { Space, Typography, Empty, Pagination } from 'antd';
 import { createStyles } from 'antd-style';
 import Table, { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -8,7 +8,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { MENU } from '~/constants/menus';
 import { useSearchParams } from '~/hooks/useSearchParams';
 import { PostControllerService, PostResponse, queryKey, useAppSuspenseQuery } from '~/lib/api-v2';
-import getFileUrl from '~/lib/utils/getFileUrl';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
 
 const useStyles = createStyles(({ css }) => ({
@@ -47,11 +46,6 @@ const useStyles = createStyles(({ css }) => ({
   avatar: css`
     width: 40px;
     height: 40px;
-  `,
-  badge: css`
-    width: 35px;
-    height: 35px;
-    border: 1px solid #47be9b;
   `,
   clamp: css`
     display: -webkit-box;
@@ -96,7 +90,6 @@ export default function MyPageMyPostsEntry() {
             <Space className={styles.metaInfoArea} size="middle">
               <Space>
                 <Typography.Text>{post.writerName}</Typography.Text>
-                {post.badge && <Avatar src={getFileUrl(post.badge?.imageUrl)} className={styles.badge} />}
               </Space>
               <Space size="middle">
                 <Typography.Text type="secondary">{dayjs(post.createdAt).format('YYYY. MM. DD')}</Typography.Text>

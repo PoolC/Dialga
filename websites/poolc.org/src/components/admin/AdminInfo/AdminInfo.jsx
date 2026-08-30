@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 // FIXME: eslint issue 수정 필요. 터미널에서는 에러가 나지 않으나, 에디터에서만 에러가 나고 있음
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Editor } from '@dialga/react-editor';
@@ -43,6 +43,20 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
   const [isSubscriptionPeriod, setIsSubscriptionPeriod] = useState(info ? info.isSubscriptionPeriod : false);
   const [mainImageUrl, setMainImageUrl] = useState(info ? info.mainImageUrl : 'poolcMainImage.png');
   const [applyUri, onChangeApplyUri] = useInput(info ? info.applyUri : '', notEmptyValidation);
+
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
+    const timeoutId = window.setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }, 100);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleUpdate = (e) => {
     e.preventDefault();
