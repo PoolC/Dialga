@@ -1,13 +1,48 @@
-import { Avatar, Button, List, Space, Tooltip, Typography } from 'antd';
+import { Avatar, Button, List, Modal, Select, Space, Switch, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { AppstoreOutlined, ArrowRightOutlined, DownOutlined, EditOutlined, MessageOutlined, StarOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MemberControllerService, MyActivityDetailResponse, MyActivitySummaryResponse, queryKey, useAppSuspenseQueries } from '~/lib/api-v2';
 import { MENU } from '~/constants/menus';
 import { MEMBER_ROLE } from '~/constants/memberRoles';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
+import pokedexDeviceImage from '~/assets/images/pokedex-device.webp';
+import pokeballImage from '~/assets/images/pokeball.png';
 import { EmptyState } from '~/components/common/EmptyState/EmptyState';
+import * as gameAPI from '~/lib/api/gamification';
+import { loadUser } from '~/modules/auth';
+import { useMessage } from '~/hooks/useMessage';
+
+type GameSummary = {
+  ballBalances?: { normal?: number };
+  totalCatalogCount?: number;
+  collectedCatalogCount?: number;
+  shinyCatalogCount?: number;
+};
+
+type FeaturedCollectible = {
+  collectibleId: number;
+  externalId: number;
+  name: string;
+  spriteUrl?: string;
+  shinySpriteUrl?: string;
+  shiny: boolean;
+  useAsProfile: boolean;
+};
+
+type OwnedCollectible = {
+  collectibleId: number;
+  externalId: number;
+  name: string;
+  spriteUrl?: string;
+  shinySpriteUrl?: string;
+  ownedCount: number;
+  shinyCount: number;
+};
+
+const shinyCatalogImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/25.png';
 
 const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
   try {
@@ -30,7 +65,16 @@ const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
 
 export default function MyPageContainer() {
   const { styles, cx } = useStyles();
+  const dispatch = useDispatch();
+  const message = useMessage();
   const [expandedActivitySections, setExpandedActivitySections] = useState<Record<string, boolean>>({});
+  const [gameSummary, setGameSummary] = useState<GameSummary | null>(null);
+  const [featuredCollectible, setFeaturedCollectible] = useState<FeaturedCollectible | null>(null);
+  const [featuredModalOpen, setFeaturedModalOpen] = useState(false);
+  const [ownedCollectibles, setOwnedCollectibles] = useState<OwnedCollectible[]>([]);
+  const [selectedCollectibleId, setSelectedCollectibleId] = useState<number | undefined>();
+  const [selectedShiny, setSelectedShiny] = useState(false);
+  const [savingFeatured, setSavingFeatured] = useState(false);
 
   const listData: {
     title: string;
@@ -42,6 +86,11 @@ export default function MyPageContainer() {
       title: '회원 정보 수정',
       icon: <UserOutlined size={24} />,
       link: '/my-info',
+    },
+    {
+      title: '포켓몬 도감',
+      icon: <AppstoreOutlined size={24} />,
+      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`,
     },
     {
       title: '내가 쓴 글',
@@ -58,11 +107,6 @@ export default function MyPageContainer() {
       icon: <MessageOutlined size={24} />,
       link: `/${MENU.MESSAGE}`,
     },
-    {
-      title: '포켓몬 도감',
-      icon: <AppstoreOutlined size={24} />,
-      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`,
-    },
   ];
 
   const [{ data: activitySummary }, { data: me }] = useAppSuspenseQueries({
@@ -77,6 +121,83 @@ export default function MyPageContainer() {
       },
     ],
   });
+
+  useEffect(() => {
+    let active = true;
+
+    gameAPI.getGameSummary()
+      .then((response) => {
+        if (active) setGameSummary(response.data);
+      })
+      .catch(() => {});
+
+    gameAPI.getFeaturedCollectible()
+      .then((response) => {
+        if (active) setFeaturedCollectible(response.status === 204 ? null : response.data);
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const openFeaturedModal = async () => {
+    try {
+      const response = await gameAPI.getCollection();
+      const owned = response.data.filter((item: OwnedCollectible) => item.ownedCount > 0);
+      setOwnedCollectibles(owned);
+      setSelectedCollectibleId(featuredCollectible?.collectibleId);
+      setSelectedShiny(featuredCollectible?.shiny ?? false);
+      setFeaturedModalOpen(true);
+    } catch {
+      message.error('보유 포켓몬을 불러오지 못했습니다.');
+    }
+  };
+
+  const saveFeaturedCollectible = async () => {
+    if (!selectedCollectibleId) return;
+    setSavingFeatured(true);
+    try {
+      const response = await gameAPI.updateFeaturedCollectible({ collectibleId: selectedCollectibleId, shiny: selectedShiny });
+      setFeaturedCollectible(response.data);
+      setFeaturedModalOpen(false);
+      if (response.data.useAsProfile) dispatch(loadUser());
+      message.success('대표 포켓몬을 지정했습니다.');
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message;
+      message.error(errorMessage && errorMessage !== 'No message available' ? errorMessage : '대표 포켓몬을 지정하지 못했습니다.');
+    } finally {
+      setSavingFeatured(false);
+    }
+  };
+
+  const toggleFeaturedProfile = async (useAsProfile: boolean) => {
+    if (!featuredCollectible) return;
+    try {
+      const response = await gameAPI.updateFeaturedProfile(useAsProfile);
+      setFeaturedCollectible(response.data);
+      dispatch(loadUser());
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message;
+      message.error(errorMessage && errorMessage !== 'No message available' ? errorMessage : '프로필 설정을 변경하지 못했습니다.');
+    }
+  };
+
+  const clearFeaturedCollectible = async () => {
+    setSavingFeatured(true);
+    try {
+      await gameAPI.clearFeaturedCollectible();
+      setFeaturedCollectible(null);
+      setFeaturedModalOpen(false);
+      dispatch(loadUser());
+      message.success('대표 포켓몬을 해제했습니다.');
+    } catch {
+      message.error('대표 포켓몬을 해제하지 못했습니다.');
+    } finally {
+      setSavingFeatured(false);
+    }
+  };
 
   const activityMinimumHour = 10;
   const recordedActivityHours = activitySummary.totalHours ?? 0;
@@ -120,8 +241,8 @@ export default function MyPageContainer() {
   })();
   const activityReasonItems = [
     { label: '세미나', hours: activitySummary.seminarStudyHours ?? 0, color: '#47be9b' },
-    { label: '공식 활동', hours: activitySummary.officialActivityHours ?? 0, color: '#ffd43b' },
     { label: '프로젝트', hours: activitySummary.projectHours ?? 0, color: '#ff922b' },
+    { label: '기타', hours: activitySummary.officialActivityHours ?? 0, color: '#ffd43b' },
   ];
   const formatHours = (hours: number) => (Number.isInteger(hours) ? `${hours}` : hours.toFixed(1));
   const toDetailItems = (items: MyActivityDetailResponse[] = []) =>
@@ -137,14 +258,17 @@ export default function MyPageContainer() {
       items: toDetailItems(activitySummary.seminarStudyActivities),
     },
     {
-      title: '공식 활동',
-      items: toDetailItems(activitySummary.officialActivities),
-    },
-    {
       title: '프로젝트',
       items: toDetailItems(activitySummary.projectActivities),
     },
+    {
+      title: '기타',
+      items: toDetailItems(activitySummary.officialActivities),
+    },
   ];
+  const collectedCount = gameSummary?.collectedCatalogCount ?? 0;
+  const totalCatalogCount = gameSummary?.totalCatalogCount ?? 0;
+  const collectionProgress = totalCatalogCount > 0 ? Math.round((collectedCount / totalCatalogCount) * 100) : 0;
 
   return (
     <Space direction="vertical" className={cx(styles.fullWidth, styles.pageContent)} size={32}>
@@ -183,7 +307,7 @@ export default function MyPageContainer() {
           </div>
           <div
             className={styles.activityProgressTrack}
-            aria-label={activityExemptionLabel ?? `인정 활동시간 ${displayedActivityHours} / ${activityMinimumHour}시간`}
+            aria-label={activityExemptionLabel ?? `활동시간 ${displayedActivityHours} / ${activityMinimumHour}시간`}
           >
             {activityExemptionLabel ? (
               <span style={{ width: '100%', backgroundColor: activityReasonItems[0].color }} />
@@ -215,7 +339,7 @@ export default function MyPageContainer() {
                 <Typography.Title id={`activity-detail-${section.title}`} level={5} className={styles.activityDetailTitle}>
                   {section.title}
                 </Typography.Title>
-                {section.items.length > 0 && <Typography.Text className={styles.activityDetailHours}>누적 {formatHours(totalHours)}시간</Typography.Text>}
+                {section.items.length > 0 && <Typography.Text className={styles.activityDetailHours}>총 {formatHours(totalHours)}시간</Typography.Text>}
               </div>
               {section.items.length > 0 ? (
                 <div className={styles.activityDetailList}>
@@ -225,7 +349,7 @@ export default function MyPageContainer() {
                         <Typography.Text className={styles.activityDetailItemTitle}>{item.title}</Typography.Text>
                         {item.hosted && <Typography.Text className={styles.activityDetailHost}>주최</Typography.Text>}
                       </div>
-                      <Typography.Text className={styles.activityDetailItemHours}>인정 {formatHours(item.hours)}시간</Typography.Text>
+                      <Typography.Text className={styles.activityDetailItemHours}>{formatHours(item.hours)}시간</Typography.Text>
                     </div>
                   ))}
                 </div>
@@ -254,6 +378,77 @@ export default function MyPageContainer() {
           );
         })}
       </div>
+      <section className={styles.collectionOverview} aria-labelledby="my-collection-title">
+        <div className={styles.collectionOverviewHeader}>
+          <div>
+            <Typography.Title id="my-collection-title" level={5} className={styles.collectionOverviewTitle}>포켓몬 도감</Typography.Title>
+          </div>
+          <Link to={`/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`} className={styles.collectionLink}>도감 보기 <ArrowRightOutlined /></Link>
+        </div>
+        <div className={styles.collectionOverviewBody}>
+          <div className={styles.collectionStats}>
+            <div className={cx(styles.collectionStat, styles.collectionStatPrimary)}>
+              <img className={cx(styles.collectionStatVisual, styles.collectionStatVisualPokedex)} src={pokedexDeviceImage} alt="포켓몬 도감" />
+              <strong>{collectedCount} <span>/ {totalCatalogCount}종</span></strong>
+              <Typography.Text>도감 완성</Typography.Text>
+              <div className={styles.collectionProgressTrack}><span style={{ width: `${collectionProgress}%` }} /></div>
+            </div>
+            <div className={styles.collectionStat}>
+              <img className={cx(styles.collectionStatVisual, styles.collectionStatVisualShiny)} src={shinyCatalogImage} alt="이로치 피카츄" />
+              <strong>{gameSummary?.shinyCatalogCount ?? 0}종</strong>
+              <Typography.Text>이로치</Typography.Text>
+            </div>
+            <div className={styles.collectionStat}>
+              <img className={styles.collectionStatVisual} src={pokeballImage} alt="일반 포켓볼" />
+              <strong>{gameSummary?.ballBalances?.normal ?? 0}개</strong>
+              <Typography.Text>포켓볼</Typography.Text>
+            </div>
+          </div>
+          <div className={styles.featuredCollectible}>
+            <Typography.Text className={styles.featuredCollectibleLabel}>대표 포켓몬</Typography.Text>
+            {featuredCollectible ? (
+              <div className={styles.featuredCollectibleContent}>
+                <div className={styles.featuredCollectibleIdentity}>
+                  <img src={featuredCollectible.shiny ? (featuredCollectible.shinySpriteUrl ?? featuredCollectible.spriteUrl) : featuredCollectible.spriteUrl} alt={featuredCollectible.name} />
+                  <div><strong>{featuredCollectible.name}</strong><span>No.{String(featuredCollectible.externalId).padStart(3, '0')}</span></div>
+                </div>
+                <div className={styles.featuredCollectibleActions}>
+                  <label><Switch size="small" checked={featuredCollectible.useAsProfile} onChange={toggleFeaturedProfile} /> 프사 사용</label>
+                  <Button type="link" onClick={openFeaturedModal}>변경</Button>
+                </div>
+              </div>
+            ) : <div className={styles.featuredCollectibleEmpty}><Typography.Text>대표 포켓몬을 지정해 보세요.</Typography.Text><Button type="link" onClick={openFeaturedModal}>지정</Button></div>}
+          </div>
+        </div>
+      </section>
+      <Modal
+        title="대표 포켓몬 지정"
+        open={featuredModalOpen}
+        onCancel={() => setFeaturedModalOpen(false)}
+        onOk={saveFeaturedCollectible}
+        okText="지정"
+        cancelText="취소"
+        confirmLoading={savingFeatured}
+        okButtonProps={{ disabled: !selectedCollectibleId }}
+        footer={(_, { OkBtn, CancelBtn }) => <div className={styles.featuredModalFooter}>{featuredCollectible && <Button danger type="text" loading={savingFeatured} onClick={clearFeaturedCollectible}>대표 해제</Button>}<div><CancelBtn /><OkBtn /></div></div>}
+      >
+        <div className={styles.featuredModalBody}>
+          <label>포켓몬
+            <Select
+              showSearch
+              value={selectedCollectibleId}
+              placeholder="보유한 포켓몬 선택"
+              optionFilterProp="label"
+              onChange={(value) => { setSelectedCollectibleId(value); setSelectedShiny(false); }}
+              options={ownedCollectibles.map((item) => ({ value: item.collectibleId, label: `No.${String(item.externalId).padStart(3, '0')} ${item.name}` }))}
+            />
+          </label>
+          {(() => {
+            const selected = ownedCollectibles.find((item) => item.collectibleId === selectedCollectibleId);
+            return selected?.shinyCount ? <label className={styles.shinyOption}><Switch size="small" checked={selectedShiny} onChange={setSelectedShiny} /> 이로치로 지정</label> : null;
+          })()}
+        </div>
+      </Modal>
       <Space direction="vertical" size={0} className={styles.wrapper}>
         <Typography.Title level={5}>나의 메뉴</Typography.Title>
         <List
@@ -446,6 +641,234 @@ const useStyles = createStyles(({ css }) => ({
       grid-template-columns: 1fr;
       gap: 24px;
     }
+  `,
+  collectionOverview: css`
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #e5eeeb;
+    border-radius: 8px;
+    background: #fff;
+    box-sizing: border-box;
+  `,
+  collectionOverviewHeader: css`
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  `,
+  collectionOverviewTitle: css`
+    margin: 0 0 4px !important;
+  `,
+  collectionLink: css`
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+    padding: 0 8px;
+    color: #2f9d7e;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  `,
+  collectionOverviewBody: css`
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, .9fr);
+    gap: 28px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  `,
+  collectionStats: css`
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  `,
+  collectionStat: css`
+    display: flex;
+    min-width: 0;
+    aspect-ratio: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 12px;
+    border: 1px solid #e5eeeb;
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+    > strong { color: #4c735f; font-size: 1rem; line-height: 1.25; }
+    > strong span { color: #7b847f; font-size: 0.78rem; font-weight: 600; }
+    .ant-typography { color: #7b847f; font-size: 0.74rem; }
+
+    @media (max-width: 560px) {
+      padding: 8px;
+    }
+  `,
+  collectionStatPrimary: css`
+    border-color: #b9e4d7;
+    background: #f7fcfa;
+
+    > strong { color: #249b78; font-size: 1.28rem; }
+  `,
+  collectionStatVisual: css`
+    width: clamp(42px, 5vw, 66px);
+    height: clamp(42px, 5vw, 66px);
+    margin-bottom: 6px;
+    object-fit: contain;
+  `,
+  collectionStatVisualPokedex: css`
+    transform: scale(1.22);
+  `,
+  collectionStatVisualShiny: css`
+    transform: scale(1.12);
+  `,
+  collectionProgressTrack: css`
+    width: 100%;
+    height: 4px;
+    margin-top: 3px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e7efed;
+
+    span { display: block; height: 100%; border-radius: inherit; background: #47be9b; }
+  `,
+  featuredCollectible: css`
+    min-width: 0;
+  `,
+  featuredCollectibleLabel: css`
+    display: block;
+    margin-bottom: 8px;
+    color: #7b847f;
+    font-size: 0.74rem;
+    font-weight: 700;
+  `,
+  featuredCollectibleContent: css`
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #9edbc9;
+    border-radius: 6px;
+    background: #f4fbf8;
+    box-sizing: border-box;
+  `,
+  featuredCollectibleIdentity: css`
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+
+    img { width: 56px; height: 56px; flex: 0 0 56px; object-fit: contain; }
+    > div { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+    strong { overflow: hidden; color: #4c3722; font-size: 0.88rem; text-overflow: ellipsis; white-space: nowrap; }
+    span { color: #7b847f; font-size: 0.7rem; font-weight: 700; }
+  `,
+  featuredCollectibleActions: css`
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+
+    label { display: inline-flex; align-items: center; gap: 5px; color: #5d6d66; font-size: 0.7rem; white-space: nowrap; }
+    .ant-btn { height: auto; padding: 0; font-size: 0.75rem; }
+  `,
+  featuredCollectibleEmpty: css`
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px dashed #c7d8d2;
+    border-radius: 6px;
+    background: #fafcfb;
+    box-sizing: border-box;
+
+    .ant-typography { color: #7b847f; font-size: 0.78rem; }
+    .ant-btn { padding: 0; font-size: 0.78rem; }
+  `,
+  featuredModalBody: css`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > label { display: flex; flex-direction: column; gap: 7px; color: #4c3722; font-size: 0.85rem; font-weight: 700; }
+  `,
+  shinyOption: css`
+    flex-direction: row !important;
+    align-items: center;
+    color: #6d5b2d !important;
+  `,
+  featuredModalFooter: css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  `,
+  recentDraws: css`
+    min-width: 0;
+  `,
+  recentDrawsLabel: css`
+    display: block;
+    margin-bottom: 8px;
+    color: #7b847f;
+    font-size: 0.74rem;
+    font-weight: 700;
+  `,
+  recentDrawList: css`
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  `,
+  recentDraw: css`
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: #fafcfb;
+
+    img, > div { width: 48px; height: 48px; object-fit: contain; }
+    .ant-typography { width: 100%; overflow: hidden; color: #4c3722; font-size: 0.72rem; font-weight: 700; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+  `,
+  latestDraw: css`
+    border-color: #9edbc9;
+    background: #f4fbf8;
+  `,
+  latestDrawLabel: css`
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background: #dff5ed;
+    color: #249b78;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1;
+  `,
+  recentDrawFallback: css`
+    border-radius: 50%;
+    background: #edf0ef;
+  `,
+  recentDrawEmpty: css`
+    display: block;
+    padding: 24px 12px;
+    border: 1px solid #e5eeeb;
+    border-radius: 5px;
+    color: #7b847f;
+    font-size: 0.78rem;
+    text-align: center;
   `,
   activityDetailSection: css`
     display: flex;
