@@ -122,8 +122,8 @@ function QuestSection({ quests, claiming, onClaim, styles }: { quests: Quest[]; 
 }
 
 const useStyles = createStyles(({ css }) => ({
-  whiteBlock: css`box-sizing:border-box; padding:30px 20px; align-items:center;`,
-  content: css`max-width:980px;`,
+  whiteBlock: css`box-sizing:border-box; padding:60px 0; align-items:center;`,
+  content: css`max-width:1210px;`,
   questTabs: css`margin-bottom:24px;`,
   spinner: css`display:block; margin:72px auto;`,
   dailySummary: css`padding:20px 24px; margin:0 0 24px; border:1px solid #d9ebe5; border-radius:8px; background:#f4fbf8;`,

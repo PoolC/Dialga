@@ -9,7 +9,7 @@ export const SeminarPageShell = styled(TwoColumnPageShell)`
 `;
 
 export const ActivityContent = styled(PageContent)`
-  max-width: 904px;
+  max-width: 1210px;
 `;
 
 export const HeaderControls = styled.div`
@@ -22,12 +22,6 @@ export const HeaderControls = styled.div`
     width: 100%;
     justify-content: space-between;
   }
-`;
-
-export const SemesterSelectArea = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const SemesterMenuBlock = styled(MenuBlock)``;
@@ -89,7 +83,7 @@ export const HeaderActionArea = styled.div`
 `;
 
 export const ActivityGrid = styled(CardGrid)`
-  max-width: 904px;
+  max-width: 1210px;
   align-items: stretch;
   justify-content: center;
   gap: 14px;

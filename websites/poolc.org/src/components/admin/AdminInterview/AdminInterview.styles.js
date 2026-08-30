@@ -2,63 +2,93 @@ import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 
 export const PageHeader = styled.header`
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid ${colors.gray[2]};
-
-  h1 { margin: 0; font-size: 1.65rem; }
+  width: 100%;
+  margin-bottom: 18px;
 `;
 
-export const HeaderSummary = styled.p`
-  margin: 0.35rem 0 0;
-  color: ${colors.brown[0]};
-  font-size: 0.9rem;
-`;
-
-export const DateFilterBar = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 1.25rem 0;
-`;
-
-export const DateFilterButton = styled.button`
-  padding: 0.45rem 0.7rem;
-  border: 1px solid ${({ 'data-active': active }) => active ? colors.mint[2] : colors.gray[2]};
-  border-radius: 4px;
-  background: ${({ 'data-active': active }) => active ? colors.mint[0] : 'white'};
-  color: ${({ 'data-active': active }) => active ? colors.mint[3] : colors.brown[0]};
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: ${({ 'data-active': active }) => active ? 600 : 400};
+export const Title = styled.h2`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
 `;
 
 export const InterviewTableWrapper = styled.div`
+  width: 100%;
   overflow-x: auto;
-  border: 1px solid ${colors.gray[2]};
-  border-radius: 6px;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-radius: 8px;
+
+  &.date-slot-table {
+    border-radius: 0 0 8px 8px;
+  }
+`;
+
+export const DateTables = styled.div`
+  display: grid;
+  width: 100%;
+  gap: 24px;
 `;
 
 export const InterviewTable = styled.table`
   width: 100%;
-  min-width: 720px;
+  min-width: 1100px;
   border-collapse: collapse;
+  color: ${colors.brown[1]};
+  font-size: 0.84rem;
 
   th, td {
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid ${colors.gray[2]};
-    text-align: left;
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(76, 55, 34, 0.08);
+    text-align: center;
     vertical-align: middle;
   }
 
   th {
     background: ${colors.mint[0]};
-    color: ${colors.brown[0]};
-    font-size: 0.85rem;
-    font-weight: 600;
+    color: ${colors.brown[1]};
+    font-size: 0.8rem;
+    font-weight: 800;
   }
 
+  th:nth-of-type(1) { width: 13%; }
+  th:nth-of-type(2) { width: 11%; }
+  th:nth-of-type(3) { width: 9%; }
+  th:nth-of-type(4) { width: 10%; }
+  th:nth-of-type(5) { width: 12%; }
+  th:nth-of-type(6) { width: 17%; }
+  th:nth-of-type(7) { width: 16%; }
+  th:nth-of-type(8) { width: 12%; }
+
   tbody tr:last-child td { border-bottom: 0; }
+
+  .slot-group-start td {
+    border-top: 1px solid rgba(76, 55, 34, 0.14);
+  }
+
+  td[rowspan] {
+    background: rgba(229, 240, 237, 0.24);
+    font-weight: 600;
+  }
+`;
+
+export const DateGroupHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: ${colors.mint[0]};
+`;
+
+export const DateGroupTitle = styled.strong`
+  color: ${colors.brown[1]};
+  font-size: 1.15rem;
+  font-weight: 800;
 `;
 
 export const StatusBadge = styled.span`
@@ -71,46 +101,8 @@ export const StatusBadge = styled.span`
   font-weight: 600;
 `;
 
-export const ExpandButton = styled.button`
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: ${colors.mint[3]};
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-`;
-
-export const ApplicantPanel = styled.div`
-  display: grid;
-  gap: 0.5rem;
-  padding: 0.25rem 0;
-`;
-
-export const ApplicantList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem;
-  border: 1px solid ${colors.gray[2]};
-  border-radius: 4px;
-
-  button { margin: 0; white-space: nowrap; }
-`;
-
 export const ApplicantName = styled.strong`
-  display: block;
-`;
-
-export const ApplicantMeta = styled.span`
-  display: block;
-  margin-top: 0.2rem;
-  color: ${colors.brown[0]};
-  font-size: 0.85rem;
+  font-weight: 800;
 `;
 
 export const EmptyState = styled.div`

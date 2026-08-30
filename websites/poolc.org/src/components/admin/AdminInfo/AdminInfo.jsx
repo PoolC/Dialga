@@ -16,6 +16,8 @@ import {
   ImageGrid,
   Item,
   SectionTitle,
+  SectionHeader,
+  SectionSummary,
   StyledActionButton,
   StyledForm,
   StyledImage,
@@ -99,20 +101,20 @@ const AdminInfo = ({ info, onUpdate, errorMessage, buttons, errorModalVisible, o
           <StyledForm>
             <FormGrid>
               <FormSection>
-                <SectionTitle>기본 정보</SectionTitle>
+                <SectionHeader>
+                  <SectionTitle>기본 정보</SectionTitle>
+                  <SectionSummary>홈페이지 Footer에 반영됩니다.</SectionSummary>
+                </SectionHeader>
                 <Item>
                   <label htmlFor="presidentName">회장 이름</label>
-                  <Description>홈페이지 Footer에 반영됩니다.</Description>
                   <StyledInput id="presidentName" type="text" placeholder="ex) 김풀씨" value={presidentName} onChange={onChangePresidentName} />
                 </Item>
                 <Item>
                   <label htmlFor="phoneNumber">전화번호</label>
-                  <Description>홈페이지 Footer에 반영됩니다.</Description>
                   <StyledInput id="phoneNumber" type="text" placeholder="ex) 010-0000-0000" value={phoneNumber} onChange={onChangePhoneNumber} />
                 </Item>
                 <Item>
                   <label htmlFor="location">동아리방 위치</label>
-                  <Description>홈페이지 Footer에 반영됩니다.</Description>
                   <StyledInput id="location" type="text" placeholder="ex) 연세대학교 제1공학관 537호" value={location} onChange={onChangeLocation} />
                 </Item>
               </FormSection>

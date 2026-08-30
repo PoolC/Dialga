@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
+import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import Spinner from '../../common/Spinner/Spinner';
 import { notEmptyValidation } from '../../../lib/utils/validation';
 import useInput from '../../../hooks/useInput';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
-import { StyledButton } from '~/components/board-legacy/Post/Post.styles';
 import {
   AddSlotButton,
   DateGroup,
@@ -17,8 +17,8 @@ import {
   DateSection,
   EmptySlotState,
   HeaderActions,
-  HeaderSummary,
   PageHeader,
+  Title,
   SlotActions,
   SlotCapacity,
   SlotInput,
@@ -66,7 +66,7 @@ const SlotRow = ({ id, date, startTime, endTime, capacity, applicantCount, onCre
       <td><StatusBadge data-tone={status.tone}>{status.label}</StatusBadge></td>
       <td>
         <SlotActions>
-          <StyledButton onClick={save}>{id ? '저장' : '추가'}</StyledButton>
+          <ActionButton type="button" onClick={save}>{id ? '저장' : '추가'}</ActionButton>
           {id ? <StyledDeleteButton onClick={remove}>삭제</StyledDeleteButton> : <StyledDeleteButton onClick={onDiscard}>취소</StyledDeleteButton>}
         </SlotActions>
       </td>
@@ -101,9 +101,14 @@ const InterviewForm = ({ data, onCreateInterviewTime, onDeleteInterviewTime, onU
 };
 
 const AdminInterviewTime = ({ data, loading, setData, onCreateInterviewTime, onDeleteInterviewTime, onDeleteAllInterviewTime, onUpdateInterviewTime }) => {
+  const [activeDate, setActiveDate] = useState('all');
   const totalSlots = data.reduce((sum, group) => sum + group.slots.length, 0);
-  const totalApplicants = data.reduce((sum, group) => sum + group.slots.reduce((slotSum, slot) => slotSum + slot.interviewees.length, 0), 0);
   const addDate = () => setData((current) => [...current, { date: '', slots: [] }]);
+  const visibleGroups = activeDate === 'all' ? data : data.filter((group) => group.date === activeDate);
+  const dateTabs = [
+    { key: 'all', label: `전체 ${totalSlots}` },
+    ...data.map((group) => ({ key: group.date, label: group.date })),
+  ];
   const deleteAll = () => {
     if (window.confirm('모든 면접 시간 슬롯과 신청 정보를 삭제하시겠습니까?')) onDeleteAllInterviewTime();
   };
@@ -111,11 +116,14 @@ const AdminInterviewTime = ({ data, loading, setData, onCreateInterviewTime, onD
   return (
     <WhiteNarrowBlock>
       <PageHeader>
-        <div><h1>면접 슬롯 관리</h1><HeaderSummary>총 {totalSlots}개 슬롯 · 신청 {totalApplicants}명</HeaderSummary></div>
+        <div><Title>면접 시간 관리</Title></div>
         <HeaderActions><ActionButton onClick={addDate}>날짜 추가</ActionButton></HeaderActions>
       </PageHeader>
       {loading && <Spinner />}
-      {!loading && <DateList>{data.map((group, index) => <InterviewForm key={group.date || `new-date-${index}`} data={group} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />)}{data.length === 0 && <DateSection>날짜 추가를 눌러 면접 일정을 등록하세요.</DateSection>}<DateSection><p>모든 면접 슬롯과 신청 정보를 제거합니다.</p><StyledDeleteButton onClick={deleteAll}>전체 삭제</StyledDeleteButton></DateSection></DateList>}
+      {!loading && <>
+        <SectionTabs items={dateTabs} activeKey={activeDate} onChange={setActiveDate} />
+        <DateList>{visibleGroups.map((group, index) => <InterviewForm key={group.date || `new-date-${index}`} data={group} onCreateInterviewTime={onCreateInterviewTime} onDeleteInterviewTime={onDeleteInterviewTime} onUpdateInterviewTime={onUpdateInterviewTime} />)}{data.length === 0 && <DateSection>날짜 추가를 눌러 면접 일정을 등록하세요.</DateSection>}<DateSection><p>모든 면접 슬롯과 신청 정보를 제거합니다.</p><StyledDeleteButton onClick={deleteAll}>전체 삭제</StyledDeleteButton></DateSection></DateList>
+      </>}
     </WhiteNarrowBlock>
   );
 };

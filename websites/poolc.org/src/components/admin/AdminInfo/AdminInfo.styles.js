@@ -5,7 +5,6 @@ import ActionButton from '../../common/Buttons/ActionButton';
 export const FormContent = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1210px;
   flex-direction: column;
   align-items: stretch;
 `;
@@ -15,7 +14,7 @@ export const TitleContainer = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: flex-start;
-  margin: 0 0 28px;
+  margin: 0 0 18px;
 `;
 
 export const Title = styled.h2`
@@ -52,7 +51,7 @@ export const FormGrid = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
+  align-items: stretch;
   gap: 16px 20px;
 
   @media (max-width: 768px) {
@@ -79,9 +78,23 @@ export const WideFormSection = styled(FormSection)`
 export const SectionTitle = styled.h3`
   margin: 0;
   color: ${colors.brown[1]};
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 800;
   line-height: 1.35;
+`;
+
+export const SectionHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+export const SectionSummary = styled.p`
+  margin: 0;
+  color: ${colors.brown[0]};
+  font-size: 0.8rem;
+  line-height: 1.4;
 `;
 
 export const Item = styled.div`

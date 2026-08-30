@@ -1,22 +1,20 @@
 import { useMemo, useState } from 'react';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import Spinner from '../../common/Spinner/Spinner';
+import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import { getHourMinuteString } from '../../../lib/utils/getDateString';
 import { StyledDeleteButton } from '../../activity/ActivityCard/ActivityCard.styles';
 import {
-  ApplicantList,
-  ApplicantMeta,
   ApplicantName,
-  ApplicantPanel,
-  DateFilterBar,
-  DateFilterButton,
+  DateGroupHeader,
+  DateGroupTitle,
+  DateTables,
   EmptyState,
-  ExpandButton,
-  HeaderSummary,
   InterviewTable,
   InterviewTableWrapper,
   PageHeader,
   StatusBadge,
+  Title,
 } from './AdminInterview.styles';
 
 const getSlotStatus = (applicantCount, capacity) => {
@@ -33,51 +31,69 @@ const Applicant = ({ interviewee, handleCancelInterview }) => {
   };
 
   return (
-    <ApplicantList>
-      <div>
-        <ApplicantName>{interviewee.name}</ApplicantName>
-        <ApplicantMeta>{interviewee.studentID} · {interviewee.department} · {interviewee.phoneNumber}</ApplicantMeta>
-      </div>
-      <StyledDeleteButton onClick={cancel}>신청 취소</StyledDeleteButton>
-    </ApplicantList>
+    <>
+      <td><ApplicantName>{interviewee.name}</ApplicantName></td>
+      <td>{interviewee.studentID}</td>
+      <td>{interviewee.department}</td>
+      <td>{interviewee.phoneNumber}</td>
+      <td><StyledDeleteButton onClick={cancel}>신청 취소</StyledDeleteButton></td>
+    </>
   );
 };
 
-const SlotRow = ({ slot, date, expanded, onToggle, handleCancelInterview }) => {
+const SlotRow = ({ slot, handleCancelInterview }) => {
   const applicants = slot.interviewees || [];
   const status = getSlotStatus(applicants.length, slot.capacity);
 
-  return (
-    <>
-      <tr>
-        <td>{date}</td>
+  if (applicants.length === 0) {
+    return (
+      <tr className="slot-group-start">
         <td>{getHourMinuteString(slot.startTime)} - {getHourMinuteString(slot.endTime)}</td>
-        <td><strong>{applicants.length}</strong> / {slot.capacity}명</td>
+        <td><strong>0</strong> / {slot.capacity}명</td>
         <td><StatusBadge data-tone={status.tone}>{status.label}</StatusBadge></td>
-        <td>
-          <ExpandButton type="button" onClick={onToggle} aria-expanded={expanded}>
-            신청자 {applicants.length}명
-          </ExpandButton>
-        </td>
+        <td colSpan="5">신청자 없음</td>
       </tr>
-      {expanded && (
-        <tr>
-          <td colSpan="5">
-            <ApplicantPanel>
-              {applicants.length === 0
-                ? <EmptyState>신청자가 없습니다.</EmptyState>
-                : applicants.map((applicant) => <Applicant key={applicant.loginID} interviewee={applicant} handleCancelInterview={handleCancelInterview} />)}
-            </ApplicantPanel>
-          </td>
-        </tr>
-      )}
-    </>
+    );
+  }
+
+  return applicants.map((applicant, index) => (
+    <tr key={applicant.loginID} className={index === 0 ? 'slot-group-start' : undefined}>
+      {index === 0 && <>
+        <td rowSpan={applicants.length}>{getHourMinuteString(slot.startTime)} - {getHourMinuteString(slot.endTime)}</td>
+        <td rowSpan={applicants.length}><strong>{applicants.length}</strong> / {slot.capacity}명</td>
+        <td rowSpan={applicants.length}><StatusBadge data-tone={status.tone}>{status.label}</StatusBadge></td>
+      </>}
+      <Applicant interviewee={applicant} handleCancelInterview={handleCancelInterview} />
+    </tr>
+  ));
+};
+
+const DateSlots = ({ group, handleCancelInterview }) => {
+  return (
+    <section>
+      <DateGroupHeader>
+        <DateGroupTitle>{group.date}</DateGroupTitle>
+      </DateGroupHeader>
+      <InterviewTableWrapper className="date-slot-table">
+        <InterviewTable>
+          <thead><tr><th>시간</th><th>신청 / 정원</th><th>상태</th><th>이름</th><th>학번</th><th>학과</th><th>연락처</th><th>조치</th></tr></thead>
+          <tbody>
+            {group.slots.map((slot) => (
+              <SlotRow
+                key={slot.slotId}
+                slot={slot}
+                handleCancelInterview={handleCancelInterview}
+              />
+            ))}
+          </tbody>
+        </InterviewTable>
+      </InterviewTableWrapper>
+    </section>
   );
 };
 
 const AdminInterview = ({ loading, data, handleCancelInterview }) => {
   const [selectedDate, setSelectedDate] = useState('all');
-  const [expandedSlotId, setExpandedSlotId] = useState(null);
   const groups = data?.data || [];
   const slots = useMemo(
     () => groups
@@ -85,33 +101,27 @@ const AdminInterview = ({ loading, data, handleCancelInterview }) => {
       .flatMap((group) => group.slots.map((slot) => ({ ...slot, date: group.date }))),
     [groups, selectedDate],
   );
-  const applicantCount = slots.reduce((total, slot) => total + (slot.interviewees || []).length, 0);
-  const closedCount = slots.filter((slot) => (slot.interviewees || []).length >= Number(slot.capacity)).length;
+  const visibleGroups = groups.filter((group) => selectedDate === 'all' || group.date === selectedDate);
 
   return (
     <WhiteNarrowBlock>
       <PageHeader>
         <div>
-          <h1>면접 신청 조회</h1>
-          <HeaderSummary>총 {slots.length}개 슬롯 · 신청 {applicantCount}명 · 마감 {closedCount}개</HeaderSummary>
+          <Title>면접 신청 조회</Title>
         </div>
       </PageHeader>
       {loading && <Spinner />}
       {!loading && (
         <>
-          <DateFilterBar aria-label="면접 날짜 필터">
-            <DateFilterButton type="button" data-active={selectedDate === 'all'} onClick={() => setSelectedDate('all')}>전체</DateFilterButton>
-            {groups.map((group) => <DateFilterButton key={group.date} type="button" data-active={selectedDate === group.date} onClick={() => setSelectedDate(group.date)}>{group.date}</DateFilterButton>)}
-          </DateFilterBar>
-          <InterviewTableWrapper>
-            <InterviewTable>
-              <thead><tr><th>날짜</th><th>시간</th><th>신청 / 정원</th><th>상태</th><th>신청자</th></tr></thead>
-              <tbody>
-                {slots.map((slot) => <SlotRow key={slot.slotId} slot={slot} date={slot.date} expanded={expandedSlotId === slot.slotId} onToggle={() => setExpandedSlotId((current) => current === slot.slotId ? null : slot.slotId)} handleCancelInterview={handleCancelInterview} />)}
-                {slots.length === 0 && <tr><td colSpan="5"><EmptyState>등록된 면접 슬롯이 없습니다.</EmptyState></td></tr>}
-              </tbody>
-            </InterviewTable>
-          </InterviewTableWrapper>
+          <SectionTabs
+            items={[{ key: 'all', label: '전체' }, ...groups.map((group) => ({ key: group.date, label: group.date }))]}
+            activeKey={selectedDate}
+            onChange={setSelectedDate}
+          />
+          <DateTables>
+            {visibleGroups.map((group) => <DateSlots key={group.date} group={group} handleCancelInterview={handleCancelInterview} />)}
+            {slots.length === 0 && <EmptyState>등록된 면접 슬롯이 없습니다.</EmptyState>}
+          </DateTables>
         </>
       )}
     </WhiteNarrowBlock>

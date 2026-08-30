@@ -1,8 +1,10 @@
-import { Button, Result, Spin, Tag, Typography } from 'antd';
+import { Spin, Tag, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { useEffect, useState } from 'react';
 import { useMessage } from '~/hooks/useMessage';
 import * as gameAPI from '~/lib/api/gamification';
+import { WhiteNarrowBlock } from '~/styles/common/Block.styles';
+import ActionButton from '../../common/Buttons/ActionButton';
 
 export default function AdminGamification() {
   const { styles } = useStyles();
@@ -46,15 +48,15 @@ export default function AdminGamification() {
   };
 
   return (
-    <section className={styles.page}>
+    <WhiteNarrowBlock>
       <header className={styles.header}>
         <div>
-          <Typography.Title level={1} className={styles.title}>도감 동기화</Typography.Title>
-          <Typography.Text>전 세대 수집 대상을 PokeAPI에서 동기화합니다.</Typography.Text>
+          <h2 className={styles.title}>도감 동기화</h2>
+          <p className={styles.description}>전 세대 수집 대상을 PokeAPI에서 동기화합니다.</p>
         </div>
-        <Button type="primary" size="large" loading={starting || run?.status === 'RUNNING'} onClick={startSync}>동기화 실행</Button>
+        <ActionButton className={styles.syncButton} disabled={starting || run?.status === 'RUNNING'} onClick={startSync}>동기화 실행</ActionButton>
       </header>
-      {loading ? <Spin className={styles.spinner} /> : !run ? <Result status="info" title="아직 동기화한 도감이 없습니다." /> : (
+      {loading ? <Spin className={styles.spinner} /> : !run ? <div className={styles.emptyState}>아직 동기화한 도감이 없습니다.</div> : (
         <div className={styles.status}>
           <div><span>상태</span><Tag color={run.status === 'COMPLETED' ? 'green' : run.status === 'FAILED' ? 'red' : 'blue'}>{run.status}</Tag></div>
           <div><span>처리한 종</span><strong>{run.processedCount}종</strong></div>
@@ -63,14 +65,16 @@ export default function AdminGamification() {
           {run.message && <Typography.Text type="danger">{run.message}</Typography.Text>}
         </div>
       )}
-    </section>
+    </WhiteNarrowBlock>
   );
 }
 
 const useStyles = createStyles(({ css }) => ({
-  page: css`width:100%; padding:44px; background:#fff; border-radius:20px; box-shadow:0 0 20px #efefef;`,
-  header: css`display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:32px; @media(max-width:768px){align-items:stretch; flex-direction:column;}`,
-  title: css`margin:0 0 8px !important; color:#4c3722 !important;`,
+  header: css`display:flex; width:100%; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:18px; @media(max-width:768px){align-items:stretch; flex-direction:column;}`,
+  title: css`margin:0; color:#4c3722; font-size:1.75rem; font-weight:800; line-height:1.25;`,
+  description: css`margin:8px 0 0; color:#827971; font-size:.85rem; line-height:1.45;`,
+  syncButton: css`margin:0;`,
   spinner: css`display:block; margin:64px auto;`,
+  emptyState: css`width:100%; padding:42px 20px; border:1px solid rgba(76,55,34,.12); border-radius:8px; color:#827971; font-size:.9rem; text-align:center; box-sizing:border-box;`,
   status: css`display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:1px; overflow:hidden; border:1px solid #e5f0ed; border-radius:8px; background:#e5f0ed; > div{display:flex; flex-direction:column; gap:8px; min-height:96px; padding:16px; background:#fff;} span{font-size:.8rem; color:#7b736a;} strong{color:#4c3722;} @media(max-width:640px){grid-template-columns:1fr;}`,
 }));

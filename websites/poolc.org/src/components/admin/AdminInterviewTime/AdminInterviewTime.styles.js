@@ -4,20 +4,21 @@ import colors from '../../../lib/styles/colors';
 
 export const PageHeader = styled.header`
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid ${colors.gray[2]};
+  gap: 24px;
+  margin-bottom: 18px;
 
-  h1 { margin: 0; font-size: 1.65rem; }
-  @media (max-width: 640px) { align-items: flex-start; flex-direction: column; }
+  @media (max-width: 768px) { align-items: stretch; flex-direction: column; }
 `;
 
-export const HeaderSummary = styled.p`
-  margin: 0.35rem 0 0;
-  color: ${colors.brown[0]};
-  font-size: 0.9rem;
+export const Title = styled.h2`
+  margin: 0;
+  color: ${colors.brown[1]};
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
 `;
 
 export const HeaderActions = styled.div`
@@ -28,24 +29,26 @@ export const HeaderActions = styled.div`
 `;
 
 export const DateList = styled.div`
+  width: 100%;
   display: grid;
-  gap: 1.25rem;
-  margin-top: 1.5rem;
+  gap: 16px;
+  margin-top: 2px;
 `;
 
 export const DateGroup = styled.section`
+  width: 100%;
   overflow: hidden;
-  border: 1px solid ${colors.gray[2]};
-  border-radius: 6px;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-radius: 8px;
 `;
 
 export const DateGroupHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  background: ${colors.gray[0]};
-  border-bottom: 1px solid ${colors.gray[2]};
+  gap: 12px;
+  padding: 13px 14px;
+  background: white;
+  border-bottom: 1px solid rgba(76, 55, 34, 0.08);
   @media (max-width: 640px) { align-items: flex-start; flex-wrap: wrap; }
 `;
 
@@ -58,9 +61,10 @@ export const DateLabel = styled.label`
 
 export const DateInput = styled.input`
   width: 9.5rem;
-  padding: 0.45rem 0.55rem;
-  border: 1px solid ${colors.gray[2]};
-  border-radius: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d8d0c6;
+  border-radius: 5px;
   background: white;
   font: inherit;
 `;
@@ -79,19 +83,21 @@ export const SlotTableWrapper = styled.div`overflow-x: auto;`;
 
 export const SlotTable = styled.table`
   width: 100%;
-  min-width: 720px;
+  min-width: 760px;
   border-collapse: collapse;
-  text-align: left;
-  th, td { padding: 0.8rem 1rem; border-bottom: 1px solid ${colors.gray[2]}; vertical-align: middle; }
-  th { color: ${colors.brown[0]}; background: ${colors.mint[0]}; font-size: 0.85rem; font-weight: 600; }
+  color: ${colors.brown[1]};
+  font-size: 0.84rem;
+  th, td { padding: 13px 14px; border-bottom: 1px solid rgba(76, 55, 34, 0.08); text-align: center; vertical-align: middle; }
+  th { color: ${colors.brown[1]}; background: ${colors.mint[0]}; font-size: 0.8rem; font-weight: 800; }
   tbody tr:last-child td { border-bottom: 0; }
 `;
 
 export const SlotInput = styled.input`
   width: 6.5rem;
-  padding: 0.42rem 0.5rem;
-  border: 1px solid ${colors.gray[2]};
-  border-radius: 4px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #d8d0c6;
+  border-radius: 5px;
   font: inherit;
   &[type='number'] { width: 3.75rem; text-align: right; }
 `;
@@ -128,12 +134,12 @@ export const EmptySlotState = styled.div`
 `;
 
 export const DateSection = styled.div`
-  padding: 2.5rem 1rem;
-  border: 1px dashed ${colors.gray[2]};
-  border-radius: 6px;
-  text-align: center;
+  padding: 14px;
+  border: 1px solid rgba(76, 55, 34, 0.12);
+  border-radius: 8px;
+  text-align: right;
   color: ${colors.brown[0]};
 
-  p { margin: 0 0 0.85rem; }
+  p { display: inline; margin: 0 12px 0 0; font-size: 0.85rem; }
   button { margin: 0; }
 `;

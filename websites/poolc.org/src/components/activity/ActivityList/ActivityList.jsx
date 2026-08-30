@@ -22,14 +22,13 @@ const ActivityList = ({ loading, activities, semesters, currentLocation, onChang
       <SemesterMenuBlock>
         <SemesterMenuList>
           {loading && <Spinner small />}
-          {!loading &&
-            semesterItems.map((semester) => (
-              <SemesterMenuItem key={semester}>
-                <SemesterMenuButton type="button" data-selected={currentLocation === semester} onClick={() => onChangeSemester(semester)}>
-                  {semester}
-                </SemesterMenuButton>
-              </SemesterMenuItem>
-            ))}
+          {!loading && semesterItems.map((semester) => (
+            <SemesterMenuItem key={semester}>
+              <SemesterMenuButton type="button" data-selected={currentLocation === semester} onClick={() => onChangeSemester(semester)}>
+                {semester}
+              </SemesterMenuButton>
+            </SemesterMenuItem>
+          ))}
         </SemesterMenuList>
       </SemesterMenuBlock>
       <PagePanel narrow>
