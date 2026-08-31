@@ -27,7 +27,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 300px;
     gap: 8px;
 
-    ${media.compact} {
+    ${media.mobile} {
       width: 100%;
     }
   `,

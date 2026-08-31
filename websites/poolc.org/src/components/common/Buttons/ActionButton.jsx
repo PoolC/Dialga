@@ -35,6 +35,9 @@ const StyledActionLink = styled(Link)`
   }
 `;
 
+/**
+ * @param {{ to?: string; children: import('react').ReactNode; [key: string]: any }} props
+ */
 const ActionButton = ({ to, children, ...props }) => (
   to ? <StyledActionLink to={to} {...props}>{children}</StyledActionLink> : <StyledActionButton {...props}>{children}</StyledActionButton>
 );

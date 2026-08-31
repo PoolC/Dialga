@@ -67,7 +67,7 @@ const SegmentFilterRoot = styled.div`
     color: #007a66;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     [data-slot='toggle-group'] {
       width: 100%;
     }

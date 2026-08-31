@@ -21,6 +21,7 @@ import { getEmptyArray } from '~/lib/utils/getEmptyArray';
 import { noop } from '~/lib/utils/noop';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { media } from '~/styles/responsive';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -153,7 +154,7 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     gap: 20px;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       flex-direction: column;
       gap: 12px;
     }
@@ -181,7 +182,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
     margin-top: 24px;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       align-items: stretch;
       flex-direction: column;
     }

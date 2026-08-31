@@ -15,7 +15,7 @@ export const MemberListBody = styled.div`
 `;
 
 export const MemberRoleTabs = styled.div`
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -28,7 +28,7 @@ export const MemberCardGrid = styled(CardGrid)`
     justify-self: stretch;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     grid-template-columns: minmax(0, 1fr);
   }
 `;

@@ -5,7 +5,6 @@ export const getCollection = () => client.get('/gamification/me/collection');
 export const getDrawHistory = () => client.get('/gamification/me/draws');
 export const getFeaturedCollectible = () => client.get('/gamification/me/featured');
 export const updateFeaturedCollectible = ({ collectibleId, shiny }) => client.put('/gamification/me/featured', { collectibleId, shiny });
-export const updateFeaturedProfile = (useAsProfile) => client.put('/gamification/me/featured/profile', { useAsProfile });
 export const clearFeaturedCollectible = () => client.delete('/gamification/me/featured');
 export const drawCollectible = ({ shiny = false } = {}) => client.post('/gamification/me/draws', { shiny });
 export const getAchievements = () => client.get('/gamification/me/achievements');

@@ -60,7 +60,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 56px;
     margin: 0 auto;
 
-    ${media.compact} {
+    ${media.mobile} {
       grid-template-columns: 1fr;
       justify-items: center;
       gap: 28px;
@@ -85,7 +85,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: flex-start;
     gap: 16px;
 
-    ${media.compact} {
+    ${media.mobile} {
       align-items: center;
       text-align: center;
     }
@@ -131,7 +131,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 10px;
 
-    ${media.compact} {
+    ${media.mobile} {
       justify-content: center;
     }
   `,

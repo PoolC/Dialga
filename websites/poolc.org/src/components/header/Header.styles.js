@@ -18,7 +18,7 @@ export const HeaderBlock = styled.div`
   border-bottom: 1px solid #eee;
   z-index: 100;
 
-  ${media.compact} {
+  ${media.mobile} {
     position: sticky;
     flex-direction: column;
     align-items: flex-start;
@@ -44,7 +44,7 @@ export const HeaderBlock = styled.div`
 export const HeaderIcons = styled.div`
   color: ${colors.brown[0]};
 
-  ${media.compact} {
+  ${media.mobile} {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -72,7 +72,7 @@ export const BarsIcon = styled.button`
   background: transparent;
   padding: 10px;
   border-radius: 8px;
-  ${media.compact} {
+  ${media.mobile} {
     display: block;
   }
   &:hover {
@@ -84,7 +84,7 @@ export const BarsIcon = styled.button`
 export const HeaderIconBox = styled.div`
   display: none;
 
-  ${media.compact} {
+  ${media.mobile} {
     display: flex;
     align-items: center;
     gap: 4px;

@@ -1,6 +1,6 @@
 import { match } from 'ts-pattern';
 
-export type BoardType = 'NOTICE' | 'FREE' | 'PROJECT' | 'EXTERNAL' | 'CAREER' | 'STAFF';
+export type BoardType = 'NOTICE' | 'FREE' | 'PROJECT' | 'EXTERNAL' | 'CAREER' | 'ETC';
 
 export function getBoardTitleForRequest(boardType: BoardType) {
   return match(boardType)
@@ -9,7 +9,7 @@ export function getBoardTitleForRequest(boardType: BoardType) {
     .with('PROJECT', () => 'project')
     .with('EXTERNAL', () => 'external')
     .with('CAREER', () => 'career')
-    .with('STAFF', () => 'staff')
+    .with('ETC', () => 'etc')
     .exhaustive();
 }
 
@@ -20,7 +20,7 @@ export function getBoardTitle(boardType: BoardType) {
     .with('PROJECT', () => '프로젝트 게시판')
     .with('EXTERNAL', () => '대외활동 게시판')
     .with('CAREER', () => '채용 게시판')
-    .with('STAFF', () => '운영진 게시판')
+    .with('ETC', () => '기타 게시판')
     .exhaustive();
 }
 

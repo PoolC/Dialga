@@ -11,9 +11,10 @@ import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
 import { MobileSectionFilter } from '~/components/common/MobileSectionFilter/MobileSectionFilter';
 import { BOOK_CATEGORY_TABS, BookCategoryTab } from '~/constants/bookCategories';
 import { ListSearchToolbar } from '~/components/common/ListSearchToolbar/ListSearchToolbar';
+import { useResponsiveBreakpoint } from '~/hooks/useResponsiveBreakpoint';
 import { media } from '~/styles/responsive';
 
-import BookCard from './BookCard';
+import BookCard, { CompactBookCard, MobileBookRow } from './BookCard';
 
 const useStyles = createStyles(({ css }) => ({
   content: css`
@@ -37,12 +38,30 @@ const useStyles = createStyles(({ css }) => ({
     gap: 42px 80px;
     margin: 0;
     padding: 0;
+
+  `,
+  mobileList: css`
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  `,
+  compactGrid: css`
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+    margin: 0;
+    padding: 0;
   `,
   skeleton: css`
     width: 100%;
   `,
   categoryTabs: css`
-    ${media.belowWide} {
+    width: 100%;
+
+    ${media.mobile} {
       display: none;
     }
   `,
@@ -117,11 +136,14 @@ const useInView = (sorting: sortingType, keyword: string, category: BookCategory
 
 export default function BookList() {
   const { styles } = useStyles();
+  const breakpoint = useResponsiveBreakpoint();
 
   const sorting: sortingType = 'CREATED_AT';
   const [category, setCategory] = useState<BookCategoryTab>('ALL');
   const [keyword, setKeyword] = useState('');
   const bookListInfiniteQuery = useInView(sorting, keyword, category);
+  const isPhone = breakpoint === 'phone';
+  const isCompactTablet = breakpoint === 'compact';
 
   return (
     <PageContent className={styles.content}>
@@ -135,7 +157,6 @@ export default function BookList() {
               onChange={(key) => setCategory(key as BookCategoryTab)}
               title="카테고리 선택"
               triggerIcon={<DownOutlined />}
-              visibleBelowWide
               showDrawerHeader={false}
             />
           </ListSearchToolbar>
@@ -149,7 +170,19 @@ export default function BookList() {
           .with({ isLoading: true }, () => <Skeleton className={styles.skeleton} />)
           .with({ isError: true }, () => <Result status="500" subTitle="에러가 발생했습니다." />)
           .with({ isSuccess: true }, ({ products }) => (
-            <CardGrid className={styles.flexList}>
+            isPhone ? <ul className={styles.mobileList}>
+              {products.length > 0 ? products.map((bookData) => <MobileBookRow key={bookData.id} data={bookData} />) : (
+                <li className={styles.emptyState}>
+                  <Empty description="등록된 도서가 없습니다." />
+                </li>
+              )}
+            </ul> : isCompactTablet ? <ul className={styles.compactGrid}>
+              {products.length > 0 ? products.map((bookData) => <CompactBookCard key={bookData.id} data={bookData} />) : (
+                <li className={styles.emptyState}>
+                  <Empty description="등록된 도서가 없습니다." />
+                </li>
+              )}
+            </ul> : <CardGrid className={styles.flexList}>
               {products.length > 0 ? (
                 products.map((bookData) => <BookCard key={bookData.id} data={bookData} />)
               ) : (

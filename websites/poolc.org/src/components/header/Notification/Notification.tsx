@@ -8,80 +8,144 @@ import { NotificationControllerService, NotificationResponse, queryKey, useAppMu
 import { assert } from '~/lib/utils/assert';
 import { MENU } from '~/constants/menus';
 import { queryClient } from '~/lib/utils/queryClient';
+import { media } from '~/styles/responsive';
 
 // CSS
-const useStyles = createStyles(() => ({
-  dropdownMenu: {
-    minHeight: '0px',
-    maxHeight: '250px',
-    overflowY: 'auto',
-    padding: '5px',
-  },
-  dropdownItem: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '4px',
-  },
+const useStyles = createStyles(({ css }) => ({
+  dropdownMenu: css`
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 8px;
+    box-sizing: border-box;
 
-  dropdownButton: {
-    padding: '0',
-    margin: '0',
-    border: '0',
-  },
-  dropdownShape: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dropdownAvatar: {
-    padding: '2px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#19a47d28',
-    color: '#716e6e',
-  },
+    .ant-dropdown-menu {
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+    }
 
-  notificationMenu: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    background: '#f1f3f5',
-    borderRadius: '8px',
-  },
-  notificationHeader: {
-    padding: '5px',
-    paddingBottom: '0px',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    lineHeight: '1rem',
-    boxSizing: 'border-box',
-  },
-  notificationTitle: {
-    fontSize: '16px',
-  },
-  notificationSpinnerWrapper: {
-    width: '19px',
-    height: '19px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  notificationSpinner: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  notificationClearButton: {
-    color: '#19a47d85',
-    fontSize: '12px',
-    background: '#ffffff',
-    padding: '2px',
-    borderRadius: '8px',
-  },
+    .ant-dropdown-menu-item {
+      padding: 0 !important;
+      border-radius: 6px;
+    }
+
+    .ant-dropdown-menu-item:hover {
+      background: #f1fbf8;
+    }
+  `,
+  dropdownItem: css`
+    p {
+      margin: 0;
+    }
+  `,
+  dropdownButton: css`
+    margin: 0;
+    padding: 0;
+    border: 0;
+  `,
+  dropdownShape: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+  dropdownAvatar: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    background-color: #19a47d28;
+    color: #716e6e;
+  `,
+  notificationMenu: css`
+    display: flex;
+    width: min(320px, calc(100vw - 24px));
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e7e0d7;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(76, 55, 34, 0.14);
+
+    ${media.mobile} {
+      width: min(280px, calc(100vw - 32px));
+    }
+  `,
+  notificationHeader: css`
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    border-bottom: 1px solid #edf3f1;
+    box-sizing: border-box;
+  `,
+  notificationTitle: css`
+    margin: 0;
+    color: #4c3722;
+    font-size: 15px;
+    font-weight: 800;
+  `,
+  notificationSpinnerWrapper: css`
+    display: flex;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+  `,
+  notificationSpinner: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+  notificationClearButton: css`
+    height: 30px;
+    padding: 0 8px;
+    border: 0;
+    background: transparent;
+    color: #16896d;
+    font-size: 12px;
+    font-weight: 700;
+  `,
+  notificationLink: css`
+    display: block;
+    color: #4c3722;
+    text-decoration: none;
+
+    &:hover {
+      color: #4c3722;
+      text-decoration: none;
+    }
+  `,
+  notificationItem: css`
+    display: flex;
+    min-height: 60px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 12px;
+  `,
+  notificationDate: css`
+    color: #8b8178;
+    font-size: 12px;
+    line-height: 1.2;
+  `,
+  emptyState: css`
+    display: flex;
+    min-height: 112px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #8b8178;
+    font-size: 13px;
+
+    svg {
+      color: #b6dcd1;
+      font-size: 22px;
+    }
+  `,
 }));
 
 // Helper function
@@ -116,17 +180,18 @@ export default function Notification() {
   assert(data, 'data is undefined');
   // 스피너 용 변수
   const isSpinning = isFetching || isPendingAllNotiRead;
+  const hasUnreadNotifications = (data.unreadCount ?? 0) > 0;
 
   const Menu = useCallback(
     (menu: ReactNode) => (
       <div className={styles.notificationMenu}>
         <div className={styles.notificationHeader}>
-          <p className={styles.notificationTitle}>Notification</p>
+          <p className={styles.notificationTitle}>알림</p>
           {isSpinning ? (
             <div className={styles.notificationSpinnerWrapper}>
               <Spin size="small" className={styles.notificationSpinner} />
             </div>
-          ) : (
+          ) : hasUnreadNotifications ? (
             <Button
               htmlType="button"
               size="small"
@@ -139,9 +204,9 @@ export default function Notification() {
                 });
               }}
             >
-              Clear All
+              모두 읽음
             </Button>
-          )}
+          ) : null}
         </div>
         <div className={styles.dropdownMenu}>{menu}</div>
       </div>
@@ -156,6 +221,7 @@ export default function Notification() {
       styles.notificationSpinner,
       styles.notificationSpinnerWrapper,
       styles.notificationTitle,
+      hasUnreadNotifications,
     ],
   );
 
@@ -198,6 +264,7 @@ export default function Notification() {
           label: (
             <Link
               to={resultLinkAndDescription(dataOne).link}
+              className={styles.notificationLink}
               onClick={() => {
                 updateNotiReadStatus(
                   { notificationId: dataOne.notificationId! },
@@ -209,19 +276,19 @@ export default function Notification() {
                 );
               }}
             >
-              <div>
-                <p>{convertDate(dataOne.createdAt ?? '')}</p>
+              <div className={styles.notificationItem}>
+                <span className={styles.notificationDate}>{convertDate(dataOne.createdAt ?? '')}</span>
                 <div className={styles.dropdownItem}>{resultLinkAndDescription(dataOne).description}</div>
               </div>
             </Link>
           ),
         }))
-      : [{ key: 'empty', label: <p>새로운 알림이 없습니다.</p> }];
+      : [{ key: 'empty', disabled: true, label: <div className={styles.emptyState}><BellOutlined /><span>새로운 알림이 없습니다.</span></div> }];
 
   return (
     <div>
-      <Dropdown menu={{ items: dropDownItems }} popupRender={Menu}>
-        <Button shape="circle" className={styles.dropdownButton}>
+      <Dropdown menu={{ items: dropDownItems }} popupRender={Menu} placement="bottomRight" trigger={['click']} align={{ offset: [0, 8] }}>
+        <Button shape="circle" className={styles.dropdownButton} aria-label="알림 열기">
           <Space size="large" className={styles.dropdownShape}>
             <Badge count={data.unreadCount ?? 0}>
               <Avatar shape="circle" size="default" icon={<BellOutlined />} className={styles.dropdownAvatar} />

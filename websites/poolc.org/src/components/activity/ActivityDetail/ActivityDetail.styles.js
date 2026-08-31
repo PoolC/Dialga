@@ -12,7 +12,7 @@ export const DetailContent = styled.div`
   gap: 20px;
 
   &[data-has-register-action='true'] {
-    ${media.compact} {
+    ${media.mobile} {
       padding-bottom: calc(76px + env(safe-area-inset-bottom));
     }
   }
@@ -55,7 +55,7 @@ export const SummaryBody = styled.div`
   align-items: end;
   gap: 18px;
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     grid-template-columns: 1fr;
     align-items: start;
   }
@@ -69,7 +69,7 @@ export const Title = styled.h1`
   line-height: 1.28;
   word-break: keep-all;
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     font-size: 1.55rem;
   }
 `;
@@ -106,7 +106,7 @@ export const MetaRow = styled.p`
     color: ${colors.brown[0]};
   }
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     justify-content: flex-start;
   }
 `;
@@ -122,7 +122,7 @@ export const ButtonContainer = styled.div`
   min-height: 36px;
   margin-top: -4px;
 
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -136,7 +136,7 @@ export const StyledButton = styled(ActionButton)`
 export const ActivityFloatingRegisterButton = styled.div`
   display: none;
 
-  ${media.compact} {
+  ${media.mobile} {
     position: fixed;
     right: 0;
     bottom: 0;
@@ -186,7 +186,7 @@ export const DetailGrid = styled.div`
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
   }
@@ -202,7 +202,7 @@ export const DetailItem = styled.div`
   background: #fbfaf8;
   box-sizing: border-box;
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     gap: 5px;
     padding: 10px;
 
@@ -352,7 +352,7 @@ export const Member = styled.ul`
     grid-template-columns: repeat(2, minmax(0, 292px));
   }
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     grid-template-columns: minmax(0, 292px);
   }
 `;

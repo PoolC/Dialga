@@ -1,4 +1,4 @@
-import { Avatar, Button, List, Modal, Select, Space, Switch, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Empty, List, Modal, Select, Space, Switch, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppstoreOutlined, ArrowRightOutlined, DownOutlined, EditOutlined, MessageOutlined, StarOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
@@ -10,7 +10,6 @@ import { MEMBER_ROLE } from '~/constants/memberRoles';
 import { getProfileImageUrl } from '~/lib/utils/getProfileImageUrl';
 import pokedexDeviceImage from '~/assets/images/pokedex-device.webp';
 import pokeballImage from '~/assets/images/pokeball.png';
-import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 import * as gameAPI from '~/lib/api/gamification';
 import { loadUser } from '~/modules/auth';
 import { useMessage } from '~/hooks/useMessage';
@@ -19,11 +18,8 @@ import { media } from '~/styles/responsive';
 type GameSummary = {
   ballBalances: { normal: number };
   totalCatalogCount: number;
-  collectedCatalogCount: number;
   shinyCatalogCount: number;
   normalCatalogCount: number;
-  totalVariantCount: number;
-  collectedVariantCount: number;
   shinyDrawStatus: 'AVAILABLE' | 'NEEDS_NORMAL' | 'COMPLETE';
 };
 
@@ -168,25 +164,13 @@ export default function MyPageContainer() {
       const response = await gameAPI.updateFeaturedCollectible({ collectibleId: selectedCollectibleId, shiny: selectedShiny });
       setFeaturedCollectible(response.data);
       setFeaturedModalOpen(false);
-      if (response.data.useAsProfile) dispatch(loadUser());
+      dispatch(loadUser());
       message.success('대표 포켓몬을 지정했습니다.');
     } catch (error: any) {
       const errorMessage = error.response?.data?.message;
       message.error(errorMessage && errorMessage !== 'No message available' ? errorMessage : '대표 포켓몬을 지정하지 못했습니다.');
     } finally {
       setSavingFeatured(false);
-    }
-  };
-
-  const toggleFeaturedProfile = async (useAsProfile: boolean) => {
-    if (!featuredCollectible) return;
-    try {
-      const response = await gameAPI.updateFeaturedProfile(useAsProfile);
-      setFeaturedCollectible(response.data);
-      dispatch(loadUser());
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message;
-      message.error(errorMessage && errorMessage !== 'No message available' ? errorMessage : '프로필 설정을 변경하지 못했습니다.');
     }
   };
 
@@ -272,10 +256,8 @@ export default function MyPageContainer() {
       items: toDetailItems(activitySummary.officialActivities),
     },
   ];
-  const collectedCount = gameSummary?.collectedVariantCount ?? 0;
-  const totalCatalogCount = gameSummary?.totalVariantCount ?? 0;
-  const collectionProgress = totalCatalogCount > 0 ? Math.round((collectedCount / totalCatalogCount) * 100) : 0;
-
+  const collectedCount = gameSummary?.normalCatalogCount ?? 0;
+  const totalCatalogCount = gameSummary?.totalCatalogCount ?? 0;
   return (
     <Space direction="vertical" className={cx(styles.fullWidth, styles.pageContent)} size={32}>
       <section className={styles.profileHeader} aria-labelledby="my-profile-title">
@@ -290,35 +272,31 @@ export default function MyPageContainer() {
             <Typography.Text>{me.introduction}</Typography.Text>
           </Space>
         </Space>
-        <div className={styles.activityProgress}>
-          <div className={styles.activityProgressMeta}>
-            <div className={styles.activityStatusGroup}>
-              <Typography.Text className={styles.activityProgressLabel}>활동 기준</Typography.Text>
-              <Typography.Text
-                className={cx(styles.activityStatusBadge, {
-                  [activityDecision.className]: Boolean(activityDecision.className),
-                })}
-              >
-                {activityDecision.label}
-              </Typography.Text>
-            </div>
-            {activityExemptionLabel ? (
-              <Typography.Text className={styles.activityExemptionValue}>{activityExemptionLabel}</Typography.Text>
-            ) : (
+        {activityExemptionLabel ? (
+          <div className={styles.activityExemptionSummary}>
+            <Typography.Text className={styles.activityProgressLabel}>활동 기준</Typography.Text>
+            <Typography.Text className={styles.activityExemptionValue}>{activityExemptionLabel}</Typography.Text>
+          </div>
+        ) : (
+          <div className={styles.activityProgress}>
+            <div className={styles.activityProgressMeta}>
+              <div className={styles.activityStatusGroup}>
+                <Typography.Text className={styles.activityProgressLabel}>활동 기준</Typography.Text>
+                <Typography.Text
+                  className={cx(styles.activityStatusBadge, {
+                    [activityDecision.className]: Boolean(activityDecision.className),
+                  })}
+                >
+                  {activityDecision.label}
+                </Typography.Text>
+              </div>
               <Typography.Text className={styles.activityProgressValue}>
                 {displayedActivityHours}
                 <span> / {activityMinimumHour}시간</span>
               </Typography.Text>
-            )}
-          </div>
-          <div
-            className={styles.activityProgressTrack}
-            aria-label={activityExemptionLabel ?? `활동시간 ${displayedActivityHours} / ${activityMinimumHour}시간`}
-          >
-            {activityExemptionLabel ? (
-              <span style={{ width: '100%', backgroundColor: activityReasonItems[0].color }} />
-            ) : (
-              activityReasonItems.map((item) => (
+            </div>
+            <div className={styles.activityProgressTrack} aria-label={`활동시간 ${displayedActivityHours} / ${activityMinimumHour}시간`}>
+              {activityReasonItems.map((item) => (
                 <Tooltip key={item.label} title={`${item.label} ${item.hours}시간`}>
                   <span
                     style={{
@@ -327,11 +305,10 @@ export default function MyPageContainer() {
                     }}
                   />
                 </Tooltip>
-              ))
-            )}
+              ))}
+            </div>
           </div>
-          {activityExemptionLabel && <Typography.Text className={styles.activityExemptionDescription}>활동 시간 계산 제외</Typography.Text>}
-        </div>
+        )}
       </section>
       <div className={styles.activityDetailGrid}>
         {activityDetailSections.map((section) => {
@@ -361,7 +338,7 @@ export default function MyPageContainer() {
                 </div>
               ) : (
                 <ul className={styles.activityDetailEmptyList}>
-                  <EmptyState>반영된 활동이 없습니다.</EmptyState>
+                  <li><Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="반영된 활동이 없습니다." /></li>
                 </ul>
               )}
               {section.items.length > 5 && (
@@ -397,7 +374,6 @@ export default function MyPageContainer() {
               <img className={cx(styles.collectionStatVisual, styles.collectionStatVisualPokedex)} src={pokedexDeviceImage} alt="포켓몬 도감" />
               <strong>{collectedCount} <span>/ {totalCatalogCount}종</span></strong>
               <Typography.Text>도감 완성</Typography.Text>
-              <div className={styles.collectionProgressTrack}><span style={{ width: `${collectionProgress}%` }} /></div>
             </div>
             <div className={styles.collectionStat}>
               <img className={cx(styles.collectionStatVisual, styles.collectionStatVisualShiny)} src={shinyCatalogImage} alt="이로치 피카츄" />
@@ -405,7 +381,7 @@ export default function MyPageContainer() {
               <Typography.Text>이로치</Typography.Text>
             </div>
             <div className={styles.collectionStat}>
-              <img className={styles.collectionStatVisual} src={pokeballImage} alt="일반 포켓볼" />
+              <img className={cx(styles.collectionStatVisual, styles.collectionStatVisualPokeball)} src={pokeballImage} alt="일반 포켓볼" />
               <strong>{gameSummary?.ballBalances?.normal ?? 0}개</strong>
               <Typography.Text>포켓볼</Typography.Text>
             </div>
@@ -417,10 +393,7 @@ export default function MyPageContainer() {
                 <div className={styles.featuredCollectibleIdentity}>
                   <img src={featuredCollectible.shiny ? (featuredCollectible.shinySpriteUrl ?? featuredCollectible.spriteUrl) : featuredCollectible.spriteUrl} alt={featuredCollectible.name} />
                   <div><strong>{featuredCollectible.name}</strong><span>No.{String(featuredCollectible.externalId).padStart(3, '0')}</span></div>
-                </div>
-                <div className={styles.featuredCollectibleActions}>
-                  <label><Switch size="small" checked={featuredCollectible.useAsProfile} onChange={toggleFeaturedProfile} /> 프사 사용</label>
-                  <Button type="link" onClick={openFeaturedModal}>변경</Button>
+                  <Button type="text" className={styles.featuredCollectibleChange} onClick={openFeaturedModal}>변경</Button>
                 </div>
               </div>
             ) : <div className={styles.featuredCollectibleEmpty}><Typography.Text>대표 포켓몬을 지정해 보세요.</Typography.Text><Button type="link" onClick={openFeaturedModal}>지정</Button></div>}
@@ -515,7 +488,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 64px;
 
-    ${media.compact} {
+    ${media.mobile} {
       align-items: flex-start;
       grid-template-columns: 1fr;
       gap: 24px;
@@ -537,7 +510,7 @@ const useStyles = createStyles(({ css }) => ({
     padding: 16px 0 32px;
     border-bottom: 1px solid #e9ecef;
 
-    ${media.compact} {
+    ${media.mobile} {
       align-items: flex-start;
       grid-template-columns: 1fr;
       gap: 28px;
@@ -582,9 +555,18 @@ const useStyles = createStyles(({ css }) => ({
     width: 100%;
     gap: 8px;
 
-    ${media.compact} {
+    ${media.mobile} {
       width: 100%;
     }
+  `,
+  activityExemptionSummary: css`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e9f7f2;
   `,
   activityProgressMeta: css`
     display: flex;
@@ -635,11 +617,6 @@ const useStyles = createStyles(({ css }) => ({
     font-size: 16px;
     font-weight: 700;
   `,
-  activityExemptionDescription: css`
-    color: #868e96;
-    font-size: 12px;
-    text-align: right;
-  `,
   activityDetailGrid: css`
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -666,6 +643,10 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     gap: 16px;
     margin-bottom: 18px;
+
+    ${media.mobile} {
+      margin-bottom: 24px;
+    }
   `,
   collectionOverviewTitle: css`
     margin: 0 0 4px !important;
@@ -684,10 +665,20 @@ const useStyles = createStyles(({ css }) => ({
   `,
   collectionOverviewBody: css`
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(300px, .9fr);
-    gap: 28px;
+    grid-template-columns: minmax(0, .85fr) minmax(360px, 1.15fr);
+    gap: 24px;
+
+    ${media.tablet} {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
 
     ${media.compact} {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    ${media.phone} {
       grid-template-columns: 1fr;
       gap: 20px;
     }
@@ -696,6 +687,13 @@ const useStyles = createStyles(({ css }) => ({
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
+
+    ${media.phone} {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid #e5eeeb;
+    }
   `,
   collectionStat: css`
     display: flex;
@@ -710,44 +708,127 @@ const useStyles = createStyles(({ css }) => ({
     border-radius: 6px;
     background: #fff;
     box-sizing: border-box;
-    > strong { color: #4c735f; font-size: 1rem; line-height: 1.25; }
+    > strong { color: #4c735f; font-size: 1rem; line-height: 1.25; white-space: nowrap; }
     > strong span { color: #7b847f; font-size: 0.78rem; font-weight: 600; }
     .ant-typography { color: #7b847f; font-size: 0.74rem; }
 
+    ${media.tablet} {
+      min-height: 148px;
+    }
+
     ${media.compact} {
-      padding: 8px;
+      min-height: 132px;
+      padding: 10px 8px;
+
+      > strong { font-size: 0.96rem; }
+      > strong span { font-size: 0.7rem; }
+      .ant-typography { font-size: 0.7rem; }
+    }
+
+    ${media.phone} {
+      display: grid;
+      min-height: 76px;
+      grid-template-columns: 56px minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      align-items: center;
+      justify-content: initial;
+      gap: 5px 12px;
+      padding: 10px 0;
+      border: 0;
+      border-bottom: 1px solid #e5eeeb;
+      border-radius: 0;
+      background: transparent;
+      aspect-ratio: auto;
+
+      > strong {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 1.08rem;
+        text-align: left;
+      }
+
+      > strong span {
+        font-size: 0.72rem;
+      }
+
+      .ant-typography {
+        grid-column: 2;
+        grid-row: 2;
+        font-size: 0.78rem;
+        text-align: left;
+      }
     }
   `,
   collectionStatPrimary: css`
-    border-color: #b9e4d7;
-    background: #f7fcfa;
+    border-color: #91d9c4;
+    background: #f1fbf8;
 
     > strong { color: #249b78; font-size: 1.28rem; }
+
+    ${media.compact} {
+      > strong { font-size: 1.12rem; }
+    }
+
+    ${media.phone} {
+      border-color: transparent;
+      background: transparent;
+    }
   `,
   collectionStatVisual: css`
     width: clamp(42px, 5vw, 66px);
     height: clamp(42px, 5vw, 66px);
     margin-bottom: 6px;
     object-fit: contain;
+
+    ${media.tablet} {
+      width: 60px;
+      height: 60px;
+    }
+
+    ${media.compact} {
+      width: 46px;
+      height: 46px;
+      margin-bottom: 4px;
+    }
+
+    ${media.phone} {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      width: 56px;
+      height: 56px;
+      margin: 0;
+    }
   `,
   collectionStatVisualPokedex: css`
-    transform: scale(1.22);
+    transform: scale(0.95);
   `,
   collectionStatVisualShiny: css`
-    transform: scale(1.12);
+    transform: scale(1.08);
   `,
-  collectionProgressTrack: css`
-    width: 100%;
-    height: 4px;
-    margin-top: 3px;
-    overflow: hidden;
-    border-radius: 999px;
-    background: #e7efed;
-
-    span { display: block; height: 100%; border-radius: inherit; background: #47be9b; }
+  collectionStatVisualPokeball: css`
+    transform: scale(0.9);
   `,
   featuredCollectible: css`
     min-width: 0;
+    padding: 10px 0 10px 24px;
+    border-left: 1px solid #e5eeeb;
+
+    ${media.tablet} {
+      padding: 16px 0 0;
+      border-top: 1px solid #e5eeeb;
+      border-left: 0;
+    }
+
+    ${media.compact} {
+      padding: 16px 0 0;
+      border-top: 1px solid #e5eeeb;
+      border-left: 0;
+    }
+
+    ${media.phone} {
+      padding: 0;
+      border-left: 0;
+    }
   `,
   featuredCollectibleLabel: css`
     display: block;
@@ -755,18 +836,30 @@ const useStyles = createStyles(({ css }) => ({
     color: #7b847f;
     font-size: 0.74rem;
     font-weight: 700;
+
+    ${media.phone} {
+      display: none;
+    }
   `,
   featuredCollectibleContent: css`
     display: flex;
-    min-height: 82px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 12px;
-    border: 1px solid #9edbc9;
-    border-radius: 6px;
-    background: #f4fbf8;
-    box-sizing: border-box;
+    min-height: 100px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    padding: 0;
+
+    ${media.phone} {
+      display: grid;
+      min-height: 76px;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      justify-content: initial;
+      gap: 5px 12px;
+      padding: 16px 0 10px;
+    }
   `,
   featuredCollectibleIdentity: css`
     display: flex;
@@ -774,32 +867,50 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 10px;
 
-    img { width: 56px; height: 56px; flex: 0 0 56px; object-fit: contain; }
-    > div { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
-    strong { overflow: hidden; color: #4c3722; font-size: 0.88rem; text-overflow: ellipsis; white-space: nowrap; }
-    span { color: #7b847f; font-size: 0.7rem; font-weight: 700; }
-  `,
-  featuredCollectibleActions: css`
-    display: flex;
-    flex: none;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
+    img { width: 82px; height: 74px; flex: 0 0 82px; object-fit: contain; transform: scale(1.12); }
+    > div { display: flex; min-width: 0; align-items: baseline; gap: 6px; }
+    strong { overflow: hidden; color: #4c3722; font-size: 0.92rem; text-overflow: ellipsis; white-space: nowrap; }
+    span { flex: none; color: #7b847f; font-size: 0.74rem; font-weight: 700; }
 
-    label { display: inline-flex; align-items: center; gap: 5px; color: #5d6d66; font-size: 0.7rem; white-space: nowrap; }
-    .ant-btn { height: auto; padding: 0; font-size: 0.75rem; }
+    ${media.phone} {
+      display: contents;
+
+      img {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        width: 56px;
+        height: 56px;
+      }
+
+      > div {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+      }
+    }
+  `,
+  featuredCollectibleChange: css`
+    min-height: 36px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background: #f1fbf8;
+    color: #16896d;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    ${media.phone} {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: center;
+      min-height: 36px;
+    }
   `,
   featuredCollectibleEmpty: css`
     display: flex;
-    min-height: 82px;
+    min-height: 84px;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 10px 12px;
-    border: 1px dashed #c7d8d2;
-    border-radius: 6px;
-    background: #fafcfb;
-    box-sizing: border-box;
+    padding: 0;
 
     .ant-typography { color: #7b847f; font-size: 0.78rem; }
     .ant-btn { padding: 0; font-size: 0.78rem; }
@@ -915,7 +1026,7 @@ const useStyles = createStyles(({ css }) => ({
     min-height: 48px;
     border-top: 1px solid #f1f3f5;
 
-    ${media.compact} {
+    ${media.mobile} {
       align-items: flex-start;
       flex-direction: column;
       gap: 4px;
@@ -935,7 +1046,7 @@ const useStyles = createStyles(({ css }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    ${media.compact} {
+    ${media.mobile} {
       white-space: normal;
     }
   `,
@@ -961,8 +1072,19 @@ const useStyles = createStyles(({ css }) => ({
     display: flex;
 
     li {
+      display: flex;
       flex: 1;
       min-height: 160px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ${media.mobile} {
+      flex: none;
+
+      li {
+        min-height: 84px;
+      }
     }
   `,
   activityDetailToggle: css`

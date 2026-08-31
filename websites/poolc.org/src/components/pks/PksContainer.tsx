@@ -2,6 +2,7 @@ import {
   ArrowRightOutlined,
   BookTwoTone,
   CloudServerOutlined,
+  ClockCircleOutlined,
   DeploymentUnitOutlined,
   EyeTwoTone,
   FormOutlined,
@@ -27,26 +28,20 @@ type PksResource = {
 
 const PKS_RESOURCES: PksResource[] = [
   {
-    title: '프로젝트 인프라 요청',
-    description: '배포, DB, 스토리지 등 운영 환경 요청',
-    icon: <FormOutlined />,
-    badge: '준비 중',
-  },
-  {
     title: 'kubectl 빠른 설정',
-    description: '클러스터 접속 가이드',
+    description: '클러스터 접속 설정',
     icon: <SettingTwoTone twoToneColor="#adb5bd" />,
     link: publicConfig.pks.userGuide.url,
   },
   {
     title: 'PKS Docs',
-    description: 'PKS 사용 문서',
+    description: 'PKS 사용 방법 보기',
     icon: <BookTwoTone twoToneColor="#ffa94d" />,
     link: publicConfig.pks.docs.url,
   },
   {
     title: 'Gitea',
-    description: 'PoolC 전용 Github',
+    description: 'PoolC Git 저장소 열기',
     icon: <GithubOutlined />,
     link: publicConfig.pks.gitea.url,
   },
@@ -58,15 +53,23 @@ const PKS_RESOURCES: PksResource[] = [
   },
   {
     title: 'Grafana',
-    description: '서버 상태 모니터링',
+    description: '서버 상태 보기',
     icon: <EyeTwoTone twoToneColor="#4dabf7" />,
     link: publicConfig.pks.grafana.url,
+  },
+  {
+    title: '프로젝트 인프라 요청',
+    description: '배포, DB, 스토리지 등 운영 환경 요청',
+    icon: <FormOutlined />,
+    badge: '준비 중',
   },
 ];
 
 export default function PksContainer() {
   const { styles } = useStyles();
   const [isGiteaLoginLoading, setIsGiteaLoginLoading] = useState(false);
+  const availableResources = PKS_RESOURCES.filter((item) => item.link);
+  const pendingResources = PKS_RESOURCES.filter((item) => !item.link);
 
   const { data: kubernetes, isError: isKubernetesError } = useAppQuery({
     queryKey: queryKey.kubernetes.me,
@@ -109,14 +112,14 @@ export default function PksContainer() {
 
       <section className={styles.introSection}>
         <p className={styles.introText}>
-          PKS는 동아리방에 있는 PoolC 서버들 위에서 운영되는 Kubernetes 클러스터입니다. 동아리 프로젝트의 Git 저장소, 배포 환경, 운영 도구를 한곳에 모아 팀별 웹 서비스와 실험용 애플리케이션을 올릴 수 있도록 제공합니다.
+          PoolC 서버 위 Kubernetes 클러스터로, 프로젝트 배포와 운영에 필요한 도구를 제공합니다.
         </p>
       </section>
 
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>도구</h3>
         <div className={styles.resourceGrid}>
-          {PKS_RESOURCES.map((item) => {
+          {availableResources.map((item) => {
             const content = (
               <>
                 <span className={styles.resourceIcon}>{item.icon}</span>
@@ -124,7 +127,9 @@ export default function PksContainer() {
                   <span className={styles.resourceTitle}>{item.title}</span>
                   {item.description && <span className={styles.resourceDescription}>{item.description}</span>}
                 </span>
-                {item.badge ? <span className={styles.pendingBadge}>{item.badge}</span> : <ArrowRightOutlined className={styles.resourceArrow} />}
+                <span className={styles.resourceMeta}>
+                  {item.badge ? <span className={styles.pendingBadge}><ClockCircleOutlined />{item.badge}</span> : <ArrowRightOutlined className={styles.resourceArrow} />}
+                </span>
               </>
             );
 
@@ -148,9 +153,27 @@ export default function PksContainer() {
         </div>
       </section>
 
+      <section className={`${styles.section} ${styles.pendingSection}`}>
+        <h3 className={styles.sectionTitle}>준비 중</h3>
+        <div className={styles.resourceGrid}>
+          {pendingResources.map((item) => (
+            <article key={item.title} className={styles.resourceCard} aria-disabled="true">
+              <span className={styles.resourceIcon}>{item.icon}</span>
+              <span className={styles.resourceText}>
+                <span className={styles.resourceTitle}>{item.title}</span>
+                {item.description && <span className={styles.resourceDescription}>{item.description}</span>}
+              </span>
+              <span className={styles.resourceMeta}>
+                <span className={styles.pendingBadge}><ClockCircleOutlined />{item.badge}</span>
+              </span>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className={styles.section}>
         <div className={styles.kubectlHeader}>
-          <h3 className={styles.sectionTitle}>kubectl</h3>
+          <h3 className={styles.sectionTitle}>kubectl 빠른 시작</h3>
           <CloudServerOutlined className={styles.kubectlIcon} />
         </div>
         <div className={styles.kubectlBox}>{renderKubectlContent()}</div>
@@ -178,6 +201,9 @@ const useStyles = createStyles(({ css }) => ({
       margin-top: 38px;
     }
   `,
+  pendingSection: css`
+    margin-bottom: 38px;
+  `,
   sectionTitle: css`
     margin: 0;
     color: #4c3722;
@@ -187,10 +213,10 @@ const useStyles = createStyles(({ css }) => ({
   `,
   introSection: css`
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   `,
   introText: css`
-    max-width: 820px;
+    max-width: 640px;
     margin: 0;
     color: rgba(76, 55, 34, 0.72);
     font-size: 0.95rem;
@@ -216,7 +242,7 @@ const useStyles = createStyles(({ css }) => ({
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 14px;
-    min-height: 64px;
+    min-height: 76px;
     padding: 16px 18px;
     border: 1px solid rgba(76, 55, 34, 0.1);
     border-radius: 8px;
@@ -234,13 +260,21 @@ const useStyles = createStyles(({ css }) => ({
       transform: translateY(-1px);
     }
 
+    &:focus-visible {
+      border-color: #47be9b;
+      box-shadow: 0 0 0 3px rgba(71, 190, 155, 0.2);
+      outline: 0;
+    }
+
     &[aria-disabled='true'] {
+      border-color: rgba(76, 55, 34, 0.08);
+      background: #fafafa;
       cursor: default;
     }
 
     &[aria-disabled='true']:hover {
       border-color: rgba(76, 55, 34, 0.1);
-      background: #ffffff;
+      background: #fafafa;
       transform: none;
     }
   `,
@@ -252,6 +286,10 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: center;
     color: #47be9b;
     font-size: 1.15rem;
+
+    [aria-disabled='true'] & {
+      color: #a99f95;
+    }
   `,
   resourceText: css`
     display: flex;
@@ -267,6 +305,10 @@ const useStyles = createStyles(({ css }) => ({
     line-height: 1.35;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    [aria-disabled='true'] & {
+      color: #827971;
+    }
   `,
   resourceDescription: css`
     overflow: hidden;
@@ -277,6 +319,11 @@ const useStyles = createStyles(({ css }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
+  resourceMeta: css`
+    display: flex;
+    width: 76px;
+    justify-content: flex-end;
+  `,
   resourceArrow: css`
     color: #47be9b;
     font-size: 0.95rem;
@@ -285,10 +332,12 @@ const useStyles = createStyles(({ css }) => ({
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 4px;
+    min-width: 64px;
     padding: 4px 8px;
     border-radius: 999px;
-    background: rgba(229, 240, 237, 0.72);
-    color: #47be9b;
+    background: #f1efec;
+    color: #827971;
     font-size: 0.75rem;
     font-weight: 800;
     white-space: nowrap;

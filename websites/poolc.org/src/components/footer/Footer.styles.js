@@ -10,7 +10,7 @@ export const FooterBlock = styled.div`
   color: ${colors.brown[1]};
   background-color: ${colors.gray[1]};
   margin-top: 48px;
-  ${media.compact} {
+  ${media.mobile} {
     flex-direction: column;
 
     body:not(:has([data-admin-layout='true'])) & {
@@ -57,7 +57,7 @@ export const FooterDivider = styled.div`
   width: 1px;
   margin: 0 10px;
   background-color: ${colors.mint[1]};
-  ${media.compact} {
+  ${media.mobile} {
     width: 50%;
     margin: 30px 0;
     height: 1px;

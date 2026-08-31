@@ -9,6 +9,7 @@ import { useMessage } from '~/hooks/useMessage';
 import { PageContent, PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import colors from '~/lib/styles/colors';
+import { breakpoints, media } from '~/styles/responsive';
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -21,7 +22,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
     margin-bottom: 18px;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       grid-template-areas:
         'range range'
         'nav view';
@@ -45,7 +46,7 @@ const useStyles = createStyles(({ css }) => ({
     border-radius: 6px;
     background: #ffffff;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       grid-area: nav;
       width: 100%;
       min-width: 0;
@@ -59,7 +60,7 @@ const useStyles = createStyles(({ css }) => ({
     border-radius: 6px;
     background: #ffffff;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       grid-area: view;
       min-width: 0;
 
@@ -100,7 +101,7 @@ const useStyles = createStyles(({ css }) => ({
       color: ${colors.brown[1]};
     }
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       flex: 1;
       min-width: 0;
       padding-right: 8px;
@@ -116,7 +117,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 3px;
     text-align: center;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       grid-area: range;
     }
   `,
@@ -126,7 +127,7 @@ const useStyles = createStyles(({ css }) => ({
     font-weight: 800;
     line-height: 1.2;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       display: none;
     }
   `,
@@ -257,7 +258,7 @@ const useStyles = createStyles(({ css }) => ({
       display: none;
     }
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       .rbc-header {
         padding: 6px 2px;
         font-size: 0.68rem;
@@ -306,7 +307,7 @@ const useStyles = createStyles(({ css }) => ({
     color: #ffffff;
     box-sizing: border-box;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       gap: 2px;
       padding: 5px;
     }
@@ -329,7 +330,7 @@ const useStyles = createStyles(({ css }) => ({
     line-height: 1.15;
     opacity: 0.9;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       font-size: 0.6rem;
     }
 
@@ -353,7 +354,7 @@ const useStyles = createStyles(({ css }) => ({
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       font-size: 0.68rem;
     }
 
@@ -381,7 +382,7 @@ const useStyles = createStyles(({ css }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       font-size: 0.6rem;
     }
   `,
@@ -400,7 +401,7 @@ type RoomCalendarEvent = Event & {
 type RoomToolbarProps = ToolbarProps<RoomCalendarEvent>;
 
 const getInitialCalendarView = () => {
-  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches) {
+  if (typeof window !== 'undefined' && window.matchMedia(`(max-width: ${breakpoints.compact - 1}px)`).matches) {
     return Views.DAY;
   }
 

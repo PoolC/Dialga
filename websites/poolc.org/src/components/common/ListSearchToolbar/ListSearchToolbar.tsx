@@ -35,7 +35,7 @@ const Toolbar = styled.div`
   width: 306px;
   gap: 8px;
 
-  ${media.compact} {
+  ${media.mobile} {
     width: 100%;
   }
 `;
@@ -73,6 +73,12 @@ const SearchForm = styled.form`
   }
 
   ${media.compact} {
+    .ant-input-affix-wrapper {
+      height: 40px;
+    }
+  }
+
+  ${media.phone} {
     .ant-input-affix-wrapper {
       height: 44px;
     }

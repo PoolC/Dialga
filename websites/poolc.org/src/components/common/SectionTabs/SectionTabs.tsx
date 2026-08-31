@@ -56,7 +56,7 @@ const StyledTabs = styled(Tabs)`
     display: none;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     .ant-tabs-nav {
       overflow: visible;
     }
@@ -72,7 +72,7 @@ const StyledTabs = styled(Tabs)`
 
     .ant-tabs-nav-list {
       min-width: max-content;
-      padding-right: 20px;
+      padding-right: 12px;
     }
 
     .ant-tabs-tab {
@@ -81,6 +81,12 @@ const StyledTabs = styled(Tabs)`
 
     .ant-tabs-tab + .ant-tabs-tab {
       margin-left: 22px;
+    }
+  }
+
+  ${media.phone} {
+    .ant-tabs-nav-list {
+      padding-right: 20px;
     }
   }
 `;

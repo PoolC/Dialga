@@ -41,13 +41,17 @@ const Shell = styled.div`
   width: 100%;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0 ${pageGutter.wide};
+  padding: 0 ${pageGutter.desktop};
 
-  ${media.standard} {
-    padding: 0 ${pageGutter.standard};
+  ${media.tablet} {
+    padding: 0 ${pageGutter.tablet};
   }
 
-  ${media.compact} {
+  ${media.mobile} {
+    padding: 0 ${pageGutter.compact};
+  }
+
+  ${media.phone} {
     min-height: 100%;
     padding: 0;
     background: #ffffff;
@@ -63,15 +67,19 @@ const TwoColumnShell = styled.div`
   margin: 0 auto;
   gap: 24px;
   box-sizing: border-box;
-  padding: 0 ${pageGutter.wide};
+  padding: 0 ${pageGutter.desktop};
 
   ${media.belowWide} {
     flex-direction: column;
     gap: 16px;
-    padding: 0 ${pageGutter.standard};
+    padding: 0 ${pageGutter.tablet};
   }
 
-  ${media.compact} {
+  ${media.mobile} {
+    padding: 0 ${pageGutter.compact};
+  }
+
+  ${media.phone} {
     padding: 0;
     background: #ffffff;
 
@@ -106,7 +114,7 @@ const Panel = styled.div`
   max-width: 1366px;
   min-height: 50vh;
   margin: 0;
-  padding: 60px 48px;
+  padding: 60px ${pageGutter.desktop};
   border-radius: 16px;
   background-color: #ffffff;
   box-shadow: 0 0 20px ${colors.gray[1]};
@@ -118,15 +126,13 @@ const Panel = styled.div`
     padding: 40px 20px;
   }
 
-  ${media.standard} {
-    padding: 48px 32px;
+  ${media.tablet} {
+    padding: 48px ${pageGutter.tablet};
   }
 
-  ${media.compact} {
-    min-height: 100%;
-    padding: 32px 20px;
-    border-radius: 0;
-    box-shadow: none;
+  ${media.mobile} {
+    padding: 40px ${pageGutter.compact};
+    border-radius: 10px;
 
     [data-admin-layout='true'] & {
       min-height: auto;
@@ -135,11 +141,11 @@ const Panel = styled.div`
     }
   }
 
-  ${media.compact} {
-    && {
-      padding-right: 20px;
-      padding-left: 20px;
-    }
+  ${media.phone} {
+    min-height: 100%;
+    padding: 32px 20px;
+    border-radius: 0;
+    box-shadow: none;
   }
 `;
 

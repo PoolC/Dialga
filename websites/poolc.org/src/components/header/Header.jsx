@@ -8,6 +8,7 @@ import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './
 import Menus from './Menus/Menus';
 import { MENU } from '~/constants/menus';
 import Notification from './Notification/Notification';
+import { media } from '~/styles/responsive';
 
 const useStyles = createStyles(({ css }) => ({
   avatarButton: css`
@@ -29,6 +30,11 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 8px;
   `,
+  profileMenu: css`
+    ${media.mobile} {
+      display: none;
+    }
+  `,
 }));
 
 const Header = ({ member, onLogout }) => {
@@ -36,7 +42,7 @@ const Header = ({ member, onLogout }) => {
 
   const {
     status: { isLogin },
-    user: { isAdmin, role, profileImageURL },
+    user: { isAdmin, name, role, profileImageURL },
   } = member;
 
   const [menuVisible, setMenuVisible] = useState(false);
@@ -57,7 +63,7 @@ const Header = ({ member, onLogout }) => {
   const dropDownItems = (() => {
     const arr = [
       {
-        label: <Link to={`/${MENU.MY_PAGE}`}>My Page</Link>,
+        label: <Link to={`/${MENU.MY_PAGE}`} onClick={onCloseMenu}>My Page</Link>,
         key: 'my-page',
       },
       {
@@ -69,7 +75,7 @@ const Header = ({ member, onLogout }) => {
 
     if (isAdmin) {
       arr.splice(2, 0, {
-        label: <Link to={`/${MENU.ADMIN}`}>Admin</Link>,
+        label: <Link to={`/${MENU.ADMIN}`} onClick={onCloseMenu}>Admin</Link>,
         key: 'admin',
       });
     }
@@ -91,11 +97,13 @@ const Header = ({ member, onLogout }) => {
               {/** Noti */}
               <Notification />
               {/** Profile */}
-              <Dropdown menu={{ items: dropDownItems }}>
-                <Button shape="circle" className={styles.avatarButton}>
-                  <Avatar src={profileImageURL} size={36} />
-                </Button>
-              </Dropdown>
+              <div className={styles.profileMenu}>
+                <Dropdown menu={{ items: dropDownItems }}>
+                  <Button shape="circle" className={styles.avatarButton}>
+                    <Avatar src={profileImageURL} size={36} />
+                  </Button>
+                </Dropdown>
+              </div>
             </div>
           )}
           <BarsIcon type="button" aria-label={menuVisible ? '메뉴 닫기' : '메뉴 열기'} onClick={onToggleMenu}>
@@ -103,7 +111,7 @@ const Header = ({ member, onLogout }) => {
           </BarsIcon>
         </HeaderIconBox>
       </HeaderIcons>
-      <Menus menuVisible={menuVisible} onToggleMenu={onToggleMenu} isLogin={isLogin} role={role} isAdmin={isAdmin} dropDownItems={dropDownItems} profileImageURL={profileImageURL} />
+      <Menus menuVisible={menuVisible} onToggleMenu={onToggleMenu} isLogin={isLogin} name={name} role={role} isAdmin={isAdmin} dropDownItems={dropDownItems} profileImageURL={profileImageURL} />
     </HeaderBlock>
   );
 };

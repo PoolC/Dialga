@@ -56,7 +56,7 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     gap: 24px;
 
-    ${media.compact} {
+    ${media.mobile} {
       flex-direction: column;
       align-items: stretch;
     }
@@ -72,14 +72,14 @@ const useStyles = createStyles(({ css }) => ({
     width: 330px;
     gap: 8px;
 
-    ${media.compact} {
+    ${media.mobile} {
       width: 100%;
     }
   `,
   compactSearchForm: css`
     width: 430px;
 
-    ${media.compact} {
+    ${media.mobile} {
       width: 100%;
     }
   `,
@@ -146,7 +146,7 @@ const useStyles = createStyles(({ css }) => ({
       box-shadow: 0 0 0 3px rgb(0 168 137 / 16%);
     }
 
-    ${media.compact} {
+    ${media.mobile} {
       max-width: none;
     }
   `,

@@ -5,7 +5,8 @@ import BoardNormalWriteSection from '~/components/board/BoardNormalWriteSection'
 
 export default function BoardWritePage() {
   const searchParams = useSearchParams();
-  const boardType = (searchParams.get('boardType') ?? 'NOTICE') as BoardType;
+  const requestedBoardType = searchParams.get('boardType') ?? 'NOTICE';
+  const boardType = (requestedBoardType === 'STAFF' ? 'ETC' : requestedBoardType) as BoardType;
   const postId = Number(searchParams.get('postId') ?? 0);
 
   return match(boardType)
@@ -14,7 +15,7 @@ export default function BoardWritePage() {
     .with('PROJECT', () => <BoardNormalWriteSection postId={postId} boardType="PROJECT" />)
     .with('EXTERNAL', () => <BoardNormalWriteSection postId={postId} boardType="EXTERNAL" />)
     .with('CAREER', () => <BoardNormalWriteSection postId={postId} boardType="CAREER" />)
-    .with('STAFF', () => <BoardNormalWriteSection postId={postId} boardType="STAFF" />)
+    .with('ETC', () => <BoardNormalWriteSection postId={postId} boardType="ETC" />)
     .otherwise(() => {
       throw new Error(`invalid boardType: ${boardType}`);
     });

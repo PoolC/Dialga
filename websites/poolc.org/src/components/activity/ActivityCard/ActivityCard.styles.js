@@ -28,7 +28,7 @@ export const ActivityCardContainer = styled.div`
     transition: 0.2s;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     display: grid;
     grid-template-areas:
       'header header'
@@ -53,7 +53,7 @@ export const ActivityCardHeader = styled.div`
   min-height: 24px;
   margin-bottom: 12px;
 
-  ${media.compact} {
+  ${media.mobile} {
     grid-area: header;
     min-height: 20px;
     margin: 0;
@@ -85,7 +85,7 @@ export const ActivityTitle = styled.p`
   line-height: 1.4rem;
   margin: 0;
 
-  ${media.compact} {
+  ${media.mobile} {
     height: auto;
     min-height: 1.35rem;
     font-size: 1rem;
@@ -109,7 +109,7 @@ export const ActivityMetaGroup = styled.div`
     margin-top: 6px;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     min-height: 1rem;
     margin: 0;
     font-size: 0.76rem;
@@ -146,7 +146,7 @@ export const ActivityClassHour = styled.p`
     color: ${colors.brown[0]};
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -210,7 +210,7 @@ export const ActivityTags = styled.div`
   overflow: hidden;
   margin-top: 14px;
 
-  ${media.compact} {
+  ${media.mobile} {
     grid-area: tags;
     min-height: 0;
     max-height: 20px;
@@ -246,7 +246,7 @@ export const ActivityButtons = styled.div`
   margin-top: auto;
   padding-top: 10px;
 
-  ${media.compact} {
+  ${media.mobile} {
     grid-area: actions;
     min-height: 32px;
     margin: 0;
@@ -290,7 +290,7 @@ export const StyledLink = styled(Link)`
     text-underline-offset: 3px;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     grid-area: title;
   }
 `;

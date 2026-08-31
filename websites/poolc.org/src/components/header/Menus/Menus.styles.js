@@ -9,7 +9,7 @@ export const MenuBlock = styled.div`
   align-items: center;
   width: 100%;
 
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -26,11 +26,11 @@ export const LeftHeaderMenu = styled.div`
   & > .right-menu {
     display: none;
 
-    ${media.compact} {
+    ${media.mobile} {
       display: flex;
     }
   }
-  ${media.compact} {
+  ${media.mobile} {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -51,7 +51,7 @@ export const RightHeaderMenu = styled.div`
   flex: 1;
   align-items: center;
   justify-content: flex-end;
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -65,6 +65,12 @@ export const MobileDrawerHeader = styled.div`
   color: ${colors.brown[1]};
   font-size: 1.25rem;
   font-weight: 800;
+`;
+
+export const MobileDrawerContent = styled.div`
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
 `;
 
 export const MobileDrawerCloseButton = styled.button`
@@ -116,6 +122,55 @@ export const MobileNavigationLink = styled(LinkButton)`
   &:hover {
     transform: none;
   }
+`;
+
+export const MobileAccountButton = styled.button`
+  display: flex;
+  width: 100%;
+  min-height: 72px;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding: 12px 0 max(12px, env(safe-area-inset-bottom));
+  border: 0;
+  border-top: 1px solid #edf3f1;
+  border-radius: 0;
+  background: transparent;
+  color: ${colors.brown[1]};
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: ${colors.brown[1]};
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${colors.mint[2]};
+    outline-offset: -2px;
+  }
+`;
+
+export const MobileAccountMeta = styled.span`
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    overflow: hidden;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+export const MobileAccountMore = styled.span`
+  margin-left: auto;
+  color: ${colors.brown[0]};
+  font-size: 20px;
 `;
 
 export const SelectedLinkButton = styled(LinkButton)`

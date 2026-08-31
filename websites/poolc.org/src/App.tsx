@@ -22,7 +22,7 @@ const useStyles = createStyles(({ css }) => ({
     padding-top: 90px;
     flex: 1;
 
-    ${media.compact} {
+    ${media.mobile} {
       padding-top: 0;
       background: #ffffff;
 

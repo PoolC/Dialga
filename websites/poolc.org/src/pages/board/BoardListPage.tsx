@@ -14,6 +14,7 @@ import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { media } from '~/styles/responsive';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -27,14 +28,14 @@ const useStyles = createStyles(({ css }) => ({
     gap: 8px;
   `,
   sectionTabs: css`
-    @media (max-width: 767px) {
+    ${media.mobile} {
       display: none;
     }
   `,
   mobileWriteButton: css`
     display: none;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       position: fixed;
       right: 20px;
       bottom: calc(20px + env(safe-area-inset-bottom));
@@ -52,7 +53,7 @@ const useStyles = createStyles(({ css }) => ({
   mobileSearchToolbar: css`
     display: none;
 
-    @media (max-width: 767px) {
+    ${media.mobile} {
       display: flex;
       margin-bottom: 16px;
     }
@@ -65,7 +66,7 @@ export default function BoardListPage() {
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
   const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
 
-  const requestedBoardType = (searchParams.get('boardType') ?? 'NOTICE') as BoardType;
+  const requestedBoardType = searchParams.get('boardType') ?? 'NOTICE';
   const page = Number(searchParams.get('page') ?? 1);
   const submittedKeyword = searchParams.get('keyword') ?? '';
   const [keyword, setKeyword] = useState(submittedKeyword);
@@ -98,19 +99,16 @@ export default function BoardListPage() {
             key: 'FREE' as BoardType,
             label: getBoardTitle('FREE'),
           },
-          ...(isAdmin
-            ? [
-                {
-                  key: 'STAFF' as BoardType,
-                  label: getBoardTitle('STAFF'),
-                },
-              ]
-            : []),
+          {
+            key: 'ETC' as BoardType,
+            label: getBoardTitle('ETC'),
+          },
         ]
       : []),
   ];
-  const boardType = items.some((item) => item.key === requestedBoardType) ? requestedBoardType : 'NOTICE';
-  const canWrite = boardType !== 'NOTICE' || isAdmin;
+  const normalizedRequestedBoardType = requestedBoardType === 'STAFF' ? 'ETC' : requestedBoardType;
+  const boardType = items.some((item) => item.key === normalizedRequestedBoardType) ? normalizedRequestedBoardType as BoardType : 'NOTICE';
+  const canWrite = boardType !== 'NOTICE' || Boolean(isAdmin);
 
   useEffect(() => setKeyword(submittedKeyword), [submittedKeyword]);
 

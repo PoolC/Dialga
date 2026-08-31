@@ -14,7 +14,7 @@ export const ActivityContent = styled(PageContent)`
   max-width: 1210px;
 
   &[data-has-create-action='true'] {
-    ${media.compact} {
+    ${media.mobile} {
       padding-bottom: calc(76px + env(safe-area-inset-bottom));
     }
   }
@@ -31,7 +31,7 @@ export const HeaderControls = styled.div`
     justify-content: space-between;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     flex-direction: column;
     align-items: stretch;
   }
@@ -97,7 +97,7 @@ export const HeaderActionArea = styled.div`
     margin: 0;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;
@@ -105,7 +105,7 @@ export const HeaderActionArea = styled.div`
 export const ActivityFloatingCreateButton = styled(Link)`
   display: none;
 
-  ${media.compact} {
+  ${media.mobile} {
     position: fixed;
     right: 0;
     bottom: 0;

@@ -1,11 +1,11 @@
 import { Avatar, Button, Drawer, Dropdown, MenuProps } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, MoreOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
 import { useLocation } from 'react-router-dom';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 import ActionButton from '../../common/Buttons/ActionButton';
 import LinkButton from '../../common/Buttons/LinkButton';
-import { LeftHeaderMenu, MenuBlock, MobileDrawerCloseButton, MobileDrawerHeader, MobileNavigationLink, MobileNavigationList, RightHeaderMenu } from './Menus.styles';
+import { LeftHeaderMenu, MenuBlock, MobileAccountButton, MobileAccountMeta, MobileAccountMore, MobileDrawerCloseButton, MobileDrawerContent, MobileDrawerHeader, MobileNavigationLink, MobileNavigationList, RightHeaderMenu } from './Menus.styles';
 import { MENU } from '~/constants/menus';
 import colors from '~/lib/styles/colors';
 import Notification from '../Notification/Notification';
@@ -22,7 +22,7 @@ const useStyles = createStyles(({ css }) => ({
   mobileDrawer: css`
     display: none;
 
-    ${media.compact} {
+    ${media.mobile} {
       display: block;
 
       .ant-drawer-content {
@@ -30,7 +30,7 @@ const useStyles = createStyles(({ css }) => ({
       }
 
       .ant-drawer-body {
-        padding: 20px;
+        padding: 20px 20px 0;
       }
     }
   `,
@@ -39,6 +39,7 @@ const useStyles = createStyles(({ css }) => ({
 const Menus = ({
   menuVisible,
   isLogin,
+  name,
   role,
   onToggleMenu,
   dropDownItems,
@@ -46,6 +47,7 @@ const Menus = ({
 }: {
   menuVisible: boolean;
   isLogin: boolean;
+  name: string;
   role: string | null;
   onToggleMenu: () => void;
   dropDownItems: MenuProps['items'];
@@ -170,24 +172,37 @@ const Menus = ({
         width="86vw"
         onClose={onToggleMenu}
       >
-        <MobileDrawerHeader>
-          <span>메뉴</span>
-          <MobileDrawerCloseButton type="button" aria-label="메뉴 닫기" onClick={onToggleMenu}>
-            <CloseOutlined />
-          </MobileDrawerCloseButton>
-        </MobileDrawerHeader>
-        <MobileNavigationList aria-label="주요 메뉴">
-          {visibleLinks.map((link) => (
-            <MobileNavigationLink
-              to={link.to}
-              key={link.content}
-              data-active={isActiveLink(link.to)}
-              onClick={onToggleMenu}
-            >
-              {link.content}
-            </MobileNavigationLink>
-          ))}
-        </MobileNavigationList>
+        <MobileDrawerContent>
+          <MobileDrawerHeader>
+            <span>메뉴</span>
+            <MobileDrawerCloseButton type="button" aria-label="메뉴 닫기" onClick={onToggleMenu}>
+              <CloseOutlined />
+            </MobileDrawerCloseButton>
+          </MobileDrawerHeader>
+          <MobileNavigationList aria-label="주요 메뉴">
+            {visibleLinks.map((link) => (
+              <MobileNavigationLink
+                to={link.to}
+                key={link.content}
+                data-active={isActiveLink(link.to)}
+                onClick={onToggleMenu}
+              >
+                {link.content}
+              </MobileNavigationLink>
+            ))}
+          </MobileNavigationList>
+          {isLogin && (
+            <Dropdown menu={{ items: dropDownItems }} placement="topRight" trigger={['click']}>
+              <MobileAccountButton type="button" aria-label="계정 메뉴 열기">
+                <Avatar src={profileImageURL} size={40} />
+                <MobileAccountMeta>
+                  <strong>{name}</strong>
+                </MobileAccountMeta>
+                <MobileAccountMore><MoreOutlined /></MobileAccountMore>
+              </MobileAccountButton>
+            </Dropdown>
+          )}
+        </MobileDrawerContent>
       </Drawer>
     </>
   );

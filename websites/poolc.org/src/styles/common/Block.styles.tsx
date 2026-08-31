@@ -9,7 +9,7 @@ export const WhiteBlock = styled(PagePanel)`
     margin-bottom: 3rem;
   }
 
-  ${media.compact} {
+  ${media.mobile} {
     & > .block_title {
       width: 100%;
       margin-bottom: 2rem;

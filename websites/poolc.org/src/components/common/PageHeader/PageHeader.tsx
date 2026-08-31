@@ -33,6 +33,13 @@ export const PageTitle = styled.h2`
   ${media.compact} {
     width: 100%;
     justify-content: center;
+    font-size: 1.85rem;
+    text-align: center;
+  }
+
+  ${media.phone} {
+    width: 100%;
+    justify-content: center;
     font-size: 2rem;
     text-align: center;
   }
@@ -53,10 +60,9 @@ const Header = styled.header`
   gap: 24px;
   margin-bottom: 24px;
 
-  ${media.compact} {
+  ${media.mobile} {
     flex-direction: column;
     align-items: stretch;
-    gap: 22px;
 
     &[data-actions-mobile-hidden='true'] {
       gap: 0;
@@ -65,6 +71,14 @@ const Header = styled.header`
         display: none;
       }
     }
+  }
+
+  ${media.compact} {
+    gap: 18px;
+  }
+
+  ${media.phone} {
+    gap: 22px;
   }
 `;
 
@@ -80,6 +94,11 @@ const TitleGroup = styled.div`
     align-items: center;
     text-align: center;
   }
+
+  ${media.phone} {
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const Actions = styled.div`
@@ -89,6 +108,11 @@ const Actions = styled.div`
   gap: 10px;
 
   ${media.compact} {
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  ${media.phone} {
     align-items: flex-start;
     justify-content: center;
   }

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
+import { media } from '../../../styles/responsive';
 
 export const SessionCard = styled.li`
   display: flex;
@@ -103,7 +104,7 @@ export const SessionMetaGrid = styled.div`
   grid-template-columns: ${(props) => (props['data-single'] ? '1fr' : 'repeat(2, minmax(0, 1fr))')};
   gap: 12px;
 
-  @media (max-width: 767px) {
+  ${media.mobile} {
     grid-template-columns: 1fr;
   }
 `;

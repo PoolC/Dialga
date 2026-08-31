@@ -33,7 +33,7 @@ export const MemberItem = styled.div`
 
   width: 100%;
 
-  ${media.compact} {
+  ${media.mobile} {
     height: 92px;
     border-radius: 10px;
   }

@@ -232,8 +232,8 @@ export default function AdminBook() {
   const books = useMemo<BookRow[]>(() => {
     if (bookListQuery.status !== 'success') return [];
 
-    return bookListQuery.data.content.map((book) => ({
-      id: book.id!,
+    return (bookListQuery.data.content ?? []).map((book) => ({
+      id: book.id ?? 0,
       image: book.imageURL || '',
       title: book.title || '',
       author: book.author || '',
@@ -244,7 +244,7 @@ export default function AdminBook() {
       donor: book.donor || '',
       link: book.link || '',
       pubdate: book.publishedDate || '',
-      category: book.category,
+      category: book.category ?? 'PROGRAMMING',
       status: book.status,
       borrower: book.borrower,
     }));
@@ -253,7 +253,7 @@ export default function AdminBook() {
   if (bookListQuery.status === 'pending') return <Skeleton />;
   if (bookListQuery.status === 'error') return <Result status="500" subTitle="에러가 발생했습니다." />;
 
-  const { totalElements, totalPages } = bookListQuery.data;
+  const { totalElements = 0, totalPages = 0 } = bookListQuery.data;
 
   return (
     <WhiteNarrowBlock>

@@ -27,6 +27,10 @@ const Grid = styled.ul`
   }
 
   ${media.compact} {
+    gap: 14px;
+  }
+
+  ${media.phone} {
     gap: 12px;
   }
 `;

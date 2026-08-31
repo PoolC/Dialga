@@ -67,7 +67,7 @@ const ProjectContent = styled(PageContent)`
 `;
 
 const ProjectCategoryTabs = styled.div`
-  ${media.compact} {
+  ${media.mobile} {
     display: none;
   }
 `;

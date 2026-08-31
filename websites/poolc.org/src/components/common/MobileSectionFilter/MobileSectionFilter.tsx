@@ -81,7 +81,7 @@ export const MobileSectionFilter = ({
 const FilterContainer = styled.div`
   display: none;
 
-  ${media.compact} {
+  ${media.mobile} {
     display: block;
   }
 
@@ -107,7 +107,7 @@ const FilterTrigger = styled.button`
   white-space: nowrap;
   box-sizing: border-box;
 
-  ${media.compact} {
+  ${media.mobile} {
     height: 44px;
   }
 

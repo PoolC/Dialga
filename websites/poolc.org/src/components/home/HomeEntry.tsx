@@ -28,7 +28,7 @@ export default function HomeEntry() {
       },
       {
         queryKey: queryKey.project.all,
-        queryFn: ProjectControllerService.findProjectsUsingGet,
+        queryFn: () => ProjectControllerService.findProjectsUsingGet({}),
       },
       {
         queryKey: queryKey.post.all('NOTICE', 0),
