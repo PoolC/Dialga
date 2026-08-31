@@ -1,4 +1,4 @@
-import { FilterOutlined } from '@ant-design/icons';
+import { FilterOutlined, StarFilled } from '@ant-design/icons';
 import { Button, Empty, Popover, Select, Spin, Tooltip, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,6 +9,7 @@ import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { PageContent } from '~/components/common/PageLayout/PageLayout';
 import { useMessage } from '~/hooks/useMessage';
 import * as gameAPI from '~/lib/api/gamification';
+import { media } from '~/styles/responsive';
 
 type Rarity = 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
@@ -17,6 +18,10 @@ type Summary = {
   totalCatalogCount: number;
   collectedCatalogCount: number;
   shinyCatalogCount: number;
+  normalCatalogCount: number;
+  totalVariantCount: number;
+  collectedVariantCount: number;
+  shinyDrawStatus: 'AVAILABLE' | 'NEEDS_NORMAL' | 'COMPLETE';
 };
 
 type BallBalances = { normal: number };
@@ -42,6 +47,7 @@ type CollectionItem = {
   specialDefense?: number;
   speed?: number;
   ownedCount: number;
+  normalOwnedCount: number;
   shinyCount: number;
 };
 
@@ -50,6 +56,7 @@ type DrawResult = {
   collectibleId: number;
   name: string;
   spriteUrl?: string;
+  shinySpriteUrl?: string;
   rarity: Rarity;
   shiny: boolean;
   drawnAt: string;
@@ -76,7 +83,7 @@ type DetailModalState = {
   description?: string;
 };
 
-type CollectionView = 'ALL' | 'OWNED' | 'SHINY';
+type CollectionView = 'ALL' | 'OWNED';
 
 const rarityLabel: Record<Rarity, string> = {
   COMMON: '일반',
@@ -99,7 +106,7 @@ export default function MyPageCollectionPage() {
   const [collection, setCollection] = useState<CollectionItem[]>([]);
   const [draws, setDraws] = useState<DrawResult[]>([]);
   const [loading, setLoading] = useState(true);
-  const [drawing, setDrawing] = useState(false);
+  const [drawing, setDrawing] = useState<'NORMAL' | 'SHINY' | null>(null);
   const [generation, setGeneration] = useState<number | 'ALL'>('ALL');
   const [rarity, setRarity] = useState<Rarity | 'ALL'>('ALL');
   const [ownership, setOwnership] = useState<CollectionView>('ALL');
@@ -128,50 +135,70 @@ export default function MyPageCollectionPage() {
     () => collection.filter((item) => (
       (generation === 'ALL' || item.generation === generation)
       && (rarity === 'ALL' || item.rarity === rarity)
-      && (ownership === 'ALL' || (ownership === 'OWNED' && item.ownedCount > 0) || (ownership === 'SHINY' && item.shinyCount > 0))
+      && (ownership === 'ALL' || item.normalOwnedCount > 0)
     )),
     [collection, generation, ownership, rarity],
   );
 
-  const collectedCount = summary?.collectedCatalogCount ?? 0;
-  const totalCatalogCount = summary?.totalCatalogCount ?? 0;
+  const collectedCount = summary?.collectedVariantCount ?? 0;
+  const totalCatalogCount = summary?.totalVariantCount ?? 0;
   const ballCount = summary?.ballBalances?.normal ?? 0;
-  const handleDraw = async () => {
-    setDrawing(true);
+  const normalCollectedCount = summary?.normalCatalogCount ?? 0;
+  const baseCatalogCount = totalCatalogCount / 2;
+  const shinyDrawStatus = summary?.shinyDrawStatus ?? 'NEEDS_NORMAL';
+  const shinyDrawGuide = shinyDrawStatus === 'NEEDS_NORMAL'
+    ? '일반 포켓몬을 먼저 획득하면 이로치 뽑기를 이용할 수 있습니다.'
+    : shinyDrawStatus === 'COMPLETE'
+      ? '획득한 포켓몬의 이로치를 모두 수집했습니다.'
+      : null;
+  const shinyDrawUnavailable = shinyDrawStatus !== 'AVAILABLE';
+  const handleDraw = async (shiny: boolean) => {
+    setDrawing(shiny ? 'SHINY' : 'NORMAL');
     try {
-      const response = await gameAPI.drawCollectible();
+      const response = await gameAPI.drawCollectible({ shiny });
       const draw = response.data as DrawResult;
       const previousCollection = collection.find((item) => item.collectibleId === draw.collectibleId);
-      const isNewCollectible = !previousCollection || previousCollection.ownedCount === 0;
-      const isNewShiny = draw.shiny && (!previousCollection || previousCollection.shinyCount === 0);
+      const isNewVariant = draw.shiny
+        ? !previousCollection || previousCollection.shinyCount === 0
+        : !previousCollection || previousCollection.normalOwnedCount === 0;
+      const isNewCatalogEntry = !previousCollection || previousCollection.ownedCount === 0;
       const preparedDraw = {
         ...draw,
         externalId: draw.externalId ?? previousCollection?.externalId,
         ownedCount: (previousCollection?.ownedCount ?? 0) + 1,
-        isNewCollectible,
+        normalOwnedCount: (previousCollection?.normalOwnedCount ?? 0) + (draw.shiny ? 0 : 1),
+        shinyOwnedCount: (previousCollection?.shinyCount ?? 0) + (draw.shiny ? 1 : 0),
+        shinyOwned: draw.shiny || (previousCollection?.shinyCount ?? 0) > 0,
       };
 
       setDetailModal({
         collectible: preparedDraw,
-        title: draw.shiny ? '이로치 포켓몬 획득!' : isNewCollectible ? '새 포켓몬 획득!' : '이미 수집한 포켓몬이에요',
-        description: isNewCollectible
-          ? `No.${String(preparedDraw.externalId ?? 0).padStart(3, '0')} 도감에 새로 등록되었습니다.`
+        title: isNewVariant ? draw.shiny ? '이로치 포켓몬 획득!' : '새 포켓몬 획득!' : '이미 수집한 포켓몬이에요',
+        description: isNewVariant
+          ? `No.${String(preparedDraw.externalId ?? 0).padStart(3, '0')} ${draw.shiny ? '이로치' : '일반'} 도감에 새로 등록되었습니다.`
           : `현재 보유 ${preparedDraw.ownedCount}마리`,
       });
       setSummary((current) => current && {
         ...current,
         ballBalances: draw.ballBalances ?? current.ballBalances,
-        collectedCatalogCount: current.collectedCatalogCount + (isNewCollectible ? 1 : 0),
-        shinyCatalogCount: current.shinyCatalogCount + (isNewShiny ? 1 : 0),
+        shinyCatalogCount: current.shinyCatalogCount + (draw.shiny && isNewVariant ? 1 : 0),
+        normalCatalogCount: current.normalCatalogCount + (!draw.shiny && isNewVariant ? 1 : 0),
+        collectedVariantCount: current.collectedVariantCount + (isNewVariant ? 1 : 0),
+        collectedCatalogCount: current.collectedCatalogCount + (isNewCatalogEntry ? 1 : 0),
+        shinyDrawStatus: draw.shiny
+          ? (isNewVariant && current.normalCatalogCount === current.shinyCatalogCount + 1 ? 'COMPLETE' : current.shinyDrawStatus)
+          : 'AVAILABLE',
       });
       setCollection((current) => current.map((item) => item.collectibleId === draw.collectibleId
-        ? { ...item, ownedCount: item.ownedCount + 1, shinyCount: item.shinyCount + (draw.shiny ? 1 : 0) }
+        ? draw.shiny
+          ? { ...item, ownedCount: item.ownedCount + 1, shinyCount: item.shinyCount + 1 }
+          : { ...item, ownedCount: item.ownedCount + 1, normalOwnedCount: item.normalOwnedCount + 1 }
         : item));
       setDraws((current) => [draw, ...current]);
     } catch (error: any) {
       message.error(error.response?.data?.message ?? '뽑기에 실패했습니다.');
     } finally {
-      setDrawing(false);
+      setDrawing(null);
     }
   };
 
@@ -183,9 +210,13 @@ export default function MyPageCollectionPage() {
             title="포켓몬 도감"
             actions={
               <div className={styles.drawPanel}>
-                <div className={styles.drawAction}>
+              <div className={styles.drawAction}>
                   <span className={styles.ballBalance}>일반 포켓볼 {ballCount}개</span>
-                  <Button type="primary" loading={drawing} disabled={!summary || ballCount < 1} onClick={handleDraw}>1개로 뽑기</Button>
+                  <div className={styles.drawButtons} aria-describedby={shinyDrawGuide ? 'shiny-draw-guide' : undefined}>
+                    <Button type="primary" loading={drawing === 'NORMAL'} disabled={!summary || drawing !== null || ballCount < 1} onClick={() => handleDraw(false)}>일반 뽑기 x1</Button>
+                    <Button className={cx(styles.shinyDrawButton, { [styles.shinyDrawUnavailable]: shinyDrawUnavailable })} aria-disabled={shinyDrawUnavailable} aria-describedby={shinyDrawGuide ? 'shiny-draw-guide' : undefined} loading={drawing === 'SHINY'} disabled={!summary || drawing !== null || ballCount < 2} onClick={() => { if (!shinyDrawUnavailable) handleDraw(true); }}>이로치 뽑기 x2</Button>
+                  </div>
+                  {shinyDrawGuide && <Typography.Text id="shiny-draw-guide" className={styles.shinyDrawGuide} aria-live="polite">{shinyDrawGuide}</Typography.Text>}
                 </div>
               </div>
             }
@@ -194,7 +225,7 @@ export default function MyPageCollectionPage() {
 
           <div className={styles.collectionStatus}>
             <strong>{collectedCount} / {totalCatalogCount}종</strong>
-            <span>이로치 {summary?.shinyCatalogCount ?? 0}종</span>
+            <span>일반 {normalCollectedCount} / {baseCatalogCount} · 이로치 {summary?.shinyCatalogCount ?? 0} / {baseCatalogCount}</span>
           </div>
 
           {!loading && collectedCount === 0 && <section className={styles.emptyGuide}>
@@ -207,7 +238,7 @@ export default function MyPageCollectionPage() {
               className={styles.collectionTabs}
               activeKey={ownership}
               onChange={(value) => setOwnership(value as CollectionView)}
-              items={[{ key: 'ALL', label: '전체 도감' }, { key: 'OWNED', label: '획득한 포켓몬' }, { key: 'SHINY', label: '이로치' }]}
+              items={[{ key: 'ALL', label: '전체 도감' }, { key: 'OWNED', label: '획득한 포켓몬' }]}
             />
             <Popover
               trigger="click"
@@ -231,30 +262,37 @@ export default function MyPageCollectionPage() {
           {loading ? <Spin className={styles.spinner} /> : visibleCollection.length === 0 ? <Empty description="표시할 도감이 없습니다." /> : (
             <div className={styles.grid}>
             {visibleCollection.map((item) => {
-              const owned = item.ownedCount > 0;
-              const showingShiny = ownership === 'SHINY' && item.shinyCount > 0;
-              const displaySpriteUrl = showingShiny ? (item.shinySpriteUrl ?? item.spriteUrl) : item.spriteUrl;
-              const openCollectible = { ...item, spriteUrl: displaySpriteUrl, shiny: showingShiny };
+              const displaySpriteUrl = item.spriteUrl;
+              const openCollectible = {
+                ...item,
+                spriteUrl: displaySpriteUrl,
+                shiny: false,
+                shinyOwned: item.shinyCount > 0,
+                normalOwnedCount: item.normalOwnedCount,
+                shinyOwnedCount: item.shinyCount,
+              };
               return (
                 <article
                   key={item.collectibleId}
-                  className={cx(styles.card, { [styles.unowned]: !owned, [styles.shinyCard]: item.shinyCount > 0, [styles.clickableCard]: owned })}
-                  onClick={owned ? () => setDetailModal({ collectible: openCollectible }) : undefined}
-                  onKeyDown={owned ? (event) => {
+                  className={cx(styles.card, { [styles.unowned]: item.normalOwnedCount === 0, [styles.shinyCard]: item.shinyCount > 0, [styles.clickableCard]: item.normalOwnedCount > 0 })}
+                  onClick={item.normalOwnedCount > 0 ? () => setDetailModal({ collectible: openCollectible }) : undefined}
+                  onKeyDown={item.normalOwnedCount > 0 ? (event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
                       setDetailModal({ collectible: openCollectible });
                     }
                   } : undefined}
-                  role={owned ? 'button' : undefined}
-                  tabIndex={owned ? 0 : undefined}
+                  role={item.normalOwnedCount > 0 ? 'button' : undefined}
+                  tabIndex={item.normalOwnedCount > 0 ? 0 : undefined}
                 >
-                  {displaySpriteUrl ? <img src={displaySpriteUrl} alt={owned ? item.name : '미획득'} className={styles.sprite} /> : <div className={styles.spriteFallback} />}
+                  {item.shinyCount > 0 && <span className={styles.shinyBadge}><StarFilled /> 이로치</span>}
+                  {item.shinyCount > 0 && item.shinySpriteUrl && <img src={item.shinySpriteUrl} alt="" aria-hidden="true" className={styles.shinyPreview} />}
+                  {displaySpriteUrl ? <img src={displaySpriteUrl} alt={item.normalOwnedCount > 0 ? item.name : '미획득'} className={styles.sprite} /> : <div className={styles.spriteFallback} />}
                   <div className={styles.cardMeta}>
-                    <Typography.Text className={styles.number} style={{ color: owned ? rarityColor[item.rarity] : undefined }}>
+                    <Typography.Text className={styles.number} style={{ color: item.normalOwnedCount > 0 ? rarityColor[item.rarity] : undefined }}>
                       No.{String(item.externalId).padStart(3, '0')}
                     </Typography.Text>
-                    <Typography.Text className={styles.cardName}>{owned ? item.name : '????'}</Typography.Text>
+                    <Typography.Text className={styles.cardName}>{item.normalOwnedCount > 0 ? item.name : '????'}</Typography.Text>
                   </div>
                 </article>
               );
@@ -292,10 +330,14 @@ export default function MyPageCollectionPage() {
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`box-sizing:border-box; padding:30px 20px; align-items:center;`,
   content: css`max-width:1180px;`,
-  drawPanel: css`display:flex; align-items:center; @media(max-width:768px){align-items:flex-start;}`,
-  drawAction: css`display:flex; align-items:center; gap:12px; flex-wrap:wrap;`,
+  drawPanel: css`display:flex; align-items:center; ${media.compact}{align-items:flex-start;}`,
+  drawAction: css`display:flex; align-items:center; gap:12px; flex-wrap:wrap; ${media.compact}{align-items:flex-start; flex-direction:column; gap:8px;}`,
+  drawButtons: css`display:flex; gap:8px; flex-wrap:wrap; .ant-btn{font-size:.82rem;}`,
+  shinyDrawButton: css`border-color:#d5a62d !important; color:#8d6810 !important; &:not(:disabled):hover{border-color:#ba8a13 !important; color:#74530a !important;}`,
+  shinyDrawUnavailable: css`cursor:not-allowed; opacity:.55;`,
+  shinyDrawGuide: css`width:100%; color:#7b736a; font-size:.74rem; ${media.compact}{max-width:280px;}`,
   ballBalance: css`color:#276f59; font-size:.85rem; font-weight:700;`,
-  collectionStatus: css`display:flex; align-items:center; gap:12px; margin:0 0 20px; color:#7b736a; font-size:.85rem; strong{color:#249b78; font-size:1rem;} span{padding-left:12px; border-left:1px solid #e5f0ed;}`,
+  collectionStatus: css`display:flex; align-items:center; gap:12px; margin:0 0 20px; color:#7b736a; font-size:.85rem; strong{color:#249b78; font-size:1rem;} span{padding-left:12px; border-left:1px solid #e5f0ed;} ${media.compact}{align-items:flex-start; flex-direction:column; gap:4px; span{padding-left:0; border-left:0;}}`,
   emptyGuide: css`display:flex; flex-direction:column; gap:4px; padding:14px 16px; margin:0 0 18px; border-left:3px solid #49bf9e; background:#f8fcfb; strong{color:#276f59;} .ant-typography{font-size:.82rem; color:#6e7772;}`,
   filters: css`display:flex; align-items:flex-start; gap:8px; margin-bottom:18px;`,
   collectionTabs: css`flex:1; min-width:0;`,
@@ -303,9 +345,11 @@ const useStyles = createStyles(({ css }) => ({
   activeFilter: css`border-color:#49bf9e !important; color:#249b78 !important;`,
   spinner: css`display:block; margin:72px auto;`,
   grid: css`display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:12px;`,
-  card: css`display:flex; min-height:172px; flex-direction:column; justify-content:space-between; padding:10px; border:1px solid #e2e5e4; border-radius:4px; background:#fff; transition:border-color .15s ease, box-shadow .15s ease; &:hover{border-color:#9edbc9; box-shadow:0 4px 12px rgba(39, 112, 88, .08);}`,
+  card: css`position:relative; display:flex; min-height:172px; flex-direction:column; justify-content:space-between; padding:10px; border:1px solid #e2e5e4; border-radius:4px; background:#fff; transition:border-color .15s ease, box-shadow .15s ease; &:hover{border-color:#9edbc9; box-shadow:0 4px 12px rgba(39, 112, 88, .08);}`,
   unowned: css`background:#f6f7f7; img{filter:brightness(0) opacity(.22);}`,
   shinyCard: css`border-color:#e6c76a;`,
+  shinyBadge: css`position:absolute; top:8px; right:8px; z-index:1; display:inline-flex; align-items:center; gap:3px; padding:3px 5px; border:1px solid #e6c76a; border-radius:3px; background:#fffaf0; color:#9b720e; font-size:.62rem; font-weight:800; line-height:1;`,
+  shinyPreview: css`position:absolute; right:8px; bottom:34px; z-index:1; width:40px; height:40px; padding:3px; border:1px solid #e6c76a; border-radius:4px; background:#fffaf0; object-fit:contain;`,
   clickableCard: css`cursor:pointer; &:focus-visible{outline:2px solid #49bf9e; outline-offset:2px;}`,
   sprite: css`width:112px; height:112px; object-fit:contain; align-self:center; flex:1 0 auto; min-height:0;`,
   spriteFallback: css`width:112px; height:112px; background:#edf0ef; border-radius:50%; align-self:center; flex:1 0 auto;`,

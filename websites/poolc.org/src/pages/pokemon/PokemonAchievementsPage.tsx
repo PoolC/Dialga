@@ -8,6 +8,7 @@ import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
 import { useMessage } from '~/hooks/useMessage';
 import * as gameAPI from '~/lib/api/gamification';
 import { Block, WhiteBlock } from '~/styles/common/Block.styles';
+import { media } from '~/styles/responsive';
 
 type QuestType = 'DAILY' | 'SEASON' | 'REPEATABLE' | 'PERMANENT';
 type Quest = {
@@ -26,6 +27,21 @@ type Quest = {
 const normalBallImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
 
 const questIcons = { attendance: CheckCircleOutlined, wifi: WifiOutlined, draw: GiftOutlined };
+
+const QUEST_TYPE_ITEMS = [
+  { key: 'DAILY', label: '일일' },
+  { key: 'SEASON', label: '시즌' },
+  { key: 'REPEATABLE', label: '반복' },
+  { key: 'PERMANENT', label: '업적' },
+  { key: 'ALL', label: '전체' },
+];
+
+const QUEST_SECTION_TITLES: Record<QuestType, string> = {
+  DAILY: '일일 퀘스트',
+  SEASON: '시즌 퀘스트',
+  REPEATABLE: '반복 퀘스트',
+  PERMANENT: '업적 퀘스트',
+};
 
 export default function PokemonAchievementsPage() {
   const { styles } = useStyles();
@@ -80,16 +96,10 @@ export default function PokemonAchievementsPage() {
             className={styles.questTabs}
             activeKey={selectedType}
             onChange={(value) => setSelectedType(value as QuestType | 'ALL')}
-            items={[
-              { key: 'DAILY', label: '일일' },
-              { key: 'SEASON', label: '시즌' },
-              { key: 'REPEATABLE', label: '반복' },
-              { key: 'PERMANENT', label: '업적' },
-              { key: 'ALL', label: '전체' },
-            ]}
+            items={QUEST_TYPE_ITEMS}
           />
           {loading ? <Spin className={styles.spinner} /> : <>
-            {sections.map(({ type, quests: sectionQuests }) => <QuestSection key={type} quests={sectionQuests} claiming={claiming} onClaim={claim} styles={styles} />)}
+            {sections.map(({ type, quests: sectionQuests }) => <QuestSection key={type} title={selectedType === 'ALL' ? QUEST_SECTION_TITLES[type] : undefined} quests={sectionQuests} claiming={claiming} onClaim={claim} styles={styles} />)}
           </>}
         </PageContent>
       </WhiteBlock>
@@ -97,8 +107,9 @@ export default function PokemonAchievementsPage() {
   );
 }
 
-function QuestSection({ quests, claiming, onClaim, styles }: { quests: Quest[]; claiming: string | null; onClaim: (key: string) => void; styles: Record<string, string> }) {
+function QuestSection({ title, quests, claiming, onClaim, styles }: { title?: string; quests: Quest[]; claiming: string | null; onClaim: (key: string) => void; styles: Record<string, string> }) {
   return <section className={styles.section}>
+    {title && <h2 className={styles.sectionTitle}>{title}</h2>}
     <div className={styles.questList}>{quests.map((quest) => {
       const completed = quest.progress >= quest.target;
       const canClaim = quest.type === 'REPEATABLE'
@@ -108,13 +119,15 @@ function QuestSection({ quests, claiming, onClaim, styles }: { quests: Quest[]; 
       const percentage = Math.min(100, Math.round((quest.progress / quest.target) * 100));
       const QuestIcon = quest.key.includes('CLUB_WIFI') ? questIcons.wifi
         : quest.key.includes('DRAW') ? questIcons.draw : questIcons.attendance;
-      const progressLabel = quest.type === 'REPEATABLE' ? `${quest.claimableCount}회 수령 가능` : completed ? '완료' : `${Math.min(quest.progress, quest.target)} / ${quest.target}`;
+      const progressLabel = quest.type === 'REPEATABLE' && canClaim
+        ? `${quest.claimableCount}회 수령 가능`
+        : `${Math.min(quest.progress, quest.target)} / ${quest.target}`;
       return <article className={`${styles.quest} ${canClaim ? styles.claimable : ''} ${isCompleted ? styles.completed : ''}`} key={quest.key}>
         <div className={styles.questIcon}><QuestIcon /></div>
-        <div className={styles.questBody}><div className={styles.questTitle}><h3>{quest.title}</h3>{canClaim && <span>보상 가능</span>}</div><p className={styles.questDescription}>{quest.description}</p>{!isCompleted && <div className={styles.questProgress}><Progress percent={percentage} showInfo={false} strokeColor={completed ? '#48b99a' : '#9bbab0'} trailColor="#e7efed" /><strong>{progressLabel}</strong></div>}</div>
+        <div className={styles.questBody}><div className={styles.questTitle}><h3>{quest.title}</h3></div>{!isCompleted && <div className={styles.questProgress}><Progress percent={percentage} showInfo={false} strokeColor={completed ? '#48b99a' : '#9bbab0'} trailColor="#e7efed" /><strong>{progressLabel}</strong></div>}</div>
         <div className={styles.questActions}>
           <div className={styles.questReward}><strong><img className={styles.rewardBallIcon} src={normalBallImage} alt="일반 포켓볼" /> × {quest.type === 'REPEATABLE' && canClaim ? quest.rewardAmount * quest.claimableCount : quest.rewardAmount}</strong></div>
-          {isCompleted ? <span className={styles.completedBadge}>✓ 보상 수령 완료</span> : <Button type={canClaim ? 'primary' : 'default'} disabled={!canClaim} loading={claiming === quest.key} onClick={() => onClaim(quest.key)} icon={canClaim ? <CheckOutlined /> : undefined}>{canClaim ? quest.type === 'REPEATABLE' ? `${quest.claimableCount}개 받기` : '받기' : '진행 중'}</Button>}
+          {isCompleted ? <span className={styles.completedBadge}><CheckOutlined /> 수령 완료</span> : canClaim && <Button type="primary" loading={claiming === quest.key} onClick={() => onClaim(quest.key)} icon={<CheckOutlined />}>{quest.type === 'REPEATABLE' ? `${quest.claimableCount}개 받기` : '보상 받기'}</Button>}
         </div>
       </article>;
     })}</div>
@@ -131,17 +144,17 @@ const useStyles = createStyles(({ css }) => ({
   resetInfo: css`display:flex; align-items:center; gap:6px; align-self:flex-start; color:#747b77; font-size:.78rem; white-space:nowrap;`,
   summaryProgress: css`display:flex; align-items:center; gap:16px; margin-top:22px; >div{display:flex; align-items:baseline; gap:5px; min-width:62px; color:#747b77; font-size:.75rem;} strong{color:#2b9c7d; font-size:1.1rem;} .ant-progress{flex:1;}`,
   section: css`margin:0 0 30px;`,
+  sectionTitle: css`margin:0 0 10px; color:#4c3722; font-size:1rem; font-weight:700;`,
   questList: css`display:flex; flex-direction:column; gap:8px;`,
-  quest: css`display:flex; align-items:center; gap:14px; min-height:88px; padding:12px 16px; border:1px solid #e5eeeb; border-radius:6px; background:#fff; transition:border-color .2s, background .2s; @media(max-width:700px){align-items:flex-start; flex-wrap:wrap; gap:10px; .questBody{min-width:calc(100% - 52px);} .questActions{width:calc(100% - 52px); margin-left:52px;}}`,
+  quest: css`display:grid; grid-template-columns:42px minmax(0, 1fr) auto; align-items:center; gap:14px; min-height:76px; padding:12px 16px; border:1px solid #e5eeeb; border-radius:6px; background:#fff; transition:border-color .2s, background .2s; ${media.compact}{align-items:start; gap:10px; padding:12px;}`,
   claimable: css`border-color:#91d6c0; background:#fbfffd;`,
-  completed: css`border-color:#d8e1de; background:#f5f7f6; .questIcon{background:#e7edeb; color:#7c8984;} .questTitle h3,.questReward strong{color:#69746f;} .questProgress strong{color:#7c8984;}`,
-  completedBadge: css`flex:none; color:#7c8984; font-size:.75rem; font-weight:700; white-space:nowrap;`,
+  completed: css`border-color:#d8e1de; background:#f5f7f6; .questIcon{background:#e7edeb; color:#7c8984;} .questTitle h3,.questReward strong{color:#69746f;}`,
+  completedBadge: css`display:inline-flex; align-items:center; gap:4px; flex:none; color:#69746f; font-size:.75rem; font-weight:700; white-space:nowrap;`,
   questIcon: css`display:flex; align-items:center; justify-content:center; width:42px; height:42px; flex:none; border-radius:50%; background:#e7f5f0; color:#2b9c7d; font-size:1rem;`,
-  questBody: css`flex:1; min-width:0;`,
-  questTitle: css`display:flex; align-items:center; gap:8px; h3{margin:0; color:#4c3722; font-size:1rem; font-weight:700;} span{padding:3px 6px; border-radius:3px; background:#dff5ed; color:#2b9c7d; font-size:.68rem; font-weight:700;}`,
-  questDescription: css`margin:5px 0 0; color:#7b847f; font-size:.78rem; line-height:1.35;`,
-  questActions: css`display:flex; align-items:center; justify-content:flex-end; gap:24px; min-width:220px;`,
+  questBody: css`min-width:0;`,
+  questTitle: css`display:flex; align-items:center; h3{margin:0; color:#4c3722; font-size:1rem; font-weight:700; line-height:1.35; word-break:keep-all;}`,
+  questActions: css`display:flex; align-items:center; justify-content:flex-end; gap:24px; min-width:220px; ${media.compact}{min-width:72px; flex-direction:column; align-items:flex-end; justify-content:space-between; gap:8px;}`,
   questReward: css`display:flex; min-width:0; strong{display:flex; align-items:center; gap:5px; color:#4c3722; font-size:.78rem; white-space:nowrap;}`,
-  rewardBallIcon: css`width:30px; height:30px; object-fit:contain; image-rendering:auto;`,
-  questProgress: css`display:flex; align-items:center; gap:10px; margin-top:8px; .ant-progress{max-width:210px; flex:1;} strong{color:#747b77; font-size:.72rem; white-space:nowrap;}`,
+  rewardBallIcon: css`width:30px; height:30px; object-fit:contain; image-rendering:auto; ${media.compact}{width:24px; height:24px;}`,
+  questProgress: css`display:flex; align-items:center; gap:10px; margin-top:8px; .ant-progress{max-width:210px; flex:1;} strong{color:#747b77; font-size:.72rem; white-space:nowrap;} ${media.compact}{gap:6px; .ant-progress{min-width:0;}}`,
 }));

@@ -1,6 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Button, Modal, Tag, Typography } from 'antd';
+import { Button, Modal, Segmented, Tag, Typography } from 'antd';
 import { createStyles } from 'antd-style';
+import { useEffect, useState } from 'react';
 
 type Rarity = 'COMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
@@ -8,9 +9,13 @@ export type CollectibleDetail = {
   externalId?: number;
   name: string;
   spriteUrl?: string;
+  shinySpriteUrl?: string;
   rarity: Rarity;
   shiny?: boolean;
+  shinyOwned?: boolean;
   ownedCount?: number;
+  normalOwnedCount?: number;
+  shinyOwnedCount?: number;
   category?: string;
   description?: string;
   heightDecimeters?: number;
@@ -40,6 +45,16 @@ const rarityLabel: Record<Rarity, string> = {
 
 export default function CollectibleDetailModal({ collectible, title, description, onClose }: CollectibleDetailModalProps) {
   const { styles } = useStyles();
+  const [showShiny, setShowShiny] = useState(false);
+  const canShowShiny = Boolean(collectible?.shinyOwned && collectible.shinySpriteUrl);
+  const showingShiny = canShowShiny && showShiny;
+  const displayedOwnedCount = showingShiny
+    ? collectible?.shinyOwnedCount ?? (collectible?.shiny ? collectible.ownedCount : 0)
+    : collectible?.normalOwnedCount ?? (collectible?.shiny ? 0 : collectible?.ownedCount);
+
+  useEffect(() => {
+    setShowShiny(Boolean(collectible?.shiny));
+  }, [collectible]);
 
   return (
     <Modal
@@ -51,11 +66,12 @@ export default function CollectibleDetailModal({ collectible, title, description
     >
       {collectible && <div className={styles.content}>
         {title && <Typography.Title level={4} className={styles.title}>{title}</Typography.Title>}
-        {collectible.spriteUrl && <img src={collectible.spriteUrl} alt={collectible.name} />}
+        {canShowShiny && <Segmented value={showingShiny ? 'SHINY' : 'NORMAL'} options={[{ label: '일반', value: 'NORMAL' }, { label: '이로치', value: 'SHINY' }]} onChange={(value) => setShowShiny(value === 'SHINY')} />}
+        {(showingShiny ? collectible.shinySpriteUrl : collectible.spriteUrl) && <img src={showingShiny ? collectible.shinySpriteUrl : collectible.spriteUrl} alt={showingShiny ? `${collectible.name} 이로치` : collectible.name} />}
         <Typography.Title level={2}>{collectible.name}</Typography.Title>
-        <Tag color={collectible.shiny ? 'gold' : 'green'}>{collectible.shiny ? '이로치' : rarityLabel[collectible.rarity]}</Tag>
+        <Tag color={showingShiny ? 'gold' : 'green'}>{showingShiny ? '이로치' : rarityLabel[collectible.rarity]}</Tag>
         <Typography.Text className={styles.description}>
-          {description ?? `No.${String(collectible.externalId ?? 0).padStart(3, '0')} · ${collectible.ownedCount ?? 1}마리 보유`}
+          {description ?? `No.${String(collectible.externalId ?? 0).padStart(3, '0')} · ${displayedOwnedCount ?? 1}마리 보유`}
         </Typography.Text>
         {(collectible.category || collectible.description) && <section className={styles.dexEntry}>
           {collectible.category && <strong>{collectible.category}</strong>}

@@ -14,12 +14,17 @@ import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 import * as gameAPI from '~/lib/api/gamification';
 import { loadUser } from '~/modules/auth';
 import { useMessage } from '~/hooks/useMessage';
+import { media } from '~/styles/responsive';
 
 type GameSummary = {
-  ballBalances?: { normal?: number };
-  totalCatalogCount?: number;
-  collectedCatalogCount?: number;
-  shinyCatalogCount?: number;
+  ballBalances: { normal: number };
+  totalCatalogCount: number;
+  collectedCatalogCount: number;
+  shinyCatalogCount: number;
+  normalCatalogCount: number;
+  totalVariantCount: number;
+  collectedVariantCount: number;
+  shinyDrawStatus: 'AVAILABLE' | 'NEEDS_NORMAL' | 'COMPLETE';
 };
 
 type FeaturedCollectible = {
@@ -39,6 +44,7 @@ type OwnedCollectible = {
   spriteUrl?: string;
   shinySpriteUrl?: string;
   ownedCount: number;
+  normalOwnedCount: number;
   shinyCount: number;
 };
 
@@ -145,7 +151,7 @@ export default function MyPageContainer() {
   const openFeaturedModal = async () => {
     try {
       const response = await gameAPI.getCollection();
-      const owned = response.data.filter((item: OwnedCollectible) => item.ownedCount > 0);
+      const owned = response.data.filter((item: OwnedCollectible) => item.ownedCount > 0 || item.shinyCount > 0);
       setOwnedCollectibles(owned);
       setSelectedCollectibleId(featuredCollectible?.collectibleId);
       setSelectedShiny(featuredCollectible?.shiny ?? false);
@@ -266,8 +272,8 @@ export default function MyPageContainer() {
       items: toDetailItems(activitySummary.officialActivities),
     },
   ];
-  const collectedCount = gameSummary?.collectedCatalogCount ?? 0;
-  const totalCatalogCount = gameSummary?.totalCatalogCount ?? 0;
+  const collectedCount = gameSummary?.collectedVariantCount ?? 0;
+  const totalCatalogCount = gameSummary?.totalVariantCount ?? 0;
   const collectionProgress = totalCatalogCount > 0 ? Math.round((collectedCount / totalCatalogCount) * 100) : 0;
 
   return (
@@ -439,13 +445,17 @@ export default function MyPageContainer() {
               value={selectedCollectibleId}
               placeholder="보유한 포켓몬 선택"
               optionFilterProp="label"
-              onChange={(value) => { setSelectedCollectibleId(value); setSelectedShiny(false); }}
+              onChange={(value) => {
+                const selected = ownedCollectibles.find((item) => item.collectibleId === value);
+                setSelectedCollectibleId(value);
+                setSelectedShiny((selected?.normalOwnedCount ?? 0) === 0);
+              }}
               options={ownedCollectibles.map((item) => ({ value: item.collectibleId, label: `No.${String(item.externalId).padStart(3, '0')} ${item.name}` }))}
             />
           </label>
           {(() => {
             const selected = ownedCollectibles.find((item) => item.collectibleId === selectedCollectibleId);
-            return selected?.shinyCount ? <label className={styles.shinyOption}><Switch size="small" checked={selectedShiny} onChange={setSelectedShiny} /> 이로치로 지정</label> : null;
+            return selected?.shinyCount ? <label className={styles.shinyOption}><Switch size="small" checked={selectedShiny} disabled={selected.normalOwnedCount === 0} onChange={setSelectedShiny} /> 이로치로 지정</label> : null;
           })()}
         </div>
       </Modal>
@@ -505,7 +515,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 64px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       align-items: flex-start;
       grid-template-columns: 1fr;
       gap: 24px;
@@ -527,7 +537,7 @@ const useStyles = createStyles(({ css }) => ({
     padding: 16px 0 32px;
     border-bottom: 1px solid #e9ecef;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       align-items: flex-start;
       grid-template-columns: 1fr;
       gap: 28px;
@@ -572,7 +582,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 100%;
     gap: 8px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       width: 100%;
     }
   `,
@@ -637,7 +647,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 100%;
     align-items: stretch;
 
-    @media (max-width: 960px) {
+    ${media.belowWide} {
       grid-template-columns: 1fr;
       gap: 24px;
     }
@@ -677,7 +687,7 @@ const useStyles = createStyles(({ css }) => ({
     grid-template-columns: minmax(0, 1fr) minmax(300px, .9fr);
     gap: 28px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       grid-template-columns: 1fr;
       gap: 20px;
     }
@@ -704,7 +714,7 @@ const useStyles = createStyles(({ css }) => ({
     > strong span { color: #7b847f; font-size: 0.78rem; font-weight: 600; }
     .ant-typography { color: #7b847f; font-size: 0.74rem; }
 
-    @media (max-width: 560px) {
+    ${media.compact} {
       padding: 8px;
     }
   `,
@@ -905,7 +915,7 @@ const useStyles = createStyles(({ css }) => ({
     min-height: 48px;
     border-top: 1px solid #f1f3f5;
 
-    @media (max-width: 600px) {
+    ${media.compact} {
       align-items: flex-start;
       flex-direction: column;
       gap: 4px;
@@ -925,7 +935,7 @@ const useStyles = createStyles(({ css }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    @media (max-width: 600px) {
+    ${media.compact} {
       white-space: normal;
     }
   `,
