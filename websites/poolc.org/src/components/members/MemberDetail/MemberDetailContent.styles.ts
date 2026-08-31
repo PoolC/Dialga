@@ -4,7 +4,7 @@ import colors from '../../../lib/styles/colors';
 export const ContentContainer = styled.div`
   width: 90%;
   display: flex;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     flex-direction: column;
   }
 `;
@@ -27,7 +27,7 @@ export const StyledImage = styled.img`
 export const TextContainer = styled.div`
   flex: 1;
   padding: 30px 30px;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,7 +39,7 @@ export const NameContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     justify-content: center;
   }
 `;
@@ -63,7 +63,7 @@ export const DepartmentContainer = styled.div`
     font-size: 1.5rem;
     margin: 10px 0;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     align-items: center;
     justify-content: center;
   }
@@ -81,7 +81,7 @@ export const IntroductionContainer = styled.div`
     color: ${colors.brown[0]};
     margin: 5px;
   }
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     align-items: center;
     justify-content: center;
   }

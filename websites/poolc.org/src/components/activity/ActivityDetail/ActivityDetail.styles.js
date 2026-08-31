@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
+import { media } from '../../../styles/responsive';
 
 export const DetailContent = styled.div`
   display: flex;
@@ -9,6 +10,12 @@ export const DetailContent = styled.div`
   flex-direction: column;
   align-items: stretch;
   gap: 20px;
+
+  &[data-has-register-action='true'] {
+    ${media.compact} {
+      padding-bottom: calc(76px + env(safe-area-inset-bottom));
+    }
+  }
 `;
 
 export const SummaryCard = styled.section`
@@ -48,7 +55,7 @@ export const SummaryBody = styled.div`
   align-items: end;
   gap: 18px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     grid-template-columns: 1fr;
     align-items: start;
   }
@@ -62,7 +69,7 @@ export const Title = styled.h1`
   line-height: 1.28;
   word-break: keep-all;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     font-size: 1.55rem;
   }
 `;
@@ -75,6 +82,10 @@ export const SummaryMeta = styled.div`
   color: ${colors.brown[0]};
   font-size: 0.86rem;
   line-height: 1.45;
+
+  &[data-overview] {
+    width: 100%;
+  }
 `;
 
 export const MetaRow = styled.p`
@@ -85,13 +96,17 @@ export const MetaRow = styled.p`
   gap: 8px;
   margin: 0;
 
+  &[data-overview] {
+    justify-content: flex-start;
+  }
+
   & > span + span::before {
     content: '·';
     margin-right: 8px;
     color: ${colors.brown[0]};
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     justify-content: flex-start;
   }
 `;
@@ -107,8 +122,8 @@ export const ButtonContainer = styled.div`
   min-height: 36px;
   margin-top: -4px;
 
-  @media (max-width: 768px) {
-    justify-content: flex-start;
+  ${media.compact} {
+    display: none;
   }
 `;
 
@@ -116,6 +131,30 @@ export const StyledButton = styled(ActionButton)`
   width: auto;
   min-width: 92px;
   margin: 0;
+`;
+
+export const ActivityFloatingRegisterButton = styled.div`
+  display: none;
+
+  ${media.compact} {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    display: block;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: ${colors.mint[2]};
+
+    & > button {
+      width: 100%;
+      min-height: 64px;
+      padding: 0 20px;
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 1rem;
+    }
+  }
 `;
 
 export const DetailSection = styled.section`
@@ -143,12 +182,13 @@ export const DetailGrid = styled.div`
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1199px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  @media (max-width: 560px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 `;
 
@@ -161,6 +201,15 @@ export const DetailItem = styled.div`
   border-radius: 8px;
   background: #fbfaf8;
   box-sizing: border-box;
+
+  @media (max-width: 767px) {
+    gap: 5px;
+    padding: 10px;
+
+    &[data-wide] {
+      grid-column: 1 / -1;
+    }
+  }
 `;
 
 export const DetailLabel = styled.span`
@@ -299,11 +348,11 @@ export const Member = styled.ul`
   padding: 0;
   list-style: none;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1199px) {
     grid-template-columns: repeat(2, minmax(0, 292px));
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 767px) {
     grid-template-columns: minmax(0, 292px);
   }
 `;

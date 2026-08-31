@@ -9,7 +9,7 @@ export const PageHeader = styled.div`
   gap: 24px;
   margin-bottom: 18px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     align-items: stretch;
     flex-direction: column;
   }

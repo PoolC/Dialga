@@ -63,7 +63,7 @@ export const RecentNoticeCardTitle = styled.p`
   font-weight: 500;
   cursor: pointer;
   word-break: keep-all;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     font-size: 0.8rem;
   }
 `;

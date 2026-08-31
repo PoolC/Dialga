@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ProjectList from '../../../components/projects/ProjectList/ProjectList';
 import * as projectAPI from '../../../lib/api/project';
 
@@ -10,13 +10,18 @@ const ProjectListContainer = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const response = await projectAPI.getProjects(category === 'ALL' ? undefined : category);
+      const response = await projectAPI.getProjects();
       setProjects(response.data.data);
       setLoading(false);
     })();
-  }, [category]);
+  }, []);
 
-  return <ProjectList projects={projects} loading={loading} category={category} onCategoryChange={setCategory} />;
+  const categoryProjects = useMemo(
+    () => (category === 'ALL' ? projects : projects?.filter((project) => project.category === category)),
+    [category, projects],
+  );
+
+  return <ProjectList projects={categoryProjects} loading={loading} category={category} onCategoryChange={setCategory} />;
 };
 
 export default ProjectListContainer;

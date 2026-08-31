@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Dropdown } from 'antd';
 import { createStyles } from 'antd-style';
-import { MenuOutlined } from '@ant-design/icons';
+import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
 import poolcIcon from '~/assets/images/poolc-icon.png';
 import { BarsIcon, HeaderBlock, HeaderIconBox, HeaderIcons, LogoImage } from './Header.styles';
 import Menus from './Menus/Menus';
@@ -98,8 +98,8 @@ const Header = ({ member, onLogout }) => {
               </Dropdown>
             </div>
           )}
-          <BarsIcon onClick={onToggleMenu}>
-            <MenuOutlined />
+          <BarsIcon type="button" aria-label={menuVisible ? '메뉴 닫기' : '메뉴 열기'} onClick={onToggleMenu}>
+            {menuVisible ? <CloseOutlined /> : <MenuOutlined />}
           </BarsIcon>
         </HeaderIconBox>
       </HeaderIcons>

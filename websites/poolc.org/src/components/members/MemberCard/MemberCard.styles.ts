@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import colors from '../../../lib/styles/colors';
+import { media } from '~/styles/responsive';
 
 export const MemberCardBlock = styled.li`
+  width: 100%;
   list-style: none;
-  margin: 6px 5px;
+  margin: 0;
 `;
 
 export const MemberItem = styled.div`
@@ -27,6 +29,13 @@ export const MemberItem = styled.div`
   &:hover {
     opacity: 80%;
     transition: 0.3s;
+  }
+
+  width: 100%;
+
+  ${media.compact} {
+    height: 92px;
+    border-radius: 10px;
   }
 `;
 
@@ -82,6 +91,8 @@ export const MemberCardStatus = styled.span`
 `;
 
 export const StyledLink = styled(Link)`
+  display: block;
+  width: 100%;
   color: ${colors.brown[1]};
   text-decoration: none;
 

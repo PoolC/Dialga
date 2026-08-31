@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { ToggleGroup, ToggleGroupItem } from '~/components/ui/toggle-group';
+import { media } from '~/styles/responsive';
 
 type SegmentFilterOption<T extends string> = {
   label: string;
@@ -66,7 +67,7 @@ const SegmentFilterRoot = styled.div`
     color: #007a66;
   }
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     [data-slot='toggle-group'] {
       width: 100%;
     }

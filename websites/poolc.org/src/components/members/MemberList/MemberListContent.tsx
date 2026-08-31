@@ -1,16 +1,17 @@
-import { FormEvent, useMemo, useState } from 'react';
-import { Button, Input } from 'antd';
+import { useMemo, useState } from 'react';
+import { Empty } from 'antd';
 import { MemberControllerService, MemberResponse, MemberRolesResponse, queryKey, useAppQuery, useAppSuspenseQuery } from '~/lib/api-v2';
-import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { FilterSearchToolbarOption } from '~/components/common/FilterSearchToolbar/FilterSearchToolbar';
-import { EmptyState } from '~/components/common/EmptyState/EmptyState';
+import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
-import { MemberCardGrid, MemberContent, MemberListBody, MemberListToolbar, MemberSearchForm } from './MemberListContent.styles';
+import { MobileSectionFilter } from '~/components/common/MobileSectionFilter/MobileSectionFilter';
+import { ListSearchToolbar } from '~/components/common/ListSearchToolbar/ListSearchToolbar';
+import { MemberCardGrid, MemberContent, MemberEmptyState, MemberListBody, MemberRoleTabs } from './MemberListContent.styles';
 import { ADMIN_MEMBER_ROLES, UNAUTHORIZED_MEMBER_ROLES } from '~/constants/memberRoles';
 import MemberCard from '../MemberCard/MemberCard';
 
 type MemberFilter = 'ALL' | 'ADMIN' | string;
-type MemberSearchType = 'ALL' | 'NAME' | 'LOGIN_ID' | 'DEPARTMENT';
+type MemberSearchType = 'ALL';
 
 const ROLE_LABELS: Record<string, string> = {
   ALL: '전체',
@@ -57,7 +58,6 @@ const getRoleOptions = (roles?: MemberRolesResponse[]) => {
 
 export default function MemberListContent() {
   const [searchInfo, setSearchInfo] = useState<{ type: MemberSearchType; keyword: string }>({ type: 'ALL', keyword: '' });
-  const [keyword, setKeyword] = useState('');
   const [filter, setFilter] = useState<MemberFilter>('ALL');
 
   const {
@@ -90,41 +90,32 @@ export default function MemberListContent() {
       }
 
       const searchFields = {
-        ALL: [member.name, member.loginID, member.department],
-        NAME: [member.name],
-        LOGIN_ID: [member.loginID],
-        DEPARTMENT: [member.department],
+        ALL: [member.name, member.department],
       };
 
       return searchFields[searchInfo.type].filter(Boolean).some((value) => value.toLowerCase().includes(normalizedSearchValue));
     });
   }, [filter, searchInfo, visibleMembers]);
 
-  const onSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSearchInfo({ type: 'ALL', keyword });
-  };
-
   return (
     <MemberContent>
       <PageHeader
         title="회원 목록"
         actions={
-          <MemberListToolbar>
-            <MemberSearchForm onSubmit={onSearchSubmit}>
-              <Input placeholder="이름, ID, 학과 검색" value={keyword} onChange={(event) => setKeyword(event.target.value)} />
-              <Button type="primary" htmlType="submit">
-                검색
-              </Button>
-            </MemberSearchForm>
-          </MemberListToolbar>
+          <ListSearchToolbar placeholder="이름, 학과 검색" value={searchInfo.keyword} onChange={(keyword) => setSearchInfo({ type: 'ALL', keyword })}>
+            <MobileSectionFilter items={roleTabItems} activeKey={filter} onChange={setFilter} title="회원 구분" allLabel="전체 회원" showDrawerHeader={false} />
+          </ListSearchToolbar>
         }
       />
-      <SectionTabs items={roleTabItems} activeKey={filter} onChange={(key) => setFilter(key)} />
+      <MemberRoleTabs>
+        <SectionTabs items={roleTabItems} activeKey={filter} onChange={(key) => setFilter(key)} />
+      </MemberRoleTabs>
       <MemberListBody>
         <MemberCardGrid>
           {filteredMembers.length === 0 ? (
-            <EmptyState>조건에 맞는 회원이 없습니다.</EmptyState>
+            <MemberEmptyState>
+              <Empty description="조건에 맞는 회원이 없습니다." />
+            </MemberEmptyState>
           ) : filteredMembers.map((member) => <MemberCard key={member.loginID} member={member} />)}
         </MemberCardGrid>
       </MemberListBody>

@@ -64,7 +64,7 @@ const Body = styled.div`
   th {
     background-color: ${colors.brown[0]};
   }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: flex;
     align-items: center;
     text-align: center;

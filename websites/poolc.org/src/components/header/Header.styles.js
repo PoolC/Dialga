@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
+import { media } from '../../styles/responsive';
 
 export const HeaderBlock = styled.div`
   box-sizing: border-box;
@@ -17,7 +18,7 @@ export const HeaderBlock = styled.div`
   border-bottom: 1px solid #eee;
   z-index: 100;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     position: sticky;
     flex-direction: column;
     align-items: flex-start;
@@ -43,7 +44,7 @@ export const HeaderBlock = styled.div`
 export const HeaderIcons = styled.div`
   color: ${colors.brown[0]};
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,12 +65,14 @@ export const LogoImage = styled.img`
   cursor: pointer;
 `;
 
-export const BarsIcon = styled.i`
+export const BarsIcon = styled.button`
   display: none;
   cursor: pointer;
+  border: 0;
+  background: transparent;
   padding: 10px;
   border-radius: 8px;
-  @media (max-width: 768px) {
+  ${media.compact} {
     display: block;
   }
   &:hover {
@@ -81,7 +84,7 @@ export const BarsIcon = styled.i`
 export const HeaderIconBox = styled.div`
   display: none;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     display: flex;
     align-items: center;
     gap: 4px;

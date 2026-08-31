@@ -19,6 +19,7 @@ export const queryKey = {
   },
   post: {
     all: (boardType: BoardType, page: number) => ['post.all', boardType, page] as const,
+    search: (boardType: BoardType, keyword: string, page: number) => ['post.search', boardType, keyword, page] as const,
     post: (id: number) => ['post.post', id] as const,
     myPosts: (page: number) => ['post.myPosts', page] as const,
   },

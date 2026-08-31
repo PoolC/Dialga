@@ -2,6 +2,7 @@ import { Button, Input, Select } from 'antd';
 import { createStyles } from 'antd-style';
 import type { FormEvent } from 'react';
 import colors from '~/lib/styles/colors';
+import { media } from '~/styles/responsive';
 
 type SearchOption = {
   label: string;
@@ -26,7 +27,7 @@ const useStyles = createStyles(({ css }) => ({
     width: 300px;
     gap: 8px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       width: 100%;
     }
   `,

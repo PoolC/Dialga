@@ -103,7 +103,7 @@ export const SessionMetaGrid = styled.div`
   grid-template-columns: ${(props) => (props['data-single'] ? '1fr' : 'repeat(2, minmax(0, 1fr))')};
   gap: 12px;
 
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
 `;

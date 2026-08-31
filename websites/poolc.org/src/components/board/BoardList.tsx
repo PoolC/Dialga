@@ -1,4 +1,4 @@
-import { Pagination, Result, Skeleton, Typography } from 'antd';
+import { Empty, Pagination, Result, Skeleton, Typography } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { createStyles } from 'antd-style';
 import { match } from 'ts-pattern';
@@ -9,7 +9,6 @@ import { PostControllerService, PostResponse, queryKey, useAppQuery } from '~/li
 import { BoardType, getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import { dayjs } from '~/lib/utils/dayjs';
 import { getInnerTextFromMarkdown } from '~/lib/utils/getInnerTextFromMarkdown';
-import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 
 const useStyles = createStyles(({ css }) => ({
   wrapper: css`
@@ -31,6 +30,12 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: center;
     margin-top: 12px;
   `,
+  emptyState: css`
+    display: flex;
+    min-height: 260px;
+    align-items: center;
+    justify-content: center;
+  `,
   postItem: css`
     border-bottom: 1px solid rgba(76, 55, 34, 0.08);
   `,
@@ -50,7 +55,7 @@ const useStyles = createStyles(({ css }) => ({
       background-color: rgba(229, 240, 237, 0.55);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       grid-template-columns: 1fr;
       gap: 12px;
       padding: 16px 10px;
@@ -97,7 +102,7 @@ const useStyles = createStyles(({ css }) => ({
     line-height: 1.4;
     white-space: nowrap;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       justify-content: flex-start;
     }
   `,
@@ -115,17 +120,24 @@ const useStyles = createStyles(({ css }) => ({
   `,
 }));
 
-export default function BoardList({ boardType, page }: { boardType: BoardType; page: number }) {
+export default function BoardList({ boardType, keyword, page }: { boardType: BoardType; keyword: string; page: number }) {
   // data
   const { styles } = useStyles();
 
+  const searchKeyword = keyword.trim();
   const boardListQuery = useAppQuery({
-    queryKey: queryKey.post.all(boardType, page - 1),
+    queryKey: searchKeyword ? queryKey.post.search(boardType, searchKeyword, page - 1) : queryKey.post.all(boardType, page - 1),
     queryFn: () =>
-      PostControllerService.viewPostsByBoardUsingGet({
-        boardTitle: getBoardTitleForRequest(boardType),
-        page: page - 1,
-      }),
+      searchKeyword
+        ? PostControllerService.searchPostUsingGet({
+            boardTitle: getBoardTitleForRequest(boardType),
+            keyword: searchKeyword,
+            page: page - 1,
+          })
+        : PostControllerService.viewPostsByBoardUsingGet({
+            boardTitle: getBoardTitleForRequest(boardType),
+            page: page - 1,
+          }),
   });
 
   const history = useHistory();
@@ -135,6 +147,7 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
     history.push(
       `/${MENU.BOARD}?${stringify({
         boardType,
+        keyword: searchKeyword || undefined,
         page,
       })}`,
     );
@@ -171,7 +184,9 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
           if (!postList) {
             return (
               <ul className={styles.list}>
-                <EmptyState>게시글이 없습니다.</EmptyState>
+                <li className={styles.emptyState}>
+                  <Empty description="게시글이 없습니다." />
+                </li>
               </ul>
             );
           }
@@ -181,7 +196,9 @@ export default function BoardList({ boardType, page }: { boardType: BoardType; p
           if (filteredList.length === 0) {
             return (
               <ul className={styles.list}>
-                <EmptyState>게시글이 없습니다.</EmptyState>
+                <li className={styles.emptyState}>
+                  <Empty description="게시글이 없습니다." />
+                </li>
               </ul>
             );
           }

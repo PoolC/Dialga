@@ -5,8 +5,8 @@ import { Viewer } from '@dialga/react-editor';
 import MemberCard from '../../members/MemberCard/MemberCard';
 import SessionContainer from '../../../containers/activity/SessionContainer/SessionContainer';
 import {
+  ActivityFloatingRegisterButton,
   ButtonContainer,
-  CapacityText,
   DetailContent,
   DetailGrid,
   DetailItem,
@@ -16,7 +16,6 @@ import {
   EmptyFileState,
   Member,
   MemberContainer,
-  MetaRow,
   PlanFileItem,
   PlanFileList,
   PlanFileMeta,
@@ -26,10 +25,8 @@ import {
   SessionBlock,
   Sessions,
   StyledButton,
-  SummaryBody,
   SummaryCard,
   SummaryHeader,
-  SummaryMeta,
   SummaryType,
   TagCard,
   TagList,
@@ -53,11 +50,13 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
   const [members, setMembers] = useState(activityMembers);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const memberCount = activityMemberIDs?.length ?? 0;
-  const remainingSeats = activity ? Math.max(activity.capacity - memberCount, 0) : 0;
   const isFull = activity ? memberCount >= activity.capacity : false;
   const showRegisterActions = activity?.available && isLogin && isAuthorizedRole(role);
   const isHost = activity && memberId === activity.host.loginID;
   const isRegistered = activityMemberIDs?.includes(memberId);
+  const canRegister = showRegisterActions && !isHost && !isRegistered && !isFull;
+  const canCancelRegistration = showRegisterActions && !isHost && isRegistered;
+  const hasMobileRegisterAction = canRegister || canCancelRegistration;
 
   const handleRegisterModalOpen = () => {
     setRegisterModalVisible(true);
@@ -88,7 +87,7 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
         <PagePanel>
           {loading && <Spinner />}
           {!loading && (
-            <DetailContent>
+            <DetailContent data-has-register-action={hasMobileRegisterAction}>
               <SummaryCard>
                 <SummaryHeader>
                   <SummaryType>{activity.seminar ? '세미나' : '스터디'}</SummaryType>
@@ -96,36 +95,20 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
                   {activity.available && isFull && <SummaryType data-muted>정원 마감</SummaryType>}
                   {activity.available && !isFull && <SummaryType>신청 가능</SummaryType>}
                 </SummaryHeader>
-                <SummaryBody>
-                  <Title>{activity.title}</Title>
-                  <SummaryMeta>
-                    <MetaRow>
-                      <span>{activity.startDate} 시작</span>
-                      {activity.classHour && <span>{activity.classHour}</span>}
-                    </MetaRow>
-                    <MetaRow>
-                      <span>진행 {activity.host.name}</span>
-                      <CapacityText>
-                        정원 {isLogin && `${memberCount} / `}
-                        {activity.capacity}명
-                        {activity.available && !isFull && isLogin && ` · ${remainingSeats}자리 남음`}
-                      </CapacityText>
-                    </MetaRow>
-                  </SummaryMeta>
-                </SummaryBody>
-                <TagList>
-                  {activity.tags.map((tag) => (
-                    <Tag key={tag.name} tag={tag.name} />
-                  ))}
-                </TagList>
+                <Title>{activity.title}</Title>
                 {showRegisterActions && (
                   <ButtonContainer>
-                    {activity.available && !isHost && !isRegistered && !isFull && <StyledButton onClick={handleRegisterModalOpen}>신청</StyledButton>}
+                    {canRegister && <StyledButton onClick={handleRegisterModalOpen}>신청하기</StyledButton>}
                     {activity.available && !isHost && !isRegistered && isFull && <FullText>[정원 마감]</FullText>}
-                    {activity.available && !isHost && isRegistered && <StyledButton onClick={handleRegisterModalOpen}>신청 취소</StyledButton>}
+                    {canCancelRegistration && <StyledButton onClick={handleRegisterModalOpen}>신청 취소</StyledButton>}
                   </ButtonContainer>
                 )}
               </SummaryCard>
+              {hasMobileRegisterAction && (
+                <ActivityFloatingRegisterButton>
+                  <StyledButton onClick={handleRegisterModalOpen}>{canCancelRegistration ? '신청 취소' : '신청하기'}</StyledButton>
+                </ActivityFloatingRegisterButton>
+              )}
               <DetailSection>
                 <SectionTitle>운영 정보</SectionTitle>
                 <DetailGrid>
@@ -137,7 +120,7 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
                     <DetailLabel>시작일</DetailLabel>
                     <DetailValue>{activity.startDate}</DetailValue>
                   </DetailItem>
-                  <DetailItem>
+                  <DetailItem data-wide>
                     <DetailLabel>진행 시간</DetailLabel>
                     <DetailValue>{activity.classHour}</DetailValue>
                   </DetailItem>
@@ -152,7 +135,7 @@ const ActivityDetail = ({ loading, activity, activityMembers, activityMemberIDs,
                       {activity.capacity}명
                     </DetailValue>
                   </DetailItem>
-                  <DetailItem>
+                  <DetailItem data-wide>
                     <DetailLabel>태그</DetailLabel>
                     <TagList data-compact>
                       {activity.tags.map((tag) => (

@@ -36,7 +36,7 @@ const Content = styled.p`
   margin-bottom: 1.2rem;
   line-height: 1.2rem;
   word-break: keep-all;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     align-items: center;
     text-align: center;
     flex-direction: column;

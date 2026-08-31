@@ -1,16 +1,18 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import colors from '~/lib/styles/colors';
+import { media } from '~/styles/responsive';
 
 type PageHeaderProps = {
   title: ReactNode;
   subtitle?: ReactNode;
   actions?: ReactNode;
+  actionsMobileHidden?: boolean;
   className?: string;
 };
 
-export const PageHeader = ({ title, subtitle, actions, className }: PageHeaderProps) => (
-  <Header className={className} data-has-actions={Boolean(actions)}>
+export const PageHeader = ({ title, subtitle, actions, actionsMobileHidden = false, className }: PageHeaderProps) => (
+  <Header className={className} data-has-actions={Boolean(actions)} data-actions-mobile-hidden={actionsMobileHidden}>
     <TitleGroup>
       <PageTitle>{title}</PageTitle>
       {subtitle && <PageSubtitle>{subtitle}</PageSubtitle>}
@@ -27,6 +29,13 @@ export const PageTitle = styled.h2`
   font-size: 1.75rem;
   font-weight: 800;
   line-height: 1.25;
+
+  ${media.compact} {
+    width: 100%;
+    justify-content: center;
+    font-size: 2rem;
+    text-align: center;
+  }
 `;
 
 export const PageSubtitle = styled.p`
@@ -44,10 +53,18 @@ const Header = styled.header`
   gap: 24px;
   margin-bottom: 24px;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 22px;
+
+    &[data-actions-mobile-hidden='true'] {
+      gap: 0;
+
+      > div:last-child {
+        display: none;
+      }
+    }
   }
 `;
 
@@ -58,6 +75,11 @@ const TitleGroup = styled.div`
   align-items: flex-start;
   gap: 8px;
   text-align: left;
+
+  ${media.compact} {
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const Actions = styled.div`
@@ -66,8 +88,8 @@ const Actions = styled.div`
   justify-content: flex-end;
   gap: 10px;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
   }
 `;

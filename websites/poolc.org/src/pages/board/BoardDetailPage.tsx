@@ -153,7 +153,7 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     gap: 20px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       flex-direction: column;
       gap: 12px;
     }
@@ -181,7 +181,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
     margin-top: 24px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       align-items: stretch;
       flex-direction: column;
     }

@@ -1,11 +1,14 @@
-import { Tabs } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import { Link, useHistory } from 'react-router-dom';
+import { DownOutlined, EditOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import ActionButton from '~/components/common/Buttons/ActionButton';
+import { MobileSectionFilter } from '~/components/common/MobileSectionFilter/MobileSectionFilter';
+import { ListSearchToolbar } from '~/components/common/ListSearchToolbar/ListSearchToolbar';
+import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
 import BoardList from '~/components/board/BoardList';
 import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
@@ -13,54 +16,45 @@ import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
 
 const useStyles = createStyles(({ css }) => ({
-  whiteBlock: css`
-    && {
-      padding: 60px 0;
-    }
-  `,
   wrapper: css`
     width: 100%;
     max-width: 1200px;
-    padding: 0;
     box-sizing: border-box;
-
-    .ant-tabs-nav {
-      margin-bottom: 16px;
-      border-bottom: 1px solid rgba(76, 55, 34, 0.08);
-    }
-
-    .ant-tabs-nav::before {
-      border-bottom: 0;
-    }
-
-    .ant-tabs-tab {
-      padding: 12px 0 14px;
-      color: rgba(76, 55, 34, 0.76);
-      font-weight: 600;
-    }
-
-    .ant-tabs-tab + .ant-tabs-tab {
-      margin-left: 28px;
-    }
-
-    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-      color: #47be9b;
-      font-weight: 800;
-    }
-
-    .ant-tabs-ink-bar {
-      height: 2px;
-      border-radius: 999px;
-      background: #47be9b;
+  `,
+  headerActions: css`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `,
+  sectionTabs: css`
+    @media (max-width: 767px) {
+      display: none;
     }
   `,
-  writeButton: css`
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  mobileWriteButton: css`
+    display: none;
 
-    button {
-      margin: 0;
+    @media (max-width: 767px) {
+      position: fixed;
+      right: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      z-index: 20;
+      display: block;
+
+      button {
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 24px;
+        box-shadow: 0 8px 20px rgb(47 151 121 / 28%);
+      }
+    }
+  `,
+  mobileSearchToolbar: css`
+    display: none;
+
+    @media (max-width: 767px) {
+      display: flex;
+      margin-bottom: 16px;
     }
   `,
 }));
@@ -73,47 +67,42 @@ export default function BoardListPage() {
 
   const requestedBoardType = (searchParams.get('boardType') ?? 'NOTICE') as BoardType;
   const page = Number(searchParams.get('page') ?? 1);
+  const submittedKeyword = searchParams.get('keyword') ?? '';
+  const [keyword, setKeyword] = useState(submittedKeyword);
 
   const history = useHistory();
 
   const items: {
     key: BoardType;
     label: string;
-    children: JSX.Element;
   }[] = [
     {
       key: 'NOTICE',
       label: getBoardTitle('NOTICE'),
-      children: <BoardList boardType="NOTICE" page={page} />,
     },
     ...(isLogin
       ? [
           {
             key: 'PROJECT' as BoardType,
             label: getBoardTitle('PROJECT'),
-            children: <BoardList boardType="PROJECT" page={page} />,
           },
           {
             key: 'EXTERNAL' as BoardType,
             label: getBoardTitle('EXTERNAL'),
-            children: <BoardList boardType="EXTERNAL" page={page} />,
           },
           {
             key: 'CAREER' as BoardType,
             label: getBoardTitle('CAREER'),
-            children: <BoardList boardType="CAREER" page={page} />,
           },
           {
             key: 'FREE' as BoardType,
             label: getBoardTitle('FREE'),
-            children: <BoardList boardType="FREE" page={page} />,
           },
           ...(isAdmin
             ? [
                 {
                   key: 'STAFF' as BoardType,
                   label: getBoardTitle('STAFF'),
-                  children: <BoardList boardType="STAFF" page={page} />,
                 },
               ]
             : []),
@@ -121,30 +110,60 @@ export default function BoardListPage() {
       : []),
   ];
   const boardType = items.some((item) => item.key === requestedBoardType) ? requestedBoardType : 'NOTICE';
+  const canWrite = boardType !== 'NOTICE' || isAdmin;
 
-  const onTabChange = (key: string) => history.push(`/${MENU.BOARD}?boardType=${key}&page=1`);
+  useEffect(() => setKeyword(submittedKeyword), [submittedKeyword]);
 
-  const renderWriteButton = () => {
-    if (boardType === 'NOTICE' && !isAdmin) {
-      return null;
-    }
+  const onTabChange = (key: string) =>
+    history.push(
+      `/${MENU.BOARD}?${stringify({
+        boardType: key,
+        keyword: submittedKeyword || undefined,
+        page: 1,
+      })}`,
+    );
 
-    return (
-      <Link to={`/${MENU.BOARD}/write?${stringify({ boardType })}`} className={styles.writeButton}>
-        <ActionButton>
+  const onSearch = () =>
+    history.push(
+      `/${MENU.BOARD}?${stringify({
+        boardType,
+        keyword: keyword.trim() || undefined,
+        page: 1,
+      })}`,
+    );
+
+  const renderHeaderActions = () => (
+    <div className={styles.headerActions}>
+      <ListSearchToolbar placeholder="제목 검색" value={keyword} onChange={setKeyword} onSubmit={onSearch} />
+      {canWrite && (
+        <ActionButton to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
           <EditOutlined />
           글쓰기
         </ActionButton>
-      </Link>
-    );
-  };
+      )}
+    </div>
+  );
 
   return (
     <PageShell>
-      <PagePanel className={styles.whiteBlock}>
+      <PagePanel>
         <div className={styles.wrapper}>
-          <PageHeader title="게시판" actions={renderWriteButton()} />
-          <Tabs items={items} activeKey={boardType} onChange={onTabChange} />
+          <PageHeader title="게시판" actions={renderHeaderActions()} actionsMobileHidden />
+          <SectionTabs className={styles.sectionTabs} items={items} activeKey={boardType} onChange={onTabChange} />
+          <div className={styles.mobileSearchToolbar}>
+            <ListSearchToolbar placeholder="제목 검색" value={keyword} onChange={setKeyword} onSubmit={onSearch}>
+              <MobileSectionFilter items={items} activeKey={boardType} onChange={onTabChange} title="게시판 선택" triggerIcon={<DownOutlined />} showDrawerHeader={false} />
+            </ListSearchToolbar>
+          </div>
+          <BoardList boardType={boardType} keyword={submittedKeyword} page={page} />
+          {canWrite && (
+            <div className={styles.mobileWriteButton}>
+              <ActionButton to={`/${MENU.BOARD}/write?${stringify({ boardType })}`}>
+                <EditOutlined />
+                글쓰기
+              </ActionButton>
+            </div>
+          )}
         </div>
       </PagePanel>
     </PageShell>

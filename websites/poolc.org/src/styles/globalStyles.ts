@@ -8,6 +8,7 @@ export const globalStyles = css`
     border: 0;
     vertical-align: baseline;
     font-family: ${fontFamily};
+    box-sizing: border-box;
   }
   /* HTML5 display-role reset for older browsers */
   article,
@@ -41,6 +42,7 @@ export const globalStyles = css`
     outline: none;
     color: #4c3722;
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   #root {
@@ -73,6 +75,14 @@ export const globalStyles = css`
 
   input:not([type='checkbox']):not([type='radio']) {
     -webkit-appearance: none;
+    max-width: 100%;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
   }
 
   .tui-editor-defaultUI,

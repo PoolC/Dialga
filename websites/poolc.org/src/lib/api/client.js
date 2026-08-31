@@ -1,9 +1,12 @@
 import axios from 'axios';
-import { handleExpiredAccessToken } from '~/modules/auth';
-import { store } from '~';
 import { publicConfig } from '~/lib/config/publicConfig';
 
 const client = axios.create();
+let onUnauthorized = () => {};
+
+export const setUnauthorizedHandler = (handler) => {
+  onUnauthorized = handler;
+};
 
 client.defaults.baseURL = publicConfig.apiBaseUrl;
 
@@ -36,7 +39,7 @@ client.interceptors.response.use(
   (error) => {
     // 요청 실패 시 특정 작업 수행
     if (error.response?.status === 401) {
-      store.dispatch(handleExpiredAccessToken());
+      onUnauthorized();
     }
     return Promise.reject(error);
   },

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import colors from '../../lib/styles/colors';
+import { media } from '../../styles/responsive';
 
 export const FooterBlock = styled.div`
   display: flex;
@@ -9,8 +10,12 @@ export const FooterBlock = styled.div`
   color: ${colors.brown[1]};
   background-color: ${colors.gray[1]};
   margin-top: 48px;
-  @media (max-width: 576px) {
+  ${media.compact} {
     flex-direction: column;
+
+    body:not(:has([data-admin-layout='true'])) & {
+      margin-top: 0;
+    }
   }
 `;
 
@@ -52,7 +57,7 @@ export const FooterDivider = styled.div`
   width: 1px;
   margin: 0 10px;
   background-color: ${colors.mint[1]};
-  @media (max-width: 576px) {
+  ${media.compact} {
     width: 50%;
     margin: 30px 0;
     height: 1px;

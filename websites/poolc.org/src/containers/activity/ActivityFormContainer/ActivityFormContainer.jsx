@@ -25,6 +25,22 @@ const ActivityFormContainer = ({ match, history }) => {
   } = member;
 
   useEffect(() => {
+    const scrollToTop = () => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    const frame = window.requestAnimationFrame(() => {
+      scrollToTop();
+    });
+    const timeout = window.setTimeout(scrollToTop, 100);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, [activityID]);
+
+  useEffect(() => {
     if (activityID) {
       activityAPI.getActivity(activityID).then((res) => {
         if (res.status === SUCCESS.OK) {

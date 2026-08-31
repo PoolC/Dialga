@@ -22,7 +22,7 @@ export const StyledTimeList = styled.div`
   flex-flow: wrap;
   width: 80%;
   margin-bottom: 1.5rem;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     justify-content: center;
     align-items: center;
     width: 100%;

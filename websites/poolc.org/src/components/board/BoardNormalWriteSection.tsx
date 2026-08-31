@@ -4,9 +4,9 @@ import { useEffect, useRef } from 'react';
 import { Editor } from '@dialga/react-editor';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { Breadcrumb, Button, Divider, Form, Input, Space, Upload } from 'antd';
+import { Button, Form, Input, Space, Upload } from 'antd';
 import { UploadChangeParam } from 'antd/es/upload';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { stringify } from 'qs';
 import { createStyles } from 'antd-style';
 import { UploadOutlined } from '@ant-design/icons';
@@ -37,9 +37,6 @@ const useStyles = createStyles(({ css }) => ({
   `,
   editorWrap: css`
     margin-bottom: 24px;
-  `,
-  divider: css`
-    margin: 12px 0;
   `,
 }));
 
@@ -198,15 +195,7 @@ export default function BoardNormalWriteSection({ boardType, postId }: { boardTy
   return (
     <Block>
       <WhiteBlock>
-        <Space direction="vertical" size={0} className={styles.wrapper} split={<Divider className={styles.divider} />}>
-          <Breadcrumb
-            items={[
-              { title: <Link to={`/${MENU.BOARD}`}>게시판</Link> },
-              {
-                title: <Link to={`/${MENU.BOARD}?${stringify({ boardType })}`}>{getBoardTitle(boardType)}</Link>,
-              },
-            ]}
-          />
+        <Space direction="vertical" size={0} className={styles.wrapper}>
           <Form onSubmitCapture={form.onSubmit(onFormSubmit, () => {})}>
             <Space direction="vertical" className={styles.fullWidth} size="middle">
               <div className={styles.titleWrap}>

@@ -5,6 +5,7 @@ import type { ComponentType } from 'react';
 import { MENU } from './constants/menus';
 import FooterContainer from './containers/footer/FooterContainer';
 import HeaderContainer from './containers/header/HeaderContainer';
+import { media } from './styles/responsive';
 
 type LazyPageModule = { default: ComponentType<Record<string, never>> };
 
@@ -21,8 +22,13 @@ const useStyles = createStyles(({ css }) => ({
     padding-top: 90px;
     flex: 1;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       padding-top: 0;
+      background: #ffffff;
+
+      &:has([data-admin-layout='true']) {
+        background: transparent;
+      }
     }
   `,
 }));

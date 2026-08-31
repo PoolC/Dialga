@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Input } from 'antd';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
+import { media } from '../../../styles/responsive';
 
 export const FormContent = styled.div`
   display: flex;
@@ -17,6 +18,10 @@ export const TitleContainer = styled.div`
   align-items: flex-start;
   width: 100%;
   margin: 0 0 28px 0;
+
+  ${media.compact} {
+    align-items: center;
+  }
 `;
 
 export const Title = styled.h2`
@@ -25,6 +30,11 @@ export const Title = styled.h2`
   font-weight: 800;
   line-height: 1.25;
   margin: 0;
+
+  ${media.compact} {
+    font-size: 2rem;
+    text-align: center;
+  }
 `;
 
 export const StyledForm = styled.div`
@@ -46,7 +56,7 @@ export const FormGrid = styled.div`
   align-items: start;
   gap: 16px 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -235,7 +245,7 @@ export const TypeOptions = styled.div`
   display: flex;
   gap: 14px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex-direction: column;
     gap: 8px;
   }
@@ -262,7 +272,7 @@ export const AttachmentHeader = styled.div`
   justify-content: space-between;
   gap: 12px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     align-items: stretch;
     flex-direction: column;
   }

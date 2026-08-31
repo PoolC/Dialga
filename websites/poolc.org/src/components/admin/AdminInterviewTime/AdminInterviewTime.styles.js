@@ -10,7 +10,7 @@ export const PageHeader = styled.header`
   gap: 24px;
   margin-bottom: 18px;
 
-  @media (max-width: 768px) { align-items: stretch; flex-direction: column; }
+  @media (max-width: 767px) { align-items: stretch; flex-direction: column; }
 `;
 
 export const Title = styled.h2`
@@ -49,7 +49,7 @@ export const DateGroupHeader = styled.div`
   padding: 13px 14px;
   background: white;
   border-bottom: 1px solid rgba(76, 55, 34, 0.08);
-  @media (max-width: 640px) { align-items: flex-start; flex-wrap: wrap; }
+  @media (max-width: 767px) { align-items: flex-start; flex-wrap: wrap; }
 `;
 
 export const DateLabel = styled.label`
@@ -76,7 +76,7 @@ export const DateGroupMeta = styled.span`
 
 export const AddSlotButton = styled(ActionButton)`
   margin: 0 0 0 auto;
-  @media (max-width: 640px) { margin-left: 0; }
+  @media (max-width: 767px) { margin-left: 0; }
 `;
 
 export const SlotTableWrapper = styled.div`overflow-x: auto;`;

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
-const DEFAULT_DEV_API_BASE_URL = 'https://dev.poolc.org/api';
+const DEFAULT_DEV_API_BASE_URL = 'http://localhost:8080';
 
 export default defineConfig(({ mode }) => {
   // @see https://stackoverflow.com/a/66389044

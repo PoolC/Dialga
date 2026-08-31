@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { CSSProperties, HTMLAttributes, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import colors from '~/lib/styles/colors';
+import { media, pageGutter } from '~/styles/responsive';
 
-type PageShellProps = {
+type PageShellProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   className?: string;
 };
@@ -11,15 +12,27 @@ type PagePanelProps = PageShellProps & {
   narrow?: boolean;
 };
 
-export const PageShell = ({ children, className }: PageShellProps) => <Shell className={className}>{children}</Shell>;
-export const PageContent = ({ children, className }: PageShellProps) => <Content className={className}>{children}</Content>;
+type ResponsiveGridProps = PageShellProps & {
+  minColumnWidth?: number;
+  gap?: number;
+};
 
-export const TwoColumnPageShell = ({ children, className }: PageShellProps) => <TwoColumnShell className={className}>{children}</TwoColumnShell>;
+export const PageShell = ({ children, className, ...rest }: PageShellProps) => <Shell className={className} {...rest}>{children}</Shell>;
+export const PageContent = ({ children, className, ...rest }: PageShellProps) => <Content className={className} {...rest}>{children}</Content>;
+export const Block = ({ children, className, ...rest }: PageShellProps) => <Shell className={className} {...rest}>{children}</Shell>;
 
-export const PagePanel = ({ children, className, narrow = false }: PagePanelProps) => (
-  <Panel className={className} data-narrow={narrow}>
+export const TwoColumnPageShell = ({ children, className, ...rest }: PageShellProps) => <TwoColumnShell className={className} {...rest}>{children}</TwoColumnShell>;
+
+export const PagePanel = ({ children, className, narrow = false, ...rest }: PagePanelProps) => (
+  <Panel className={className} data-narrow={narrow} {...rest}>
     {children}
   </Panel>
+);
+
+export const ResponsiveGrid = ({ children, className, minColumnWidth = 240, gap = 16, ...rest }: ResponsiveGridProps) => (
+  <Grid className={className} style={{ '--grid-min-column-width': `${minColumnWidth}px`, '--grid-gap': `${gap}px` } as CSSProperties} {...rest}>
+    {children}
+  </Grid>
 );
 
 const Shell = styled.div`
@@ -27,19 +40,59 @@ const Shell = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+  box-sizing: border-box;
+  padding: 0 ${pageGutter.wide};
+
+  ${media.standard} {
+    padding: 0 ${pageGutter.standard};
+  }
+
+  ${media.compact} {
+    min-height: 100%;
+    padding: 0;
+    background: #ffffff;
+  }
 `;
 
 const TwoColumnShell = styled.div`
   position: relative;
   top: 0;
-  left: 5%;
-  right: 5%;
   display: flex;
-  width: 90%;
-  margin: 0;
+  width: 100%;
+  max-width: 1366px;
+  margin: 0 auto;
+  gap: 24px;
+  box-sizing: border-box;
+  padding: 0 ${pageGutter.wide};
 
-  @media (max-width: 768px) {
+  ${media.belowWide} {
     flex-direction: column;
+    gap: 16px;
+    padding: 0 ${pageGutter.standard};
+  }
+
+  ${media.compact} {
+    padding: 0;
+    background: #ffffff;
+
+    &[data-admin-layout='true'] {
+      padding: 0 ${pageGutter.compact};
+      background: transparent;
+    }
+  }
+
+  > * {
+    min-width: 0;
+  }
+
+  > [data-narrow] {
+    width: auto;
+  }
+
+  ${media.belowWide} {
+    > [data-narrow] {
+      width: 100%;
+    }
   }
 `;
 
@@ -48,12 +101,13 @@ const Panel = styled.div`
   flex: 1;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  width: 100%;
+  min-width: 0;
   max-width: 1366px;
   min-height: 50vh;
-  margin: 0 5%;
-  padding: 60px 0;
-  border-radius: 20px;
+  margin: 0;
+  padding: 60px 48px;
+  border-radius: 16px;
   background-color: #ffffff;
   box-shadow: 0 0 20px ${colors.gray[1]};
   box-sizing: border-box;
@@ -64,10 +118,28 @@ const Panel = styled.div`
     padding: 40px 20px;
   }
 
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 0;
-    border-radius: 16px;
+  ${media.standard} {
+    padding: 48px 32px;
+  }
+
+  ${media.compact} {
+    min-height: 100%;
+    padding: 32px 20px;
+    border-radius: 0;
+    box-shadow: none;
+
+    [data-admin-layout='true'] & {
+      min-height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px ${colors.gray[1]};
+    }
+  }
+
+  ${media.compact} {
+    && {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
   }
 `;
 
@@ -78,4 +150,11 @@ const Content = styled.div`
   flex-direction: column;
   align-items: stretch;
   box-sizing: border-box;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min-column-width), 100%), 1fr));
+  gap: var(--grid-gap);
 `;

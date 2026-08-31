@@ -203,11 +203,11 @@ const useStyles = createStyles(({ css }) => ({
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1199px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       grid-template-columns: 1fr;
     }
   `,

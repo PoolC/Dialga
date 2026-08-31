@@ -134,6 +134,7 @@ const AdminProjectForm = ({
             </option>
             <option value="WEB_APP">웹앱</option>
             <option value="GAME">게임</option>
+            <option value="OTHER">기타</option>
           </select>
           <Input valueText={genre} labelText="장르" typeText="text" nameText="genre" onChangeFunc={onChangeGenre} placeholderText="ex) 모바일 게임, 슈팅, 웹, .." />
           <Input valueText={startDate} labelText="프로젝트 시작일" typeText="date" nameText="startDate" onChangeFunc={onChangeStartDate} />

@@ -9,6 +9,7 @@ import getFileUrl from '~/lib/utils/getFileUrl';
 import { PageContent, PagePanel, PageShell } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import colors from '~/lib/styles/colors';
+import { media } from '~/styles/responsive';
 
 const FALLBACK_BOOK_IMAGE = '/main-banner.png';
 
@@ -59,7 +60,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 56px;
     margin: 0 auto;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       grid-template-columns: 1fr;
       justify-items: center;
       gap: 28px;
@@ -84,7 +85,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: flex-start;
     gap: 16px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       align-items: center;
       text-align: center;
     }
@@ -130,7 +131,7 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 10px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       justify-content: center;
     }
   `,

@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import AdminMenu from '../../components/admin/AdminMenu/AdminMenu';
 import { MENU } from '../../constants/menus';
@@ -16,19 +15,7 @@ import useAdminCheck from '../../hooks/useAdminCheck';
 import AdminBookFormNew from '../../components/admin/AdminBookFormNew/AdminBookForm';
 import AdminBookNew from '../../components/admin/AdminBookNew/AdminBook';
 import AdminGamification from '../../components/admin/AdminGamification/AdminGamification';
-
-const AdminContainerBlock = styled.div`
-  position: relative;
-  top: 0px;
-  width: 90%;
-  left: 5%;
-  right: 5%;
-  display: flex;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
+import { TwoColumnPageShell } from '../../components/common/PageLayout/PageLayout';
 
 const AdminPage = ({ history }) => {
   const menus = [
@@ -47,7 +34,7 @@ const AdminPage = ({ history }) => {
   useAdminCheck(history);
 
   return (
-    <AdminContainerBlock>
+    <TwoColumnPageShell data-admin-layout="true">
       <AdminMenu menus={menus} />
       <Switch>
         <Route component={AdminInfoContainer} path={`/${MENU.ADMIN}/info`} exact />
@@ -66,7 +53,7 @@ const AdminPage = ({ history }) => {
         <Route component={AdminInterviewContainer} path={`/${MENU.ADMIN}/interview`} exact />
         <Route component={AdminHomeContainer} path={`/${MENU.ADMIN}`} exact />
       </Switch>
-    </AdminContainerBlock>
+    </TwoColumnPageShell>
   );
 };
 

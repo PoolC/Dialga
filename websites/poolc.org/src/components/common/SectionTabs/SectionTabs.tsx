@@ -1,5 +1,6 @@
 import { Tabs } from 'antd';
 import styled from '@emotion/styled';
+import { media } from '~/styles/responsive';
 
 type SectionTabItem = {
   key: string;
@@ -53,5 +54,33 @@ const StyledTabs = styled(Tabs)`
 
   .ant-tabs-content-holder {
     display: none;
+  }
+
+  ${media.compact} {
+    .ant-tabs-nav {
+      overflow: visible;
+    }
+
+    .ant-tabs-nav-wrap {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .ant-tabs-nav-wrap::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ant-tabs-nav-list {
+      min-width: max-content;
+      padding-right: 20px;
+    }
+
+    .ant-tabs-tab {
+      padding: 10px 0 12px;
+    }
+
+    .ant-tabs-tab + .ant-tabs-tab {
+      margin-left: 22px;
+    }
   }
 `;

@@ -9,6 +9,7 @@
     "build": "vite build",
     "sync:type": "yarn dlx typesync",
     "check:type": "tsc",
+    "check:responsive": "node scripts/check-responsive-breakpoints.mjs",
     "check:type:watch": "yarn check:type --watch",
     "codegen": "dotenv -e ./.env -- bash -c 'openapi -i $VITE_API_BASE_URL/v2/api-docs -o src/lib/api-v2/__generated__ --useUnionTypes --useOptions -c axios'",
     "postinstall": "yarn codegen",

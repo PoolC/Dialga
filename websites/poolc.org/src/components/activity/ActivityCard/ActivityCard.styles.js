@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
 import ActionButton from '../../common/Buttons/ActionButton';
+import { media } from '../../../styles/responsive';
 
 export const ActivityCardBlock = styled.li`
+  width: 100%;
   list-style: none;
   margin: 0;
 `;
@@ -14,7 +16,7 @@ export const ActivityCardContainer = styled.div`
   align-items: stretch;
   background-color: ${colors.mint[0]};
   border-radius: 12px;
-  width: 292px;
+  width: 100%;
   height: 262px;
   box-shadow: 0px 0px 10px ${colors.gray[1]};
   transition: 0.2s;
@@ -25,6 +27,22 @@ export const ActivityCardContainer = styled.div`
     box-shadow: 0px 8px 18px ${colors.gray[2]};
     transition: 0.2s;
   }
+
+  ${media.compact} {
+    display: grid;
+    grid-template-areas:
+      'header header'
+      'title title'
+      'schedule operation'
+      'tags actions';
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    row-gap: 8px;
+    height: auto;
+    min-height: 132px;
+    padding: 14px 14px 12px;
+    border-radius: 10px;
+  }
 `;
 
 export const ActivityCardHeader = styled.div`
@@ -34,6 +52,12 @@ export const ActivityCardHeader = styled.div`
   gap: 8px;
   min-height: 24px;
   margin-bottom: 12px;
+
+  ${media.compact} {
+    grid-area: header;
+    min-height: 20px;
+    margin: 0;
+  }
 `;
 
 export const ActivityType = styled.span`
@@ -60,6 +84,13 @@ export const ActivityTitle = styled.p`
   text-align: left;
   line-height: 1.4rem;
   margin: 0;
+
+  ${media.compact} {
+    height: auto;
+    min-height: 1.35rem;
+    font-size: 1rem;
+    line-height: 1.35rem;
+  }
 `;
 
 export const ActivityMetaGroup = styled.div`
@@ -77,6 +108,26 @@ export const ActivityMetaGroup = styled.div`
   & + & {
     margin-top: 6px;
   }
+
+  ${media.compact} {
+    min-height: 1rem;
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1rem;
+
+    &[data-card-meta='schedule'] {
+      grid-area: schedule;
+    }
+
+    &[data-card-meta='operation'] {
+      grid-area: operation;
+      justify-content: flex-end;
+    }
+
+    &[data-card-meta='operation'] > :first-child {
+      display: none;
+    }
+  }
 `;
 
 export const ActivityClassHour = styled.p`
@@ -93,6 +144,10 @@ export const ActivityClassHour = styled.p`
     content: '·';
     margin-right: 10px;
     color: ${colors.brown[0]};
+  }
+
+  ${media.compact} {
+    display: none;
   }
 `;
 
@@ -154,6 +209,19 @@ export const ActivityTags = styled.div`
   min-height: 42px;
   overflow: hidden;
   margin-top: 14px;
+
+  ${media.compact} {
+    grid-area: tags;
+    min-height: 0;
+    max-height: 20px;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+
+    > :nth-child(n + 3) {
+      display: none;
+    }
+  }
 `;
 
 export const ActivityTag = styled.p`
@@ -177,6 +245,20 @@ export const ActivityButtons = styled.div`
   min-height: 36px;
   margin-top: auto;
   padding-top: 10px;
+
+  ${media.compact} {
+    grid-area: actions;
+    min-height: 32px;
+    margin: 0;
+    padding: 0;
+
+    > a,
+    > button {
+      min-height: 32px;
+      padding: 0 10px;
+      font-size: 0.78rem;
+    }
+  }
 `;
 
 export const StyledActionButton = styled(ActionButton)`
@@ -206,6 +288,10 @@ export const StyledLink = styled(Link)`
     color: ${colors.brown[1]};
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  ${media.compact} {
+    grid-area: title;
   }
 `;
 

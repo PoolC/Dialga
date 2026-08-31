@@ -17,7 +17,7 @@ const SNSList = styled.ul`
   padding: 0;
   list-style: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 90%;
     grid-template-columns: 1fr;
   }

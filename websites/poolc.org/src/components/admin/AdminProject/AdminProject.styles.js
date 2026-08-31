@@ -9,7 +9,7 @@ export const PageHeader = styled.div`
   gap: 24px;
   margin-bottom: 18px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     align-items: stretch;
     flex-direction: column;
   }
@@ -28,7 +28,7 @@ export const ToolbarActions = styled.div`
   align-items: center;
   gap: 8px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 100%;
     flex-wrap: wrap;
   }
@@ -53,7 +53,7 @@ export const TabActionRow = styled.div`
     margin: 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     > div .ant-tabs-nav {
       padding-right: 0;
     }

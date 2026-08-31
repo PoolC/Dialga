@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { media } from '../responsive';
 
 export const MenuBlock = styled.div`
   min-width: 15rem;
@@ -6,7 +7,7 @@ export const MenuBlock = styled.div`
   margin: 0 20px 20px 0;
   padding: 0;
 
-  @media (max-width: 768px) {
+  ${media.belowWide} {
     min-width: 0;
     width: 100%;
     margin: 0 0 16px;
@@ -23,7 +24,7 @@ export const MenuList = styled.ul`
   padding: 8px;
   margin: 0;
 
-  @media (max-width: 768px) {
+  ${media.belowWide} {
     flex-direction: row;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -49,7 +50,7 @@ export const MenuItem = styled.li`
     white-space: nowrap;
   }
 
-  @media (max-width: 768px) {
+  ${media.belowWide} {
     flex: 0 0 auto;
 
     & > a {

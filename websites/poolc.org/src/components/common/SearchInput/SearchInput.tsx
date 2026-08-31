@@ -50,7 +50,7 @@ const SearchField = styled.div`
     box-shadow: 0 0 0 3px rgb(0 168 137 / 16%);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
 `;

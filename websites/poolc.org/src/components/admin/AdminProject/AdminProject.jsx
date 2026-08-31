@@ -24,11 +24,13 @@ const PROJECT_CATEGORY = {
   ALL: 'ALL',
   WEB_APP: 'WEB_APP',
   GAME: 'GAME',
+  OTHER: 'OTHER',
 };
 
 const PROJECT_CATEGORY_LABEL = {
   WEB_APP: '웹앱',
   GAME: '게임',
+  OTHER: '기타',
 };
 
 const ProjectTableHead = () => (
@@ -68,6 +70,7 @@ const AdminProject = ({ projects, onDeleteProject }) => {
     { key: PROJECT_CATEGORY.ALL, label: `전체 ${projects.length}` },
     { key: PROJECT_CATEGORY.WEB_APP, label: `웹앱 ${projects.filter((project) => project.category === PROJECT_CATEGORY.WEB_APP).length}` },
     { key: PROJECT_CATEGORY.GAME, label: `게임 ${projects.filter((project) => project.category === PROJECT_CATEGORY.GAME).length}` },
+    { key: PROJECT_CATEGORY.OTHER, label: `기타 ${projects.filter((project) => project.category === PROJECT_CATEGORY.OTHER).length}` },
   ];
 
   return (

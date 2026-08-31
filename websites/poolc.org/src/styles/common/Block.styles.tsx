@@ -1,90 +1,25 @@
-import { createStyles } from 'antd-style';
-import colors from '../../lib/styles/colors';
+import styled from '@emotion/styled';
+import { Block as BaseBlock, PagePanel, TwoColumnPageShell } from '~/components/common/PageLayout/PageLayout';
+import { media } from '~/styles/responsive';
 
-type DivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+export const Block = BaseBlock;
+export const TwoColumnsContainerBlock = TwoColumnPageShell;
+export const WhiteBlock = styled(PagePanel)`
+  & > .block_title {
+    margin-bottom: 3rem;
+  }
 
-const useStyles = createStyles(({ css }) => ({
-  twoColumnsContainerBlock: css`
-    position: relative;
-    top: 0;
-    width: 90%;
-    left: 5%;
-    right: 5%;
-    display: flex;
-    margin: 0;
-    @media (max-width: 768px) {
-      flex-direction: column;
-    }
-  `,
-  block: css`
-    position: relative;
-    display: flex;
-    width: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    justify-content: center;
-  `,
-  whiteBlock: css`
-    width: 90%;
-    margin: 0 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0 0 20px ${colors.gray[1]};
-    border-radius: 20px;
-    padding: 60px 0;
-    min-height: 50vh;
-    max-width: 1366px;
+  ${media.compact} {
     & > .block_title {
-      margin-bottom: 3rem;
+      width: 100%;
+      margin-bottom: 2rem;
+      color: inherit;
+      font-size: 2rem;
+      text-align: center;
     }
-  `,
-  whiteNarrowBlock: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    box-shadow: 0 0 20px ${colors.gray[1]};
-    flex: 1;
-    border-radius: 20px;
-    padding: 40px 20px;
-    min-height: 50vh;
-  `,
-}));
-
-export const TwoColumnsContainerBlock = ({ children, className, ...rest }: DivProps) => {
-  const { styles, cx } = useStyles();
-  return (
-    <div className={cx(styles.twoColumnsContainerBlock, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
-export const Block = ({ children, className, ...rest }: DivProps) => {
-  const { styles, cx } = useStyles();
-  return (
-    <div className={cx(styles.block, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
-
-export const WhiteBlock = ({ children, className, ...rest }: DivProps) => {
-  const { styles, cx } = useStyles();
-  return (
-    <div className={cx(styles.whiteBlock, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
-
-export const WhiteNarrowBlock = ({ children, className, ...rest }: DivProps) => {
-  const { styles, cx } = useStyles();
-  return (
-    <div className={cx(styles.whiteNarrowBlock, className)} {...rest}>
-      {children}
-    </div>
-  );
-};
+  }
+`;
+export const WhiteNarrowBlock = styled(PagePanel)`
+  flex: 1;
+  padding: 40px 20px;
+`;

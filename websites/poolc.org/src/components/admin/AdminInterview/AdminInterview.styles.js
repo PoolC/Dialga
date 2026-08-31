@@ -16,6 +16,8 @@ export const Title = styled.h2`
 
 export const InterviewTableWrapper = styled.div`
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid rgba(76, 55, 34, 0.12);
   border-radius: 8px;
@@ -29,6 +31,10 @@ export const DateTables = styled.div`
   display: grid;
   width: 100%;
   gap: 24px;
+
+  > section {
+    min-width: 0;
+  }
 `;
 
 export const InterviewTable = styled.table`

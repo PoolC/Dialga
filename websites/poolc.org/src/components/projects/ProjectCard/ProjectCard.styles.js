@@ -6,8 +6,9 @@ export const ProjectCardBlock = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 290px;
-  min-height: 300px;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: 29 / 30;
   margin: 0;
 
   &[data-variant='home'] {
@@ -27,8 +28,8 @@ export const Card = styled.div`
   flex-direction: column;
   background-color: ${colors.mint[0]};
   border-radius: 12px;
-  width: 290px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
   box-shadow: 0px 0px 10px ${colors.gray[1]};
   padding: 10px;
   cursor: pointer;
@@ -58,7 +59,7 @@ export const Card = styled.div`
 
 export const ThumbnailContainer = styled.div`
   position: relative;
-  width: 270px;
+  width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 8px;
@@ -87,6 +88,7 @@ export const TextContent = styled.div`
   min-height: 0;
   flex: 1;
   flex-direction: column;
+  overflow: hidden;
   padding-top: 10px;
 
   [data-variant='home'] & {
@@ -175,10 +177,6 @@ export const ProjectDescription = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-
   [data-variant='home'] & {
     width: 230px;
     margin: 0;
@@ -189,6 +187,8 @@ export const ProjectDescription = styled.p`
 `;
 
 export const StyledLink = styled(Link)`
+  display: block;
+  width: 100%;
   color: ${colors.brown[1]};
   text-decoration: none;
   &:hover {

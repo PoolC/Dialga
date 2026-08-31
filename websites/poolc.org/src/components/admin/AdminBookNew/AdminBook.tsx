@@ -28,7 +28,7 @@ const useStyles = createStyles(({ css }) => ({
     gap: 24px;
     margin-bottom: 18px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       align-items: stretch;
       flex-direction: column;
     }
@@ -61,7 +61,7 @@ const useStyles = createStyles(({ css }) => ({
       margin: 0;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       flex-direction: column;
 
       > div {

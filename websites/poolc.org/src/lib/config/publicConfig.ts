@@ -1,6 +1,6 @@
-const DEFAULT_DEV_API_BASE_URL = 'https://dev.poolc.org/api';
+const DEFAULT_DEV_API_BASE_URL = 'http://localhost:8080';
 const DEFAULT_PROD_API_BASE_URL = 'https://api.poolc.org';
-const DEFAULT_DEV_FILE_URL = DEFAULT_DEV_API_BASE_URL;
+const DEFAULT_DEV_FILE_URL = 'http://localhost:8080';
 const DEFAULT_PROD_FILE_URL = DEFAULT_PROD_API_BASE_URL;
 
 const getEnv = (key: string, fallback: string) => {

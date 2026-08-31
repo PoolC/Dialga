@@ -76,11 +76,11 @@ const ActivityCard = ({ activity, onToggleRegisterActivity, onDeleteActivity, is
           <StyledLink to={`/${MENU.ACTIVITY}/${id}`}>
             <ActivityTitle>{title}</ActivityTitle>
           </StyledLink>
-          <ActivityMetaGroup>
+          <ActivityMetaGroup data-card-meta="schedule">
             <ActivityDate>{`${startDate} 시작`}</ActivityDate>
             {classHour && <ActivityClassHour>{classHour}</ActivityClassHour>}
           </ActivityMetaGroup>
-          <ActivityMetaGroup>
+          <ActivityMetaGroup data-card-meta="operation">
             <ActivityHost>
               <ActivityMetaLabel>진행</ActivityMetaLabel>
               <ActivityMetaValue>{host.name}</ActivityMetaValue>

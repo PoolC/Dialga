@@ -82,7 +82,7 @@ const BookInfo = styled.p`
   display: flex;
   flex: 1;
   align-items: center;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     margin: auto;
     text-align: center;
   }
@@ -141,7 +141,7 @@ const BookDetailInfoContainer = styled.div`
 const BookDetailContainer = styled.div`
   display: flex;
   flex: 7;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     flex-direction: column;
   }
 `;
@@ -151,7 +151,7 @@ const Borrower = styled.p`
   display: flex;
   flex: 1;
   align-items: center;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     margin: auto;
   }
   & > span {
@@ -165,7 +165,7 @@ const BorrowDate = styled.p`
   display: flex;
   flex: 1;
   align-items: center;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     margin: auto;
     text-align: center;
   }
@@ -179,7 +179,7 @@ const BookDetailButton = styled(ActionButton)`
   flex: 0.5;
   height: 2rem;
   margin: auto;
-  @media (max-width: 576px) {
+  @media (max-width: 767px) {
     flex: 2;
   }
 `;

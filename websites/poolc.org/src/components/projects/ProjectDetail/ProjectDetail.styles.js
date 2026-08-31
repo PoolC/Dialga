@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
+import { media } from '../../../styles/responsive';
 
 export const Hero = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ export const TextContainer = styled.div`
   padding: 34px 0 24px;
   text-align: center;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     padding: 26px 0 20px;
   }
 `;
@@ -51,7 +52,7 @@ export const Name = styled.h1`
   line-height: 1.25;
   word-break: keep-all;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     font-size: 1.55rem;
   }
 `;
@@ -69,7 +70,7 @@ export const Meta = styled.div`
   line-height: 1.5;
   text-align: center;
 
-  @media (max-width: 768px) {
+  ${media.compact} {
     flex-wrap: wrap;
     margin-top: 10px;
     font-size: 0.88rem;

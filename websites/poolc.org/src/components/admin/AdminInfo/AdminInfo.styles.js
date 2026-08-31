@@ -54,7 +54,7 @@ export const FormGrid = styled.div`
   align-items: stretch;
   gap: 16px 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -173,7 +173,7 @@ export const ImageGrid = styled.div`
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
 `;

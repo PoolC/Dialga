@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Button, Input, Select } from 'antd';
 import { createStyles } from 'antd-style';
 import colors from '~/lib/styles/colors';
+import { media } from '~/styles/responsive';
 
 export type FilterSearchToolbarOption<T extends string> = {
   label: string;
@@ -55,7 +56,7 @@ const useStyles = createStyles(({ css }) => ({
     justify-content: space-between;
     gap: 24px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       flex-direction: column;
       align-items: stretch;
     }
@@ -71,14 +72,14 @@ const useStyles = createStyles(({ css }) => ({
     width: 330px;
     gap: 8px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       width: 100%;
     }
   `,
   compactSearchForm: css`
     width: 430px;
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       width: 100%;
     }
   `,
@@ -145,7 +146,7 @@ const useStyles = createStyles(({ css }) => ({
       box-shadow: 0 0 0 3px rgb(0 168 137 / 16%);
     }
 
-    @media (max-width: 768px) {
+    ${media.compact} {
       max-width: none;
     }
   `,
