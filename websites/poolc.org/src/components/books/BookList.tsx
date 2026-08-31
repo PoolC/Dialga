@@ -1,15 +1,17 @@
-import { Result, Skeleton } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { Empty, Result, Skeleton } from 'antd';
 import { match } from 'ts-pattern';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createStyles } from 'antd-style';
 import { BookControllerService, BookResponse, queryKey, useAppInfiniteQuery } from '~/lib/api-v2';
-import { EmptyState } from '~/components/common/EmptyState/EmptyState';
 import { CardGrid } from '~/components/common/CardGrid/CardGrid';
 import { PageContent } from '~/components/common/PageLayout/PageLayout';
 import { PageHeader } from '~/components/common/PageHeader/PageHeader';
 import { SectionTabs } from '~/components/common/SectionTabs/SectionTabs';
+import { MobileSectionFilter } from '~/components/common/MobileSectionFilter/MobileSectionFilter';
 import { BOOK_CATEGORY_TABS, BookCategoryTab } from '~/constants/bookCategories';
-import { SearchToolbar } from '~/components/common/SearchToolbar/SearchToolbar';
+import { ListSearchToolbar } from '~/components/common/ListSearchToolbar/ListSearchToolbar';
+import { media } from '~/styles/responsive';
 
 import BookCard from './BookCard';
 
@@ -39,22 +41,34 @@ const useStyles = createStyles(({ css }) => ({
   skeleton: css`
     width: 100%;
   `,
+  categoryTabs: css`
+    ${media.belowWide} {
+      display: none;
+    }
+  `,
+  emptyState: css`
+    display: flex;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 260px;
+    align-items: center;
+    justify-content: center;
+  `,
 }));
 
 type sortingType = 'TITLE' | 'CREATED_AT' | 'RENT_TIME';
-type searchType = 'TITLE' | 'AUTHOR' | 'TAG';
-const useInView = (sorting: sortingType, keyword: string, search: searchType, category: BookCategoryTab) => {
+const useInView = (sorting: sortingType, keyword: string, category: BookCategoryTab) => {
   const bottomRef = useRef(null);
   const [inView, setInView] = useState(false);
 
   const { data, fetchNextPage, isLoading, isError, isSuccess, isFetchingNextPage } = useAppInfiniteQuery({
-    queryKey: keyword ? queryKey.book.search(sorting, keyword, search, undefined, category) : queryKey.book.all(sorting, undefined, category),
+    queryKey: keyword ? queryKey.book.search(sorting, keyword, 'TITLE_OR_AUTHOR', undefined, category) : queryKey.book.all(sorting, undefined, category),
     queryFn: ({ pageParam }) =>
       keyword
         ? BookControllerService.searchBooksUsingGet({
             keyword,
             sort: sorting,
-            search,
+            search: 'TITLE_OR_AUTHOR',
             page: pageParam,
             category: category === 'ALL' ? undefined : category,
           })
@@ -106,32 +120,30 @@ export default function BookList() {
 
   const sorting: sortingType = 'CREATED_AT';
   const [category, setCategory] = useState<BookCategoryTab>('ALL');
-  const [searchType, setSearchType] = useState<searchType>('TITLE');
   const [keyword, setKeyword] = useState('');
-  const [searchInfo, setSearchInfo] = useState<{ type: searchType; keyword: string }>({ type: 'TITLE', keyword: '' });
-  const bookListInfiniteQuery = useInView(sorting, searchInfo.keyword, searchInfo.type, category);
+  const bookListInfiniteQuery = useInView(sorting, keyword, category);
 
   return (
     <PageContent className={styles.content}>
       <PageHeader
         title="보유 도서"
         actions={
-          <SearchToolbar
-            options={[
-              { value: 'TITLE', label: '제목' },
-              { value: 'AUTHOR', label: '저자' },
-              { value: 'TAG', label: '태그' },
-            ]}
-            searchType={searchType}
-            keyword={keyword}
-            placeholder="도서 검색"
-            onSearchTypeChange={(value) => setSearchType(value as searchType)}
-            onKeywordChange={setKeyword}
-            onSearch={() => setSearchInfo({ type: searchType, keyword })}
-          />
+          <ListSearchToolbar placeholder="제목, 저자 검색" value={keyword} onChange={setKeyword}>
+            <MobileSectionFilter
+              items={BOOK_CATEGORY_TABS}
+              activeKey={category}
+              onChange={(key) => setCategory(key as BookCategoryTab)}
+              title="카테고리 선택"
+              triggerIcon={<DownOutlined />}
+              visibleBelowWide
+              showDrawerHeader={false}
+            />
+          </ListSearchToolbar>
         }
       />
-      <SectionTabs items={BOOK_CATEGORY_TABS} activeKey={category} onChange={(key) => setCategory(key as BookCategoryTab)} />
+      <div className={styles.categoryTabs}>
+        <SectionTabs items={BOOK_CATEGORY_TABS} activeKey={category} onChange={(key) => setCategory(key as BookCategoryTab)} />
+      </div>
       <div className={styles.listBody}>
         {match(bookListInfiniteQuery)
           .with({ isLoading: true }, () => <Skeleton className={styles.skeleton} />)
@@ -141,13 +153,17 @@ export default function BookList() {
               {products.length > 0 ? (
                 products.map((bookData) => <BookCard key={bookData.id} data={bookData} />)
               ) : (
-                <EmptyState>등록된 도서가 없습니다.</EmptyState>
+                <li className={styles.emptyState}>
+                  <Empty description="등록된 도서가 없습니다." />
+                </li>
               )}
             </CardGrid>
           ))
           .otherwise(() => (
             <CardGrid className={styles.flexList}>
-              <EmptyState>등록된 도서가 없습니다.</EmptyState>
+              <li className={styles.emptyState}>
+                <Empty description="등록된 도서가 없습니다." />
+              </li>
             </CardGrid>
           ))}
       </div>

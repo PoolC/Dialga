@@ -1,6 +1,6 @@
 import { createStyles } from 'antd-style';
 import { Button, Modal } from 'antd';
-import { Calendar, dayjsLocalizer, Event, SlotInfo, ToolbarProps, Views } from 'react-big-calendar';
+import { Calendar, dayjsLocalizer, Event, SlotInfo, ToolbarProps, View, Views } from 'react-big-calendar';
 import { useState } from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { LocalTimeReq, queryKey, RoomControllerService, useAppMutation, useAppQuery } from '~/lib/api-v2';
@@ -21,9 +21,20 @@ const useStyles = createStyles(({ css }) => ({
     gap: 16px;
     margin-bottom: 18px;
 
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 10px;
+    @media (max-width: 767px) {
+      grid-template-areas:
+        'range range'
+        'nav view';
+      grid-template-columns: minmax(0, 1fr) auto;
+      width: calc(100vw - 40px);
+      max-width: calc(100vw - 40px);
+      box-sizing: border-box;
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      padding: 2px 0;
+      background: #ffffff;
+      gap: 14px 10px;
     }
   `,
   toolbarNav: css`
@@ -33,6 +44,12 @@ const useStyles = createStyles(({ css }) => ({
     border: 1px solid #d8d0c3;
     border-radius: 6px;
     background: #ffffff;
+
+    @media (max-width: 767px) {
+      grid-area: nav;
+      width: 100%;
+      min-width: 0;
+    }
   `,
   toolbarView: css`
     display: inline-flex;
@@ -41,6 +58,17 @@ const useStyles = createStyles(({ css }) => ({
     border: 1px solid #d8d0c3;
     border-radius: 6px;
     background: #ffffff;
+
+    @media (max-width: 767px) {
+      grid-area: view;
+      min-width: 0;
+
+      button {
+        min-width: 56px;
+        padding-right: 10px;
+        padding-left: 10px;
+      }
+    }
   `,
   toolbarButton: css`
     height: 38px;
@@ -72,9 +100,12 @@ const useStyles = createStyles(({ css }) => ({
       color: ${colors.brown[1]};
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       flex: 1;
       min-width: 0;
+      padding-right: 8px;
+      padding-left: 8px;
+      font-size: 0.78rem;
     }
   `,
   toolbarRange: css`
@@ -84,12 +115,20 @@ const useStyles = createStyles(({ css }) => ({
     align-items: center;
     gap: 3px;
     text-align: center;
+
+    @media (max-width: 767px) {
+      grid-area: range;
+    }
   `,
   toolbarMonth: css`
     color: ${colors.brown[1]};
     font-size: 1.18rem;
     font-weight: 800;
     line-height: 1.2;
+
+    @media (max-width: 767px) {
+      display: none;
+    }
   `,
   toolbarDates: css`
     color: ${colors.brown[0]};
@@ -99,8 +138,11 @@ const useStyles = createStyles(({ css }) => ({
   `,
   calendarWrap: css`
     width: 100%;
-    overflow: hidden;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
     margin-top: 2px;
+    -webkit-overflow-scrolling: touch;
 
     .rbc-calendar {
       width: 100%;
@@ -215,25 +257,31 @@ const useStyles = createStyles(({ css }) => ({
       display: none;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       .rbc-header {
         padding: 6px 2px;
         font-size: 0.68rem;
       }
 
       .rbc-label {
-        padding: 0 4px;
-        font-size: 0.72rem;
+        padding: 0 6px;
+        font-size: 0.7rem;
+        white-space: nowrap;
       }
 
       .rbc-time-gutter,
       .rbc-time-header-gutter {
-        width: 48px;
-        min-width: 48px;
+        width: 66px;
+        min-width: 66px;
       }
 
       .rbc-timeslot-group {
         min-height: 60px;
+      }
+
+      &[data-calendar-view='week'] .rbc-calendar {
+        width: 680px;
+        min-width: 680px;
       }
     }
   `,
@@ -258,7 +306,7 @@ const useStyles = createStyles(({ css }) => ({
     color: #ffffff;
     box-sizing: border-box;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       gap: 2px;
       padding: 5px;
     }
@@ -281,7 +329,7 @@ const useStyles = createStyles(({ css }) => ({
     line-height: 1.15;
     opacity: 0.9;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       font-size: 0.6rem;
     }
 
@@ -305,7 +353,7 @@ const useStyles = createStyles(({ css }) => ({
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       font-size: 0.68rem;
     }
 
@@ -333,7 +381,7 @@ const useStyles = createStyles(({ css }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       font-size: 0.6rem;
     }
   `,
@@ -351,6 +399,14 @@ type RoomCalendarEvent = Event & {
 
 type RoomToolbarProps = ToolbarProps<RoomCalendarEvent>;
 
+const getInitialCalendarView = () => {
+  if (typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches) {
+    return Views.DAY;
+  }
+
+  return Views.WEEK;
+};
+
 export default function RoomReservationPage() {
   // data
   const { styles } = useStyles();
@@ -360,6 +416,7 @@ export default function RoomReservationPage() {
   const [endDate, setEndDate] = useState(dayjs().endOf('week').format('YYYY-MM-DD'));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<RoomCalendarEvent | undefined>();
+  const [calendarView, setCalendarView] = useState<View>(getInitialCalendarView);
 
   const { data: eventResponse, refetch: refetchEvent } = useAppQuery({
     queryKey: [queryKey.room.range(startDate, endDate)],
@@ -559,7 +616,7 @@ export default function RoomReservationPage() {
         <PagePanel>
           <PageContent>
             <PageHeader title="동아리방 예약" />
-            <div className={styles.calendarWrap}>
+            <div className={styles.calendarWrap} data-calendar-view={calendarView}>
               <Calendar
                 localizer={localizer}
                 selectable
@@ -568,7 +625,8 @@ export default function RoomReservationPage() {
                   height: 1260,
                 }}
                 culture="ko"
-                defaultView={Views.WEEK}
+                view={calendarView}
+                onView={setCalendarView}
                 views={{
                   week: true,
                   day: true,

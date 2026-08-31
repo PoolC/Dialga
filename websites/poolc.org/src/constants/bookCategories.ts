@@ -11,7 +11,7 @@ export type BookCategoryTab = 'ALL' | BookCategory;
 
 export const BOOK_CATEGORY_TABS: { key: BookCategoryTab; label: string }[] = [
   { key: 'ALL', label: '전체' },
-  ...BOOK_CATEGORY_OPTIONS,
+  ...BOOK_CATEGORY_OPTIONS.map(({ value, label }) => ({ key: value, label })),
 ];
 
 export const getBookCategoryLabel = (category?: BookCategory) => BOOK_CATEGORY_OPTIONS.find((option) => option.value === category)?.label ?? '미분류';
