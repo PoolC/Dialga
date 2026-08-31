@@ -14,6 +14,7 @@ import * as gameAPI from '~/lib/api/gamification';
 import { loadUser } from '~/modules/auth';
 import { useMessage } from '~/hooks/useMessage';
 import { media } from '~/styles/responsive';
+import { isAuthorizedRole } from '~/lib/utils/checkRole';
 
 type GameSummary = {
   ballBalances: { normal: number };
@@ -50,18 +51,30 @@ const getMyActivitySummary = async (): Promise<MyActivitySummaryResponse> => {
   try {
     return await MemberControllerService.getMyActivitySummaryUsingGet();
   } catch {
-    const legacyHour = await MemberControllerService.getMyActivityTimeUsingGet();
-    const totalHours = legacyHour.hour ?? 0;
+    try {
+      const legacyHour = await MemberControllerService.getMyActivityTimeUsingGet();
+      const totalHours = legacyHour.hour ?? 0;
 
-    return {
-      totalHours,
-      seminarStudyHours: totalHours,
-      officialActivityHours: 0,
-      projectHours: 0,
-      seminarStudyActivities: [],
-      officialActivities: [],
-      projectActivities: [],
-    };
+      return {
+        totalHours,
+        seminarStudyHours: totalHours,
+        officialActivityHours: 0,
+        projectHours: 0,
+        seminarStudyActivities: [],
+        officialActivities: [],
+        projectActivities: [],
+      };
+    } catch {
+      return {
+        totalHours: 0,
+        seminarStudyHours: 0,
+        officialActivityHours: 0,
+        projectHours: 0,
+        seminarStudyActivities: [],
+        officialActivities: [],
+        projectActivities: [],
+      };
+    }
   }
 };
 
@@ -78,6 +91,20 @@ export default function MyPageContainer() {
   const [selectedShiny, setSelectedShiny] = useState(false);
   const [savingFeatured, setSavingFeatured] = useState(false);
 
+  const [{ data: activitySummary }, { data: me }] = useAppSuspenseQueries({
+    queries: [
+      {
+        queryKey: queryKey.member.activitySummary,
+        queryFn: getMyActivitySummary,
+      },
+      {
+        queryKey: queryKey.member.me,
+        queryFn: MemberControllerService.getMeUsingGet,
+      },
+    ],
+  });
+  const canAccessPokemon = isAuthorizedRole(me.role);
+
   const listData: {
     title: string;
     icon: JSX.Element;
@@ -89,11 +116,13 @@ export default function MyPageContainer() {
       icon: <UserOutlined size={24} />,
       link: '/my-info',
     },
-    {
-      title: '포켓몬 도감',
-      icon: <AppstoreOutlined size={24} />,
-      link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`,
-    },
+    ...(canAccessPokemon
+      ? [{
+          title: '포켓몬 도감',
+          icon: <AppstoreOutlined size={24} />,
+          link: `/${MENU.MY_PAGE}/${MENU.MY_PAGE_COLLECTION}`,
+        }]
+      : []),
     {
       title: '내가 쓴 글',
       icon: <EditOutlined size={24} />,
@@ -111,20 +140,9 @@ export default function MyPageContainer() {
     },
   ];
 
-  const [{ data: activitySummary }, { data: me }] = useAppSuspenseQueries({
-    queries: [
-      {
-        queryKey: queryKey.member.activitySummary,
-        queryFn: getMyActivitySummary,
-      },
-      {
-        queryKey: queryKey.member.me,
-        queryFn: MemberControllerService.getMeUsingGet,
-      },
-    ],
-  });
-
   useEffect(() => {
+    if (!canAccessPokemon) return undefined;
+
     let active = true;
 
     gameAPI.getGameSummary()
@@ -142,7 +160,7 @@ export default function MyPageContainer() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [canAccessPokemon]);
 
   const openFeaturedModal = async () => {
     try {
@@ -361,7 +379,7 @@ export default function MyPageContainer() {
           );
         })}
       </div>
-      <section className={styles.collectionOverview} aria-labelledby="my-collection-title">
+      {canAccessPokemon && <section className={styles.collectionOverview} aria-labelledby="my-collection-title">
         <div className={styles.collectionOverviewHeader}>
           <div>
             <Typography.Title id="my-collection-title" level={5} className={styles.collectionOverviewTitle}>포켓몬 도감</Typography.Title>
@@ -399,7 +417,7 @@ export default function MyPageContainer() {
             ) : <div className={styles.featuredCollectibleEmpty}><Typography.Text>대표 포켓몬을 지정해 보세요.</Typography.Text><Button type="link" onClick={openFeaturedModal}>지정</Button></div>}
           </div>
         </div>
-      </section>
+      </section>}
       <Modal
         title="대표 포켓몬 지정"
         open={featuredModalOpen}

@@ -173,6 +173,40 @@ export const MobileAccountMore = styled.span`
   font-size: 20px;
 `;
 
+export const MobileGuestActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid #edf3f1;
+`;
+
+export const MobileGuestSignUpLink = styled(LinkButton)`
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  margin: 0;
+  border: 1px solid #d8d0c3;
+  border-radius: 6px;
+  color: ${colors.brown[1]};
+  font-weight: 700;
+`;
+
+export const MobileGuestSignInLink = styled(LinkButton)`
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  margin: 0;
+  border-radius: 6px;
+  background: ${colors.mint[2]};
+  color: #ffffff;
+  font-weight: 700;
+
+  &:hover {
+    color: #ffffff;
+  }
+`;
+
 export const SelectedLinkButton = styled(LinkButton)`
   color: ${colors.brown[1]};
 `;

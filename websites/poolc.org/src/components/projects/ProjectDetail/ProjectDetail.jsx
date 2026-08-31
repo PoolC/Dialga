@@ -20,6 +20,7 @@ import {
 } from './ProjectDetail.styles';
 import { PagePanel, PageShell } from '../../common/PageLayout/PageLayout';
 import getFileUrl from '../../../lib/utils/getFileUrl';
+import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 
 const getProjectPlaceholder = (id) => `https://picsum.photos/seed/poolc-project-detail-${id}/1200/675`;
 
@@ -48,7 +49,9 @@ const ProjectDetail = ({ project, member }) => {
 
   const {
     status: { isLogin },
+    user: { role },
   } = member;
+  const canViewProjectMembers = isLogin && isAuthorizedRole(role);
 
   return (
     <PageShell>
@@ -82,7 +85,7 @@ const ProjectDetail = ({ project, member }) => {
             </BodyContainer>
           </Introduction>
         </IntroductionContainer>
-        {isLogin && projectMembers.length > 0 && (
+        {canViewProjectMembers && projectMembers.length > 0 && (
           <MemberContainer>
             <h2>
               참여 멤버 <span>{projectMembers.length}</span>

@@ -14,6 +14,7 @@ import { useSearchParams } from '~/hooks/useSearchParams';
 import { MENU } from '~/constants/menus';
 import { BoardType, getBoardTitle } from '~/lib/utils/boardUtil';
 import { useAppSelector } from '~/hooks/useAppSelector';
+import { isAuthorizedRole } from '~/lib/utils/checkRole';
 import { media } from '~/styles/responsive';
 
 const useStyles = createStyles(({ css }) => ({
@@ -65,6 +66,8 @@ export default function BoardListPage() {
   const searchParams = useSearchParams();
   const isLogin = useAppSelector((state) => state.auth.status.isLogin);
   const isAdmin = useAppSelector((state) => state.auth.user.isAdmin);
+  const role = useAppSelector((state) => state.auth.user.role);
+  const canAccessMemberBoards = isLogin && isAuthorizedRole(role);
 
   const requestedBoardType = searchParams.get('boardType') ?? 'NOTICE';
   const page = Number(searchParams.get('page') ?? 1);
@@ -81,7 +84,7 @@ export default function BoardListPage() {
       key: 'NOTICE',
       label: getBoardTitle('NOTICE'),
     },
-    ...(isLogin
+    ...(canAccessMemberBoards
       ? [
           {
             key: 'PROJECT' as BoardType,

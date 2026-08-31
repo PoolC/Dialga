@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { isAuthorizedRole } from '../../../lib/utils/checkRole';
 import ActionButton from '../../common/Buttons/ActionButton';
 import LinkButton from '../../common/Buttons/LinkButton';
-import { LeftHeaderMenu, MenuBlock, MobileAccountButton, MobileAccountMeta, MobileAccountMore, MobileDrawerCloseButton, MobileDrawerContent, MobileDrawerHeader, MobileNavigationLink, MobileNavigationList, RightHeaderMenu } from './Menus.styles';
+import { LeftHeaderMenu, MenuBlock, MobileAccountButton, MobileAccountMeta, MobileAccountMore, MobileDrawerCloseButton, MobileDrawerContent, MobileDrawerHeader, MobileGuestActions, MobileGuestSignInLink, MobileGuestSignUpLink, MobileNavigationLink, MobileNavigationList, RightHeaderMenu } from './Menus.styles';
 import { MENU } from '~/constants/menus';
 import colors from '~/lib/styles/colors';
 import Notification from '../Notification/Notification';
@@ -88,7 +88,7 @@ const Menus = ({
     },
     {
       to: `/${MENU.POKEMON}/${MENU.POKEMON_ACHIEVEMENTS}`,
-      visible: isLogin,
+      visible: isLogin && isAuthorizedRole(role),
       content: 'Quest',
     },
     {
@@ -103,7 +103,7 @@ const Menus = ({
     },
     {
       to: `/${MENU.PKS}`,
-      visible: isLogin,
+      visible: isLogin && isAuthorizedRole(role),
       content: 'PKS',
     },
     {
@@ -179,6 +179,12 @@ const Menus = ({
               <CloseOutlined />
             </MobileDrawerCloseButton>
           </MobileDrawerHeader>
+          {!isLogin && (
+            <MobileGuestActions>
+              <MobileGuestSignInLink to={`/${MENU.SIGNIN}`} onClick={onToggleMenu}>로그인</MobileGuestSignInLink>
+              <MobileGuestSignUpLink to={`/${MENU.SIGNUP}`} onClick={onToggleMenu}>회원가입</MobileGuestSignUpLink>
+            </MobileGuestActions>
+          )}
           <MobileNavigationList aria-label="주요 메뉴">
             {visibleLinks.map((link) => (
               <MobileNavigationLink
