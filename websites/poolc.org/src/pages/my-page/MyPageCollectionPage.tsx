@@ -268,15 +268,12 @@ export default function MyPageCollectionPage() {
       <WhiteBlock className={styles.whiteBlock}>
         <PageContent className={styles.content}>
           <PageHeader
+            className={styles.collectionHeader}
             title={
               <span className={styles.catalogTitle}>
                 <span>포켓몬 도감</span>
                 <span className={styles.catalogMetrics}>
-                  <span><strong>일반 {collectedCount} / {totalCatalogCount}종</strong></span>
-                  <span className={cx({ [styles.catalogMetricComplete]: shinyComplete })}>
-                    이로치 {summary?.shinyCatalogCount ?? 0} / {totalCatalogCount}종
-                    {shinyComplete && <em>완료</em>}
-                  </span>
+                  <span><strong>{collectedCount} / {totalCatalogCount}종</strong></span>
                 </span>
               </span>
             }
@@ -285,10 +282,10 @@ export default function MyPageCollectionPage() {
                 <div className={styles.drawAction}>
                   <span className={styles.ballBalance} aria-label={`포켓볼 ${ballCount}개 보유`}><img src={pokeballImage} alt="" aria-hidden="true" /><strong>{ballCount}</strong></span>
                   <div className={styles.drawButtons} aria-describedby={shinyDrawGuide ? 'shiny-draw-guide' : undefined}>
-                    <Tooltip title={normalDrawUnavailable ? '일반 도감을 모두 완성했습니다.' : '포켓볼 1개로 일반 포켓몬 뽑기'}><Button aria-label={normalDrawUnavailable ? '일반 도감을 모두 완성했습니다.' : '포켓볼 1개로 일반 포켓몬 뽑기'} type="primary" loading={drawing === 'NORMAL'} disabled={!summary || drawing !== null || normalDrawUnavailable || ballCount < 1} onClick={() => handleDraw(false)}><img src={pokeballImage} alt="" aria-hidden="true" /><span>×1</span></Button></Tooltip>
-                    <Tooltip title={shinyDrawUnavailable ? '획득한 포켓몬의 이로치를 모두 수집했습니다.' : '포켓볼 2개로 이로치 포켓몬 뽑기'}><Button aria-label={shinyDrawUnavailable ? '획득한 포켓몬의 이로치를 모두 수집했습니다.' : '포켓볼 2개로 이로치 포켓몬 뽑기'} className={cx(styles.shinyDrawButton, { [styles.shinyDrawUnavailable]: shinyDrawUnavailable })} aria-describedby={shinyDrawGuide ? 'shiny-draw-guide' : undefined} loading={drawing === 'SHINY'} disabled={!summary || drawing !== null || shinyDrawUnavailable || ballCount < 2} onClick={() => handleDraw(true)}><img src={pokeballImage} alt="" aria-hidden="true" /><StarFilled aria-hidden="true" /><span>×2</span></Button></Tooltip>
+                    <Tooltip title={normalDrawUnavailable ? '일반 도감을 모두 완성했습니다.' : '포켓볼 1개로 일반 포켓몬 뽑기'}><Button aria-label={normalDrawUnavailable ? '일반 도감을 모두 완성했습니다.' : '포켓볼 1개로 일반 포켓몬 뽑기'} className={styles.drawButton} type="primary" loading={drawing === 'NORMAL'} disabled={!summary || drawing !== null || normalDrawUnavailable || ballCount < 1} onClick={() => handleDraw(false)}><img src={pokeballImage} alt="" aria-hidden="true" /><span>×1</span></Button></Tooltip>
+                    <Tooltip title={shinyDrawUnavailable ? '획득한 포켓몬의 이로치를 모두 수집했습니다.' : '포켓볼 2개로 이로치 포켓몬 뽑기'}><Button aria-label={shinyDrawUnavailable ? '획득한 포켓몬의 이로치를 모두 수집했습니다.' : '포켓볼 2개로 이로치 포켓몬 뽑기'} className={cx(styles.drawButton, styles.shinyDrawButton, { [styles.shinyDrawUnavailable]: shinyDrawUnavailable })} aria-describedby={shinyDrawGuide ? 'shiny-draw-guide' : undefined} loading={drawing === 'SHINY'} disabled={!summary || drawing !== null || shinyDrawUnavailable || ballCount < 2} onClick={() => handleDraw(true)}><img src={pokeballImage} alt="" aria-hidden="true" /><StarFilled aria-hidden="true" /><span>×2</span></Button></Tooltip>
                   </div>
-                  {shinyDrawGuide && <Typography.Text id="shiny-draw-guide" className={styles.shinyDrawGuide} aria-live="polite">{shinyDrawGuide}</Typography.Text>}
+                  <span id="shiny-draw-guide" className={styles.shinyDrawGuide} aria-live={shinyDrawGuide ? 'polite' : undefined}>{shinyDrawGuide}</span>
                 </div>
               </div>
             }
@@ -320,7 +317,7 @@ export default function MyPageCollectionPage() {
               </div>}
             >
               <Tooltip title="상세 필터">
-                <Button aria-label="상세 필터" icon={<FilterOutlined />} className={cx({ [styles.activeFilter]: generation !== 'ALL' || rarity !== 'ALL' })} />
+                <Button aria-label="상세 필터" icon={<FilterOutlined />} className={cx(styles.filterButton, { [styles.activeFilter]: generation !== 'ALL' || rarity !== 'ALL' })} />
               </Tooltip>
             </Popover>
           </div>
@@ -378,20 +375,22 @@ export default function MyPageCollectionPage() {
 const useStyles = createStyles(({ css }) => ({
   whiteBlock: css`box-sizing:border-box; padding:30px 20px; align-items:center;`,
   content: css`max-width:1180px;`,
-  catalogTitle: css`display:inline-flex; align-items:center; gap:18px; ${media.mobile}{flex-direction:column; gap:8px;}`,
-  catalogMetrics: css`display:inline-flex; align-items:center; gap:10px; color:#737c77; font-size:.82rem; font-weight:600; white-space:nowrap; > span{display:inline-flex; align-items:center; gap:5px; padding-left:10px; border-left:1px solid #e2ece8;} strong{color:#249b78; font-size:.9rem;} em{padding:2px 5px; border-radius:999px; background:#e9f8f3; color:#16896d; font-size:.68rem; font-style:normal; font-weight:800;} ${media.mobile}{flex-wrap:wrap; justify-content:center; gap:6px; > span:first-of-type{padding-left:0; border-left:0;}}`,
-  catalogMetricComplete: css`color:#467260;`,
-  drawPanel: css`display:flex; align-items:center; ${media.mobile}{align-items:flex-start;}`,
-  drawAction: css`display:flex; align-items:center; gap:10px; flex-wrap:wrap; ${media.mobile}{justify-content:center;}`,
+  collectionHeader: css`${media.mobile}{gap:12px; margin-bottom:10px; > div:first-of-type{gap:4px;} > div:last-child{width:100%; justify-content:center;} h2{font-size:1.75rem;}}`,
+  catalogTitle: css`display:inline-flex; align-items:center; gap:18px; ${media.mobile}{flex-direction:column; gap:4px;}`,
+  catalogMetrics: css`display:inline-flex; align-items:center; color:#737c77; font-size:.82rem; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; > span{display:inline-flex; align-items:center;} strong{color:#249b78; font-size:.9rem;} ${media.mobile}{strong{min-width:108px; font-size:1rem; text-align:center;}}`,
+  drawPanel: css`display:flex; align-items:center; ${media.mobile}{width:100%; align-items:flex-start;}`,
+  drawAction: css`display:flex; align-items:center; gap:10px; flex-wrap:wrap; ${media.mobile}{width:100%; justify-content:center; gap:8px;}`,
   drawButtons: css`display:flex; gap:8px; flex-wrap:wrap; .ant-btn{display:inline-flex; align-items:center; gap:5px; font-size:.82rem;} .ant-btn img{width:18px; height:18px; object-fit:contain;} .ant-btn .anticon{font-size:.68rem;}`,
-  shinyDrawButton: css`border-color:#d5a62d !important; color:#8d6810 !important; &:not(:disabled):hover{border-color:#ba8a13 !important; color:#74530a !important;}`,
+  drawButton: css`${media.mobile}{min-width:68px; min-height:44px; padding:0 10px;}`,
+  shinyDrawButton: css`border-color:#d5a62d !important; color:#8d6810 !important; &:not(:disabled):hover{border-color:#ba8a13 !important; color:#74530a !important;} ${media.mobile}{min-width:78px;}`,
   shinyDrawUnavailable: css`cursor:not-allowed; opacity:.55;`,
-  shinyDrawGuide: css`width:100%; color:#7b736a; font-size:.74rem; ${media.mobile}{text-align:center;}`,
-  ballBalance: css`display:inline-flex; align-items:center; gap:5px; color:#276f59; font-weight:700; img{width:21px; height:21px; object-fit:contain;} strong{font-size:.95rem;}`,
+  shinyDrawGuide: css`display:block; width:100%; min-height:18px; color:#7b736a; font-size:.74rem; line-height:18px; ${media.mobile}{text-align:center;}`,
+  ballBalance: css`display:inline-flex; align-items:center; gap:5px; min-width:68px; color:#276f59; font-variant-numeric:tabular-nums; font-weight:700; img{width:21px; height:21px; object-fit:contain;} strong{font-size:.9rem;} ${media.mobile}{min-height:44px; justify-content:center;}`,
   emptyGuide: css`display:flex; flex-direction:column; gap:4px; padding:14px 16px; margin:0 0 18px; border-left:3px solid #49bf9e; background:#f8fcfb; strong{color:#276f59;} .ant-typography{font-size:.82rem; color:#6e7772;}`,
-  filters: css`display:flex; align-items:center; gap:8px; margin-bottom:18px; border-bottom:1px solid rgba(76, 55, 34, .08);`,
-  collectionTabs: css`width:auto; flex:none; min-width:0; .ant-tabs-nav{margin:0; border-bottom:0;} .ant-tabs-tab{padding:12px 0 14px;} ${media.mobile}{flex:1; .ant-tabs-nav-wrap{overflow:visible;}}`,
+  filters: css`display:flex; align-items:center; gap:8px; margin-bottom:18px; border-bottom:1px solid rgba(76, 55, 34, .08); ${media.mobile}{min-height:44px; gap:12px;}`,
+  collectionTabs: css`width:auto; flex:none; min-width:0; .ant-tabs-nav{margin:0; border-bottom:0;} .ant-tabs-tab{padding:12px 0 14px;} ${media.mobile}{flex:1; .ant-tabs-nav-wrap{overflow:visible;} .ant-tabs-tab{display:flex; min-height:44px; align-items:center; padding:0 0 2px;}}`,
   filterPanel: css`display:flex; width:180px; flex-direction:column; gap:12px; label{display:flex; flex-direction:column; gap:5px; color:#69716d; font-size:.78rem; font-weight:700;} .ant-btn{align-self:flex-start; padding:0;}`,
+  filterButton: css`width:44px; height:44px; padding:0; flex:none;`,
   activeFilter: css`border-color:#49bf9e !important; color:#249b78 !important;`,
   spinner: css`display:block; margin:72px auto;`,
   grid: css`display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:12px;`,

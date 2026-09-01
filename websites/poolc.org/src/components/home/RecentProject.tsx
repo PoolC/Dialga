@@ -6,14 +6,7 @@ import { ProjectResponse } from '~/lib/api-v2';
 
 const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
   const viewport = useRef<HTMLUListElement | null>(null);
-  const target0 = useRef<HTMLDivElement | null>(null);
-  const target1 = useRef<HTMLDivElement | null>(null);
-  const target2 = useRef<HTMLDivElement | null>(null);
-  const target3 = useRef<HTMLDivElement | null>(null);
-  const target4 = useRef<HTMLDivElement | null>(null);
-  const target5 = useRef<HTMLDivElement | null>(null);
-  const target6 = useRef<HTMLDivElement | null>(null);
-  const targetRefs = [target0, target1, target2, target3, target4, target5, target6];
+  const targetRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   const [index, setIndex] = useState(0);
 
@@ -37,26 +30,21 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
           }
         }
 
-        targetRefs.forEach((t) => {
-          if (t.current) {
-            observer.observe(t.current);
-          }
-        });
       });
     };
 
     const io = new IntersectionObserver(handleIntersection, options);
 
-    if (target0.current) {
-      io.observe(target0.current);
-    }
+    targetRefs.current.forEach((target) => target && io.observe(target));
 
     return () => io && io.disconnect();
-    // eslint-disable-next-line
-  }, [viewport]);
+  }, [projects.length]);
+
+  const getStep = () => Math.max(1, Math.floor(viewport.current!.getBoundingClientRect().width / 270));
+  const maxIndex = Math.max(0, projects.length - 1);
 
   const handleClickPrev = () => {
-    const step = Math.floor(viewport.current!.getBoundingClientRect().width / 270);
+    const step = getStep();
     const newIndex = index - step < 0 ? 0 : index - step;
     setIndex(newIndex);
     const targetCard = document.querySelector(`#recent-project-card${newIndex}`);
@@ -73,8 +61,8 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
   };
 
   const handleClickNext = () => {
-    const step = Math.floor(viewport.current!.getBoundingClientRect().width / 270);
-    const newIndex = index + step > 6 ? 6 : index + step;
+    const step = getStep();
+    const newIndex = Math.min(index + step, maxIndex);
     setIndex(newIndex);
     const targetCard = document.querySelector(`#recent-project-card${newIndex}`);
 
@@ -102,7 +90,13 @@ const RecentProject = ({ projects }: { projects: ProjectResponse[] }) => {
       </h3>
       <RecentProjectList className="project_card_container" ref={viewport}>
         {projects.map((project, idx) => (
-          <div key={project.id} id={`recent-project-card${idx}`} ref={targetRefs[idx]}>
+          <div
+            key={project.id}
+            id={`recent-project-card${idx}`}
+            ref={(element) => {
+              targetRefs.current[idx] = element;
+            }}
+          >
             <ProjectCard project={project} variant="home" />
           </div>
         ))}

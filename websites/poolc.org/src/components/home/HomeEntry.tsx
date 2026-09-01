@@ -7,6 +7,8 @@ import { PoolcControllerService, PostControllerService, ProjectControllerService
 import { getBoardTitleForRequest } from '~/lib/utils/boardUtil';
 import ApplyBanner from '~/components/home/ApplyBanner';
 
+const RECENT_PROJECT_CATEGORIES = ['WEB_APP', 'GAME', 'OTHER'] as const;
+
 const useStyles = createStyles(({ css }) => ({
   block: css`
     margin: auto;
@@ -47,12 +49,14 @@ export default function HomeEntry() {
   const isHideApplyBanner =
     poolcInfo.isSubscriptionPeriod === null || (poolcInfo.isSubscriptionPeriod && poolcInfo.applyUri == null) || !poolcInfo.isSubscriptionPeriod || (isLogin && role !== 'UNACCEPTED');
 
+  const recentProjects = RECENT_PROJECT_CATEGORIES.flatMap((category) => projectInfo.data.filter((project) => project.category === category).slice(0, 2));
+
   return (
     <div className={styles.block}>
       <Carousel />
       {Boolean(!isHideApplyBanner) && <ApplyBanner />}
       <RecentNotice notices={noticeInfo.posts?.slice(0, 5) ?? []} />
-      <RecentProject projects={projectInfo.data.slice(0, 7)} />
+      <RecentProject projects={recentProjects} />
     </div>
   );
 }
