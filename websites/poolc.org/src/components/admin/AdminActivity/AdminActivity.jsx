@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Popconfirm } from 'antd';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { SearchToolbar } from '../../common/SearchToolbar/SearchToolbar';
+import { ListSearchToolbar } from '../../common/ListSearchToolbar/ListSearchToolbar';
 import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import {
   AccountActions,
@@ -23,11 +23,6 @@ const ACTIVITY_TYPE = {
   STUDY: 'STUDY',
 };
 
-const ACTIVITY_SEARCH_OPTIONS = [
-  { value: 'ACTIVITY', label: '제목' },
-  { value: 'HOST', label: '개설자' },
-];
-
 const ActivityTableHead = () => (
   <thead>
     <TableHead>
@@ -43,7 +38,6 @@ const ActivityTableHead = () => (
 
 const AdminActivity = ({ activities, onOpenActivity, onCloseActivity, onDeleteActivity }) => {
   const [activeTab, setActiveTab] = useState(ACTIVITY_TYPE.ALL);
-  const [searchType, setSearchType] = useState('ACTIVITY');
   const [keyword, setKeyword] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -53,14 +47,11 @@ const AdminActivity = ({ activities, onOpenActivity, onCloseActivity, onDeleteAc
     return activities.filter((activity) => {
       const activityType = activity.seminar ? ACTIVITY_TYPE.SEMINAR : ACTIVITY_TYPE.STUDY;
       const isInType = activeTab === ACTIVITY_TYPE.ALL || activityType === activeTab;
-      const searchableValues = (searchType === 'HOST'
-        ? [activity.host?.name]
-        : [activity.title]
-      ).filter(Boolean).join(' ').toLowerCase();
+      const searchableValues = [activity.title, activity.host?.name].filter(Boolean).join(' ').toLowerCase();
 
       return isInType && (!normalizedQuery || searchableValues.includes(normalizedQuery));
     });
-  }, [activeTab, activities, searchQuery, searchType]);
+  }, [activeTab, activities, searchQuery]);
 
   const tabs = [
     { key: ACTIVITY_TYPE.ALL, label: `전체 ${activities.length}` },
@@ -73,15 +64,7 @@ const AdminActivity = ({ activities, onOpenActivity, onCloseActivity, onDeleteAc
       <PageHeader>
         <Title>활동 관리</Title>
         <ToolbarActions>
-          <SearchToolbar
-            options={ACTIVITY_SEARCH_OPTIONS}
-            searchType={searchType}
-            keyword={keyword}
-            placeholder="활동 검색"
-            onSearchTypeChange={setSearchType}
-            onKeywordChange={setKeyword}
-            onSearch={() => setSearchQuery(keyword)}
-          />
+          <ListSearchToolbar value={keyword} placeholder="활동, 개설자 검색" onChange={setKeyword} onSubmit={() => setSearchQuery(keyword)} />
         </ToolbarActions>
       </PageHeader>
       <SectionTabs items={tabs} activeKey={activeTab} onChange={setActiveTab} />

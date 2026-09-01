@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import colors from '../../../lib/styles/colors';
+import { HorizontalScrollArea } from '../../common/HorizontalScrollArea/HorizontalScrollArea';
 
 export const PageHeader = styled.header`
   width: 100%;
@@ -14,11 +15,10 @@ export const Title = styled.h2`
   line-height: 1.25;
 `;
 
-export const InterviewTableWrapper = styled.div`
+export const InterviewTableWrapper = styled(HorizontalScrollArea)`
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  overflow-x: auto;
   border: 1px solid rgba(76, 55, 34, 0.12);
   border-radius: 8px;
 

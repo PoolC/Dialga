@@ -40,10 +40,14 @@ type OwnedCollectible = {
   name: string;
   spriteUrl?: string;
   shinySpriteUrl?: string;
-  ownedCount: number;
-  normalOwnedCount: number;
-  shinyCount: number;
+  normalOwned: boolean;
+  shinyOwned: boolean;
+  normalOwnedCount?: number;
+  shinyCount?: number;
 };
+
+const hasNormalOwned = (item: OwnedCollectible) => item.normalOwned ?? (item.normalOwnedCount ?? 0) > 0;
+const hasShinyOwned = (item: OwnedCollectible) => item.shinyOwned ?? (item.shinyCount ?? 0) > 0;
 
 const shinyCatalogImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/25.png';
 
@@ -165,7 +169,7 @@ export default function MyPageContainer() {
   const openFeaturedModal = async () => {
     try {
       const response = await gameAPI.getCollection();
-      const owned = response.data.filter((item: OwnedCollectible) => item.ownedCount > 0 || item.shinyCount > 0);
+      const owned = response.data.filter((item: OwnedCollectible) => hasNormalOwned(item) || hasShinyOwned(item));
       setOwnedCollectibles(owned);
       setSelectedCollectibleId(featuredCollectible?.collectibleId);
       setSelectedShiny(featuredCollectible?.shiny ?? false);
@@ -439,14 +443,14 @@ export default function MyPageContainer() {
               onChange={(value) => {
                 const selected = ownedCollectibles.find((item) => item.collectibleId === value);
                 setSelectedCollectibleId(value);
-                setSelectedShiny((selected?.normalOwnedCount ?? 0) === 0);
+                setSelectedShiny(selected ? !hasNormalOwned(selected) : false);
               }}
               options={ownedCollectibles.map((item) => ({ value: item.collectibleId, label: `No.${String(item.externalId).padStart(3, '0')} ${item.name}` }))}
             />
           </label>
           {(() => {
             const selected = ownedCollectibles.find((item) => item.collectibleId === selectedCollectibleId);
-            return selected?.shinyCount ? <label className={styles.shinyOption}><Switch size="small" checked={selectedShiny} disabled={selected.normalOwnedCount === 0} onChange={setSelectedShiny} /> 이로치로 지정</label> : null;
+            return selected && hasShinyOwned(selected) ? <label className={styles.shinyOption}><Switch size="small" checked={selectedShiny} disabled={!hasNormalOwned(selected)} onChange={setSelectedShiny} /> 이로치로 지정</label> : null;
           })()}
         </div>
       </Modal>

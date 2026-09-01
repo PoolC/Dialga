@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import ActionButton from '../../common/Buttons/ActionButton';
 import colors from '../../../lib/styles/colors';
+import { HorizontalScrollArea } from '../../common/HorizontalScrollArea/HorizontalScrollArea';
 
 export const PageHeader = styled.header`
   display: flex;
@@ -79,7 +80,7 @@ export const AddSlotButton = styled(ActionButton)`
   @media (max-width: 767px) { margin-left: 0; }
 `;
 
-export const SlotTableWrapper = styled.div`overflow-x: auto;`;
+export const SlotTableWrapper = styled(HorizontalScrollArea)``;
 
 export const SlotTable = styled.table`
   width: 100%;

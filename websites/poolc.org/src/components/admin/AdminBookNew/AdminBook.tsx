@@ -8,7 +8,7 @@ import { useMessage } from '~/hooks/useMessage';
 import getFileUrl from '~/lib/utils/getFileUrl';
 import { WhiteNarrowBlock } from '~/styles/common/Block.styles';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { SearchToolbar } from '../../common/SearchToolbar/SearchToolbar';
+import { ListSearchToolbar } from '../../common/ListSearchToolbar/ListSearchToolbar';
 import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import AdminBookForm, { FormType } from '../AdminBookFormNew/AdminBookForm';
 
@@ -260,16 +260,17 @@ export default function AdminBook() {
       <div className={styles.header}>
         <h2 className={styles.title}>도서 관리</h2>
         <div className={styles.toolbar}>
-          <SearchToolbar
-            keyword={keyword}
+          <ListSearchToolbar
+            value={keyword}
             placeholder="도서 검색"
-            onKeywordChange={setKeyword}
-            onSearch={() => {
+            onChange={setKeyword}
+            onSubmit={() => {
               setSearchQuery(keyword);
               setPage(0);
             }}
-            showSearchType={false}
-          />
+          >
+            <ActionButton onClick={() => setModal({ isOpen: true })}>도서 생성</ActionButton>
+          </ListSearchToolbar>
         </div>
       </div>
       <div className={styles.actionRow}>
@@ -281,7 +282,6 @@ export default function AdminBook() {
             setPage(0);
           }}
         />
-        <ActionButton onClick={() => setModal({ isOpen: true })}>도서 생성</ActionButton>
       </div>
       <div className={styles.tableContainer}>
         <table className={styles.table}>

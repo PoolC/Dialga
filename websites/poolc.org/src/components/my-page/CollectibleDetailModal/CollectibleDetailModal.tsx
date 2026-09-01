@@ -13,9 +13,6 @@ export type CollectibleDetail = {
   rarity: Rarity;
   shiny?: boolean;
   shinyOwned?: boolean;
-  ownedCount?: number;
-  normalOwnedCount?: number;
-  shinyOwnedCount?: number;
   category?: string;
   description?: string;
   heightDecimeters?: number;
@@ -43,15 +40,18 @@ const rarityLabel: Record<Rarity, string> = {
   LEGENDARY: '전설',
 };
 
+const rarityColor: Record<Rarity, string> = {
+  COMMON: '#6c757d',
+  RARE: '#3b82c4',
+  EPIC: '#9c5cc6',
+  LEGENDARY: '#d59a12',
+};
+
 export default function CollectibleDetailModal({ collectible, title, description, onClose }: CollectibleDetailModalProps) {
   const { styles } = useStyles();
   const [showShiny, setShowShiny] = useState(false);
   const canShowShiny = Boolean(collectible?.shinyOwned && collectible.shinySpriteUrl);
   const showingShiny = canShowShiny && showShiny;
-  const displayedOwnedCount = showingShiny
-    ? collectible?.shinyOwnedCount ?? (collectible?.shiny ? collectible.ownedCount : 0)
-    : collectible?.normalOwnedCount ?? (collectible?.shiny ? 0 : collectible?.ownedCount);
-
   useEffect(() => {
     setShowShiny(Boolean(collectible?.shiny));
   }, [collectible]);
@@ -59,7 +59,7 @@ export default function CollectibleDetailModal({ collectible, title, description
   return (
     <Modal
       open={Boolean(collectible)}
-      footer={<Button type="primary" onClick={onClose}>확인하고 닫기</Button>}
+      footer={<Button type="primary" onClick={onClose}>닫기</Button>}
       closeIcon={<CloseOutlined aria-label="닫기" />}
       onCancel={onClose}
       centered
@@ -68,11 +68,12 @@ export default function CollectibleDetailModal({ collectible, title, description
         {title && <Typography.Title level={4} className={styles.title}>{title}</Typography.Title>}
         {canShowShiny && <Segmented value={showingShiny ? 'SHINY' : 'NORMAL'} options={[{ label: '일반', value: 'NORMAL' }, { label: '이로치', value: 'SHINY' }]} onChange={(value) => setShowShiny(value === 'SHINY')} />}
         {(showingShiny ? collectible.shinySpriteUrl : collectible.spriteUrl) && <img src={showingShiny ? collectible.shinySpriteUrl : collectible.spriteUrl} alt={showingShiny ? `${collectible.name} 이로치` : collectible.name} />}
-        <Typography.Title level={2}>{collectible.name}</Typography.Title>
+        <div className={styles.nameRow}>
+          <Typography.Title level={2}>{collectible.name}</Typography.Title>
+          <Typography.Text style={{ color: rarityColor[collectible.rarity] }}>No.{String(collectible.externalId ?? 0).padStart(3, '0')}</Typography.Text>
+        </div>
         <Tag color={showingShiny ? 'gold' : 'green'}>{showingShiny ? '이로치' : rarityLabel[collectible.rarity]}</Tag>
-        <Typography.Text className={styles.description}>
-          {description ?? `No.${String(collectible.externalId ?? 0).padStart(3, '0')} · ${displayedOwnedCount ?? 1}마리 보유`}
-        </Typography.Text>
+        {description && <Typography.Text className={styles.description}>{description}</Typography.Text>}
         {(collectible.category || collectible.description) && <section className={styles.dexEntry}>
           {collectible.category && <strong>{collectible.category}</strong>}
           {collectible.description && <Typography.Paragraph>{collectible.description}</Typography.Paragraph>}
@@ -97,6 +98,7 @@ export default function CollectibleDetailModal({ collectible, title, description
 
 const useStyles = createStyles(({ css }) => ({
   content: css`display:flex; flex-direction:column; align-items:center; gap:8px; padding:18px 0; text-align:center; > img{width:196px; height:196px; object-fit:contain;} h2{margin:0 !important;}`,
+  nameRow: css`display:flex; align-items:baseline; justify-content:center; gap:6px; h2{margin:0 !important; font-size:30px; line-height:1.267;} .ant-typography{font-size:.78rem; font-weight:700;}`,
   title: css`margin:0 0 4px !important; color:#276f59 !important;`,
   description: css`color:#6c757d; font-size:.84rem;`,
   dexEntry: css`width:100%; padding:12px; border-top:1px solid #e5f0ed; border-bottom:1px solid #e5f0ed; text-align:left; strong{font-size:.82rem; color:#276f59;} .ant-typography{margin:4px 0 0 !important; color:#5f6462; font-size:.85rem; line-height:1.6;}`,

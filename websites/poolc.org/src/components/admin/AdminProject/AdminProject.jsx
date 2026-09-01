@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Popconfirm } from 'antd';
 import ActionButton from '../../common/Buttons/ActionButton';
-import { SearchToolbar } from '../../common/SearchToolbar/SearchToolbar';
+import { ListSearchToolbar } from '../../common/ListSearchToolbar/ListSearchToolbar';
 import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import { MENU } from '../../../constants/menus';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
@@ -78,18 +78,13 @@ const AdminProject = ({ projects, onDeleteProject }) => {
       <PageHeader>
         <Title>프로젝트 관리</Title>
         <ToolbarActions>
-          <SearchToolbar
-            keyword={keyword}
-            placeholder="프로젝트 검색"
-            onKeywordChange={setKeyword}
-            onSearch={() => setSearchQuery(keyword)}
-            showSearchType={false}
-          />
+          <ListSearchToolbar value={keyword} placeholder="프로젝트 검색" onChange={setKeyword} onSubmit={() => setSearchQuery(keyword)}>
+            <ActionButton to={`/${MENU.ADMIN}/projects/new`}>프로젝트 생성</ActionButton>
+          </ListSearchToolbar>
         </ToolbarActions>
       </PageHeader>
       <TabActionRow>
         <SectionTabs items={tabs} activeKey={activeTab} onChange={setActiveTab} />
-        <ActionButton to={`/${MENU.ADMIN}/projects/new`}>프로젝트 생성</ActionButton>
       </TabActionRow>
       <ProjectTableContainer>
         <ProjectTable>

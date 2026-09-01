@@ -44,9 +44,11 @@ type CollectionItem = {
   specialAttack?: number;
   specialDefense?: number;
   speed?: number;
-  ownedCount: number;
-  normalOwnedCount: number;
-  shinyCount: number;
+  normalOwned: boolean;
+  shinyOwned: boolean;
+  /** Transitional fields returned by a running server before the boolean ownership API is deployed. */
+  normalOwnedCount?: number;
+  shinyCount?: number;
 };
 
 type DrawResult = {
@@ -60,7 +62,6 @@ type DrawResult = {
   drawnAt: string;
   ballBalances?: BallBalances;
   externalId?: number;
-  ownedCount?: number;
   isNewCollectible?: boolean;
   category?: string;
   description?: string;
@@ -113,6 +114,9 @@ const rarityColor: Record<Rarity, string> = {
   LEGENDARY: '#d59a12',
 };
 
+const hasNormalOwned = (item: Pick<CollectionItem, 'normalOwned' | 'normalOwnedCount'>) => item.normalOwned ?? (item.normalOwnedCount ?? 0) > 0;
+const hasShinyOwned = (item: Pick<CollectionItem, 'shinyOwned' | 'shinyCount'>) => item.shinyOwned ?? (item.shinyCount ?? 0) > 0;
+
 const CollectionCard = memo(({
   item,
   onOpen,
@@ -129,11 +133,12 @@ const CollectionCard = memo(({
   cardNameClassName,
 }: CollectionCardProps) => {
   const openCollectible = () => onOpen(item);
-  const canOpen = item.normalOwnedCount > 0;
+  const canOpen = hasNormalOwned(item);
+  const shinyOwned = hasShinyOwned(item);
 
   return (
     <article
-      className={[cardClassName, !canOpen && unownedClassName, item.shinyCount > 0 && shinyCardClassName, canOpen && clickableCardClassName].filter(Boolean).join(' ')}
+      className={[cardClassName, !canOpen && unownedClassName, shinyOwned && shinyCardClassName, canOpen && clickableCardClassName].filter(Boolean).join(' ')}
       onClick={canOpen ? openCollectible : undefined}
       onKeyDown={canOpen ? (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -144,8 +149,8 @@ const CollectionCard = memo(({
       role={canOpen ? 'button' : undefined}
       tabIndex={canOpen ? 0 : undefined}
     >
-      {item.shinyCount > 0 && <span className={shinyBadgeClassName}><StarFilled /> 이로치</span>}
-      {item.shinyCount > 0 && item.shinySpriteUrl && <img src={item.shinySpriteUrl} alt="" aria-hidden="true" className={shinyPreviewClassName} loading="lazy" />}
+      {shinyOwned && <span className={shinyBadgeClassName}><StarFilled /> 이로치</span>}
+      {shinyOwned && item.shinySpriteUrl && <img src={item.shinySpriteUrl} alt="" aria-hidden="true" className={shinyPreviewClassName} loading="lazy" />}
       {item.spriteUrl ? <img src={item.spriteUrl} alt={canOpen ? item.name : '미획득'} className={spriteClassName} loading="lazy" /> : <div className={spriteFallbackClassName} />}
       <div className={cardMetaClassName}>
         <Typography.Text className={numberClassName} style={{ color: canOpen ? rarityColor[item.rarity] : undefined }}>No.{String(item.externalId).padStart(3, '0')}</Typography.Text>
@@ -191,13 +196,14 @@ export default function MyPageCollectionPage() {
     () => collection.filter((item) => (
       (generation === 'ALL' || item.generation === generation)
       && (rarity === 'ALL' || item.rarity === rarity)
-      && (ownership === 'ALL' || item.normalOwnedCount > 0)
+      && (ownership === 'ALL' || hasNormalOwned(item))
     )),
     [collection, generation, ownership, rarity],
   );
 
   const collectedCount = summary?.normalCatalogCount ?? 0;
   const totalCatalogCount = summary?.totalCatalogCount ?? 0;
+  const hasSummary = summary !== null;
   const ballCount = summary?.ballBalances?.normal ?? 0;
   const normalDrawUnavailable = totalCatalogCount > 0 && collectedCount >= totalCatalogCount;
   const shinyDrawStatus = summary?.shinyDrawStatus ?? 'NEEDS_NORMAL';
@@ -211,8 +217,7 @@ export default function MyPageCollectionPage() {
       collectible: {
         ...item,
         shiny: false,
-        shinyOwned: item.shinyCount > 0,
-        shinyOwnedCount: item.shinyCount,
+        shinyOwned: hasShinyOwned(item),
       },
     });
   }, []);
@@ -223,23 +228,18 @@ export default function MyPageCollectionPage() {
       const draw = response.data as DrawResult;
       const previousCollection = collection.find((item) => item.collectibleId === draw.collectibleId);
       const isNewVariant = draw.shiny
-        ? !previousCollection || previousCollection.shinyCount === 0
-        : !previousCollection || previousCollection.normalOwnedCount === 0;
+        ? !previousCollection || !hasShinyOwned(previousCollection)
+        : !previousCollection || !hasNormalOwned(previousCollection);
       const preparedDraw = {
         ...draw,
         externalId: draw.externalId ?? previousCollection?.externalId,
-        ownedCount: (previousCollection?.ownedCount ?? 0) + 1,
-        normalOwnedCount: (previousCollection?.normalOwnedCount ?? 0) + (draw.shiny ? 0 : 1),
-        shinyOwnedCount: (previousCollection?.shinyCount ?? 0) + (draw.shiny ? 1 : 0),
-        shinyOwned: draw.shiny || (previousCollection?.shinyCount ?? 0) > 0,
+        shinyOwned: draw.shiny || Boolean(previousCollection && hasShinyOwned(previousCollection)),
       };
 
       setDetailModal({
         collectible: preparedDraw,
         title: isNewVariant ? draw.shiny ? '이로치 포켓몬 획득!' : '새 포켓몬 획득!' : '이미 수집한 포켓몬이에요',
-        description: isNewVariant
-          ? `No.${String(preparedDraw.externalId ?? 0).padStart(3, '0')} ${draw.shiny ? '이로치' : '일반'} 도감에 새로 등록되었습니다.`
-          : `현재 보유 ${preparedDraw.ownedCount}마리`,
+        description: isNewVariant ? `${draw.shiny ? '이로치' : '일반'} 도감에 새로 등록되었습니다.` : undefined,
       });
       setSummary((current) => current && {
         ...current,
@@ -252,8 +252,8 @@ export default function MyPageCollectionPage() {
       });
       setCollection((current) => current.map((item) => item.collectibleId === draw.collectibleId
         ? draw.shiny
-          ? { ...item, ownedCount: item.ownedCount + 1, shinyCount: item.shinyCount + 1 }
-          : { ...item, ownedCount: item.ownedCount + 1, normalOwnedCount: item.normalOwnedCount + 1 }
+          ? { ...item, shinyOwned: true }
+          : { ...item, normalOwned: true }
         : item));
       setDraws((current) => [draw, ...current]);
     } catch (error: any) {
@@ -273,7 +273,7 @@ export default function MyPageCollectionPage() {
               <span className={styles.catalogTitle}>
                 <span>포켓몬 도감</span>
                 <span className={styles.catalogMetrics}>
-                  <span><strong>{collectedCount} / {totalCatalogCount}종</strong></span>
+                  <span>{hasSummary ? <strong>{collectedCount} / {totalCatalogCount}종</strong> : <span className={styles.catalogMetricSkeleton} aria-label="도감 진행도 불러오는 중" />}</span>
                 </span>
               </span>
             }
@@ -377,14 +377,15 @@ const useStyles = createStyles(({ css }) => ({
   content: css`max-width:1180px;`,
   collectionHeader: css`${media.mobile}{gap:12px; margin-bottom:10px; > div:first-of-type{gap:4px;} > div:last-child{width:100%; justify-content:center;} h2{font-size:1.75rem;}}`,
   catalogTitle: css`display:inline-flex; align-items:center; gap:18px; ${media.mobile}{flex-direction:column; gap:4px;}`,
-  catalogMetrics: css`display:inline-flex; align-items:center; color:#737c77; font-size:.82rem; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; > span{display:inline-flex; align-items:center;} strong{color:#249b78; font-size:.9rem;} ${media.mobile}{strong{min-width:108px; font-size:1rem; text-align:center;}}`,
-  drawPanel: css`display:flex; align-items:center; ${media.mobile}{width:100%; align-items:flex-start;}`,
-  drawAction: css`display:flex; align-items:center; gap:10px; flex-wrap:wrap; ${media.mobile}{width:100%; justify-content:center; gap:8px;}`,
-  drawButtons: css`display:flex; gap:8px; flex-wrap:wrap; .ant-btn{display:inline-flex; align-items:center; gap:5px; font-size:.82rem;} .ant-btn img{width:18px; height:18px; object-fit:contain;} .ant-btn .anticon{font-size:.68rem;}`,
+  catalogMetrics: css`display:inline-flex; align-items:center; color:#737c77; font-size:.82rem; font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap; > span{display:inline-flex; align-items:center;} strong{min-width:108px; color:#249b78; font-size:.9rem; text-align:center;} ${media.mobile}{strong{font-size:1rem;}}`,
+  catalogMetricSkeleton: css`display:inline-flex; width:108px; height:18px; border-radius:4px; background:#e7efed;`,
+  drawPanel: css`display:flex; width:330px; align-items:center; justify-content:flex-end; ${media.mobile}{width:100%; align-items:flex-start;}`,
+  drawAction: css`position:relative; display:grid; width:100%; min-height:50px; grid-template-columns:68px max-content; align-items:center; justify-content:end; column-gap:8px; padding-bottom:18px; ${media.mobile}{min-height:62px; justify-content:center;}`,
+  drawButtons: css`display:flex; gap:8px; flex-wrap:nowrap; .ant-btn{display:inline-flex; align-items:center; gap:5px; font-size:.82rem;} .ant-btn img{width:18px; height:18px; object-fit:contain;} .ant-btn .anticon{font-size:.68rem;}`,
   drawButton: css`${media.mobile}{min-width:68px; min-height:44px; padding:0 10px;}`,
   shinyDrawButton: css`border-color:#d5a62d !important; color:#8d6810 !important; &:not(:disabled):hover{border-color:#ba8a13 !important; color:#74530a !important;} ${media.mobile}{min-width:78px;}`,
   shinyDrawUnavailable: css`cursor:not-allowed; opacity:.55;`,
-  shinyDrawGuide: css`display:block; width:100%; min-height:18px; color:#7b736a; font-size:.74rem; line-height:18px; ${media.mobile}{text-align:center;}`,
+  shinyDrawGuide: css`position:absolute; right:0; bottom:0; left:0; min-height:18px; color:#7b736a; font-size:.74rem; line-height:18px; text-align:right; ${media.mobile}{text-align:center;}`,
   ballBalance: css`display:inline-flex; align-items:center; gap:5px; min-width:68px; color:#276f59; font-variant-numeric:tabular-nums; font-weight:700; img{width:21px; height:21px; object-fit:contain;} strong{font-size:.9rem;} ${media.mobile}{min-height:44px; justify-content:center;}`,
   emptyGuide: css`display:flex; flex-direction:column; gap:4px; padding:14px 16px; margin:0 0 18px; border-left:3px solid #49bf9e; background:#f8fcfb; strong{color:#276f59;} .ant-typography{font-size:.82rem; color:#6e7772;}`,
   filters: css`display:flex; align-items:center; gap:8px; margin-bottom:18px; border-bottom:1px solid rgba(76, 55, 34, .08); ${media.mobile}{min-height:44px; gap:12px;}`,

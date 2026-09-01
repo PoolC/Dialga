@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { MENU } from '../../../constants/menus';
 import { WhiteNarrowBlock } from '../../../styles/common/Block.styles';
-import { SearchToolbar } from '../../common/SearchToolbar/SearchToolbar';
+import { ListSearchToolbar } from '../../common/ListSearchToolbar/ListSearchToolbar';
 import { SectionTabs } from '../../common/SectionTabs/SectionTabs';
 import {
   AccountActionButton,
@@ -29,14 +29,6 @@ const MEMBER_TAB = {
   INACTIVE: 'INACTIVE',
   ALL: 'ALL',
 };
-
-const MEMBER_SEARCH_OPTIONS = [
-  { value: 'ALL', label: '전체' },
-  { value: 'NAME', label: '이름' },
-  { value: 'LOGIN_ID', label: '아이디' },
-  { value: 'STUDENT_ID', label: '학번' },
-  { value: 'EMAIL', label: '이메일' },
-];
 
 const INACTIVE_ROLES = ['INACTIVE', 'EXPELLED', 'QUIT', 'PUBLIC'];
 
@@ -102,7 +94,6 @@ const MemberRow = ({ member, roles, onAcceptMember, onWithdrawMember, onUpdateMe
 
 const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onUpdateMemberRole, roles, history }) => {
   const [activeTab, setActiveTab] = useState(MEMBER_TAB.PENDING);
-  const [searchType, setSearchType] = useState('ALL');
   const [keyword, setKeyword] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
@@ -126,19 +117,12 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onUpdateMember
     return members.filter((member) => {
       const isInTab = activeTab === MEMBER_TAB.ALL || getMemberTab(member) === activeTab;
       const matchesRole = roleFilter === 'ALL' || member.role === roleFilter;
-      const searchFieldByType = {
-        ALL: [member.name, member.loginID, member.email, member.studentID, member.department],
-        NAME: [member.name],
-        LOGIN_ID: [member.loginID],
-        STUDENT_ID: [member.studentID],
-        EMAIL: [member.email],
-      };
-      const searchableValues = searchFieldByType[searchType].filter(Boolean).join(' ').toLowerCase();
+      const searchableValues = [member.name, member.loginID, member.email, member.studentID, member.department].filter(Boolean).join(' ').toLowerCase();
       const matchesQuery = !normalizedQuery || searchableValues.includes(normalizedQuery);
 
       return isInTab && matchesRole && matchesQuery;
     });
-  }, [activeTab, members, roleFilter, searchQuery, searchType]);
+  }, [activeTab, members, roleFilter, searchQuery]);
 
   const tabs = [
     { key: MEMBER_TAB.PENDING, label: `승인 대기 ${tabCounts[MEMBER_TAB.PENDING]}` },
@@ -154,15 +138,7 @@ const AdminMember = ({ members, onAcceptMember, onWithdrawMember, onUpdateMember
           <Title>회원 관리</Title>
         </div>
         <ToolbarActions>
-          <SearchToolbar
-            options={MEMBER_SEARCH_OPTIONS}
-            searchType={searchType}
-            keyword={keyword}
-            placeholder="회원 검색"
-            onSearchTypeChange={setSearchType}
-            onKeywordChange={setKeyword}
-            onSearch={() => setSearchQuery(keyword)}
-          />
+          <ListSearchToolbar value={keyword} placeholder="이름, 아이디, 학과 검색" onChange={setKeyword} onSubmit={() => setSearchQuery(keyword)} />
         </ToolbarActions>
       </PageHeader>
       <TabFilterRow>

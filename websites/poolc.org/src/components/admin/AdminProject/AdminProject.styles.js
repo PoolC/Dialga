@@ -35,34 +35,10 @@ export const ToolbarActions = styled.div`
 `;
 
 export const TabActionRow = styled.div`
-  position: relative;
   width: 100%;
 
   > div {
     width: 100%;
-  }
-
-  > div .ant-tabs-nav {
-    padding-right: 150px;
-  }
-
-  > button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-  }
-
-  @media (max-width: 767px) {
-    > div .ant-tabs-nav {
-      padding-right: 0;
-    }
-
-    > button {
-      position: static;
-      display: inline-flex;
-      margin: 0 0 16px;
-    }
   }
 `;
 
