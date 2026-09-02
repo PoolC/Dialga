@@ -99,7 +99,9 @@ export default function PksContainer() {
     try {
       setIsGiteaLoginLoading(true);
       const { data } = await createGiteaLoginTicket();
-      window.location.href = data.loginUrl || `${publicConfig.pks.gitea.url}/_poolc_login?ticket=${encodeURIComponent(data.ticket)}`;
+      const loginUrl = new URL('/_poolc_login', publicConfig.pks.gitea.url);
+      loginUrl.searchParams.set('ticket', data.ticket);
+      window.location.href = loginUrl.toString();
     } catch {
       message.error('Gitea 로그인에 실패했습니다.');
       setIsGiteaLoginLoading(false);

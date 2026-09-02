@@ -19,16 +19,16 @@ export const publicConfig = Object.freeze({
   maxFileSize: getEnvNumber('VITE_MAX_FILE_SIZE', 50_000_000),
   pks: Object.freeze({
     gitea: Object.freeze({
-      url: getEnv('VITE_PKS_GITEA_URL', 'http://git.dev.poolc.org'),
-      description: getEnv('VITE_PKS_GITEA_DESCRIPTION', 'git.dev.poolc.org'),
+      url: getEnv('VITE_PKS_GITEA_URL', 'https://git.poolc.org'),
+      description: getEnv('VITE_PKS_GITEA_DESCRIPTION', 'git.poolc.org'),
     }),
     argoCd: Object.freeze({
-      url: getEnv('VITE_PKS_ARGOCD_URL', 'http://argocd.dev.poolc.org'),
-      description: getEnv('VITE_PKS_ARGOCD_DESCRIPTION', 'argocd.dev.poolc.org'),
+      url: getEnv('VITE_PKS_ARGOCD_URL', 'https://argocd.poolc.org'),
+      description: getEnv('VITE_PKS_ARGOCD_DESCRIPTION', 'argocd.poolc.org'),
     }),
     grafana: Object.freeze({
-      url: getEnv('VITE_PKS_GRAFANA_URL', 'http://mon.dev.poolc.org'),
-      description: getEnv('VITE_PKS_GRAFANA_DESCRIPTION', 'mon.dev.poolc.org'),
+      url: getEnv('VITE_PKS_GRAFANA_URL', 'https://grafana.poolc.org'),
+      description: getEnv('VITE_PKS_GRAFANA_DESCRIPTION', 'grafana.poolc.org'),
     }),
     compile: Object.freeze({
       url: getEnv('VITE_PKS_COMPILE_URL', 'http://compile.dev.poolc.org'),
